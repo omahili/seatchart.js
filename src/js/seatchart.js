@@ -5,10 +5,14 @@ function seatchartJS(containerId, json) {
     this.json = json;
     
     // creates a seat
-    this.createSeat = function (type, content) {
+    this.createSeat = function (type, content, seatId) {
         var seat = document.createElement("div");
         seat.textContent = content;
         seat.className = "seatChart-seat " + type;
+        
+        if (seatId !== undefined) {
+            seat.setAttribute("id", seatId);
+        }
             
         return seat;
     };
@@ -34,10 +38,10 @@ function seatchartJS(containerId, json) {
             front = document.createElement("div"),
             // compute the seat style to get its width
             cssSeat = window.getComputedStyle(this.createSeat("available", "A1")),
-            margins = parseInt(cssSeat.marginLeft) + parseInt(cssSeat.marginRight);
+            margins = parseInt(cssSeat.marginLeft, 10) + parseInt(cssSeat.marginRight, 10);
         
         // set the perfect width of the front indicator
-        front.style.width = (parseInt(cssSeat.width) + margins) * json.cols - margins;
+        front.style.width = (parseInt(cssSeat.width, 10) + margins) * json.cols - margins;
         front.textContent = "Front";
         front.className = "seatChart-front";      
         header.appendChild(front);
@@ -76,8 +80,9 @@ function seatchartJS(containerId, json) {
         var row = this.createRow(rowIndex);
         
         for(var j = 1; j <= json.cols; j++) {
-            row.appendChild(this.createSeat("available", rowIndex + j));
+            row.appendChild(this.createSeat("available", rowIndex + j, i + "_" + j));
         }
+        
         seatMapContainer.appendChild(row);
     }
     
