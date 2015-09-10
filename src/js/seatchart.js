@@ -22,6 +22,8 @@ function seatchartJS(containerId, structureJson, typesJson) {
                 // find index of current
                 var index = types.indexOf(currentClass);
 
+                // if the current class matches a type
+                // then select the new one
                 if (index != -1) {
                     this.classList.remove(types[index]);
                     index++;
