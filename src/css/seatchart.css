@@ -1,0 +1,76 @@
+/* Seat map css */
+
+.seatChart-container {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    font-family: "RobotoDraft", "Roboto", sans-serif;
+}
+
+.seatChart-row {
+    height: 40px;
+}
+
+.seatChart-seat {
+    color: white;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 4px;
+    height: 30px;
+    width: 30px;
+    margin: 4px;
+    line-height: 30px;
+    float: left;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 15px;
+    font-family: "Lato", sans-serif;
+}
+
+.seatChart-front {
+    color: #787878;
+    border: 1px solid #dfdfdf;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+    height: 30px;
+    line-height: 30px;
+    margin: 4px 4px 4px 4px;
+    float: left;
+    text-align: center;
+    vertical-align: middle;
+    background-color: #f3f3f3;
+}
+
+.seatChart-seat.index {
+    background-color: transparent;
+    color: #4b4949;
+}
+
+.seatChart-seat.blank {
+    background-color: transparent;
+    color: transparent;
+}
+
+.seatChart-seat.available {
+    cursor: pointer;
+    background-color: #80c2d1;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0 , 0, 0, 0.24);
+}
+
+.seatChart-seat.available:hover {
+    background-color: #95dceb;
+    box-shadow: none;
+}
+
+.seatChart-seat.unavailable {
+    /* because border adds 2 px in width and height */
+    width: 28px;
+    height: 28px;
+    background-color: #c3c3c3;
+    border: 1px solid #9b9b9b;
+    cursor: not-allowed;
+}
