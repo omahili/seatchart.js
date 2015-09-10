@@ -8,20 +8,15 @@ function seatchartJS(containerId, structureJson, typesJson) {
     this.typesJson = typesJson;
     
     var seatClick = function () {
+        // switch seat type
         for (var i = 0; i < this.classList.length; i++) {
             var currentClass = this.classList[i];
-            var index;
             
             if(currentClass != "seatChart-seat"){
-                // find index to set new type since it was clicked
-                for(var j = 0; j < types.length; j++){
-                    if(currentClass == types[j]){
-                        index = j;
-                        break;
-                    }
-                }
+                // find index of current
+                var index = types.indexOf(currentClass);
 
-                if (index !== undefined) {
+                if (index != -1) {
                     this.classList.remove(types[index]);
                     index++;
 
@@ -31,6 +26,7 @@ function seatchartJS(containerId, structureJson, typesJson) {
                     this.classList.add(types[index]);
                     this.style.backgroundColor = "";
 
+                    // if the class isn't available then apply the background-color in the json
                     if (types[index] != "available") {
                         // decrease it because there's one less element 
                         // which is "available", that already exists
@@ -39,8 +35,11 @@ function seatchartJS(containerId, structureJson, typesJson) {
                             index = 0;
                         }
 
+                        this.classList.add("clicked");
                         this.style.backgroundColor = typesJson[index].color;
                     }
+                    else
+                        this.classList.remove("clicked");
                 }
             }
         }
