@@ -70,7 +70,7 @@
     /* because border adds 2 px in width and height */
     width: 28px;
     height: 28px;
-    background-color: #c3c3c3;
-    border: 1px solid #9b9b9b;
+    background-color: #cccccc;
+    border: 1px solid #b4b4b4;
     cursor: not-allowed;
 }
