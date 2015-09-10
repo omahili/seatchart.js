@@ -9,10 +9,16 @@ function seatchartJS(containerId, structureJson, typesJson) {
     
     var seatClick = function () {
         // switch seat type
-        for (var i = 0; i < this.classList.length; i++) {
-            var currentClass = this.classList[i];
+        
+        // clone array because it's modified by adding and removing classes
+        var currentClassList = [];
+        for(var j = 0; j < this.classList.length; j++)
+            currentClassList.push(this.classList[j]);
+        
+        for (var i = 0; i < currentClassList.length; i++) {
+            var currentClass = currentClassList[i];
             
-            if(currentClass != "seatChart-seat"){
+            if(currentClass != "seatChart-seat" && currentClass != "clicked"){
                 // find index of current
                 var index = types.indexOf(currentClass);
 
@@ -20,24 +26,26 @@ function seatchartJS(containerId, structureJson, typesJson) {
                     this.classList.remove(types[index]);
                     index++;
 
-                    if(index == types.length - 1)
+                    if (index == types.length) {
                         index = 0;
+                    }
 
-                    this.classList.add(types[index]);
                     this.style.backgroundColor = "";
+                    this.classList.add(types[index]);
 
                     // if the class isn't available then apply the background-color in the json
                     if (types[index] != "available") {
                         // decrease it because there's one less element 
                         // which is "available", that already exists
                         index--;
-                        if (index == typesJson.length - 1) {
-                            index = 0;
+                        if (index < 0) {
+                            index = typesJson.length - 1;
                         }
 
                         this.classList.add("clicked");
                         this.style.backgroundColor = typesJson[index].color;
                     }
+                    // otherwise remove the class 'clicked' since available has it's own style
                     else
                         this.classList.remove("clicked");
                 }
