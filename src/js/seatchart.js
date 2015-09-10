@@ -4,6 +4,10 @@ function seatchartJS(containerId, json) {
     this.containerId = containerId;
     this.json = json;
     
+    function seatClick() {
+        alert("clicked " + this.id);  
+    }
+    
     // creates a seat
     this.createSeat = function (type, content, seatId) {
         var seat = document.createElement("div");
@@ -12,8 +16,10 @@ function seatchartJS(containerId, json) {
         
         if (seatId !== undefined) {
             seat.setAttribute("id", seatId);
-        }
             
+            seat.addEventListener("click", seatClick);
+        }
+        
         return seat;
     };
     
