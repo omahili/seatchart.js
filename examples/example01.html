@@ -12,13 +12,24 @@
         
         <script type="text/javascript" src="../src/js/seatchart.js"></script>
         <script>
-            var json = {
+            var map = {
                 rows: 10,
                 cols: 7,
-                reserved: [100, 150, 120],
+                reserved: [100, 255, 120],
                 disabled: [200, 300]
             };
-            var sc = new seatchartJS( "container", json );
+            
+            var types = [{
+                type: "regular",
+                color: "blue",
+                price: 10
+            },{
+                type: "reduced",
+                color: "red",
+                price: 7.5      
+            }];
+            
+            var sc = new seatchartJS("container", map, types);
         </script>
     </body>
 </html>

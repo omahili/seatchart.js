@@ -1,11 +1,49 @@
-function seatchartJS(containerId, json) {
+function seatchartJS(containerId, structureJson, typesJson) {
     var alphabet = 'ABCDEFGHIJLMNOPQRSTUVWXYZ';
+    // this array contains all the types of seat
+    var types = [];
     
     this.containerId = containerId;
-    this.json = json;
+    this.structureJson = structureJson;
+    this.typesJson = typesJson;
     
-    function seatClick() {
-        alert("clicked " + this.id);  
+    var seatClick = function () {
+        for (var i = 0; i < this.classList.length; i++) {
+            var currentClass = this.classList[i];
+            var index;
+            
+            if(currentClass != "seatChart-seat"){
+                // find index to set new type since it was clicked
+                for(var j = 0; j < types.length; j++){
+                    if(currentClass == types[j]){
+                        index = j;
+                        break;
+                    }
+                }
+
+                if (index !== undefined) {
+                    this.classList.remove(types[index]);
+                    index++;
+
+                    if(index == types.length - 1)
+                        index = 0;
+
+                    this.classList.add(types[index]);
+                    this.style.backgroundColor = "";
+
+                    if (types[index] != "available") {
+                        // decrease it because there's one less element 
+                        // which is "available", that already exists
+                        index--;
+                        if (index == typesJson.length - 1) {
+                            index = 0;
+                        }
+
+                        this.style.backgroundColor = typesJson[index].color;
+                    }
+                }
+            }
+        }
     }
     
     // creates a seat
@@ -14,9 +52,11 @@ function seatchartJS(containerId, json) {
         seat.textContent = content;
         seat.className = "seatChart-seat " + type;
         
+        // if seat if wasn't passed as argument then don't set it
         if (seatId !== undefined) {
             seat.setAttribute("id", seatId);
             
+            // add click event just if it's a real seats (when it has and id)
             seat.addEventListener("click", seatClick);
         }
         
@@ -47,7 +87,7 @@ function seatchartJS(containerId, json) {
             margins = parseInt(cssSeat.marginLeft, 10) + parseInt(cssSeat.marginRight, 10);
         
         // set the perfect width of the front indicator
-        front.style.width = (parseInt(cssSeat.width, 10) + margins) * json.cols - margins;
+        front.style.width = (parseInt(cssSeat.width, 10) + margins) * this.structureJson.cols - margins;
         front.textContent = "Front";
         front.className = "seatChart-front";      
         header.appendChild(front);
@@ -59,7 +99,7 @@ function seatchartJS(containerId, json) {
     this.createColumnsIndex = function () {
         var columnsIndex = this.createRow();
         
-        for (var i = 1; i <= json.cols; i++)
+        for (var i = 1; i <= this.structureJson.cols; i++)
             columnsIndex.appendChild(this.createSeat("index", i)); 
         
         return columnsIndex;
@@ -73,6 +113,19 @@ function seatchartJS(containerId, json) {
         return container;
     }
     
+    this.update = function (){
+        // update types of seat
+        // because this.typesJson doens't work in seatClick function
+        typesJson = this.typesJson;
+        types = ["available"];
+        
+        for(var i = 0; i < this.typesJson.length; i++){
+            types.push(this.typesJson[i].type);
+        }
+    }
+    
+    this.update();
+    
     // create seat map container
     var seatMapContainer = this.createContainer();
     // add header to container
@@ -81,11 +134,11 @@ function seatchartJS(containerId, json) {
     seatMapContainer.appendChild(this.createColumnsIndex());
     
     // add rows containing seats
-    for (var i = 1; i <= json.rows; i++) {
+    for (var i = 1; i <= this.structureJson.rows; i++) {
         var rowIndex = alphabet[i-1];
         var row = this.createRow(rowIndex);
         
-        for(var j = 1; j <= json.cols; j++) {
+        for(var j = 1; j <= this.structureJson.cols; j++) {
             row.appendChild(this.createSeat("available", rowIndex + j, i + "_" + j));
         }
         
