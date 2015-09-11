@@ -1,18 +1,26 @@
-function seatchartJS(containerId, structureJson, typesJson) {
+// .NET equivalent of string.Format() method
+String.prototype.format = function () {
+    var args = arguments;
+    return this.replace(/{(\d+)}/g, function (match, number) {
+        return typeof args[number] !== undefined ? args[number] : match;
+    });
+};
+
+function seatchartJS(containerId, seatMap, seatTypes) {
     var alphabet = 'ABCDEFGHIJLMNOPQRSTUVWXYZ';
-    // this array contains all the types of seat
+    // this array contains all the seat types
     var types = [];
     
     this.containerId = containerId;
-    this.structureJson = structureJson;
-    this.typesJson = typesJson;
+    this.seatMapJson = seatMap;
+    this.seatTypesJson = seatTypes;
     
     var seatClick = function () {
         // switch seat type
         
         // clone array because it's modified by adding and removing classes
         var currentClassList = [];
-        for(var j = 0; j < this.classList.length; j++)
+        for (var j = 0; j < this.classList.length; j++)
             currentClassList.push(this.classList[j]);
         
         for (var i = 0; i < currentClassList.length; i++) {
@@ -96,7 +104,7 @@ function seatchartJS(containerId, structureJson, typesJson) {
             margins = parseInt(cssSeat.marginLeft, 10) + parseInt(cssSeat.marginRight, 10);
         
         // set the perfect width of the front indicator
-        front.style.width = (parseInt(cssSeat.width, 10) + margins) * this.structureJson.cols - margins;
+        front.style.width = (parseInt(cssSeat.width, 10) + margins) * seatMap.cols - margins;
         front.textContent = "Front";
         front.className = "seatChart-front";      
         header.appendChild(front);
@@ -108,7 +116,7 @@ function seatchartJS(containerId, structureJson, typesJson) {
     this.createColumnsIndex = function () {
         var columnsIndex = this.createRow();
         
-        for (var i = 1; i <= this.structureJson.cols; i++)
+        for (var i = 1; i <= seatMap.cols; i++)
             columnsIndex.appendChild(this.createSeat("index", i)); 
         
         return columnsIndex;
@@ -120,20 +128,47 @@ function seatchartJS(containerId, structureJson, typesJson) {
         container.className = "seatChart-container";
         
         return container;
-    }
+    };
     
-    this.update = function (){
+    var initializeSeatTypes = function () {
         // update types of seat
         // because this.typesJson doens't work in seatClick function
         typesJson = this.typesJson;
         types = ["available"];
         
-        for(var i = 0; i < this.typesJson.length; i++){
-            types.push(this.typesJson[i].type);
-        }
+        for(var i = 0; i < seatTypes.length; i++){
+            types.push(seatTypes[i].type);
+        }   
+    };
+    
+    // updates the seat map data
+    this.update = function () {
+        initializeSeatTypes();
+    };
+    
+    // removes all classes regarding the type applied to the seat
+    var removeAllTypesApplied = function (seat) {
+        for (var i = 0; i < types.length; i++)
+            seat.classList.remove(types[i]);
     }
     
-    this.update();
+    // set all reserved seats as unavailable
+    var setReservedSeat = function () {
+        var cols = seatMap.cols;
+        var reserved = seatMap.reserved;
+        
+        for(var i = 0; i < reserved.length; i++){
+            var reservedIndex = reserved[i];
+            var id = "{0}_{1}".format(Math.floor(reservedIndex/cols), reservedIndex%cols);
+            alert(id)
+            var reservedSeat = document.getElementById(id);
+            removeAllTypesApplied(reservedSeat);
+            reservedSeat.classList.add("unavailable");
+        }
+    };
+    
+    // create array of seat types
+    initializeSeatTypes();
     
     // create seat map container
     var seatMapContainer = this.createContainer();
@@ -143,12 +178,12 @@ function seatchartJS(containerId, structureJson, typesJson) {
     seatMapContainer.appendChild(this.createColumnsIndex());
     
     // add rows containing seats
-    for (var i = 1; i <= this.structureJson.rows; i++) {
-        var rowIndex = alphabet[i-1];
+    for (var i = 0; i < seatMap.rows; i++) {
+        var rowIndex = alphabet[i];
         var row = this.createRow(rowIndex);
         
-        for(var j = 1; j <= this.structureJson.cols; j++) {
-            row.appendChild(this.createSeat("available", rowIndex + j, i + "_" + j));
+        for(var j = 0; j < seatMap.cols; j++) {
+            row.appendChild(this.createSeat("available", rowIndex + (j + 1), i + "_" + j));
         }
         
         seatMapContainer.appendChild(row);
@@ -157,4 +192,6 @@ function seatchartJS(containerId, structureJson, typesJson) {
     // inject the seat map into the container given as input
     var container = document.getElementById(containerId);
     container.appendChild(seatMapContainer);
+    
+    setReservedSeat();
 }
