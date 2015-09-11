@@ -7,6 +7,8 @@
     -moz-user-select: none;
     -ms-user-select: none;
     font-family: "RobotoDraft", "Roboto", sans-serif;
+    margin: 5px;
+    padding: 5px;
 }
 
 .seatChart-row {

@@ -64,7 +64,7 @@ function seatchartJS(containerId, seatMap, seatTypes) {
     }
     
     // creates a seat
-    this.createSeat = function (type, content, seatId) {
+    var createSeat = function (type, content, seatId) {
         var seat = document.createElement("div");
         seat.textContent = content;
         seat.className = "seatChart-seat " + type;
@@ -81,14 +81,14 @@ function seatchartJS(containerId, seatMap, seatTypes) {
     };
     
     // creates a seat map row
-    this.createRow = function (rowIndex) {
+    var createRow = function (rowIndex) {
         var row = document.createElement("div");
         row.className = "seatChart-row";
         
         if (typeof rowIndex === undefined) {
-            row.appendChild(this.createSeat("blank", ""));
+            row.appendChild(createSeat("blank", ""));
         } else {
-            row.appendChild(this.createSeat("index", rowIndex));
+            row.appendChild(createSeat("index", rowIndex));
         }
         
         return row;
@@ -96,11 +96,11 @@ function seatchartJS(containerId, seatMap, seatTypes) {
     
     // creates the header of the seat map 
     // containing the front indicator
-    this.createFrontHeader = function () {
-        var header = this.createRow(),
+    var createFrontHeader = function () {
+        var header = createRow(),
             front = document.createElement("div"),
             // compute the seat style to get its width
-            cssSeat = window.getComputedStyle(this.createSeat("available", "A1")),
+            cssSeat = window.getComputedStyle(createSeat("available", "A1")),
             margins = parseInt(cssSeat.marginLeft, 10) + parseInt(cssSeat.marginRight, 10);
         
         // set the perfect width of the front indicator
@@ -113,17 +113,17 @@ function seatchartJS(containerId, seatMap, seatTypes) {
     };
     
     // creates a row containing the columns index
-    this.createColumnsIndex = function () {
-        var columnsIndex = this.createRow();
+    var createColumnsIndex = function () {
+        var columnsIndex = createRow();
         
         for (var i = 1; i <= seatMap.cols; i++)
-            columnsIndex.appendChild(this.createSeat("index", i)); 
+            columnsIndex.appendChild(createSeat("index", i)); 
         
         return columnsIndex;
     };
     
     // creates the container for the seat map and legend
-    this.createContainer = function () {
+    var createContainer = function () {
         var container = document.createElement("div");
         container.className = "seatChart-container";
         
@@ -185,19 +185,19 @@ function seatchartJS(containerId, seatMap, seatTypes) {
     initializeSeatTypes();
     
     // create seat map container
-    var seatMapContainer = this.createContainer();
+    var seatMapContainer = createContainer();
     // add header to container
-    seatMapContainer.appendChild(this.createFrontHeader());
+    seatMapContainer.appendChild(createFrontHeader());
     // add columns index to container
-    seatMapContainer.appendChild(this.createColumnsIndex());
+    seatMapContainer.appendChild(createColumnsIndex());
     
     // add rows containing seats
     for (var i = 0; i < seatMap.rows; i++) {
         var rowIndex = alphabet[i];
-        var row = this.createRow(rowIndex);
+        var row = createRow(rowIndex);
         
         for(var j = 0; j < seatMap.cols; j++) {
-            row.appendChild(this.createSeat("available", rowIndex + (j + 1), i + "_" + j));
+            row.appendChild(createSeat("available", rowIndex + (j + 1), i + "_" + j));
         }
         
         seatMapContainer.appendChild(row);
