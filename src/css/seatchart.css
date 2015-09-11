@@ -36,7 +36,8 @@
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     -ms-border-radius: 4px;
-    height: 30px;
+    /* 30px - 2px because of border */
+    height: 28px;
     line-height: 30px;
     margin: 4px;
     float: left;
