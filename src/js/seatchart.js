@@ -49,11 +49,11 @@ function seatchartJS(containerId, seatMap, seatTypes) {
                         // which is "available", that already exists
                         index--;
                         if (index < 0) {
-                            index = typesJson.length - 1;
+                            index = seatTypes.length - 1;
                         }
 
                         this.classList.add("clicked");
-                        this.style.backgroundColor = typesJson[index].color;
+                        this.style.backgroundColor = seatTypes[index].color;
                     }
                     // otherwise remove the class 'clicked' since available has it's own style
                     else
@@ -144,6 +144,7 @@ function seatchartJS(containerId, seatMap, seatTypes) {
     // updates the seat map data
     this.update = function () {
         initializeSeatTypes();
+        setReservedSeat();
     };
     
     // removes all classes regarding the type applied to the seat
@@ -160,10 +161,23 @@ function seatchartJS(containerId, seatMap, seatTypes) {
         for(var i = 0; i < reserved.length; i++){
             var reservedIndex = reserved[i];
             var id = "{0}_{1}".format(Math.floor(reservedIndex/cols), reservedIndex%cols);
-            alert(id)
             var reservedSeat = document.getElementById(id);
             removeAllTypesApplied(reservedSeat);
             reservedSeat.classList.add("unavailable");
+        }
+    };
+    
+    // set all disabled seats ad blank
+    var setDisabledSeat = function () {
+        var cols = seatMap.cols;
+        var disabled = seatMap.disabled;
+        
+        for(var i = 0; i < disabled.length; i++){
+            var disabledIndex = disabled[i];
+            var id = "{0}_{1}".format(Math.floor(disabledIndex/cols), disabledIndex%cols);
+            var disabledSeat = document.getElementById(id);
+            removeAllTypesApplied(disabledSeat);
+            disabledSeat.classList.add("blank");
         }
     };
     
@@ -194,4 +208,5 @@ function seatchartJS(containerId, seatMap, seatTypes) {
     container.appendChild(seatMapContainer);
     
     setReservedSeat();
+    setDisabledSeat();
 }

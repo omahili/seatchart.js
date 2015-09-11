@@ -1,6 +1,7 @@
 /* Seat map css */
 
 .seatChart-container {
+    cursor: default;
     user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -25,7 +26,6 @@
     float: left;
     text-align: center;
     vertical-align: middle;
-    font-size: 15px;
     font-family: "Lato", sans-serif;
 }
 
