@@ -19,6 +19,7 @@ function seatchartJS(seatMap, seatTypes) {
     var alphabet = 'ABCDEFGHIJLMNOPQRSTUVWXYZ';
     // this array contains all the seat types
     var types = [];
+    var shoppingCartTA, shoppingCartTotal;
     
     var seatClick = function () {
         // switch seat type
@@ -256,12 +257,20 @@ function seatchartJS(seatMap, seatTypes) {
         return smallTitle;
     };
     
-    var createTitle = function(content){
+    var createTitle = function (content){
         var title = document.createElement("h3");
         title.textContent = content;
         title.className = "seatChart-title";
         
         return title;
+    }
+    
+    var createShoppingCartTA = function () {
+        var textArea = document.createElement("textarea");
+        textArea.disabled = true;
+        textArea.className = "seatChart-shopping-cart";
+        
+        return textArea;
     }
     
     // creates the seat map legend
@@ -295,7 +304,18 @@ function seatchartJS(seatMap, seatTypes) {
     };
     
     // creates the shopping cart
-    this.createShoppingCart = function () {
+    this.createShoppingCart = function (containerId) {
+        var shoppingCartContainer = createContainer();
         
+        var shoppingCartTitle = createTitle("Shopping cart");
+        shoppingCartTA = createShoppingCartTA();
+        shoppingCartTotal = createSmallTitle("Total: 0€");
+        
+        shoppingCartContainer.appendChild(shoppingCartTitle);
+        shoppingCartContainer.appendChild(shoppingCartTA);
+        shoppingCartContainer.appendChild(shoppingCartTotal);
+        
+        var container = document.getElementById(containerId);
+        container.appendChild(shoppingCartContainer);
     };
 }

@@ -9,17 +9,13 @@
             <div id="mapContainer" style="float: left;">
                 
             </div>
+            
             <div id="legendContainer"  style="float: left;">
         
             </div>
-            <div id="shoppingListContainer"  style="float: left;">
-                <div class="seatChart-container">
-                    <h3 class="seatChart-title">Shopping cart</h3>
-                    <textarea class="seatChart-shopping-cart" disabled>
-
-                    </textarea>
-                    <h5 class="seatChart-small-title">Total: </h5>
-                </div>
+            
+            <div id="shoppingCartContainer"  style="float: left;">
+                
             </div>
         </div>
         
@@ -50,7 +46,7 @@
             var sc = new seatchartJS(map, types);
             sc.createMap("mapContainer");
             sc.createLegend("legendContainer");
-            sc.createShoppingList("shoppingListContainer");
+            sc.createShoppingCart("shoppingCartContainer");
         </script>
     </body>
 </html>
