@@ -255,10 +255,19 @@ function seatchartJS(seatMap, seatTypes) {
         return listTitle;
     };
     
+    var createLegendTitle = function(title){
+        var legendTitle = document.createElement("h2");
+        legendTitle.textContent = title;
+        
+        return legendTitle;
+    }
+    
     // creates the seat map legend
     this.createLegend = function (containerId) {
         // create legend container
         var seatLegendContainer = createContainer();
+        
+        var legendTitle = createLegendTitle("Legend");
         
         var seatsListTitle = createLegendListTitle("Seats:");
         var seatsList = createLegendList();
@@ -273,6 +282,7 @@ function seatchartJS(seatMap, seatTypes) {
             yourSeatsList.appendChild(item);
         }      
         
+        seatLegendContainer.appendChild(legendTitle);
         seatLegendContainer.appendChild(seatsListTitle);
         seatLegendContainer.appendChild(seatsList);
         seatLegendContainer.appendChild(yourSeatsListTitle);
