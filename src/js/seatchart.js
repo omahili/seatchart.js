@@ -229,6 +229,7 @@ function seatchartJS(seatMap, seatTypes) {
         description.textContent = content;
         
         if (color !== undefined) {
+            itemStyle.className = "{0} clicked".format(itemStyle.className);
             itemStyle.style.backgroundColor = color;
         }       
         
