@@ -1,20 +1,21 @@
-// .NET equivalent of string.Format() method
-String.prototype.format = function () {
-    var args = arguments;
-    return this.replace(/{(\d+)}/g, function (match, number) {
-        return typeof args[number] !== undefined ? args[number] : match;
-    });
-};
-
-String.prototype.capitalizeFirstLetter = function() {
-    var result = this.charAt(0).toUpperCase();
-    for (var i = 1; i < this.length; i++)
-        result += this.charAt(i).toLowerCase();
-    
-    return result;
-};
-
 function seatchartJS(seatMap, seatTypes) {
+    // .NET equivalent of string.Format() method
+    String.prototype.format = function () {
+        var args = arguments;
+        return this.replace(/{(\d+)}/g, function (match, number) {
+            return typeof args[number] !== undefined ? args[number] : match;
+        });
+    };
+
+    // capitalizes the first letter and lowers all the others
+    String.prototype.capitalizeFirstLetter = function () {
+        var result = this.charAt(0).toUpperCase();
+        for (var i = 1; i < this.length; i++)
+            result += this.charAt(i).toLowerCase();
+
+        return result;
+    };
+    
     var alphabet = 'ABCDEFGHIJLMNOPQRSTUVWXYZ';
     // this array contains all the seat types
     var types = [];
