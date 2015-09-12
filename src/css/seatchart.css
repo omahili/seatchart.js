@@ -128,3 +128,21 @@
     -ms-border-radius: 10px;
     pointer-events: none;
 }
+
+/*******************/
+/*Shopping cart css*/
+/*******************/
+
+.seatChart-shopping-cart-title {
+    margin: 0;
+    padding: 10px 0px 0px 0px;
+}
+
+.seatChart-shopping-cart {
+    margin: 15px 0px 0px 0px;
+    padding: 0;
+}
+
+.seatChart-shopping-cart-total {
+       
+}

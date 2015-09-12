@@ -257,7 +257,7 @@ function seatchartJS(seatMap, seatTypes) {
     };
     
     var createLegendTitle = function(title){
-        var legendTitle = document.createElement("h2");
+        var legendTitle = document.createElement("h3");
         legendTitle.textContent = title;
         legendTitle.className = "seatChart-legend-title";
         
