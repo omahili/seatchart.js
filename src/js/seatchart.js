@@ -248,20 +248,20 @@ function seatchartJS(seatMap, seatTypes) {
     };
     
     // creates a legend list title
-    var createLegendListTitle = function(title) {
-        var listTitle = document.createElement("h5");
-        listTitle.textContent = title;
-        listTitle.className = "seatChart-legend-list-title";
+    var createSmallTitle = function(content) {
+        var smallTitle = document.createElement("h5");
+        smallTitle.textContent = content;
+        smallTitle.className = "seatChart-small-title";
         
-        return listTitle;
+        return smallTitle;
     };
     
-    var createLegendTitle = function(title){
-        var legendTitle = document.createElement("h3");
-        legendTitle.textContent = title;
-        legendTitle.className = "seatChart-legend-title";
+    var createTitle = function(content){
+        var title = document.createElement("h3");
+        title.textContent = content;
+        title.className = "seatChart-title";
         
-        return legendTitle;
+        return title;
     }
     
     // creates the seat map legend
@@ -269,14 +269,14 @@ function seatchartJS(seatMap, seatTypes) {
         // create legend container
         var seatLegendContainer = createContainer();
         
-        var legendTitle = createLegendTitle("Legend");
+        var legendTitle = createTitle("Legend");
         
-        var seatsListTitle = createLegendListTitle("Seats:");
+        var seatsListTitle = createSmallTitle("Seats:");
         var seatsList = createLegendList();
         seatsList.appendChild(createLegendItem("Available", "available"));
         seatsList.appendChild(createLegendItem("Already booked", "unavailable"));
         
-        var yourSeatsListTitle = createLegendListTitle("Your seat(s):");
+        var yourSeatsListTitle = createSmallTitle("Your seat(s):");
         var yourSeatsList = createLegendList();
         for (var i = 0; i < seatTypes.length; i++) {
             var description = "{0} {1}€".format(seatTypes[i].type.capitalizeFirstLetter(), seatTypes[i].price);
@@ -292,5 +292,10 @@ function seatchartJS(seatMap, seatTypes) {
         
         var container = document.getElementById(containerId);
         container.appendChild(seatLegendContainer);
+    };
+    
+    // creates the shopping cart
+    this.createShoppingCart = function () {
+        
     };
 }

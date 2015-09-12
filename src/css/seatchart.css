@@ -13,6 +13,16 @@
     padding: 5px;
 }
 
+.seatChart-title {
+    margin: 0;
+    padding: 10px 0px 0px 0px;
+}
+
+.seatChart-small-title {
+    margin: 0;
+    padding: 15px 0px 0px 0px; 
+}
+
 .seatChart-row {
     height: 40px;
 }
@@ -89,16 +99,6 @@
 /* Seat legend css */
 /*******************/
 
-.seatChart-legend-title {
-    margin: 0;
-    padding: 10px 0px 0px 0px;
-}
-
-.seatChart-legend-list-title {
-    margin: 0;
-    padding: 15px 0px 0px 0px; 
-}
-
 .seatChart-legend-list {
     list-style-type: none;
     margin: 0;
@@ -133,16 +133,7 @@
 /*Shopping cart css*/
 /*******************/
 
-.seatChart-shopping-cart-title {
-    margin: 0;
-    padding: 10px 0px 0px 0px;
-}
-
 .seatChart-shopping-cart {
     margin: 15px 0px 0px 0px;
     padding: 0;
-}
-
-.seatChart-shopping-cart-total {
-       
 }
