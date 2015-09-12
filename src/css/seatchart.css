@@ -90,19 +90,24 @@
 /*******************/
 
 .seatChart-legend-title {
-    margin-top: 0;
-    margin-bottom: 10px;
+    margin: 0;
+    padding: 10px 0px 0px 0px;
+}
+
+.seatChart-legend-list-title {
+    margin: 0;
+    padding: 15px 0px 0px 0px; 
 }
 
 .seatChart-legend-list {
     list-style-type: none;
-    margin-top: 20px;
-    padding-left: 0;
+    margin: 0;
+    padding: 0px 0px 15px 0px;
 }
 
 .seatChart-legend-item {
-    margin-bottom: 10px;
-    margin-top: 10px;
+    margin: 0;
+    padding: 10px 0px 0px 0px;
     vertical-align: middle;
 }
 
