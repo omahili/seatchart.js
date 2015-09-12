@@ -20,10 +20,42 @@ function seatchartJS(seatMap, seatTypes) {
     // this array contains all the seat types
     var types = [];
     var shoppingCartTA, shoppingCartTotal;
+    // this dictionary will contain all the seats added 
+    // to the shopping cart organized per type
+    var shoppingCartDict = [];
     
-    var seatClick = function () {
-        // switch seat type
-        
+    var getPrice = function (type) {
+        for (var i = 0; i < seatTypes.length; i++) {
+            if(seatTypes[i].type == type) {
+                return seatTypes[i].price;
+            }
+        }   
+    }
+    
+    var updateShoppingCart = function (action, id, type) {
+        if (shoppingCartTA !== undefined) {
+            var seatName = document.getElementById(id).textContent;
+            var text = "[+] {0} - {1} {2}€\n".format(seatName, type.capitalizeFirstLetter(), getPrice(type));
+            if (action == "remove") {
+                shoppingCartTA.value = shoppingCartTA.value.replace(text, "");
+            }
+            else if (action == "add") {
+                shoppingCartTA.value += text;
+            }
+        }
+    };
+    
+    var updateTotal = function () {
+        if (shoppingCartTotal !== undefined) {
+            var total = 0;
+            for (var key in shoppingCartDict) {           
+                total += getPrice(key) * shoppingCartDict[key].length;   
+            }
+            shoppingCartTotal.textContent = "Total: {0}€".format(total);
+        }
+    };
+    
+    var seatClick = function () {        
         // clone array because it's modified by adding and removing classes
         var currentClassList = [];
         for (var j = 0; j < this.classList.length; j++)
@@ -31,8 +63,21 @@ function seatchartJS(seatMap, seatTypes) {
         
         for (var i = 0; i < currentClassList.length; i++) {
             var currentClass = currentClassList[i];
+            var newClass;
             
-            if(currentClass != "seatChart-seat" && currentClass != "clicked"){
+            if (currentClass != "seatChart-seat" && currentClass != "clicked") {
+                // if the seat selected was added to the shopping cart then remove it
+                if (currentClass in shoppingCartDict) {
+                    if (shoppingCartDict.hasOwnProperty(currentClass)) {
+                        var index = shoppingCartDict[currentClass].indexOf(this.id);
+                        if (index > -1){
+                            shoppingCartDict[currentClass].splice(index, 1);   
+                            
+                            updateShoppingCart("remove", this.id, currentClass);
+                        }
+                    }
+                }
+                
                 // find index of current
                 var index = types.indexOf(currentClass);
 
@@ -45,13 +90,15 @@ function seatchartJS(seatMap, seatTypes) {
                     if (index == types.length) {
                         index = 0;
                     }
+                    
+                    newClass = types[index];
 
                     this.style.backgroundColor = "";
-                    this.classList.add(types[index]);
+                    this.classList.add(newClass);
 
                     // if the class isn't available then apply the background-color in the json
-                    if (types[index] != "available") {
-                        // decrease it because there's one less element 
+                    if (newClass != "available") {
+                        // decrease it because there's one less element in seatTypes
                         // which is "available", that already exists
                         index--;
                         if (index < 0) {
@@ -65,6 +112,17 @@ function seatchartJS(seatMap, seatTypes) {
                     else
                         this.classList.remove("clicked");
                 }
+                
+                // if the seat selected is 'bookable' then add it to the shopping cart
+                if (newClass in shoppingCartDict) {
+                    if (shoppingCartDict.hasOwnProperty(newClass)) {
+                        shoppingCartDict[newClass].push(this.id);
+                        
+                        updateShoppingCart("add", this.id, newClass);
+                    }
+                }
+                
+                updateTotal();
             }
         }
     }
@@ -141,16 +199,12 @@ function seatchartJS(seatMap, seatTypes) {
         // because this.typesJson doens't work in seatClick function
         typesJson = this.typesJson;
         types = ["available"];
+        shoppingCartDict = [];
         
         for (var i = 0; i < seatTypes.length; i++){
             types.push(seatTypes[i].type);
+            shoppingCartDict[seatTypes[i].type] = [];
         }   
-    };
-    
-    // updates the seat map data
-    this.update = function () {
-        initializeSeatTypes();
-        setReservedSeat();
     };
     
     // removes all classes regarding the type applied to the seat
