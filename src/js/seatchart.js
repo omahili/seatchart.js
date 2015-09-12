@@ -7,7 +7,11 @@ String.prototype.format = function () {
 };
 
 String.prototype.capitalizeFirstLetter = function() {
-    return this.charAt(0).toUpperCase() + this.slice(1);
+    var result = this.charAt(0).toUpperCase();
+    for (var i = 1; i < this.length; i++)
+        result += this.charAt(i).toLowerCase();
+    
+    return result;
 };
 
 function seatchartJS(seatMap, seatTypes) {
