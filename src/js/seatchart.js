@@ -6,6 +6,10 @@ String.prototype.format = function () {
     });
 };
 
+String.prototype.capitalizeFirstLetter = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+};
+
 function seatchartJS(seatMap, seatTypes) {
     var alphabet = 'ABCDEFGHIJLMNOPQRSTUVWXYZ';
     // this array contains all the seat types
@@ -132,7 +136,7 @@ function seatchartJS(seatMap, seatTypes) {
         typesJson = this.typesJson;
         types = ["available"];
         
-        for(var i = 0; i < seatTypes.length; i++){
+        for (var i = 0; i < seatTypes.length; i++){
             types.push(seatTypes[i].type);
         }   
     };
@@ -177,7 +181,7 @@ function seatchartJS(seatMap, seatTypes) {
         }
     };
     
-    
+    // creates the seat map
     this.createMap = function (containerId) {
         // create array of seat types
         initializeSeatTypes();
@@ -209,7 +213,66 @@ function seatchartJS(seatMap, seatTypes) {
         setDisabledSeat();   
     };
     
-    this.createLegend = function () {
+    // creates a legend item applying a type and a color if needed
+    var createLegendItem = function (content, type, color) {
+        var item = document.createElement("li");
+        item.className = "seatChart-legend-item";
+        var itemStyle = document.createElement("div");
+        itemStyle.className = "seatChart-seat legend-style {0}".format(type);
+        var description = document.createElement("p");
+        description.className = "seatChart-legend-description";
+        description.textContent = content;
         
+        if (color !== undefined) {
+            itemStyle.style.backgroundColor = color;
+        }       
+        
+        item.appendChild(itemStyle);
+        item.appendChild(description);
+        
+        return item;
+    };
+    
+    // creates a legend list
+    var createLegendList = function () {
+        var list = document.createElement("ul");
+        list.className = "seatChart-legend-list";
+        
+        return list;
+    };
+    
+    // creates a legend list title
+    var createLegendListTitle = function(title) {
+        var listTitle = document.createElement("h5");
+        listTitle.textContent = title;
+        
+        return listTitle;
+    };
+    
+    // creates the seat map legend
+    this.createLegend = function (containerId) {
+        // create legend container
+        var seatLegendContainer = createContainer();
+        
+        var seatsListTitle = createLegendListTitle("Seats:");
+        var seatsList = createLegendList();
+        seatsList.appendChild(createLegendItem("Available", "available"));
+        seatsList.appendChild(createLegendItem("Already booked", "unavailable"));
+        
+        var yourSeatsListTitle = createLegendListTitle("Your seat(s):");
+        var yourSeatsList = createLegendList();
+        for (var i = 0; i < seatTypes.length; i++) {
+            var description = "{0} {1}€".format(seatTypes[i].type.capitalizeFirstLetter(), seatTypes[i].price);
+            var item = createLegendItem(description, "", seatTypes[i].color);
+            yourSeatsList.appendChild(item);
+        }      
+        
+        seatLegendContainer.appendChild(seatsListTitle);
+        seatLegendContainer.appendChild(seatsList);
+        seatLegendContainer.appendChild(yourSeatsListTitle);
+        seatLegendContainer.appendChild(yourSeatsList);
+        
+        var container = document.getElementById(containerId);
+        container.appendChild(seatLegendContainer);
     };
 }
