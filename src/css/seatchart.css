@@ -1,4 +1,6 @@
+/****************/
 /* Seat map css */
+/****************/
 
 .seatChart-container {
     cursor: default;
@@ -81,4 +83,43 @@
 .seatChart-seat.clicked {
     cursor: pointer;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0 , 0, 0, 0.12);
+}
+
+/*******************/
+/* Seat legend css */
+/*******************/
+
+.seatChart-legend-title {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.seatChart-legend-list {
+    list-style-type: none;
+    margin-top: 20px;
+    padding-left: 0;
+}
+
+.seatChart-legend-item {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    vertical-align: middle;
+}
+
+.seatChart-legend-description {
+    display: inline-block;
+    margin: 0px 0px 0px 10px;
+}
+
+.seatChart-seat.legend-style {
+    cursor: default;
+    float: left;
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    pointer-events: none;
 }

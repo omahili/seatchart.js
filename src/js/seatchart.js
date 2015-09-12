@@ -6,14 +6,10 @@ String.prototype.format = function () {
     });
 };
 
-function seatchartJS(containerId, seatMap, seatTypes) {
+function seatchartJS(seatMap, seatTypes) {
     var alphabet = 'ABCDEFGHIJLMNOPQRSTUVWXYZ';
     // this array contains all the seat types
     var types = [];
-    
-    this.containerId = containerId;
-    this.seatMapJson = seatMap;
-    this.seatTypesJson = seatTypes;
     
     var seatClick = function () {
         // switch seat type
@@ -181,32 +177,39 @@ function seatchartJS(containerId, seatMap, seatTypes) {
         }
     };
     
-    // create array of seat types
-    initializeSeatTypes();
     
-    // create seat map container
-    var seatMapContainer = createContainer();
-    // add header to container
-    seatMapContainer.appendChild(createFrontHeader());
-    // add columns index to container
-    seatMapContainer.appendChild(createColumnsIndex());
-    
-    // add rows containing seats
-    for (var i = 0; i < seatMap.rows; i++) {
-        var rowIndex = alphabet[i];
-        var row = createRow(rowIndex);
-        
-        for(var j = 0; j < seatMap.cols; j++) {
-            row.appendChild(createSeat("available", rowIndex + (j + 1), i + "_" + j));
+    this.createMap = function (containerId) {
+        // create array of seat types
+        initializeSeatTypes();
+
+        // create seat map container
+        var seatMapContainer = createContainer();
+        // add header to container
+        seatMapContainer.appendChild(createFrontHeader());
+        // add columns index to container
+        seatMapContainer.appendChild(createColumnsIndex());
+
+        // add rows containing seats
+        for (var i = 0; i < seatMap.rows; i++) {
+            var rowIndex = alphabet[i];
+            var row = createRow(rowIndex);
+
+            for(var j = 0; j < seatMap.cols; j++) {
+                row.appendChild(createSeat("available", rowIndex + (j + 1), i + "_" + j));
+            }
+
+            seatMapContainer.appendChild(row);
         }
+
+        // inject the seat map into the container given as input
+        var container = document.getElementById(containerId);
+        container.appendChild(seatMapContainer);
+
+        setReservedSeat();
+        setDisabledSeat();   
+    };
+    
+    this.createLegend = function () {
         
-        seatMapContainer.appendChild(row);
-    }
-    
-    // inject the seat map into the container given as input
-    var container = document.getElementById(containerId);
-    container.appendChild(seatMapContainer);
-    
-    setReservedSeat();
-    setDisabledSeat();
+    };
 }

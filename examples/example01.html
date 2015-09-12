@@ -6,34 +6,35 @@
     </head>
     <body>
         <div>
-            <div id="container">
+            <div id="mapContainer" style="float: left;">
                 
-                
-                <div class="seatChart-container">
+            </div>
+            <div id="legendContainer">
+                <div class="seatChart-container" style="float: left;">
                     <h4 class="seatChart-legend-title">Legend</h4>
                     <h5>Seats:</h5>
                     <ul class="seatChart-legend-list">
                         <li class="seatChart-legend-item">
-                            <div class="seatChart-seat available legend"></div>
+                            <div class="seatChart-seat available legend-style"></div>
                             <p class="seatChart-legend-description">Available</p>
                         </li>
                         <li class="seatChart-legend-item">
-                            <div class="seatChart-seat unavailable legend"></div>
+                            <div class="seatChart-seat unavailable legend-style"></div>
                             <p class="seatChart-legend-description">Already booked</p>
                         </li>
                     </ul>
                     <h5>Your seat(s):</h5>
                     <ul class="seatChart-legend-list">
                         <li class="seatChart-legend-item">
-                            <div class="seatChart-seat legend" style="background-color: blue"></div>
+                            <div class="seatChart-seat legend-style" style="background-color: blue"></div>
                             <p class="seatChart-legend-description">Regular</p>
                         </li>
                         <li class="seatChart-legend-item">
-                            <div class="seatChart-seat legend" style="background-color: red"></div>
+                            <div class="seatChart-seat legend-style" style="background-color: red"></div>
                             <p class="seatChart-legend-description">Reduced</p>
                         </li>
                         <li class="seatChart-legend-item">
-                            <div class="seatChart-seat legend" style="background-color: orange"></div>
+                            <div class="seatChart-seat legend-style" style="background-color: orange"></div>
                             <p class="seatChart-legend-description">Military</p>
                         </li>
                     </ul>
@@ -65,7 +66,9 @@
                 }
             ];
             
-            var sc = new seatchartJS("container", map, types);
+            var sc = new seatchartJS(map, types);
+            sc.createMap("mapContainer");
+            sc.createLegend("legendContainer");
         </script>
     </body>
 </html>
