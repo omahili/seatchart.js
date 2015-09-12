@@ -90,7 +90,7 @@ function seatchartJS(seatMap, seatTypes) {
         var row = document.createElement("div");
         row.className = "seatChart-row";
         
-        if (typeof rowIndex === undefined) {
+        if (rowIndex === undefined) {
             row.appendChild(createSeat("blank", ""));
         } else {
             row.appendChild(createSeat("index", rowIndex));
