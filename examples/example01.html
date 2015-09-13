@@ -47,6 +47,14 @@
             sc.createMap("mapContainer");
             sc.createLegend("legendContainer");
             sc.createShoppingCart("shoppingCartContainer");
+            
+            sc.onRemovedSeat = function (seatName, type, price) {
+                //alert("removed " + seatName + " " + type + " " + price);
+            };
+            
+            sc.onAddedSeat = function (seatName, type, price) {
+                //alert("added " + seatName + " " + type + " " + price);
+            };
         </script>
     </body>
 </html>

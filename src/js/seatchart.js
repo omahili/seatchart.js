@@ -26,14 +26,27 @@ function seatchartJS(seatMap, seatTypes) {
     var shoppingCartDict = [];
     
     var updateShoppingCart = function (action, id, type) {
-        if (shoppingCartTA !== undefined) {
-            var seatName = document.getElementById(id).textContent;
-            var text = "[+] {0} - {1} {2}€\n".format(seatName, type.capitalizeFirstLetter(), self.getPrice(type));
-            if (action == "remove") {
+        var seatName = document.getElementById(id).textContent;
+        var capitalizedType = type.capitalizeFirstLetter();
+        var price = self.getPrice(type);
+        
+        var text = "[+] {0} - {1} {2}€\n".format(seatName, capitalizedType, price);
+        if (action == "remove") {
+            if (shoppingCartTA !== undefined) {
                 shoppingCartTA.value = shoppingCartTA.value.replace(text, "");
             }
-            else if (action == "add") {
+            
+            if (self.onRemovedSeat != null) {
+                self.onRemovedSeat(seatName, capitalizedType, price);
+            }
+        }
+        else if (action == "add") {
+            if (shoppingCartTA !== undefined) {
                 shoppingCartTA.value += text;
+            }
+            
+            if (self.onAddedSeat != null) {
+                self.onAddedSeat(seatName, capitalizedType, price);
             }
         }
     };
@@ -247,6 +260,11 @@ function seatchartJS(seatMap, seatTypes) {
         }
         return total;
     }
+    
+    // an event which is triggered when a seat is added to the shopping cart
+    this.onAddedSeat = null;
+    // an event which is triggered when a seat is removed from the shopping cart
+    this.onRemovedSeat = null;
     
     // creates the seat map
     this.createMap = function (containerId) {
