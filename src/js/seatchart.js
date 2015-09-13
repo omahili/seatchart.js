@@ -16,6 +16,7 @@ function seatchartJS(seatMap, seatTypes) {
         return result;
     };
     
+    var self = this;
     var alphabet = 'ABCDEFGHIJLMNOPQRSTUVWXYZ';
     // this array contains all the seat types
     var types = [];
@@ -24,18 +25,10 @@ function seatchartJS(seatMap, seatTypes) {
     // to the shopping cart organized per type
     var shoppingCartDict = [];
     
-    var getPrice = function (type) {
-        for (var i = 0; i < seatTypes.length; i++) {
-            if(seatTypes[i].type == type) {
-                return seatTypes[i].price;
-            }
-        }   
-    }
-    
     var updateShoppingCart = function (action, id, type) {
         if (shoppingCartTA !== undefined) {
             var seatName = document.getElementById(id).textContent;
-            var text = "[+] {0} - {1} {2}€\n".format(seatName, type.capitalizeFirstLetter(), getPrice(type));
+            var text = "[+] {0} - {1} {2}€\n".format(seatName, type.capitalizeFirstLetter(), self.getPrice(type));
             if (action == "remove") {
                 shoppingCartTA.value = shoppingCartTA.value.replace(text, "");
             }
@@ -47,11 +40,7 @@ function seatchartJS(seatMap, seatTypes) {
     
     var updateTotal = function () {
         if (shoppingCartTotal !== undefined) {
-            var total = 0;
-            for (var key in shoppingCartDict) {           
-                total += getPrice(key) * shoppingCartDict[key].length;   
-            }
-            shoppingCartTotal.textContent = "Total: {0}€".format(total);
+            shoppingCartTotal.textContent = "Total: {0}€".format(self.getTotal());
         }
     };
     
@@ -240,6 +229,24 @@ function seatchartJS(seatMap, seatTypes) {
             disabledSeat.classList.add("blank");
         }
     };
+    
+    // returns the price for a specific seat
+    this.getPrice = function (type) {
+        for (var i = 0; i < seatTypes.length; i++) {
+            if (seatTypes[i].type == type) {
+                return seatTypes[i].price;
+            }
+        }       
+    };
+    
+    // returns the total price of the selected seats
+    this.getTotal = function () {
+        var total = 0;
+        for (var key in shoppingCartDict) {           
+            total += self.getPrice(key) * shoppingCartDict[key].length;   
+        }
+        return total;
+    }
     
     // creates the seat map
     this.createMap = function (containerId) {
