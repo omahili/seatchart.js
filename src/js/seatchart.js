@@ -16,6 +16,9 @@ function seatchartJS(seatMap, seatTypes) {
         return result;
     };
     
+    // the currency used
+    this.currency = "€";
+    
     var self = this;
     var alphabet = 'ABCDEFGHIJLMNOPQRSTUVWXYZ';
     // this array contains all the seat types
@@ -30,7 +33,7 @@ function seatchartJS(seatMap, seatTypes) {
         var capitalizedType = type.capitalizeFirstLetter();
         var price = self.getPrice(type);
         
-        var text = "[+] {0} - {1} {2}€\n".format(seatName, capitalizedType, price);
+        var text = "[+] {0} - {1} {2}{3}\n".format(seatName, capitalizedType, price, self.currency);
         if (action == "remove") {
             if (shoppingCartTA !== undefined) {
                 shoppingCartTA.value = shoppingCartTA.value.replace(text, "");
@@ -53,7 +56,7 @@ function seatchartJS(seatMap, seatTypes) {
     
     var updateTotal = function () {
         if (shoppingCartTotal !== undefined) {
-            shoppingCartTotal.textContent = "Total: {0}€".format(self.getTotal());
+            shoppingCartTotal.textContent = "Total: {0}{1}".format(self.getTotal(), self.currency);
         }
     };
     
@@ -261,6 +264,8 @@ function seatchartJS(seatMap, seatTypes) {
         return total;
     }
     
+    // these events work even when a shopping cart isn't created, 
+    // because the virtual one work independently
     // an event which is triggered when a seat is added to the shopping cart
     this.onAddedSeat = null;
     // an event which is triggered when a seat is removed from the shopping cart
@@ -367,7 +372,7 @@ function seatchartJS(seatMap, seatTypes) {
         var yourSeatsListTitle = createSmallTitle("Your seat(s):");
         var yourSeatsList = createLegendList();
         for (var i = 0; i < seatTypes.length; i++) {
-            var description = "{0} {1}€".format(seatTypes[i].type.capitalizeFirstLetter(), seatTypes[i].price);
+            var description = "{0} {1}{2}".format(seatTypes[i].type.capitalizeFirstLetter(), seatTypes[i].price, self.currency);
             var item = createLegendItem(description, "", seatTypes[i].color);
             yourSeatsList.appendChild(item);
         }      
@@ -388,7 +393,7 @@ function seatchartJS(seatMap, seatTypes) {
         
         var shoppingCartTitle = createTitle("Shopping cart");
         shoppingCartTA = createShoppingCartTA();
-        shoppingCartTotal = createSmallTitle("Total: 0€");
+        shoppingCartTotal = createSmallTitle("Total: 0{0}".format(self.currency));
         
         shoppingCartContainer.appendChild(shoppingCartTitle);
         shoppingCartContainer.appendChild(shoppingCartTA);
