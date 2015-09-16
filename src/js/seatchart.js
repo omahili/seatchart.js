@@ -19,14 +19,24 @@ function seatchartJS(seatMap, seatTypes) {
     
     // the currency used
     this.currency = "€";
+    // the src where assets
+    this.assetsSrc = "assets";
     
     var self = this;
     var alphabet = 'ABCDEFGHIJLMNOPQRSTUVWXYZ';
     // this array contains all the seat types
     var types = [];
     var shoppingCartTA, shoppingCartTotal;
-    // this dictionary will contain all the seats added to the shopping cart organized per type
+    // this dictionary contains all the seats added to the shopping cart organized per type
     var shoppingCartDict = [];
+    
+    // plays asyncrounously a click sound
+    var playAsyncClick = function () {
+        var clickSound = new Audio("{0}/seat_click.wav".format(self.assetsSrc));
+        clickSound.volume = 0.2; 
+        clickSound.load();
+        clickSound.play();
+    };
     
     var updateShoppingCart = function (action, id, type) {
         var seatName = document.getElementById(id).textContent;
@@ -75,7 +85,7 @@ function seatchartJS(seatMap, seatTypes) {
         }
     };
     
-    var seatClick = function () {        
+    var seatClick = function () {
         // clone array because it's modified by adding and removing classes
         var currentClassList = [];
         for (var j = 0; j < this.classList.length; j++)
@@ -85,7 +95,7 @@ function seatchartJS(seatMap, seatTypes) {
             var currentClass = currentClassList[i];
             var newClass;
             
-            if (currentClass != "seatChart-seat" && currentClass != "clicked") {
+            if (currentClass != "seatChart-seat" && currentClass != "clicked") {                
                 // if the seat selected was added to the shopping cart then remove it
                 if (currentClass in shoppingCartDict) {
                     if (shoppingCartDict.hasOwnProperty(currentClass)) {
@@ -104,6 +114,9 @@ function seatchartJS(seatMap, seatTypes) {
                 // if the current class matches a type
                 // then select the new one
                 if (index != -1) {
+                    // a 'selectable' seat is clicked then play the click sound
+                    playAsyncClick();
+                    
                     this.classList.remove(types[index]);
                     index++;
 
@@ -412,7 +425,7 @@ function seatchartJS(seatMap, seatTypes) {
     this.createShoppingCart = function (containerId) {
         var shoppingCartContainer = createContainer();
         
-        var shoppingCartTitle = createIconedTitle("Shopping cart", "http://cdn.flaticon.com/svg/2/2772.svg");      
+        var shoppingCartTitle = createIconedTitle("Shopping cart", "{0}/sc_icon.svg".format(self.assetsSrc));      
         shoppingCartTA = createShoppingCartTA();
         shoppingCartTotal = createSmallTitle("Total: 0{0}".format(self.currency));
         
