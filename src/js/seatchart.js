@@ -10,8 +10,9 @@ function seatchartJS(seatMap, seatTypes) {
     // capitalizes the first letter and lowers all the others
     String.prototype.capitalizeFirstLetter = function () {
         var result = this.charAt(0).toUpperCase();
-        for (var i = 1; i < this.length; i++)
+        for (var i = 1; i < this.length; i++) {
             result += this.charAt(i).toLowerCase();
+        }
 
         return result;
     };
