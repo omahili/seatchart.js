@@ -54,6 +54,21 @@ function seatchartJS(seatMap, seatTypes) {
         }
     };
     
+    var createIconedTitle = function (content, src){
+        var container = document.createElement("div");
+        var icon = document.createElement("img");
+        icon.src = src;
+        
+        var title = createTitle(content);        
+        container.className = title.className;
+        title.className = "";
+        
+        container.appendChild(icon);
+        container.appendChild(title);
+        
+        return container;   
+    };
+    
     var updateTotal = function () {
         if (shoppingCartTotal !== undefined) {
             shoppingCartTotal.textContent = "Total: {0}{1}".format(self.getTotal(), self.currency);
@@ -130,7 +145,7 @@ function seatchartJS(seatMap, seatTypes) {
                 updateTotal();
             }
         }
-    }
+    };
     
     // creates a seat
     var createSeat = function (type, content, seatId) {
@@ -220,7 +235,7 @@ function seatchartJS(seatMap, seatTypes) {
         for (var i = 0; i < types.length; i++) {
             seat.classList.remove(types[i]);
         }
-    }
+    };
     
     // sets all reserved seats as unavailable
     var setReservedSeat = function () {
@@ -346,13 +361,13 @@ function seatchartJS(seatMap, seatTypes) {
     };
     
     // creates a large title
-    var createTitle = function (content){
+    var createTitle = function (content) {
         var title = document.createElement("h3");
         title.textContent = content;
         title.className = "seatChart-title";
         
         return title;
-    }
+    };
     
     // creates a shopping cart textarea
     var createShoppingCartTA = function () {
@@ -361,7 +376,7 @@ function seatchartJS(seatMap, seatTypes) {
         textArea.className = "seatChart-shopping-cart";
         
         return textArea;
-    }
+    };
     
     // creates a seat map legend
     this.createLegend = function (containerId) {
@@ -397,7 +412,7 @@ function seatchartJS(seatMap, seatTypes) {
     this.createShoppingCart = function (containerId) {
         var shoppingCartContainer = createContainer();
         
-        var shoppingCartTitle = createTitle("Shopping cart");
+        var shoppingCartTitle = createIconedTitle("Shopping cart", "http://cdn.flaticon.com/svg/2/2772.svg");      
         shoppingCartTA = createShoppingCartTA();
         shoppingCartTotal = createSmallTitle("Total: 0{0}".format(self.currency));
         
