@@ -82,7 +82,7 @@
 }
 
 .seatChart-seat.unavailable {
-    /* because border adds 2 px in width and height */
+    /* 28px instead of 30px because border adds 2 px in width and height */
     width: 28px;
     height: 28px;
     background-color: #cccccc;

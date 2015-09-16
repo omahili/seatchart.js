@@ -24,8 +24,7 @@ function seatchartJS(seatMap, seatTypes) {
     // this array contains all the seat types
     var types = [];
     var shoppingCartTA, shoppingCartTotal;
-    // this dictionary will contain all the seats added 
-    // to the shopping cart organized per type
+    // this dictionary will contain all the seats added to the shopping cart organized per type
     var shoppingCartDict = [];
     
     var updateShoppingCart = function (action, id, type) {
@@ -199,6 +198,9 @@ function seatchartJS(seatMap, seatTypes) {
         return container;
     };
     
+    // initializes the type of seats that can be clicked and
+    // the types of seat that can be added to the shopping cart
+    // by using the json, containing the types, given in input
     var initializeSeatTypes = function () {
         // update types of seat
         // because this.typesJson doens't work in seatClick function
@@ -214,16 +216,17 @@ function seatchartJS(seatMap, seatTypes) {
     
     // removes all classes regarding the type applied to the seat
     var removeAllTypesApplied = function (seat) {
-        for (var i = 0; i < types.length; i++)
+        for (var i = 0; i < types.length; i++) {
             seat.classList.remove(types[i]);
+        }
     }
     
-    // set all reserved seats as unavailable
+    // sets all reserved seats as unavailable
     var setReservedSeat = function () {
         var cols = seatMap.cols;
         var reserved = seatMap.reserved;
         
-        for(var i = 0; i < reserved.length; i++){
+        for (var i = 0; i < reserved.length; i++) {
             var reservedIndex = reserved[i];
             var id = "{0}_{1}".format(Math.floor(reservedIndex/cols), reservedIndex%cols);
             var reservedSeat = document.getElementById(id);
@@ -232,12 +235,12 @@ function seatchartJS(seatMap, seatTypes) {
         }
     };
     
-    // set all disabled seats ad blank
+    // sets all disabled seats as blank
     var setDisabledSeat = function () {
         var cols = seatMap.cols;
         var disabled = seatMap.disabled;
         
-        for(var i = 0; i < disabled.length; i++){
+        for (var i = 0; i < disabled.length; i++) {
             var disabledIndex = disabled[i];
             var id = "{0}_{1}".format(Math.floor(disabledIndex/cols), disabledIndex%cols);
             var disabledSeat = document.getElementById(id);
@@ -332,7 +335,7 @@ function seatchartJS(seatMap, seatTypes) {
         return list;
     };
     
-    // creates a legend list title
+    // creates a small title
     var createSmallTitle = function(content) {
         var smallTitle = document.createElement("h5");
         smallTitle.textContent = content;
@@ -341,6 +344,7 @@ function seatchartJS(seatMap, seatTypes) {
         return smallTitle;
     };
     
+    // creates a large title
     var createTitle = function (content){
         var title = document.createElement("h3");
         title.textContent = content;
@@ -349,6 +353,7 @@ function seatchartJS(seatMap, seatTypes) {
         return title;
     }
     
+    // creates a shopping cart textarea
     var createShoppingCartTA = function () {
         var textArea = document.createElement("textarea");
         textArea.disabled = true;
@@ -357,7 +362,7 @@ function seatchartJS(seatMap, seatTypes) {
         return textArea;
     }
     
-    // creates the seat map legend
+    // creates a seat map legend
     this.createLegend = function (containerId) {
         // create legend container
         var seatLegendContainer = createContainer();
@@ -387,7 +392,7 @@ function seatchartJS(seatMap, seatTypes) {
         container.appendChild(seatLegendContainer);
     };
     
-    // creates the shopping cart
+    // creates a shopping cart
     this.createShoppingCart = function (containerId) {
         var shoppingCartContainer = createContainer();
         
