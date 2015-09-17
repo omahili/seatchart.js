@@ -20,8 +20,9 @@
 
 .seatChart-title img {
     float: left;
-    width: 20px;
-    height: auto;
+    /* ie and edge require height to be set and width to be auto set, not the opposite*/
+    height: 20px;
+    width: auto;
     margin: 0;
     padding: 0;
 }
@@ -89,8 +90,9 @@
 
 .seatChart-seat.blank img {
     position: absolute;
-    width: 15px;
-    height: auto;
+    /* ie and edge require height to be set and width to be auto set, not the opposite*/
+    height: 15px;
+    width: auto;
     margin: auto;
     top: 0px;
     bottom: 0px;
