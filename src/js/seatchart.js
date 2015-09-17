@@ -17,6 +17,15 @@ function seatchartJS(seatMap, seatTypes) {
         return result;
     };
     
+    // returns the computed style of an element, it works even on ie :P
+    var getStyle = function (el) {
+        if (typeof window.getComputedStyle !== undefined) {
+	      return window.getComputedStyle(el, null);
+	    } else {
+	      return el.currentStyle;
+	    }   
+    };
+    
     // the currency used
     this.currency = "€";
     // path where assets are located
@@ -216,11 +225,7 @@ function seatchartJS(seatMap, seatTypes) {
     // creates the header of the seat map 
     // containing the front indicator
     var createFrontHeader = function () {
-        var header = createRow(),
-            front = document.createElement("div"),
-            // compute the seat style to get its width
-            cssSeat = window.getComputedStyle(createSeat("available", "A1")),
-            margins = parseInt(cssSeat.marginLeft, 10) + parseInt(cssSeat.marginRight, 10);
+        var header = createRow();
         
         // initialize sound image element
         soundIcon = document.createElement("img");
@@ -233,7 +238,7 @@ function seatchartJS(seatMap, seatTypes) {
         blankIndex.appendChild(soundIcon);
         
         // set the perfect width of the front indicator
-        front.style.width = (parseInt(cssSeat.width, 10) + margins) * seatMap.cols - margins;
+        var front = document.createElement("div");
         front.textContent = "Front";
         front.className = "seatChart-front";      
         header.appendChild(front);
@@ -362,6 +367,16 @@ function seatchartJS(seatMap, seatTypes) {
         // inject the seat map into the container given as input
         var container = document.getElementById(containerId);
         container.appendChild(seatMapContainer);
+                      
+        // set front indicator width        
+        var seat = document.getElementsByClassName("seatChart-seat")[0];
+        var width = seat.offsetWidth;
+        
+        var computedStyle = getStyle(seat); 
+        var margins = parseInt(computedStyle.marginLeft, 10) + parseInt(computedStyle.marginRight, 10);
+        
+        var front = seatMapContainer.getElementsByClassName("seatChart-front")[0];
+        front.style.width = "{0}px".format((width + margins) * seatMap.cols - margins);
 
         setReservedSeat();
         setDisabledSeat();   
