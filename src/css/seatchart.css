@@ -20,6 +20,7 @@
 
 .seatChart-title img {
     float: left;
+    display: inline-block;
     /* ie and edge require height to be set and width to be auto set, not the opposite*/
     height: 20px;
     width: auto;
@@ -28,7 +29,7 @@
 }
 
 .seatChart-title h3 {
-    float: left;
+    display: inline-block;
     height: 20px;
     line-height: 20px;
     margin: 0;
