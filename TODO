@@ -2,6 +2,7 @@ TODO List:
 
 - Set dinamically via javascript the seat map min-width
 - Change seat type when the seat is kept pressed for 'n' seconds
+- Fix bugs on IE and Edge
 - Add the possibility to add a compact and complete seat chart
 - Show a little walk-through when the seat chart is loaded
 - Add websockets support
