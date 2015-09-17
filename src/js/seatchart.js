@@ -45,7 +45,7 @@ function seatchartJS(seatMap, seatTypes) {
     // plays asyncrounously a click sound
     var playAsyncClick = function () {
         if (self.soundEnabled) {
-            var clickSound = new Audio("{0}/sounds/seatclick.wav".format(self.assetsSrc));
+            var clickSound = new Audio("{0}/sounds/seatclick.mp3".format(self.assetsSrc));
             clickSound.volume = 0.2; 
             clickSound.load();
             clickSound.play();
