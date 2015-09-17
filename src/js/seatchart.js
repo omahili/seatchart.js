@@ -19,8 +19,9 @@ function seatchartJS(seatMap, seatTypes) {
     
     // the currency used
     this.currency = "€";
-    // the src where assets
+    // path where assets are located
     this.assetsSrc = "assets";
+    this.soundEnabled = true;
     
     var self = this;
     var alphabet = 'ABCDEFGHIJLMNOPQRSTUVWXYZ';
@@ -29,13 +30,32 @@ function seatchartJS(seatMap, seatTypes) {
     var shoppingCartTA, shoppingCartTotal;
     // this dictionary contains all the seats added to the shopping cart organized per type
     var shoppingCartDict = [];
+    // the icon that shows if sound is enabled
+    var soundIcon;
     
     // plays asyncrounously a click sound
     var playAsyncClick = function () {
-        var clickSound = new Audio("{0}/seat_click.wav".format(self.assetsSrc));
-        clickSound.volume = 0.2; 
-        clickSound.load();
-        clickSound.play();
+        if (self.soundEnabled) {
+            var clickSound = new Audio("{0}/sounds/seatclick.wav".format(self.assetsSrc));
+            clickSound.volume = 0.2; 
+            clickSound.load();
+            clickSound.play();
+        }
+    };
+    
+    var setSoundIconSrc = function () {
+        if (self.soundEnabled) {
+            soundIcon.src = "{0}/icons/soundon.svg".format(self.assetsSrc);
+        }
+        else {
+            soundIcon.src = "{0}/icons/soundoff.svg".format(self.assetsSrc);  
+        }
+    };
+    
+    var soundIconClick = function () {
+        self.soundEnabled = !self.soundEnabled;     
+        setSoundIconSrc();
+        playAsyncClick();
     };
     
     var updateShoppingCart = function (action, id, type) {
@@ -64,10 +84,11 @@ function seatchartJS(seatMap, seatTypes) {
         }
     };
     
-    var createIconedTitle = function (content, src){
+    var createIconedTitle = function (content, src, alt){
         var container = document.createElement("div");
         var icon = document.createElement("img");
         icon.src = src;
+        icon.alt = alt;
         
         var title = createTitle(content);        
         container.className = title.className;
@@ -88,8 +109,9 @@ function seatchartJS(seatMap, seatTypes) {
     var seatClick = function () {
         // clone array because it's modified by adding and removing classes
         var currentClassList = [];
-        for (var j = 0; j < this.classList.length; j++)
+        for (var j = 0; j < this.classList.length; j++) {
             currentClassList.push(this.classList[j]);
+        }
         
         for (var i = 0; i < currentClassList.length; i++) {
             var currentClass = currentClassList[i];
@@ -199,6 +221,16 @@ function seatchartJS(seatMap, seatTypes) {
             // compute the seat style to get its width
             cssSeat = window.getComputedStyle(createSeat("available", "A1")),
             margins = parseInt(cssSeat.marginLeft, 10) + parseInt(cssSeat.marginRight, 10);
+        
+        // initialize sound image element
+        soundIcon = document.createElement("img");
+        soundIcon.onclick = soundIconClick;
+        soundIcon.alt = "Sound icon. Click to enable/disable the sound.";
+        setSoundIconSrc();
+        
+        // get header blank 'index' (actually a seat)
+        var blankIndex = header.childNodes[0];
+        blankIndex.appendChild(soundIcon);
         
         // set the perfect width of the front indicator
         front.style.width = (parseInt(cssSeat.width, 10) + margins) * seatMap.cols - margins;
@@ -425,7 +457,7 @@ function seatchartJS(seatMap, seatTypes) {
     this.createShoppingCart = function (containerId) {
         var shoppingCartContainer = createContainer();
         
-        var shoppingCartTitle = createIconedTitle("Shopping cart", "{0}/sc_icon.svg".format(self.assetsSrc));      
+        var shoppingCartTitle = createIconedTitle("Shopping cart", "{0}/icons/shoppingcart.svg".format(self.assetsSrc), "Shopping cart icon.");      
         shoppingCartTA = createShoppingCartTA();
         shoppingCartTotal = createSmallTitle("Total: 0{0}".format(self.currency));
         

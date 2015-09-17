@@ -4,15 +4,22 @@ This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 Inte
 To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.
 
 
-- Shopping Cart Icon (src/assets/sc_icon.svg) License
+- Shopping Cart Icon (src/assets/shoppingcart.svg) License
 
-Icon made by Stephen Hutchings (http://www.typicons.com) from www.flaticon.com
+Icon made by Stephen Hutchings (www.typicons.com) from www.flaticon.com
 This work is licensed under the Creative Commons Attribution 3.0 Unported License.
 To view a copy of this license, visit http://creativecommons.org/licenses/by/3.0/
 
+- Sound Icons (src/assets/icons/soundon.svg and src/assets/icons/soundoff.svg) License
 
-- Click sound (src/assets/seat_click.wav) License
+Icons made by Freepik (www.freepik.com) from www.flaticon.com
+This work is licensed under the Creative Commons Attribution 3.0 Unported License.
+To view a copy of this license, visit http://creativecommons.org/licenses/by/3.0/
+Adaptment: "soundoff.svg" is an edited version of the original "soundon.svg" icon, 
+the waves near the speaker are deleted and an "x" was added to make a "no sound" icon.
 
-Sound made by Martin Pesek (http://profiles.google.com/jun66le) from www.freesound.org
+- Click Sound (src/assets/sounds/seatclick.wav) License
+
+Sound made by Martin Pesek (http://profiles.google.com/jun66le) from www.flaticon.com
 This work is licensed under the Creative Commons Attribution 3.0 Unported License.
 To view a copy of this license, visit http://creativecommons.org/licenses/by/3.0/

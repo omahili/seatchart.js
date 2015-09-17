@@ -44,6 +44,7 @@
 }
 
 .seatChart-seat {
+    position: relative;
     color: white;
     border-radius: 10px;
     -webkit-border-radius: 10px;
@@ -84,6 +85,33 @@
 .seatChart-seat.blank {
     background-color: transparent;
     color: transparent;
+}
+
+.seatChart-seat.blank img {
+    position: absolute;
+    width: 15px;
+    height: auto;
+    margin: auto;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+}
+
+.seatChart-seat.blank {
+    color: transparent;
+}
+
+.seatChart-seat {
+    color: #FFF;
+    line-height: 30px;
+    text-align: center;
+    font-family: "Lato",sans-serif;
+}
+
+.seatChart-container {
+    cursor: default;
+    font-family: "RobotoDraft","Roboto",sans-serif;
 }
 
 .seatChart-seat.available {
