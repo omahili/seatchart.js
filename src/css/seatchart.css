@@ -90,10 +90,10 @@
 }
 
 .seatChart-seat.blank img {
-    position: absolute;
-    /* ie and edge require height to be set and width to be auto set, not the opposite*/
     height: 15px;
     width: auto;
+    /* maked img stay centered*/
+    position: absolute;
     margin: auto;
     top: 0px;
     bottom: 0px;
@@ -180,7 +180,55 @@
 /*Shopping cart css*/
 /*******************/
 
-.seatChart-shopping-cart {
-    margin: 15px 0px 0px 0px;
-    padding: 0;
+.seatChart-sc-items-container {
+    margin: 0;
+    padding: 15px 0px 0px 0px;
+}
+
+.seatChart-sc-item {
+    border-bottom: 1px solid #afafaf; 
+    width: 200px;
+    height: 30px;
+    margin: 0;
+    padding: 6px 0px 0px 0px;
+}
+
+.seatChart-sc-delete {
+    /* makes img stay centered */
+    position: relative;
+    background-color: #db2c2c;
+    /* to make it stay at right of the container */
+    margin: auto 10px auto auto;
+    height: 22px;
+    width: 22px;
+    border: 1px solid #dd1616;
+    border-radius: 7px;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    -ms-border-radius: 7px;
+}
+
+.seatChart-sc-delete img {
+    height: 14px;
+    width: 14px;
+    /* makes img stay centered */
+    position: absolute;
+    margin: auto;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+}
+
+.seatChart-sc-delete:active {
+    background-color: #db4646;
+}
+
+.seatChart-sc-description {
+    float: left;
+    display: inline-block;
+    margin: auto 0px auto auto;
+    font-size: 14px;
+    /* 22 + 2 px because delete button has borders */
+    line-height: 24px; 
 }
