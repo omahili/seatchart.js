@@ -26,11 +26,42 @@ function seatchartJS(seatMap, seatTypes) {
 	    }   
     };
     
+    // calculates the scrollbar width
+    // thanks to Alexander Gomes (http://www.alexandre-gomes.com/?p=115)
+    function getScrollBarWidth () { 
+        var inner = document.createElement('p'); 
+        inner.style.width = "100%"; 
+        inner.style.height = "200px"; 
+
+        var outer = document.createElement('div'); 
+        outer.style.position = "absolute"; 
+        outer.style.top = "0px"; 
+        outer.style.left = "0px"; 
+        outer.style.visibility = "hidden"; 
+        outer.style.width = "200px"; 
+        outer.style.height = "150px"; 
+        outer.style.overflow = "hidden"; 
+        outer.appendChild (inner); 
+
+        document.body.appendChild (outer); 
+        var w1 = inner.offsetWidth; 
+        outer.style.overflow = 'scroll'; 
+        var w2 = inner.offsetWidth; 
+        if (w1 == w2) w2 = outer.clientWidth; 
+
+        document.body.removeChild (outer); 
+
+        return (w1 - w2); 
+    }; 
+    
     // the currency used
     this.currency = "€";
     // path where assets are located
     this.assetsSrc = "assets";
     this.soundEnabled = true;
+    // shopping cart inner size
+    this.shoppingCartWidth = 200;
+    this.shoppingCartHeight = 200;
     
     var self = this;
     var alphabet = 'ABCDEFGHIJLMNOPQRSTUVWXYZ';
@@ -524,6 +555,8 @@ function seatchartJS(seatMap, seatTypes) {
     var createScItem = function (description, id) {
         var item = document.createElement("div");
         item.className = "seatChart-sc-item";
+        //-2 because of the item left padding
+        item.style.width = "{0}px".format(self.shoppingCartWidth - 2);
         item.setAttribute("id", "item-{0}".format(id));
         
         var desc = document.createElement("p");
@@ -550,6 +583,8 @@ function seatchartJS(seatMap, seatTypes) {
         var shoppingCartTitle = createIconedTitle("Shopping cart", "{0}/icons/shoppingcart.svg".format(self.assetsSrc), "Shopping cart icon.");  
         
         scItemsContainer = createScItemsContainer();
+        scItemsContainer.style.width = "{0}px".format(self.shoppingCartWidth + getScrollBarWidth());
+        scItemsContainer.style.height = "{0}px".format(self.shoppingCartHeight);
         shoppingCartTotal = createSmallTitle("Total: 0{0}".format(self.currency));
         
         shoppingCartContainer.appendChild(shoppingCartTitle);

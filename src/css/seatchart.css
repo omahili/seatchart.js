@@ -181,15 +181,18 @@
 /*******************/
 
 .seatChart-sc-items-container {
-    margin: 0;
-    padding: 15px 0px 0px 0px;
+    margin: 15px 0px 0px 0px;
+    padding: 0;
+    border: 1px solid #F3F3F3;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .seatChart-sc-item {
     border-bottom: 1px solid #afafaf; 
     width: 200px;
     height: 30px;
-    margin: 0;
+    margin: 0px 1px 0px;
     padding: 6px 0px 0px 0px;
 }
 
@@ -227,7 +230,8 @@
 .seatChart-sc-description {
     float: left;
     display: inline-block;
-    margin: auto 0px auto auto;
+    margin: auto;
+    padding: 0px 10px;
     font-size: 14px;
     /* 22 + 2 px because delete button has borders */
     line-height: 24px; 
