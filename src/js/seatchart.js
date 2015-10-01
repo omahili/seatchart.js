@@ -59,7 +59,7 @@ function seatchartJS(seatMap, seatTypes) {
     // path where assets are located
     this.assetsSrc = "assets";
     this.soundEnabled = true;
-    // shopping cart inner size
+    // shopping cart size
     this.shoppingCartWidth = 200;
     this.shoppingCartHeight = 200;
     
@@ -408,9 +408,9 @@ function seatchartJS(seatMap, seatTypes) {
     
     // these events work even when a shopping cart isn't created, 
     // because the virtual one work independently
-    // an event which is triggered when a seat is added to the shopping cart
+    // this event is triggered when a seat is added to the shopping cart
     this.onAddedSeat = null;
-    // an event which is triggered when a seat is removed from the shopping cart
+    // this event is triggered when a seat is removed from the shopping cart
     this.onRemovedSeat = null;
     
     // creates the seat map
@@ -556,7 +556,7 @@ function seatchartJS(seatMap, seatTypes) {
         var item = document.createElement("div");
         item.className = "seatChart-sc-item";
         //-2 because of the item left padding
-        item.style.width = "{0}px".format(self.shoppingCartWidth - 2);
+        item.style.width = "{0}px".format(self.shoppingCartWidth - getScrollBarWidth() - 2);
         item.setAttribute("id", "item-{0}".format(id));
         
         var desc = document.createElement("p");
@@ -583,7 +583,7 @@ function seatchartJS(seatMap, seatTypes) {
         var shoppingCartTitle = createIconedTitle("Shopping cart", "{0}/icons/shoppingcart.svg".format(self.assetsSrc), "Shopping cart icon.");  
         
         scItemsContainer = createScItemsContainer();
-        scItemsContainer.style.width = "{0}px".format(self.shoppingCartWidth + getScrollBarWidth());
+        scItemsContainer.style.width = "{0}px".format(self.shoppingCartWidth);
         scItemsContainer.style.height = "{0}px".format(self.shoppingCartHeight);
         shoppingCartTotal = createSmallTitle("Total: 0{0}".format(self.currency));
         
