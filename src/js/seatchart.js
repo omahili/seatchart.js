@@ -552,6 +552,26 @@ function seatchartJS(seatMap, seatTypes) {
         releaseSeat(id);
     };
     
+    var deleteAllClick = function () {
+        // release all selected seats and remove them from dictionary
+        for (var key in shoppingCartDict) {
+            if (shoppingCartDict.hasOwnProperty(key)) {
+                for (var i = 0; i < shoppingCartDict[key].length; i++) {
+                    var id = shoppingCartDict[key][i];
+                    releaseSeat(id);
+                }
+                
+                // empty array
+                shoppingCartDict[key] = [];
+            }
+        }
+        
+        // empty shopping cart
+        scItemsContainer.innerHTML = "";
+        
+        updateTotal();
+    };
+
     var createScItem = function (description, id) {
         var item = document.createElement("div");
         item.className = "seatChart-sc-item";
@@ -563,18 +583,40 @@ function seatchartJS(seatMap, seatTypes) {
         desc.className = "seatChart-sc-description";
         desc.textContent = description;
         
-        var binImg = document.createElement("img");
-        binImg.src = "{0}/icons/bin.svg".format(self.assetsSrc);
-        
-        var deleteBtn = document.createElement("div");
+        var deleteBtn = createScDeleteButton();
         deleteBtn.onclick = deleteClick;
-        deleteBtn.className = "seatChart-sc-delete";  
-        deleteBtn.appendChild(binImg);
         
         item.appendChild(desc);
         item.appendChild(deleteBtn);
         
         return item;
+    };
+    
+    var createScDeleteButton = function () {
+        var binImg = document.createElement("img");
+        binImg.src = "{0}/icons/bin.svg".format(self.assetsSrc);
+        
+        var deleteBtn = document.createElement("div");
+        deleteBtn.className = "seatChart-sc-delete";  
+        deleteBtn.appendChild(binImg);
+        
+        return deleteBtn;
+    };
+    
+    var createScTotal = function () {
+        var container = document.createElement("div");
+         
+        shoppingCartTotal = createSmallTitle("Total: 0{0}".format(self.currency));
+        shoppingCartTotal.className += " seatChart-sc-total";
+        
+        var deleteBtn = createScDeleteButton();
+        deleteBtn.onclick = deleteAllClick;
+        deleteBtn.className += " all";
+        
+        container.appendChild(shoppingCartTotal);
+        container.appendChild(deleteBtn);
+        
+        return container;
     };
     
     // creates a shopping cart
@@ -585,11 +627,11 @@ function seatchartJS(seatMap, seatTypes) {
         scItemsContainer = createScItemsContainer();
         scItemsContainer.style.width = "{0}px".format(self.shoppingCartWidth);
         scItemsContainer.style.height = "{0}px".format(self.shoppingCartHeight);
-        shoppingCartTotal = createSmallTitle("Total: 0{0}".format(self.currency));
+        var scTotal = createScTotal();
         
         shoppingCartContainer.appendChild(shoppingCartTitle);
         shoppingCartContainer.appendChild(scItemsContainer);
-        shoppingCartContainer.appendChild(shoppingCartTotal);
+        shoppingCartContainer.appendChild(scTotal);
         
         var container = document.getElementById(containerId);
         container.appendChild(shoppingCartContainer);

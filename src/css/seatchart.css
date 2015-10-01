@@ -223,8 +223,22 @@
     right: 0px;
 }
 
+.seatChart-sc-delete.all {
+    margin: 15px 0px 0px 0px;
+    padding: 0;
+    width: 50px;
+}
+
 .seatChart-sc-delete:active {
     background-color: #db4646;
+}
+
+.seatChart-sc-total {
+	margin: 0px;
+    padding: 0px;
+    float: right;
+    display: inline-block;
+    line-height: 24px;
 }
 
 .seatChart-sc-description {
