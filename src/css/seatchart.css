@@ -239,7 +239,7 @@
 .seatChart-sc-delete.all p {
     color: white; 
     text-align: center; 
-    /* give a better effect than the actual height of 24px */
+    /* gives a better effect than the actual height of 24px */
     line-height: 23px; 
     padding: 0px; 
     margin: 0px 0px 0px 15px;

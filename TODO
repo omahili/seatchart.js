@@ -1,7 +1,6 @@
 TODO List:
 
 - Right click to change seat type, left click to release it
-- Set dinamically via javascript the seat map min-width
 - Change seat type when the seat is kept pressed for 'n' seconds
 - Add the possibility to add a compact and a complete seat chart
 - Show a little walk-through when the seat chart is loaded

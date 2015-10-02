@@ -369,8 +369,12 @@ function seatchartJS(seatMap, seatTypes) {
             var reservedIndex = reserved[i];
             var id = "{0}_{1}".format(Math.floor(reservedIndex/cols), reservedIndex%cols);
             var reservedSeat = document.getElementById(id);
-            removeAllTypesApplied(reservedSeat);
-            reservedSeat.classList.add("unavailable");
+            
+            // prevents from null reference exception when json goes out of range
+            if (reservedSeat != null) {
+                removeAllTypesApplied(reservedSeat);
+                reservedSeat.classList.add("unavailable");
+            }
         }
     };
     
@@ -383,8 +387,12 @@ function seatchartJS(seatMap, seatTypes) {
             var disabledIndex = disabled[i];
             var id = "{0}_{1}".format(Math.floor(disabledIndex/cols), disabledIndex%cols);
             var disabledSeat = document.getElementById(id);
-            removeAllTypesApplied(disabledSeat);
-            disabledSeat.classList.add("blank");
+            
+            // prevents from null reference exception when json goes out of range
+            if (disabledSeat != null) {
+                removeAllTypesApplied(disabledSeat);
+                disabledSeat.classList.add("blank");
+            }
         }
     };
     
@@ -441,12 +449,16 @@ function seatchartJS(seatMap, seatTypes) {
         var container = document.getElementById(containerId);
         container.appendChild(seatMapContainer);
                       
-        // set front indicator width        
+        // set front indicator 
         var seat = document.getElementsByClassName("seatChart-seat")[0];
         var width = seat.offsetWidth;
         
         var computedStyle = getStyle(seat); 
         var margins = parseInt(computedStyle.marginLeft, 10) + parseInt(computedStyle.marginRight, 10);
+        
+        // set seatmap width   
+        // +1 because of the row indexer
+        seatMapContainer.style.width = "{0}px".format((width + margins) * (seatMap.cols + 1) + margins);
         
         var front = seatMapContainer.getElementsByClassName("seatChart-front")[0];
         front.style.width = "{0}px".format((width + margins) * seatMap.cols - margins);
