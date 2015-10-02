@@ -10,20 +10,18 @@ function seatchartJS(seatMap, seatTypes) {
     // capitalizes the first letter and lowers all the others
     String.prototype.capitalizeFirstLetter = function () {
         var result = this.charAt(0).toUpperCase();
-        for (var i = 1; i < this.length; i++) {
+        for (var i = 1; i < this.length; i++)
             result += this.charAt(i).toLowerCase();
-        }
 
         return result;
     };
     
     // returns the computed style of an element, it works even on ie :P
     var getStyle = function (el) {
-        if (typeof window.getComputedStyle !== undefined) {
+        if (typeof window.getComputedStyle !== undefined)
 	      return window.getComputedStyle(el, null);
-	    } else {
+	    else
 	      return el.currentStyle;
-	    }   
     };
     
     // calculates the scrollbar width
@@ -84,12 +82,10 @@ function seatchartJS(seatMap, seatTypes) {
     };
     
     var setSoundIconSrc = function () {
-        if (self.soundEnabled) {
+        if (self.soundEnabled)
             soundIcon.src = "{0}/icons/soundon.svg".format(self.assetsSrc);
-        }
-        else {
-            soundIcon.src = "{0}/icons/soundoff.svg".format(self.assetsSrc);  
-        }
+        else
+            soundIcon.src = "{0}/icons/soundoff.svg".format(self.assetsSrc);
     };
     
     var soundIconClick = function () {
@@ -106,13 +102,11 @@ function seatchartJS(seatMap, seatTypes) {
         var description = "{0} - {1} {2}{3}\n".format(seatName, capitalizedType, price, self.currency);                
         
         if (action == "remove") {
-            if (scItemsContainer !== undefined) {
+            if (scItemsContainer !== undefined)
                 document.getElementById("item-{0}".format(id)).outerHTML = "";
-            }
             
-            if (self.onRemovedSeat != null) {
+            if (self.onRemovedSeat != null)
                 self.onRemovedSeat(seatName, capitalizedType, price);
-            }
         }
         else if (action == "add") {
             if (scItemsContainer !== undefined) {
@@ -120,9 +114,8 @@ function seatchartJS(seatMap, seatTypes) {
                 scItemsContainer.appendChild(scItem);
             }
             
-            if (self.onAddedSeat != null) {
+            if (self.onAddedSeat != null)
                 self.onAddedSeat(seatName, capitalizedType, price);
-            }
         }
         else if (action == "update"){
             scItem = document.getElementById("item-{0}".format(id));
@@ -148,9 +141,8 @@ function seatchartJS(seatMap, seatTypes) {
     };
     
     var updateTotal = function () {
-        if (shoppingCartTotal !== undefined) {
+        if (shoppingCartTotal !== undefined)
             shoppingCartTotal.textContent = "Total: {0}{1}".format(self.getTotal(), self.currency);
-        }
     };
     
     var releaseSeat = function (id) {
@@ -172,9 +164,8 @@ function seatchartJS(seatMap, seatTypes) {
         else {
              for (var key in shoppingCartDict) {
                  if (shoppingCartDict.hasOwnProperty(key)) {
-                     if(removeFromScDict(id, key)) {
+                     if(removeFromScDict(id, key))
                          return true;
-                     }
                  }           
             }   
         }
@@ -196,9 +187,8 @@ function seatchartJS(seatMap, seatTypes) {
     var seatClick = function () {
         // clone array because it's modified by adding and removing classes
         var currentClassList = [];
-        for (var j = 0; j < this.classList.length; j++) {
+        for (var j = 0; j < this.classList.length; j++)
             currentClassList.push(this.classList[j]);
-        }
         
         for (var i = 0; i < currentClassList.length; i++) {
             var currentClass = currentClassList[i];
@@ -217,27 +207,21 @@ function seatchartJS(seatMap, seatTypes) {
                     this.classList.remove(types[index]);
                     index++;
 
-                    if (index == types.length) {
+                    if (index == types.length)
                         index = 0;
-                    }
                     
                     newClass = types[index];
                     
                     if (currentClass == "available") {
-                        if (addToScDict(this.id, newClass)) {
-                            updateShoppingCart("add", this.id, newClass);
-                        }        
+                        if (addToScDict(this.id, newClass))
+                            updateShoppingCart("add", this.id, newClass); 
                     }
                     else if(newClass == "available"){
-                        if(removeFromScDict(this.id, currentClass)){
+                        if (removeFromScDict(this.id, currentClass))
                             updateShoppingCart("remove", this.id, currentClass);
-                        }
                     }
-                    else { 
-                        if (addToScDict(this.id, newClass) && removeFromScDict(this.id, currentClass)) {
+                    else if (addToScDict(this.id, newClass) && removeFromScDict(this.id, currentClass))
                             updateShoppingCart("update", this.id, newClass);
-                        }
-                    }
 
                     this.style.backgroundColor = "";
                     this.classList.add(newClass);
@@ -247,9 +231,8 @@ function seatchartJS(seatMap, seatTypes) {
                         // decrease it because there's one less element in seatTypes
                         // which is "available", that already exists
                         index--;
-                        if (index < 0) {
+                        if (index < 0)
                             index = seatTypes.length - 1;
-                        }
 
                         this.classList.add("clicked");
                         this.style.backgroundColor = seatTypes[index].color;
@@ -286,11 +269,10 @@ function seatchartJS(seatMap, seatTypes) {
         var row = document.createElement("div");
         row.className = "seatChart-row";
         
-        if (rowIndex === undefined) {
+        if (rowIndex === undefined)
             row.appendChild(createSeat("blank", ""));
-        } else {
+        else
             row.appendChild(createSeat("index", rowIndex));
-        }
         
         return row;
     };
@@ -355,9 +337,8 @@ function seatchartJS(seatMap, seatTypes) {
     
     // removes all classes regarding the type applied to the seat
     var removeAllTypesApplied = function (seat) {
-        for (var i = 0; i < types.length; i++) {
+        for (var i = 0; i < types.length; i++)
             seat.classList.remove(types[i]);
-        }
     };
     
     // sets all disabled seats as blank or reserved seats as unavailable
@@ -384,18 +365,17 @@ function seatchartJS(seatMap, seatTypes) {
     // returns the price for a specific seat
     this.getPrice = function (type) {
         for (var i = 0; i < seatTypes.length; i++) {
-            if (seatTypes[i].type == type) {
+            if (seatTypes[i].type == type)
                 return seatTypes[i].price;
-            }
         }       
     };
     
     // returns the total price of the selected seats
     this.getTotal = function () {
         var total = 0;
-        for (var key in shoppingCartDict) {           
-            total += self.getPrice(key) * shoppingCartDict[key].length;   
-        }
+        for (var key in shoppingCartDict)        
+            total += self.getPrice(key) * shoppingCartDict[key].length; 
+        
         return total;
     }
     
@@ -423,9 +403,8 @@ function seatchartJS(seatMap, seatTypes) {
             var rowIndex = alphabet[i];
             var row = createRow(rowIndex);
 
-            for(var j = 0; j < seatMap.cols; j++) {
+            for(var j = 0; j < seatMap.cols; j++)
                 row.appendChild(createSeat("available", rowIndex + (j + 1), i + "_" + j));
-            }
 
             seatMapContainer.appendChild(row);
         }
