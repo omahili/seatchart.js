@@ -360,38 +360,23 @@ function seatchartJS(seatMap, seatTypes) {
         }
     };
     
-    // sets all reserved seats as unavailable
-    var setReservedSeat = function () {
+    // sets all disabled seats as blank or reserved seats as unavailable
+    var setSeat = function (type) {
         var cols = seatMap.cols;
-        var reserved = seatMap.reserved;
         
-        for (var i = 0; i < reserved.length; i++) {
-            var reservedIndex = reserved[i];
-            var id = "{0}_{1}".format(Math.floor(reservedIndex/cols), reservedIndex%cols);
-            var reservedSeat = document.getElementById(id);
+        for (var i = 0; i < seatMap[type].length; i++) {
+            var index = seatMap[type][i];
+            var id = "{0}_{1}".format(Math.floor(index/cols), index%cols);
+            var seat = document.getElementById(id);
             
             // prevents from null reference exception when json goes out of range
-            if (reservedSeat != null) {
-                removeAllTypesApplied(reservedSeat);
-                reservedSeat.classList.add("unavailable");
-            }
-        }
-    };
-    
-    // sets all disabled seats as blank
-    var setDisabledSeat = function () {
-        var cols = seatMap.cols;
-        var disabled = seatMap.disabled;
-        
-        for (var i = 0; i < disabled.length; i++) {
-            var disabledIndex = disabled[i];
-            var id = "{0}_{1}".format(Math.floor(disabledIndex/cols), disabledIndex%cols);
-            var disabledSeat = document.getElementById(id);
-            
-            // prevents from null reference exception when json goes out of range
-            if (disabledSeat != null) {
-                removeAllTypesApplied(disabledSeat);
-                disabledSeat.classList.add("blank");
+            if (seat != null) {
+                removeAllTypesApplied(seat);
+                
+                if (type === "disabled")
+                    seat.classList.add("blank");
+                else
+                    seat.classList.add("unavailable");
             }
         }
     };
@@ -463,8 +448,8 @@ function seatchartJS(seatMap, seatTypes) {
         var front = seatMapContainer.getElementsByClassName("seatChart-front")[0];
         front.style.width = "{0}px".format((width + margins) * seatMap.cols - margins);
 
-        setReservedSeat();
-        setDisabledSeat();   
+        setSeat("reserved");
+        setSeat("disabled");   
     };
     
     // creates a legend item applying a type and a color if needed
