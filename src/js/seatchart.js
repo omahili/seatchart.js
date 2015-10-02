@@ -613,6 +613,10 @@ function seatchartJS(seatMap, seatTypes) {
         deleteBtn.onclick = deleteAllClick;
         deleteBtn.className += " all";
         
+        var label = document.createElement("p");
+        label.textContent = "All";
+        deleteBtn.appendChild(label);
+        
         container.appendChild(shoppingCartTotal);
         container.appendChild(deleteBtn);
         
