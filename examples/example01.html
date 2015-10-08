@@ -28,39 +28,40 @@
                 disabled: [12, 21]
             };
             
+            // the types are case insensitive and has to be all different as the colors
             var types = [{
-                    type: "REGULAR",
-                    color: "blue",
+                    type: "regular",
+                    color: "orange",
                     price: 10
                 },{
                     type: "reduced",
-                    color: "#aa0000",
+                    color: "#af0000",
                     price: 7.5      
                 },{
                     type: "military",
-                    color: "orange",
+                    color: "red",
                     price: 7      
                 }
             ];
             
             var sc = new seatchartJS(map, types);
-            sc.assetsSrc = "../src/assets";
-            sc.currency = "£";
-            sc.soundEnabled = false;
-            //sc.shoppingCartWidth = 250;
-            //sc.shoppingCartHeight = 300;
+            sc.setAssetsSrc("../src/assets");
+            sc.setCurrency("£");
+            sc.setSoundEnabled(false);
+            // sc.setShoppingCartWidth(250);
+            // sc.setShoppingCartHeight(300);
                 
             sc.createMap("mapContainer");
             sc.createLegend("legendContainer");
             sc.createShoppingCart("shoppingCartContainer");
             
-            sc.onRemovedSeat = function (seatName, type, price) {
-                //alert("removed " + seatName + " " + type + " " + price);
-            };
+            // sc.onRemovedSeat = function (seatName, type, price) {
+            //    alert("removed " + seatName + " " + type + " " + price);
+            // };
             
-            sc.onAddedSeat = function (seatName, type, price) {
-                //alert("added " + seatName + " " + type + " " + price);
-            };
+            // sc.onAddedSeat = function (seatName, type, price) {
+            //    alert("added " + seatName + " " + type + " " + price);
+            // };
         </script>
     </body>
 </html>
