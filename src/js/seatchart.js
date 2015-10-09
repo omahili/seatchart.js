@@ -58,16 +58,48 @@ function seatchartJS(seatMap, seatTypes) {
 
         var hex = colors[color.toLowerCase()];
         
-        return hex != undefined ? hex : color;
+        return typeof hex !== 'undefined' ? hex : color;
+    };
+    
+    // check if seatTypes is an array and contains at least one element
+    if (Object.prototype.toString.call(seatTypes) !== '[object Array]' && seatTypes.length < 1)
+        throw "seatTypes in seatChartJS, seatTypes has to be an array and contain at least one element.";
+    else {
+        // check if all elements have the needed attribute and contain the right type of value
+        for (var i = 0; i < seatTypes.length; i++){
+            if(!seatTypes[i].hasOwnProperty("type") || !seatTypes[i].hasOwnProperty("color") || !seatTypes[i].hasOwnProperty("price"))
+                throw "seatTypes in seatChartJS, element at index {0} doesn't contain a 'type', a 'color' or a 'price' property.".format(i);
+            else if (!(typeof seatTypes[i].type === 'string' || seatTypes[i].type instanceof String))
+                throw "seatTypes in seatChartJS, 'type' property at index {0} has to be a string.".format(i);
+            else if (!(typeof seatTypes[i].color === 'string' || seatTypes[i].color instanceof String))
+                throw "seatTypes in seatChartJS, 'color' property at index {0} has to be a string.".format(i);
+            else if (typeof seatTypes[i].price !== 'number')
+                throw "seatTypes in seatChartJS, 'price' property at index {0} has to be a number.".format(i);
+        }
+    }
+    
+    var checkColor = function (index) {
+        var color = colorToHex(seatTypes[index].color);
+            
+        if(color.indexOf("#") != 0)
+            throw "seatTypes in seatChartJS, 'color' property at index {0} has to be a valid color, rgb() colors aren't accepted.".format(index);
+        
+        return color;
     };
     
     // check the given input
     for (var i = 0; i < seatTypes.length; i++) {
+        // check color value
+        var color_i = checkColor(i);
+        
         for (var j = i + 1; j < seatTypes.length; j++) {
-            if (seatTypes[i].type.capitalizeFirstLetter() == seatTypes[j].type.capitalizeFirstLetter())
-                throw "seatTypes in seatChartJs, '{0}' and '{1}' equals, types has to be different from each other. Types are case insensitive.".format(seatTypes[i].type, seatTypes[j].type);
-            // TODO: add rgb support
-            else if (colorToHex(seatTypes[i].color) == colorToHex(seatTypes[j].color))
+            if (seatTypes[i].type == seatTypes[j].type || seatTypes[i].type.capitalizeFirstLetter() == seatTypes[j].type.capitalizeFirstLetter())
+                throw "seatTypes in seatChartJs, '{0}' and '{1}' equals, types has to be different from each other. Types are case insensitive.".format(seatTypes[i].type, seatTypes[j].type);      
+            
+            // check color value
+            var color_j = checkColor(j);
+            
+            if (color_i == color_j)
                 throw "seatTypes in seatChartJs, '{0}' and '{1}' equals, colors has to be different from each other to be recognized, by the user.".format(seatTypes[i].color, seatTypes[j].color);
         }
     }
