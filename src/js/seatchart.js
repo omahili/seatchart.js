@@ -65,9 +65,10 @@ function seatchartJS(seatMap, seatTypes) {
     for (var i = 0; i < seatTypes.length; i++) {
         for (var j = i + 1; j < seatTypes.length; j++) {
             if (seatTypes[i].type.capitalizeFirstLetter() == seatTypes[j].type.capitalizeFirstLetter())
-                throw "seatTypes in seatChartJs: '{0}' and '{1}' equals, types has to be different from each other. Types are case insensitive.".format(seatTypes[i].type, seatTypes[j].type);
+                throw "seatTypes in seatChartJs, '{0}' and '{1}' equals, types has to be different from each other. Types are case insensitive.".format(seatTypes[i].type, seatTypes[j].type);
+            // TODO: add rgb support
             else if (colorToHex(seatTypes[i].color) == colorToHex(seatTypes[j].color))
-                throw "seatTypes in seatChartJs: '{0}' and '{1}' equals, colors has to be different from each other to be recognized, by the user.".format(seatTypes[i].color, seatTypes[j].color);
+                throw "seatTypes in seatChartJs, '{0}' and '{1}' equals, colors has to be different from each other to be recognized, by the user.".format(seatTypes[i].color, seatTypes[j].color);
         }
     }
     
@@ -81,7 +82,10 @@ function seatchartJS(seatMap, seatTypes) {
     var shoppingCartHeight = 200;
     
     this.setCurrency = function (value) {
-        self.currency = value;
+        if (typeof value === 'string' || value instanceof String)
+            self.currency = value;
+        else
+            throw "value in setCurrency, value has to be a string.";
     };
     
     this.getCurrency = function () {
@@ -89,7 +93,10 @@ function seatchartJS(seatMap, seatTypes) {
     };
     
     this.setAssetsSrc = function (value) {
-        self.assetsSrc = value;
+        if (typeof value === 'string' || value instanceof String)
+            self.assetsSrc = value;
+        else
+            throw "value in setAssetsSrc, value has to be a string.";
     };
     
     this.getAssetsSrc = function () {
@@ -97,7 +104,10 @@ function seatchartJS(seatMap, seatTypes) {
     };
     
     this.setSoundEnabled = function (value) {
-        self.soundEnabled = value;
+        if (typeof value === "boolean")
+            self.soundEnabled = value;
+        else
+            throw "value in setSoundEnabled, value has to be a boolean.";
     };
     
     this.getSoundEnabled = function () {
@@ -105,7 +115,10 @@ function seatchartJS(seatMap, seatTypes) {
     };
     
     this.setShoppingCartWidth = function (value) {
-        self.shoppingCartWidth = value;
+        if (typeof value === "number" && value >= 0)
+            self.shoppingCartWidth = value;
+        else
+            throw "value in setShoppingCartWidth, value has to be a positive number.";
     };
     
     this.getShoppingCartWidth = function () {
@@ -113,7 +126,10 @@ function seatchartJS(seatMap, seatTypes) {
     };
     
     this.setShoppingCartHeight = function (value) {
-        self.shoppingCartHeight = value;
+        if (typeof value === "number" && value >= 0)
+            self.shoppingCartHeight = value;
+        else
+            throw "value in setShoppingCartHeight, value has to be a positive number.";
     };
     
     this.getShoppingCartHeight = function () {
@@ -611,7 +627,7 @@ function seatchartJS(seatMap, seatTypes) {
         var item = document.createElement("div");
         item.className = "seatChart-sc-item";
         //-2 because of the item left padding
-        item.style.width = "{0}px".format(shoppingCartWidth - getScrollBarWidth() - 2);
+        item.style.width = "{0}px".format(self.shoppingCartWidth - getScrollBarWidth() - 2);
         item.setAttribute("id", "item-{0}".format(id));
         
         var desc = document.createElement("p");
@@ -664,8 +680,8 @@ function seatchartJS(seatMap, seatTypes) {
         var shoppingCartTitle = createIconedTitle("Shopping cart", "{0}/icons/shoppingcart.svg".format(self.assetsSrc), "Shopping cart icon.");  
         
         scItemsContainer = createScItemsContainer();
-        scItemsContainer.style.width = "{0}px".format(shoppingCartWidth);
-        scItemsContainer.style.height = "{0}px".format(shoppingCartHeight);
+        scItemsContainer.style.width = "{0}px".format(self.shoppingCartWidth);
+        scItemsContainer.style.height = "{0}px".format(self.shoppingCartHeight);
         var scTotal = createScTotal();
         
         shoppingCartContainer.appendChild(shoppingCartTitle);
