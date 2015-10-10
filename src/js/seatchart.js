@@ -82,7 +82,7 @@ function seatchartJS(seatMap, seatTypes) {
         var color = colorToHex(seatTypes[index].color);
             
         if(color.indexOf("#") != 0)
-            throw "seatTypes in seatChartJS, 'color' property at index {0} has to be a valid color, rgb() colors aren't accepted.".format(index);
+            throw "seatTypes in seatChartJS, 'color' property at index {0} has to be a valid color (e.g. 'red' or '#ff0000') , rgb() colors aren't accepted.".format(index);
         
         return color;
     };
@@ -228,6 +228,9 @@ function seatchartJS(seatMap, seatTypes) {
             scItem = document.getElementById("item-{0}".format(id));
             var p = scItem.getElementsByTagName("p")[0];
             p.textContent = description;
+            
+            if (self.onAddedSeat != null)
+                self.onAddedSeat(seatName, capitalizedType, price);
         }
     };
     
@@ -319,20 +322,9 @@ function seatchartJS(seatMap, seatTypes) {
                     
                     newClass = types[index];
                     
-                    if (currentClass == "available") {
-                        if (addToScDict(this.id, newClass))
-                            updateShoppingCart("add", this.id, newClass); 
-                    }
-                    else if(newClass == "available"){
-                        if (removeFromScDict(this.id, currentClass))
-                            updateShoppingCart("remove", this.id, currentClass);
-                    }
-                    else if (addToScDict(this.id, newClass) && removeFromScDict(this.id, currentClass))
-                            updateShoppingCart("update", this.id, newClass);
-
                     this.style.backgroundColor = "";
                     this.classList.add(newClass);
-
+                    
                     // if the class isn't available then apply the background-color in the json
                     if (newClass != "available") {                    
                         // decrease it because there's one less element in seatTypes
@@ -347,6 +339,19 @@ function seatchartJS(seatMap, seatTypes) {
                     // otherwise remove the class 'clicked' since available has it's own style
                     else
                         this.classList.remove("clicked");
+                       
+                    // this has to be done after updating the shopping cart
+                    // so the event is fired just once the seat style is really updated              
+                    if (currentClass == "available") {
+                        if (addToScDict(this.id, newClass))
+                            updateShoppingCart("add", this.id, newClass); 
+                    }
+                    else if(newClass == "available"){
+                        if (removeFromScDict(this.id, currentClass))
+                            updateShoppingCart("remove", this.id, currentClass);
+                    }
+                    else if (addToScDict(this.id, newClass) && removeFromScDict(this.id, currentClass))
+                            updateShoppingCart("update", this.id, newClass);
                 }
             }
         }
@@ -622,17 +627,43 @@ function seatchartJS(seatMap, seatTypes) {
         return container;
     };
     
+    var getSeatName = function (id) {
+        return document.getElementById(id).textContent;
+    };
+    
+    var getSeatType = function (id) {
+        for (var key in shoppingCartDict) {
+            if (shoppingCartDict.hasOwnProperty(key)) {
+                if (shoppingCartDict[key].indexOf(id) > -1) {
+                    return key;
+                }
+            }
+        }
+        
+        return undefined;
+    };
+    
     var deleteClick = function () {
         var parentId = this.parentNode.getAttribute("id");
         document.getElementById(parentId).outerHTML = "";  
         
         var id = parentId.split("-")[1];
         
-        removeFromScDict(id);
-        updateTotal();
-                    
+        var seatName = getSeatName(id);
+        var type = getSeatType(id);
+        
+        // get price before capitalizing since indexing is case sensitive
+        var price = self.getPrice(type);
+            
         // deselect seat
         releaseSeat(id);
+        
+        removeFromScDict(id);
+        updateTotal();
+        
+        // fire event
+        if (self.onRemovedSeat != null)
+            self.onRemovedSeat(seatName, type.capitalizeFirstLetter(), price);
     };
     
     var deleteAllClick = function () {
@@ -641,15 +672,27 @@ function seatchartJS(seatMap, seatTypes) {
             if (shoppingCartDict.hasOwnProperty(key)) {
                 for (var i = 0; i < shoppingCartDict[key].length; i++) {
                     var id = shoppingCartDict[key][i];
+                    
+                    // deselect seat
                     releaseSeat(id);
+                    
+                    var seatName = getSeatName(id);
+                    var type = getSeatType(id);
+        
+                    // get price before capitalizing since indexing is case sensitive
+                    var price = self.getPrice(type);
+                    
+                    // fire event
+                    if (self.onRemovedSeat != null)
+                        self.onRemovedSeat(seatName, type.capitalizeFirstLetter(), price);
                 }
                 
-                // empty array
+                // empty array, fastest way instead of removing each seat
                 shoppingCartDict[key] = [];
             }
         }
         
-        // empty shopping cart
+        // empty shopping cart, fastest way instead of removing each item
         scItemsContainer.innerHTML = "";
         
         updateTotal();
