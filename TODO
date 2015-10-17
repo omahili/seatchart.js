@@ -1,8 +1,5 @@
-TODO List:
+TODO List for the first release:
 
-- Right click to change seat type, left click to release it
-- Change seat type when the seat is kept pressed for 'n' seconds
-- Add some themes to choose from
-- Add the possibility to add a compact and a complete seat chart
-- Show a little walk-through when the seat chart is loaded
-- Add websockets support
+1) Change seat type when the seat is pressed for 'n' seconds
+2) Right click to release seat
+3) Add websockets support

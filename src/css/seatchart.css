@@ -230,8 +230,8 @@
 }
 
 .seatChart-sc-delete.all img {
-    right: initial; 
-    left: initial;
+    right: auto; 
+    left: auto;
     padding-left: 5px;  
     float: left;
 }
