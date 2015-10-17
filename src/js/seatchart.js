@@ -112,6 +112,11 @@ function seatchartJS(seatMap, seatTypes) {
     // shopping cart size
     var shoppingCartWidth = 200;
     var shoppingCartHeight = 200;
+    // the interval in milliseconds that switches the seat type
+    var mouseDownInterval = 500;
+    // mouseDown interval
+    var mouseDown;
+    var changedOnMouseDown = false;
     
     this.setCurrency = function (value) {
         if (typeof value === 'string' || value instanceof String)
@@ -166,6 +171,19 @@ function seatchartJS(seatMap, seatTypes) {
     
     this.getShoppingCartHeight = function () {
         return self.shoppingCartHeight;
+    };
+    
+    this.setMouseDownInterval = function (value) {
+        if (typeof value === "number" && value >= 100)
+            // doesn't need self.
+            mouseDownInterval = value;
+        else
+            throw "value in setMouseDownInterval, value has to be a positive number and be grateare than 99 milliseconds.";
+    };
+    
+    this.getMouseDownInterval = function () {
+        // doesn't need self...
+        return mouseDownInterval;
     };
     
     var self = this;
@@ -295,68 +313,70 @@ function seatchartJS(seatMap, seatTypes) {
     };
     
     var seatClick = function () {
-        // clone array because it's modified by adding and removing classes
-        var currentClassList = [];
-        for (var j = 0; j < this.classList.length; j++)
-            currentClassList.push(this.classList[j]);
-        
-        for (var i = 0; i < currentClassList.length; i++) {
-            var currentClass = currentClassList[i];
-            var newClass;
-            
-            if (currentClass != "seatChart-seat" && currentClass != "clicked") {                            
-                // find index of current
-                var index = types.indexOf(currentClass);
+        if (!changedOnMouseDown) {
+            // clone array because it's modified by adding and removing classes
+            var currentClassList = [];
+            for (var j = 0; j < this.classList.length; j++)
+                currentClassList.push(this.classList[j]);
 
-                // if the current class matches a type
-                // then select the new one
-                if (index != -1) {
-                    // a 'selectable' seat is clicked then play the click sound
-                    playAsyncClick();
-                    
-                    this.classList.remove(types[index]);
-                    index++;
+            for (var i = 0; i < currentClassList.length; i++) {
+                var currentClass = currentClassList[i];
+                var newClass;
 
-                    if (index == types.length)
-                        index = 0;
-                    
-                    newClass = types[index];
-                    
-                    this.style.backgroundColor = "";
-                    this.classList.add(newClass);
-                    
-                    // if the class isn't available then apply the background-color in the json
-                    if (newClass != "available") {                    
-                        // decrease it because there's one less element in seatTypes
-                        // which is "available", that already exists
-                        index--;
-                        if (index < 0)
-                            index = seatTypes.length - 1;
+                if (currentClass != "seatChart-seat" && currentClass != "clicked") {                            
+                    // find index of current
+                    var index = types.indexOf(currentClass);
 
-                        this.classList.add("clicked");
-                        this.style.backgroundColor = seatTypes[index].color;
+                    // if the current class matches a type
+                    // then select the new one
+                    if (index != -1) {
+                        // a 'selectable' seat is clicked then play the click sound
+                        playAsyncClick();
+
+                        this.classList.remove(types[index]);
+                        index++;
+
+                        if (index == types.length)
+                            index = 0;
+
+                        newClass = types[index];
+
+                        this.style.backgroundColor = "";
+                        this.classList.add(newClass);
+
+                        // if the class isn't available then apply the background-color in the json
+                        if (newClass != "available") {                    
+                            // decrease it because there's one less element in seatTypes
+                            // which is "available", that already exists
+                            index--;
+                            if (index < 0)
+                                index = seatTypes.length - 1;
+
+                            this.classList.add("clicked");
+                            this.style.backgroundColor = seatTypes[index].color;
+                        }
+                        // otherwise remove the class 'clicked' since available has it's own style
+                        else
+                            this.classList.remove("clicked");
+
+                        // this has to be done after updating the shopping cart
+                        // so the event is fired just once the seat style is really updated              
+                        if (currentClass == "available") {
+                            if (addToScDict(this.id, newClass))
+                                updateShoppingCart("add", this.id, newClass); 
+                        }
+                        else if(newClass == "available"){
+                            if (removeFromScDict(this.id, currentClass))
+                                updateShoppingCart("remove", this.id, currentClass);
+                        }
+                        else if (addToScDict(this.id, newClass) && removeFromScDict(this.id, currentClass))
+                                updateShoppingCart("update", this.id, newClass);
                     }
-                    // otherwise remove the class 'clicked' since available has it's own style
-                    else
-                        this.classList.remove("clicked");
-                       
-                    // this has to be done after updating the shopping cart
-                    // so the event is fired just once the seat style is really updated              
-                    if (currentClass == "available") {
-                        if (addToScDict(this.id, newClass))
-                            updateShoppingCart("add", this.id, newClass); 
-                    }
-                    else if(newClass == "available"){
-                        if (removeFromScDict(this.id, currentClass))
-                            updateShoppingCart("remove", this.id, currentClass);
-                    }
-                    else if (addToScDict(this.id, newClass) && removeFromScDict(this.id, currentClass))
-                            updateShoppingCart("update", this.id, newClass);
                 }
             }
+
+            updateTotal();
         }
-        
-        updateTotal();
     };
     
     // creates a seat
@@ -371,10 +391,32 @@ function seatchartJS(seatMap, seatTypes) {
             
             // add click event just if it's a real seats (when it has and id)
             seat.addEventListener("click", seatClick);
+            seat.addEventListener("mousedown", mouseDownSeat);
+            seat.addEventListener("mouseup", mouseUpSeat);
             seat.addEventListener("contextmenu", rightClickDelete, false);
         }
         
         return seat;
+    };
+                
+    var mouseDownSeat = function () {
+        var id = this.id;    
+        // to allow a simple click
+        changedOnMouseDown = false;
+        
+        mouseDown = setInterval(function() {
+            // to allow the click simulation
+            changedOnMouseDown = false;
+            document.getElementById(id).click();
+            
+            // this prevents from change on mouse release
+            changedOnMouseDown = true;
+        }, mouseDownInterval);
+    };        
+            
+    var mouseUpSeat = function () {
+        if (mouseDown)
+            clearTimeout(mouseDown);
     };
     
     // this function is fired when a seat is right clicked to be released
@@ -391,6 +433,7 @@ function seatchartJS(seatMap, seatTypes) {
         removeFromScDict(this.id, type);
         updateTotal();
         
+        // so the default context menu isn't showed
         return false;
     };
     
