@@ -1,5 +1,4 @@
 TODO List for the first release:
 
 1) Change seat type when the seat is pressed for 'n' seconds
-2) Right click to release seat
-3) Add websockets support
+2) Add websockets support

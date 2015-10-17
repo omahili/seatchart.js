@@ -371,9 +371,27 @@ function seatchartJS(seatMap, seatTypes) {
             
             // add click event just if it's a real seats (when it has and id)
             seat.addEventListener("click", seatClick);
+            seat.addEventListener("contextmenu", rightClickDelete, false);
         }
         
         return seat;
+    };
+    
+    // this function is fired when a seat is right clicked to be released
+    var rightClickDelete = function (e) {
+        e.preventDefault();
+        
+        var type = getSeatType(this.id);
+        
+        // there's no need to fire onRemoveSeat event since this function fires it
+        updateShoppingCart("remove", this.id, type);
+        
+        releaseSeat(this.id);
+        // remove from virtual sc
+        removeFromScDict(this.id, type);
+        updateTotal();
+        
+        return false;
     };
     
     // creates a seat map row
