@@ -399,23 +399,27 @@ function seatchartJS(seatMap, seatTypes) {
         return seat;
     };
                 
-    var mouseDownSeat = function () {
-        var id = this.id;    
-        // to allow a simple click
-        changedOnMouseDown = false;
-        
-        mouseDown = setInterval(function() {
-            // to allow the click simulation
+    var mouseDownSeat = function (e) {
+        // restrict mouse down to left button
+        if (e.which == 1) {
+            var id = this.id;    
+            // to allow a simple click
             changedOnMouseDown = false;
-            document.getElementById(id).click();
-            
-            // this prevents from change on mouse release
-            changedOnMouseDown = true;
-        }, mouseDownInterval);
+
+            mouseDown = setInterval(function() {
+                // to allow the click simulation
+                changedOnMouseDown = false;
+                document.getElementById(id).click();
+
+                // this prevents from change on mouse release
+                changedOnMouseDown = true;
+            }, mouseDownInterval);
+        }
     };        
             
-    var mouseUpSeat = function () {
-        if (mouseDown)
+    var mouseUpSeat = function (e) {
+        // restrict mouse up to left button
+        if (e.which == 1 && mouseDown)
             clearTimeout(mouseDown);
     };
     
@@ -425,13 +429,16 @@ function seatchartJS(seatMap, seatTypes) {
         
         var type = getSeatType(this.id);
         
-        // there's no need to fire onRemoveSeat event since this function fires it
-        updateShoppingCart("remove", this.id, type);
-        
-        releaseSeat(this.id);
-        // remove from virtual sc
-        removeFromScDict(this.id, type);
-        updateTotal();
+        // it means it has no type and it's available, then there's nothing to delete
+        if (type != undefined) {
+            // there's no need to fire onRemoveSeat event since this function fires it
+            updateShoppingCart("remove", this.id, type);
+
+            releaseSeat(this.id);
+            // remove from virtual sc
+            removeFromScDict(this.id, type);
+            updateTotal();
+        }
         
         // so the default context menu isn't showed
         return false;
