@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>SeatchartJS Source: C:/Users/Omar/Desktop/SeatchartJS/src/js/seatchart.js</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.dark.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.cerulean.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">SeatchartJS</a>
+	</div>
+	<div class="navbar-collapse">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="seatchartJS.html">seatchartJS</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="events.list.html" class="dropdown-toggle" data-toggle="dropdown">Events<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="seatchartJS.html#event:onAddedSeat">seatchartJS#event:onAddedSeat</a></li><li><a href="seatchartJS.html#event:onRemovedSeat">seatchartJS#event:onRemovedSeat</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+	</div>
+</div>
+</div>
+
+
+<div class="container">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: C:/Users/Omar/Desktop/SeatchartJS/src/js/seatchart.js</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">/**
+ * Creates a seatchart.
+ * @constructor
+ * @param {Object.&lt;{rows: number, cols: number, reserved: Array.&lt;number>, disabled: Array.&lt;number>}>} seatMap - Info to generate the seatmap.
+ * @param {Array.&lt;Object.&lt;{type: string, color: string, price: number}>>} seatTypes - Seat types and their colors to be represented.
+ */
+function seatchartJS(seatMap, seatTypes) {
+    /**
+     * @private
+     * .NET equivalent of string.Format() method
+     * @returns {string} The formatted string.
+     */
+    String.prototype.format = function () {
+        var args = arguments;
+        return this.replace(/{(\d+)}/g, function (match, number) {
+            return typeof args[number] !== undefined ? args[number] : match;
+        });
+    };
+
+    /**
+     * @private
+     * Capitalizes the first letter and lowers all the others.
+     * @returns {string} The formatted string.
+     */
+    String.prototype.capitalizeFirstLetter = function () {
+        var result = this.charAt(0).toUpperCase();
+        for (var i = 1; i &lt; this.length; i++)
+            result += this.charAt(i).toLowerCase();
+
+        return result;
+    };
+    
+    /**
+     * @private
+     * Computes the style of an element, it works even on ie :P.
+     * @params {Element} el - The element for which to get the computed style.
+     * @returns {CSSStyleDeclaration} The css of the element.
+     */
+    var getStyle = function (el) {
+        if (typeof window.getComputedStyle !== undefined)
+	      return window.getComputedStyle(el, null);
+	    else
+	      return el.currentStyle;
+    };
+    
+    /**
+     * @private
+     * Computes the scroll bar width of the browser.
+     * Many thanks to Alexander Gomes (http://www.alexandre-gomes.com/?p=115).
+     * @returns {number} The scrollbar width.
+     */
+    var getScrollBarWidth = function () { 
+        var inner = document.createElement('p'); 
+        inner.style.width = "100%"; 
+        inner.style.height = "200px"; 
+
+        var outer = document.createElement('div'); 
+        outer.style.position = "absolute"; 
+        outer.style.top = "0px"; 
+        outer.style.left = "0px"; 
+        outer.style.visibility = "hidden"; 
+        outer.style.width = "200px"; 
+        outer.style.height = "150px"; 
+        outer.style.overflow = "hidden"; 
+        outer.appendChild (inner); 
+
+        document.body.appendChild (outer); 
+        var w1 = inner.offsetWidth; 
+        outer.style.overflow = 'scroll'; 
+        var w2 = inner.offsetWidth; 
+        if (w1 == w2) w2 = outer.clientWidth; 
+
+        document.body.removeChild (outer); 
+
+        return (w1 - w2); 
+    }; 
+    
+    /**
+     * @private
+     * Converts a color to its equivalent in hexadecimal.
+     * @param {string} color - A color (e.g. "red", "blue"... - all the html color are supported).
+     * @returns {string} Hexadeciaml representation of the color.
+     */
+    var colorToHex = function (color) {
+        var colors = {"aliceblue":"#f0f8ff","antiquewhite":"#faebd7","aqua":"#00ffff","aquamarine":"#7fffd4","azure":"#f0ffff",
+"beige":"#f5f5dc","bisque":"#ffe4c4","black":"#000000","blanchedalmond":"#ffebcd","blue":"#0000ff","blueviolet":"#8a2be2","brown":"#a52a2a","burlywood":"#deb887","cadetblue":"#5f9ea0","chartreuse":"#7fff00","chocolate":"#d2691e","coral":"#ff7f50","cornflowerblue":"#6495ed","cornsilk":"#fff8dc","crimson":"#dc143c","cyan":"#00ffff","darkblue":"#00008b","darkcyan":"#008b8b","darkgoldenrod":"#b8860b","darkgray":"#a9a9a9","darkgreen":"#006400","darkkhaki":"#bdb76b","darkmagenta":"#8b008b","darkolivegreen":"#556b2f","darkorange":"#ff8c00","darkorchid":"#9932cc","darkred":"#8b0000","darksalmon":"#e9967a","darkseagreen":"#8fbc8f","darkslateblue":"#483d8b","darkslategray":"#2f4f4f","darkturquoise":"#00ced1","darkviolet":"#9400d3","deeppink":"#ff1493","deepskyblue":"#00bfff","dimgray":"#696969","dodgerblue":"#1e90ff","firebrick":"#b22222","floralwhite":"#fffaf0","forestgreen":"#228b22","fuchsia":"#ff00ff","gainsboro":"#dcdcdc","ghostwhite":"#f8f8ff","gold":"#ffd700","goldenrod":"#daa520","gray":"#808080","green":"#008000","greenyellow":"#adff2f","honeydew":"#f0fff0","hotpink":"#ff69b4","indianred ":"#cd5c5c","indigo":"#4b0082","ivory":"#fffff0","khaki":"#f0e68c","lavender":"#e6e6fa","lavenderblush":"#fff0f5","lawngreen":"#7cfc00","lemonchiffon":"#fffacd","lightblue":"#add8e6","lightcoral":"#f08080","lightcyan":"#e0ffff","lightgoldenrodyellow":"#fafad2","lightgrey":"#d3d3d3","lightgreen":"#90ee90","lightpink":"#ffb6c1","lightsalmon":"#ffa07a","lightseagreen":"#20b2aa","lightskyblue":"#87cefa","lightslategray":"#778899","lightsteelblue":"#b0c4de","lightyellow":"#ffffe0","lime":"#00ff00","limegreen":"#32cd32","linen":"#faf0e6","magenta":"#ff00ff","maroon":"#800000","mediumaquamarine":"#66cdaa","mediumblue":"#0000cd","mediumorchid":"#ba55d3","mediumpurple":"#9370d8","mediumseagreen":"#3cb371","mediumslateblue":"#7b68ee","mediumspringgreen":"#00fa9a","mediumturquoise":"#48d1cc","mediumvioletred":"#c71585","midnightblue":"#191970","mintcream":"#f5fffa","mistyrose":"#ffe4e1","moccasin":"#ffe4b5","navajowhite":"#ffdead","navy":"#000080","oldlace":"#fdf5e6","olive":"#808000","olivedrab":"#6b8e23","orange":"#ffa500","orangered":"#ff4500","orchid":"#da70d6","palegoldenrod":"#eee8aa","palegreen":"#98fb98","paleturquoise":"#afeeee","palevioletred":"#d87093","papayawhip":"#ffefd5","peachpuff":"#ffdab9","peru":"#cd853f","pink":"#ffc0cb","plum":"#dda0dd","powderblue":"#b0e0e6","purple":"#800080","red":"#ff0000","rosybrown":"#bc8f8f","royalblue":"#4169e1","saddlebrown":"#8b4513","salmon":"#fa8072","sandybrown":"#f4a460","seagreen":"#2e8b57","seashell":"#fff5ee","sienna":"#a0522d","silver":"#c0c0c0","skyblue":"#87ceeb","slateblue":"#6a5acd","slategray":"#708090","snow":"#fffafa","springgreen":"#00ff7f","steelblue":"#4682b4","tan":"#d2b48c","teal":"#008080","thistle":"#d8bfd8","tomato":"#ff6347","turquoise":"#40e0d0","violet":"#ee82ee","wheat":"#f5deb3","white":"#ffffff","whitesmoke":"#f5f5f5","yellow":"#ffff00","yellowgreen":"#9acd32"};
+
+        var hex = colors[color.toLowerCase()];
+        
+        return typeof hex !== 'undefined' ? hex : color;
+    };
+    
+    // check if seatTypes is an array and contains at least one element
+    if (Object.prototype.toString.call(seatTypes) !== '[object Array]' &amp;&amp; seatTypes.length &lt; 1)
+        throw "seatTypes in seatChartJS, seatTypes has to be an array and contain at least one element.";
+    else {
+        // check if all elements have the needed attribute and contain the right type of value
+        for (var i = 0; i &lt; seatTypes.length; i++){
+            if(!seatTypes[i].hasOwnProperty("type") || !seatTypes[i].hasOwnProperty("color") || !seatTypes[i].hasOwnProperty("price"))
+                throw "seatTypes in seatChartJS, element at index {0} doesn't contain a 'type', a 'color' or a 'price' property.".format(i);
+            else if (!(typeof seatTypes[i].type === 'string' || seatTypes[i].type instanceof String))
+                throw "seatTypes in seatChartJS, 'type' property at index {0} has to be a string.".format(i);
+            else if (!(typeof seatTypes[i].color === 'string' || seatTypes[i].color instanceof String))
+                throw "seatTypes in seatChartJS, 'color' property at index {0} has to be a string.".format(i);
+            else if (typeof seatTypes[i].price !== 'number')
+                throw "seatTypes in seatChartJS, 'price' property at index {0} has to be a number.".format(i);
+        }
+    }
+       
+    /**
+     * @private
+     * Checks if a color is valid and if it's not hexadecimal it's converted.
+     * @param {string} color - A color (a word or a hexadecimal representation).
+     * @returns {string} The hexadecimal representation of the color.
+     */
+    var checkColor = function (index) {
+        var color = colorToHex(seatTypes[index].color);
+            
+        if(color.indexOf("#") != 0)
+            throw "seatTypes in seatChartJS, 'color' property at index {0} has to be a valid color (e.g. 'red' or '#ff0000') , rgb() colors aren't accepted.".format(index);
+        
+        return color;
+    };
+    
+    // check the given input
+    for (var i = 0; i &lt; seatTypes.length; i++) {
+        // check color value
+        var color_i = checkColor(i);
+        
+        for (var j = i + 1; j &lt; seatTypes.length; j++) {
+            if (seatTypes[i].type == seatTypes[j].type || seatTypes[i].type.capitalizeFirstLetter() == seatTypes[j].type.capitalizeFirstLetter())
+                throw "seatTypes in seatChartJs, '{0}' and '{1}' equals, types has to be different from each other. Types are case insensitive.".format(seatTypes[i].type, seatTypes[j].type);      
+            
+            // check color value
+            var color_j = checkColor(j);
+            
+            if (color_i == color_j)
+                throw "seatTypes in seatChartJs, '{0}' and '{1}' equals, colors has to be different from each other to be recognized, by the user.".format(seatTypes[i].color, seatTypes[j].color);
+        }
+    }
+    
+    /**
+     * @private
+     * Gets the current currency.
+     * @type {string}
+     */
+    var currency = "€";
+    
+    /**
+     * @private
+     * The path where the assets are located.
+     * @type {string}
+     */
+    var assetsSrc = "assets";
+    
+    /**
+     * @private
+     * Stores whether the sound is enbled or not.
+     * @type {boolean}
+     */
+    var soundEnabled = true;
+    
+    /**
+     * @private
+     * The shopping cart width.
+     * @type {number}
+     */
+    var shoppingCartWidth = 200;
+    
+    /**
+     * @private
+     * The shopping cart height.
+     * @type {number}
+     */
+    var shoppingCartHeight = 200;
+    
+    /**
+     * @private
+     * The mouse down interval at which the seat type changes.
+     * @type {number}
+     */
+    var mouseDownInterval = 500;
+    
+    /**
+     * @private
+     * The ID value of the timer that is set.
+     * @type {number}
+     */
+    var mouseDown;
+    
+    /**
+     * @private
+     * Stores whether the seat has to change on a mouse down interval or not.
+     * @type {boolean}
+     */
+    var changedOnMouseDown = false;
+    
+    /**
+     * Sets the current currency.
+     * @param {string} value - A character that represents the currency (e.g. "$", "€"...).
+     */
+    this.setCurrency = function (value) {
+        if (typeof value === 'string' || value instanceof String)
+            self.currency = value;
+        else
+            throw "value in setCurrency, value has to be a string.";
+    };
+    
+    /**
+     * Gets the current currency.
+     * @returns {string} A character that represents the currency (e.g. "$", "€"...).
+     */
+    this.getCurrency = function () {
+        return self.currency;
+    };
+    
+    /**
+     * Sets the path where the assets are located.
+     * @param {string} value - The path where the assets are located (e.g. "../src/assets").
+     */
+    this.setAssetsSrc = function (value) {
+        if (typeof value === 'string' || value instanceof String)
+            self.assetsSrc = value;
+        else
+            throw "value in setAssetsSrc, value has to be a string.";
+    };
+    
+    /**
+     * Gets the path where the assets are located.
+     * @returns {string} The path where the assets are located.
+     */
+    this.getAssetsSrc = function () {
+        return self.assetsSrc;
+    };
+    
+    /**
+     * Sets whether the sound has to be enbled or not.
+     * @param {boolean} value - True if it has to be enabled otherwise false.
+     */
+    this.setSoundEnabled = function (value) {
+        if (typeof value === "boolean")
+            self.soundEnabled = value;
+        else
+            throw "value in setSoundEnabled, value has to be a boolean.";
+    };
+    
+    /**
+     * Gets whether the sound is enbled or not.
+     * @returns {boolean} True if it is enabled otherwise false.
+     */
+    this.getSoundEnabled = function () {
+        return self.soundEnabled;
+    };
+    
+    /**
+     * Sets the shopping cart width.
+     * @param {number} value - The shopping cart width.
+     */
+    this.setShoppingCartWidth = function (value) {
+        if (typeof value === "number" &amp;&amp; value >= 0)
+            self.shoppingCartWidth = value;
+        else
+            throw "value in setShoppingCartWidth, value has to be a positive number.";
+    };
+    
+    /**
+     * Gets the shopping cart width.
+     * @returns {number} The shopping cart width.
+     */
+    this.getShoppingCartWidth = function () {
+        return self.shoppingCartWidth;
+    };
+    
+    /**
+     * Sets the shopping cart height.
+     * @param {number} value - The shopping cart height.
+     */
+    this.setShoppingCartHeight = function (value) {
+        if (typeof value === "number" &amp;&amp; value >= 0)
+            self.shoppingCartHeight = value;
+        else
+            throw "value in setShoppingCartHeight, value has to be a positive number.";
+    };
+    
+    /**
+     * Gets the shopping cart height.
+     * @returns {number} The shopping cart height.
+     */
+    this.getShoppingCartHeight = function () {
+        return self.shoppingCartHeight;
+    };
+    
+    /**
+     * Sets the mouse down interval at which the seat type changes.
+     * @param {number} value - The mouse down interval at which the seat type changes.
+     */
+    this.setMouseDownInterval = function (value) {
+        if (typeof value === "number" &amp;&amp; value >= 100)
+            // doesn't need self.
+            mouseDownInterval = value;
+        else
+            throw "value in setMouseDownInterval, value has to be a positive number and be grateare than 99 milliseconds.";
+    };
+    
+    /**
+     * Gets the mouse down interval at which the seat type changes.
+     * @returns {number} The mouse down interval at which the seat type changes.
+     */
+    this.getMouseDownInterval = function () {
+        // doesn't need self...
+        return mouseDownInterval;
+    };
+    
+    /**
+     * @private
+     * This object.
+     * @type {seatchartJS}
+     */
+    var self = this;
+    
+    /**
+     * @private
+     * A string containing all the letters of the english alphabet.
+     * @type {string}
+     */
+    var alphabet = 'ABCDEFGHIJLMNOPQRSTUVWXYZ';
+    
+    /**
+     * @private
+     * An array of strings containing all the pickable seat types, "available" included.
+     * @type {Array.&lt;string>}
+     */
+    var types = [];
+    
+    /**
+     * @private
+     * The main div container containing all the shopping cart elements.
+     * @type {HTMLDivElement}
+     */
+    var scItemsContainer;
+    
+    /**
+     * @private
+     * The text that shows the total cost of the items in the shopping cart.
+     * @type {HTMLHeadingElement}
+     */
+    var shoppingCartTotal;
+    
+    /**
+     * @private
+     * A dictionary containing all the seats added to the shopping cart organized per type.
+     * @type {Object.&lt;string, Array.&lt;int>>}
+     */
+    var shoppingCartDict = [];
+    
+    /**
+     * @private
+     * The icon that shows whether the sound is enabled or not.
+     * @type {HTMLImageElement}
+     */
+    var soundIcon;
+    
+    /**
+     * @private
+     * Plays an asyncrounous click sound.
+     */
+    var playAsyncClick = function () {
+        if (self.soundEnabled) {
+            var clickSound = new Audio("{0}/sounds/seatclick.mp3".format(self.assetsSrc));
+            clickSound.volume = 0.2; 
+            clickSound.load();
+            clickSound.play();
+        }
+    };
+    
+    /**
+     * @private
+     * Sets the sound icon by using the given path of the resources.
+     */
+    var setSoundIconSrc = function () {
+        if (self.soundEnabled)
+            soundIcon.src = "{0}/icons/soundon.svg".format(self.assetsSrc);
+        else
+            soundIcon.src = "{0}/icons/soundoff.svg".format(self.assetsSrc);
+    };
+    
+    /**
+     * @private
+     * Enables or disables the sound when the volume icon is clicked and plays a sound click when it's enabled to notice it.
+     */
+    var soundIconClick = function () {
+        self.soundEnabled = !self.soundEnabled;     
+        setSoundIconSrc();
+        playAsyncClick();
+    };
+    
+    /**
+     * @private
+     * Updates the shopping cart by adding, removing or updating a seat.
+     * @param {string} action - The action to make in the shopping cart ("remove", "add" or "update").
+     * @param {string} id - The html id of the seat in the seatmap.
+     * @param {string} type - The new type of the seat (when the seat is updated or added).
+     */
+    var updateShoppingCart = function (action, id, type) {
+        var seatName = document.getElementById(id).textContent;    
+        var scItem;
+        var capitalizedType = type.capitalizeFirstLetter();
+        var price = self.getPrice(type);
+        var description = "{0} - {1} {2}{3}\n".format(seatName, capitalizedType, price, self.currency);                
+        
+        if (action == "remove") {
+            if (scItemsContainer !== undefined)
+                document.getElementById("item-{0}".format(id)).outerHTML = "";
+            
+            if (self.onRemovedSeat != null)
+                self.onRemovedSeat(seatName, capitalizedType, price);
+        }
+        else if (action == "add") {
+            if (scItemsContainer !== undefined) {
+                scItem = createScItem(description, id);
+                scItemsContainer.appendChild(scItem);
+            }
+            
+            if (self.onAddedSeat != null)
+                self.onAddedSeat(seatName, capitalizedType, price);
+        }
+        else if (action == "update"){
+            scItem = document.getElementById("item-{0}".format(id));
+            var p = scItem.getElementsByTagName("p")[0];
+            p.textContent = description;
+            
+            if (self.onAddedSeat != null)
+                self.onAddedSeat(seatName, capitalizedType, price);
+        }
+    };
+    
+    /**
+     * @private
+     * Creates a title with an icon.
+     * @param {string} content - The title.
+     * @param {string} src - The source path of the icon.
+     * @param {string} alt - The text to be displed when the image isn't loaded properly.
+     * @returns {HTMLDivElement} The iconed title.
+     */
+    var createIconedTitle = function (content, src, alt){
+        var container = document.createElement("div");
+        var icon = document.createElement("img");
+        icon.src = src;
+        icon.alt = alt;
+        
+        var title = createTitle(content);        
+        container.className = title.className;
+        title.className = "";
+        
+        container.appendChild(icon);
+        container.appendChild(title);
+        
+        return container;   
+    };
+    
+    /**
+     * @private
+     * Updates the total price of the shopping cart.
+     */
+    var updateTotal = function () {
+        if (shoppingCartTotal !== undefined)
+            shoppingCartTotal.textContent = "Total: {0}{1}".format(self.getTotal(), self.currency);
+    };
+    
+    /**
+     * @private
+     * Makes a seat available,
+     * @param {string} id - The html id of the seat in the seatmap.
+     */
+    var releaseSeat = function (id) {
+        var seat = document.getElementById(id);
+        seat.style.cssText = "";
+        seat.className = "seatChart-seat available";
+    };
+    
+    /**
+     * @private
+     * Removes a seat from the shopping cart dictionary containing it.
+     * @param {string} id - The html id of the seat in the seatmap.
+     * @param {string} type - The type of the seat.
+     * @returns {boolean} True if the seat is removed correctly otherwise false.
+     */
+    var removeFromScDict = function(id, type){
+        if(type !== undefined) {
+            if(type in shoppingCartDict){
+                var index = shoppingCartDict[type].indexOf(id);
+                if(index > -1) {
+                    shoppingCartDict[type].splice(index, 1);
+                    return true;
+                }
+            }
+        }
+        else {
+             for (var key in shoppingCartDict) {
+                 if (shoppingCartDict.hasOwnProperty(key)) {
+                     if(removeFromScDict(id, key))
+                         return true;
+                 }           
+            }   
+        }
+
+        return false;
+    };
+    
+    /**
+     * @private
+     * Adds a seat to the shopping cart dictionary.
+     * @param {string} id - The html id of the seat in the seatmap.
+     * @param {string} type - The type of the seat.
+     * @returns {boolean} True if the seat is added correctly otherwise false.
+     */
+    var addToScDict = function(id, type){
+        if (type in shoppingCartDict) {
+            if (shoppingCartDict.hasOwnProperty(type)) {
+                shoppingCartDict[type].push(id);
+                return true;
+            }
+        }
+        
+        return false;
+    };
+    
+    /**
+     * @private
+     * This function is fired when a seat is clicked in the seatmap.
+     */
+    var seatClick = function () {
+        if (!changedOnMouseDown) {
+            // clone array because it's modified by adding and removing classes
+            var currentClassList = [];
+            for (var j = 0; j &lt; this.classList.length; j++)
+                currentClassList.push(this.classList[j]);
+
+            for (var i = 0; i &lt; currentClassList.length; i++) {
+                var currentClass = currentClassList[i];
+                var newClass;
+
+                if (currentClass != "seatChart-seat" &amp;&amp; currentClass != "clicked") {                            
+                    // find index of current
+                    var index = types.indexOf(currentClass);
+
+                    // if the current class matches a type
+                    // then select the new one
+                    if (index != -1) {
+                        // a 'selectable' seat is clicked then play the click sound
+                        playAsyncClick();
+
+                        this.classList.remove(types[index]);
+                        index++;
+
+                        if (index == types.length)
+                            index = 0;
+
+                        newClass = types[index];
+
+                        this.style.backgroundColor = "";
+                        this.classList.add(newClass);
+
+                        // if the class isn't available then apply the background-color in the json
+                        if (newClass != "available") {                    
+                            // decrease it because there's one less element in seatTypes
+                            // which is "available", that already exists
+                            index--;
+                            if (index &lt; 0)
+                                index = seatTypes.length - 1;
+
+                            this.classList.add("clicked");
+                            this.style.backgroundColor = seatTypes[index].color;
+                        }
+                        // otherwise remove the class 'clicked' since available has it's own style
+                        else
+                            this.classList.remove("clicked");
+
+                        // this has to be done after updating the shopping cart
+                        // so the event is fired just once the seat style is really updated              
+                        if (currentClass == "available") {
+                            if (addToScDict(this.id, newClass))
+                                updateShoppingCart("add", this.id, newClass); 
+                        }
+                        else if(newClass == "available"){
+                            if (removeFromScDict(this.id, currentClass))
+                                updateShoppingCart("remove", this.id, currentClass);
+                        }
+                        else if (addToScDict(this.id, newClass) &amp;&amp; removeFromScDict(this.id, currentClass))
+                                updateShoppingCart("update", this.id, newClass);
+                    }
+                }
+            }
+
+            updateTotal();
+        }
+    };
+    
+    /**
+     * @private
+     * Creates a new seat.
+     * @param {string} type - The type of the seat.
+     * @param {string} content - The name representing the seat.
+     * @param {string} seatId - The html id of the seat in the seatmap.
+     * @returns {HTMLDivElement} The seat.
+     */
+    var createSeat = function (type, content, seatId) {
+        var seat = document.createElement("div");
+        seat.textContent = content;
+        seat.className = "seatChart-seat " + type;
+        
+        // if seat if wasn't passed as argument then don't set it
+        if (seatId !== undefined) {
+            seat.setAttribute("id", seatId);
+            
+            // add click event just if it's a real seats (when it has and id)
+            seat.addEventListener("click", seatClick);
+            seat.addEventListener("mousedown", mouseDownSeat);
+            seat.addEventListener("mouseup", mouseUpSeat);
+            // mouse leave event so when the mouse leaves the seat type doesn't keep changing 
+            seat.addEventListener("mouseleave", mouseUpSeat);
+            seat.addEventListener("contextmenu", rightClickDelete, false);
+        }
+        
+        return seat;
+    };
+                
+    /**
+     * @private
+     * This function is fired when a mouse button is pressed.
+     */
+    var mouseDownSeat = function (e) {
+        // restrict mouse down to left button
+        if (e.which == 1) {
+            var id = this.id;    
+            // to allow a simple click
+            changedOnMouseDown = false;
+
+            mouseDown = setInterval(function() {
+                // to allow the click simulation
+                changedOnMouseDown = false;
+                document.getElementById(id).click();
+
+                // this prevents from change on mouse release
+                changedOnMouseDown = true;
+            }, mouseDownInterval);
+        }
+    };        
+           
+    /**
+     * @private
+     * This function is fired when a mouse button is released.
+     */
+    var mouseUpSeat = function (e) {
+        // restrict mouse up to left button
+        if (e.which == 1 &amp;&amp; mouseDown)
+            clearTimeout(mouseDown);
+    };
+    
+    /**
+     * @private
+     * This function is fired when a seat is right clicked to be released.
+     */
+    var rightClickDelete = function (e) {
+        e.preventDefault();
+        
+        var type = getSeatType(this.id);
+        
+        // it means it has no type and it's an available, a blank or an unavailable seat
+        // then there's nothing to delete
+        if (type != undefined) {
+            // there's no need to fire onRemoveSeat event since this function fires it
+            updateShoppingCart("remove", this.id, type);
+
+            releaseSeat(this.id);
+            // remove from virtual sc
+            removeFromScDict(this.id, type);
+            updateTotal();
+        }
+        
+        // so the default context menu isn't showed
+        return false;
+    };
+    
+    /**
+     * @private
+     * Creates a seat map row.
+     * @param {string} rowIndex - The index that represent the row.
+     * @returns {HTMLDivElement} The row.
+     */
+    var createRow = function (rowIndex) {
+        var row = document.createElement("div");
+        row.className = "seatChart-row";
+        
+        if (rowIndex === undefined)
+            row.appendChild(createSeat("blank", ""));
+        else
+            row.appendChild(createSeat("index", rowIndex));
+        
+        return row;
+    };
+    
+    /**
+     * @private
+     * Creates the header of the seatmap containing the front indicator.
+     * @returns {HTMLDivElement} The seatmap header.
+     */
+    var createFrontHeader = function () {
+        var header = createRow();
+        
+        // initialize sound image element
+        soundIcon = document.createElement("img");
+        soundIcon.onclick = soundIconClick;
+        soundIcon.alt = "Sound icon. Click to enable/disable the sound.";
+        setSoundIconSrc();
+        
+        // get header blank 'index' (actually a seat)
+        var blankIndex = header.childNodes[0];
+        blankIndex.appendChild(soundIcon);
+        
+        // set the perfect width of the front indicator
+        var front = document.createElement("div");
+        front.textContent = "Front";
+        front.className = "seatChart-front";      
+        header.appendChild(front);
+        
+        return header;
+    };
+    
+    /**
+     * @private
+     * Creates a row containing all the column indexes.
+     * @returns {HTMLDivElement} The column indexes.
+     */
+    var createColumnsIndex = function () {
+        var columnsIndex = createRow();
+        
+        for (var i = 1; i &lt;= seatMap.cols; i++)
+            columnsIndex.appendChild(createSeat("index", i)); 
+        
+        return columnsIndex;
+    };
+    
+    /*
+     * @private
+     * Creates the container for the seat map and the legend.
+     * @returns {HTMLDivElement} - The container.
+     */
+    var createContainer = function () {
+        var container = document.createElement("div");
+        container.className = "seatChart-container";
+        
+        return container;
+    };
+    
+    /**
+     * @private
+     * Initializes the type of seats that can be clicked and
+     * the types of seat that can be added to the shopping cart
+     * by using the json, containing the types, given in input.
+     */
+    var initializeSeatTypes = function () {
+        // update types of seat
+        // because this.typesJson doens't work in seatClick function
+        typesJson = this.typesJson;
+        types = ["available"];
+        shoppingCartDict = [];
+        
+        for (var i = 0; i &lt; seatTypes.length; i++){
+            types.push(seatTypes[i].type);
+            shoppingCartDict[seatTypes[i].type] = [];
+        }   
+    };
+    
+    /**
+     * @private
+     * Removes all classes regarding the type applied to the seat.
+     * @param {HTMLDivElement} - The seat.
+     */
+    var removeAllTypesApplied = function (seat) {
+        for (var i = 0; i &lt; types.length; i++)
+            seat.classList.remove(types[i]);
+    };
+    
+    /**
+     * @private
+     * Sets all disabled seats as blank or reserved seats as unavailable.
+     * params {string} type - The type of seats to set.
+     */
+    var setSeat = function (type) {
+        var cols = seatMap.cols;
+        
+        for (var i = 0; i &lt; seatMap[type].length; i++) {
+            var index = seatMap[type][i];
+            var id = "{0}_{1}".format(Math.floor(index/cols), index%cols);
+            var seat = document.getElementById(id);
+            
+            // prevents from null reference exception when json goes out of range
+            if (seat != null) {
+                removeAllTypesApplied(seat);
+                
+                if (type === "disabled")
+                    seat.classList.add("blank");
+                else
+                    seat.classList.add("unavailable");
+            }
+        }
+    };
+    
+    /**
+     * Gets the price for a specific type of seat.
+     * @param {string} type - The type of the seat.
+     * @returns {number} The price.
+     */
+    this.getPrice = function (type) {
+        for (var i = 0; i &lt; seatTypes.length; i++) {
+            if (seatTypes[i].type == type)
+                return seatTypes[i].price;
+        }       
+    };
+    
+    /**
+     * Gets the total price of the selected seats.
+     * @returns {number} - The total price.
+     */
+    this.getTotal = function () {
+        var total = 0;
+        for (var key in shoppingCartDict)        
+            total += self.getPrice(key) * shoppingCartDict[key].length; 
+        
+        return total;
+    }
+    
+    /**
+     * This event is triggered when a seat is added to the shopping cart.
+     * (This event works even when a shopping cart isn't created, 
+     * because the virtual one works independently.)
+     *
+     * @event seatchartJS#onAddedSeat
+     */
+    this.onAddedSeat = null;
+    
+    /**
+     * This event is triggered when a seat is removed from the shopping cart.
+     * (This event works even when a shopping cart isn't created, 
+     * because the virtual one works independently.)
+     *
+     *  @event seatchartJS#onRemovedSeat
+     */
+    this.onRemovedSeat = null;
+    
+    /**
+     * Creates the seatmap.
+     * @param {string} containerId - The html id of the container that is going to contain the seatmap.
+     */
+    this.createMap = function (containerId) {
+        // create array of seat types
+        initializeSeatTypes();
+
+        // create seat map container
+        var seatMapContainer = createContainer();
+        // add header to container
+        seatMapContainer.appendChild(createFrontHeader());
+        // add columns index to container
+        seatMapContainer.appendChild(createColumnsIndex());
+
+        // add rows containing seats
+        for (var i = 0; i &lt; seatMap.rows; i++) {
+            var rowIndex = alphabet[i];
+            var row = createRow(rowIndex);
+
+            for(var j = 0; j &lt; seatMap.cols; j++)
+                row.appendChild(createSeat("available", rowIndex + (j + 1), i + "_" + j));
+
+            seatMapContainer.appendChild(row);
+        }
+
+        // inject the seat map into the container given as input
+        var container = document.getElementById(containerId);
+        container.appendChild(seatMapContainer);
+                      
+        // set front indicator 
+        var seat = document.getElementsByClassName("seatChart-seat")[0];
+        var width = seat.offsetWidth;
+        
+        var computedStyle = getStyle(seat); 
+        var margins = parseInt(computedStyle.marginLeft, 10) + parseInt(computedStyle.marginRight, 10);
+        
+        // set seatmap width   
+        // +1 because of the row indexer
+        seatMapContainer.style.width = "{0}px".format((width + margins) * (seatMap.cols + 1) + margins);
+        
+        var front = seatMapContainer.getElementsByClassName("seatChart-front")[0];
+        front.style.width = "{0}px".format((width + margins) * seatMap.cols - margins);
+
+        setSeat("reserved");
+        setSeat("disabled");   
+    };
+    
+    /**
+     * @private
+     * Creates a legend item and applies a type and a color if needed.
+     * @param {string} content - The text in the legend that explains the type of seat.
+     * @param {string} type - The type of seat.
+     * @param {string} color - The background color of the item in the legend.
+     * @returns {HTMLListItemElement} The legend item.
+     */
+    var createLegendItem = function (content, type, color) {
+        var item = document.createElement("li");
+        item.className = "seatChart-legend-item";
+        var itemStyle = document.createElement("div");
+        itemStyle.className = "seatChart-seat legend-style {0}".format(type);
+        var description = document.createElement("p");
+        description.className = "seatChart-legend-description";
+        description.textContent = content;
+        
+        if (color !== undefined) {
+            itemStyle.className = "{0} clicked".format(itemStyle.className);
+            itemStyle.style.backgroundColor = color;
+        }       
+        
+        item.appendChild(itemStyle);
+        item.appendChild(description);
+        
+        return item;
+    };
+    
+    /**
+     * @private
+     * Creates a legend list.
+     * @returns {HTMLUnorderedListElement} The legend list.
+     */
+    var createLegendList = function () {
+        var list = document.createElement("ul");
+        list.className = "seatChart-legend-list";
+        
+        return list;
+    };
+    
+    /**
+     * @private
+     * Creates a small title.
+     * @param {string} content - The content of the title.
+     * @returns {HTMLHeadingElement} The small title.
+     */
+    var createSmallTitle = function(content) {
+        var smallTitle = document.createElement("h5");
+        smallTitle.textContent = content;
+        smallTitle.className = "seatChart-small-title";
+        
+        return smallTitle;
+    };
+    
+    /**
+     * @private
+     * Creates a title.
+     * @param {string} content - The content of the title.
+     * @returns {HTMLHeadingElement} The title.
+     */
+    var createTitle = function (content) {
+        var title = document.createElement("h3");
+        title.textContent = content;
+        title.className = "seatChart-title";
+        
+        return title;
+    };
+    
+    /**
+     * Creates the legend of the seatmap.
+     * @param {string} containerId - The id of the container that is going to contain the legend.
+     */
+    this.createLegend = function (containerId) {
+        // create legend container
+        var seatLegendContainer = createContainer();
+        
+        var legendTitle = createTitle("Legend");
+        
+        var seatsListTitle = createSmallTitle("Seats:");
+        var seatsList = createLegendList();
+        seatsList.appendChild(createLegendItem("Available", "available"));
+        seatsList.appendChild(createLegendItem("Already booked", "unavailable"));
+        
+        var yourSeatsListTitle = createSmallTitle("Your seat(s):");
+        var yourSeatsList = createLegendList();
+        for (var i = 0; i &lt; seatTypes.length; i++) {
+            var description = "{0} {1}{2}".format(seatTypes[i].type.capitalizeFirstLetter(), seatTypes[i].price, self.currency);
+            var item = createLegendItem(description, "", seatTypes[i].color);
+            yourSeatsList.appendChild(item);
+        }      
+        
+        seatLegendContainer.appendChild(legendTitle);
+        seatLegendContainer.appendChild(seatsListTitle);
+        seatLegendContainer.appendChild(seatsList);
+        seatLegendContainer.appendChild(yourSeatsListTitle);
+        seatLegendContainer.appendChild(yourSeatsList);
+        
+        var container = document.getElementById(containerId);
+        container.appendChild(seatLegendContainer);
+    };
+    
+    /**
+     * @private
+     * Creates the container of the items in the shopping cart.
+     * @returns {HTMLDivElement} The container of the items.
+     */
+    var createScItemsContainer = function () {
+        var container = document.createElement("div");
+        container.className = "seatChart-sc-items-container";
+        
+        return container;
+    };
+    
+    /**
+     * @private
+     * Gets the name of a seat.
+     * @param {string} id - The html id of the seat in the seatmap.
+     * @returns {string} The name.
+     */
+    var getSeatName = function (id) {
+        return document.getElementById(id).textContent;
+    };
+    
+    /**
+     * @private
+     * Gets the type of a seat.
+     * @param {string} id - The html id of the seat in the seatmap.
+     * @returns {string} The type.
+     */
+    var getSeatType = function (id) {
+        for (var key in shoppingCartDict) {
+            if (shoppingCartDict.hasOwnProperty(key)) {
+                if (shoppingCartDict[key].indexOf(id) > -1) {
+                    return key;
+                }
+            }
+        }
+        
+        return undefined;
+    };
+    
+    /**
+     * @private
+     * This function is fired when a delete button is clicked in the shopping cart.
+     */
+    var deleteClick = function () {
+        var parentId = this.parentNode.getAttribute("id");
+        document.getElementById(parentId).outerHTML = "";  
+        
+        var id = parentId.split("-")[1];
+        
+        var seatName = getSeatName(id);
+        var type = getSeatType(id);
+        
+        // get price before capitalizing since indexing is case sensitive
+        var price = self.getPrice(type);
+            
+        // deselect seat
+        releaseSeat(id);
+        
+        removeFromScDict(id);
+        updateTotal();
+        
+        // fire event
+        if (self.onRemovedSeat != null)
+            self.onRemovedSeat(seatName, type.capitalizeFirstLetter(), price);
+    };
+    
+    /**
+     * @private
+     * This function is fired when the "delete all" button is clicked in the shopping cart.
+     */
+    var deleteAllClick = function () {
+        // release all selected seats and remove them from dictionary
+        for (var key in shoppingCartDict) {
+            if (shoppingCartDict.hasOwnProperty(key)) {
+                for (var i = 0; i &lt; shoppingCartDict[key].length; i++) {
+                    var id = shoppingCartDict[key][i];
+                    
+                    // deselect seat
+                    releaseSeat(id);
+                    
+                    var seatName = getSeatName(id);
+                    var type = getSeatType(id);
+        
+                    // get price before capitalizing since indexing is case sensitive
+                    var price = self.getPrice(type);
+                    
+                    // fire event
+                    if (self.onRemovedSeat != null)
+                        self.onRemovedSeat(seatName, type.capitalizeFirstLetter(), price);
+                }
+                
+                // empty array, fastest way instead of removing each seat
+                shoppingCartDict[key] = [];
+            }
+        }
+        
+        // empty shopping cart, fastest way instead of removing each item
+        scItemsContainer.innerHTML = "";
+        
+        updateTotal();
+    };
+
+    /**
+     * @private
+     * Creates a shopping cart item.
+     * @param {string} description - The description of the item in the shopping cart.
+     * @param {string} id - The html id of the seat in the seatmap.
+     * @returns {HTMLDivElement} The shopping cart item.
+     */
+    var createScItem = function (description, id) {
+        var item = document.createElement("div");
+        item.className = "seatChart-sc-item";
+        //-2 because of the item left padding
+        item.style.width = "{0}px".format(self.shoppingCartWidth - getScrollBarWidth() - 2);
+        item.setAttribute("id", "item-{0}".format(id));
+        
+        var desc = document.createElement("p");
+        desc.className = "seatChart-sc-description";
+        desc.textContent = description;
+        
+        var deleteBtn = createScDeleteButton();
+        deleteBtn.onclick = deleteClick;
+        
+        item.appendChild(desc);
+        item.appendChild(deleteBtn);
+        
+        return item;
+    };
+    
+    /**
+     * @private
+     * Create a delete button for a shopping cart item.
+     * @returns {HTMLDivElement} The delete button.
+     */
+    var createScDeleteButton = function () {
+        var binImg = document.createElement("img");
+        binImg.src = "{0}/icons/bin.svg".format(self.assetsSrc);
+        
+        var deleteBtn = document.createElement("div");
+        deleteBtn.className = "seatChart-sc-delete";  
+        deleteBtn.appendChild(binImg);
+        
+        return deleteBtn;
+    };
+    
+    /**
+     * @private
+     * Creates the total of the shopping cart and a "delete all" button.
+     * @returns {HTMLDivElement} The total and "delete all" button.
+     */
+    var createScTotal = function () {
+        var container = document.createElement("div");
+         
+        shoppingCartTotal = createSmallTitle("Total: 0{0}".format(self.currency));
+        shoppingCartTotal.className += " seatChart-sc-total";
+        
+        var deleteBtn = createScDeleteButton();
+        deleteBtn.onclick = deleteAllClick;
+        deleteBtn.className += " all";
+        
+        var label = document.createElement("p");
+        label.textContent = "All";
+        deleteBtn.appendChild(label);
+        
+        container.appendChild(shoppingCartTotal);
+        container.appendChild(deleteBtn);
+        
+        return container;
+    };
+    
+    /**
+     * @private
+     * Creates the shopping cart.
+     */
+    this.createShoppingCart = function (containerId) {
+        var shoppingCartContainer = createContainer();      
+        var shoppingCartTitle = createIconedTitle("Shopping cart", "{0}/icons/shoppingcart.svg".format(self.assetsSrc), "Shopping cart icon.");  
+        
+        scItemsContainer = createScItemsContainer();
+        scItemsContainer.style.width = "{0}px".format(self.shoppingCartWidth);
+        scItemsContainer.style.height = "{0}px".format(self.shoppingCartHeight);
+        var scTotal = createScTotal();
+        
+        shoppingCartContainer.appendChild(shoppingCartTitle);
+        shoppingCartContainer.appendChild(scItemsContainer);
+        shoppingCartContainer.appendChild(scTotal);
+        
+        var container = document.getElementById(containerId);
+        container.appendChild(shoppingCartContainer);
+    };
+}</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+
+<footer>
+
+
+	<span class="copyright">
+	DocStrap Copyright © 2015 The contributors to the JSDoc3 and DocStrap projects.
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a>
+	on 2015-12-13T19:42:01+01:00 using the <a
+	href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<!--<script src="scripts/sunlight.js"></script>-->
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/bootstrap-dropdown.js"></script>
+<script src="scripts/toc.js"></script>
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			var id = $( heading ).attr( "id" );
+			return id && id.replace(/\~/g, '-inner-').replace(/\./g, '-static-') || ( prefix + i );
+		},
+		selectors   : "h1,h2,h3,h4",
+		showAndHide : false,
+                navbarOffset: 10,
+		smoothScrolling: true
+	} );
+
+	$( "#toc>ul" ).addClass( "nav nav-pills nav-stacked" );
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+	//			$( ".tutorial-section pre, .readme-section pre" ).addClass( "sunlight-highlight-javascript" ).addClass( "linenums" );
+
+  $( "table" ).each( function () {
+    var $this = $( this );
+    $this.addClass('table');
+  } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+</body>
+</html>
