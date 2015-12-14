@@ -1,9 +1,71 @@
+/********************************************************
+********************* CUSTOMIZED ************************
+*********************************************************/
+.navbar{
+    background-color: rgb(0, 128, 128) !important; 
+    background-image: none !important; 
+    border-color: black !important;
+}
+footer{
+    border-top: initial !important;
+}
+.copyright{
+    color:rgb(0, 128, 128) !important;
+}
+.jsdoc-message{
+    color:rgb(0, 128, 128) !important;
+}
+.navbar a{
+    background-color: transparent !important;
+}
+.navbar a:active{
+    background-color: transparent !important;
+}
+.navbar a:hover{
+    background-color: transparent !important;
+}
+.navbar a:focus{
+    background-color: transparent !important;
+}
+.navbar .dropdown-toggle:active{
+    background-color: rgb(0,110,110) !important;
+}
+.navbar .dropdown-toggle:hover{
+    background-color: rgb(0,110,110) !important;
+}
+.navbar .dropdown-toggle:focus{
+    background-color: rgb(0,110,110) !important;
+}
+.navbar li{
+    background-color: transparent !important;
+}
+.navbar li:focus{
+    background-color: transparent !important;
+}
+.navbar li:active{
+    background-color: transparent !important;
+}
+.navbar li:hover{
+    background-color: transparent !important;
+}
+.navbar li .dropdown-menu{
+        background-color: rgb(0,128,128) !important;
+}
+.navbar li .dropdown-menu:hover{
+        background-color: rgb(0,128,128) !important;
+}
+
+.navbar .dropdown-menu a:hover{
+    background-color: rgb(0,110,110) !important;
+}
+
 /*!
  * Bootstrap v3.3.6 (http://getbootstrap.com)
  * Copyright 2011-2015 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
+
 html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;

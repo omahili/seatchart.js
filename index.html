@@ -10,30 +10,30 @@
     </head>
     <body>
         <div class="navbar navbar-default navbar-fixed-top navbar-inverse">
-        <div class="container">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="index.html">SeatchartJS</a>
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="index.html">SeatchartJS</a>
+                </div>
+                <div class="navbar-collapse">
+                    <ul class="nav navbar-nav">
+
+                        <li class="dropdown" style="a:hover{color: red;}">
+                            <a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+                            <ul class="dropdown-menu ">
+                                <li><a href="seatchartJS.html">seatchartJS</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="dropdown">
+                            <a href="events.list.html" class="dropdown-toggle" data-toggle="dropdown">Events<b class="caret"></b></a>
+                            <ul class="dropdown-menu ">
+                                <li><a href="seatchartJS.html#event:onAddedSeat">seatchartJS#event:onAddedSeat</a></li><li><a href="seatchartJS.html#event:onRemovedSeat">seatchartJS#event:onRemovedSeat</a></li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </div>
             </div>
-            <div class="navbar-collapse">
-                <ul class="nav navbar-nav">
-
-                    <li class="dropdown">
-                        <a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
-                        <ul class="dropdown-menu ">
-                            <li><a href="seatchartJS.html">seatchartJS</a></li>
-                        </ul>
-                    </li>
-
-                    <li class="dropdown">
-                        <a href="events.list.html" class="dropdown-toggle" data-toggle="dropdown">Events<b class="caret"></b></a>
-                        <ul class="dropdown-menu ">
-                            <li><a href="seatchartJS.html#event:onAddedSeat">seatchartJS#event:onAddedSeat</a></li><li><a href="seatchartJS.html#event:onRemovedSeat">seatchartJS#event:onRemovedSeat</a></li>
-                        </ul>
-                    </li>
-
-                </ul>
-            </div>
-        </div>
         </div>
 
         <div class="container">
@@ -63,68 +63,5 @@
         <script src="scripts/docstrap.lib.js"></script>
         <script src="scripts/bootstrap-dropdown.js"></script>
         <script src="scripts/toc.js"></script>
-
-        <script>
-        $( function () {
-            $( "[id*='$']" ).each( function () {
-                var $this = $( this );
-
-                $this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
-            } );
-
-            $( ".tutorial-section pre, .readme-section pre" ).each( function () {
-                var $this = $( this );
-
-                var example = $this.find( "code" );
-                exampleText = example.html();
-                var lang = /{@lang (.*?)}/.exec( exampleText );
-                if ( lang && lang[1] ) {
-                    exampleText = exampleText.replace( lang[0], "" );
-                    example.html( exampleText );
-                    lang = lang[1];
-                } else {
-                    var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
-                    lang = langClassMatch ? langClassMatch[1] : "javascript";
-                }
-
-                if ( lang ) {
-
-                    $this
-                    .addClass( "sunlight-highlight-" + lang )
-                    .addClass( "linenums" )
-                    .html( example.html() );
-
-                }
-            } );
-
-            Sunlight.highlightAll( {
-                lineNumbers : true,
-                showMenu : true,
-                enableDoclinks : true
-            } );
-
-            $( "#toc" ).toc( {
-                anchorName  : function ( i, heading, prefix ) {
-                    var id = $( heading ).attr( "id" );
-                    return id && id.replace(/\~/g, '-inner-').replace(/\./g, '-static-') || ( prefix + i );
-                },
-                selectors   : "h1,h2,h3,h4",
-                showAndHide : false,
-                        navbarOffset: 10,
-                smoothScrolling: true
-            } );
-
-            $( "#toc>ul" ).addClass( "nav nav-pills nav-stacked" );
-            $( "#main span[id^='toc']" ).addClass( "toc-shim" );
-            $( '.dropdown-toggle' ).dropdown();
-            //			$( ".tutorial-section pre, .readme-section pre" ).addClass( "sunlight-highlight-javascript" ).addClass( "linenums" );
-
-            $( "table" ).each( function () {
-                var $this = $( this );
-                $this.addClass('table');
-            } );
-
-        } );
-        </script>
     </body>
 </html>
