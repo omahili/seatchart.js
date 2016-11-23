@@ -7,18 +7,18 @@
     <body>
         <div>
             <div id="mapContainer" style="float: left;">
-                
+
             </div>
-            
+
             <div id="legendContainer"  style="float: left;">
-        
+
             </div>
-            
+
             <div id="shoppingCartContainer"  style="float: left;">
-                
+
             </div>
         </div>
-        
+
         <script type="text/javascript" src="../src/js/seatchart.js"></script>
         <script>
             var map = {
@@ -27,7 +27,7 @@
                 reserved: [9, 14],
                 disabled: [12, 21]
             };
-            
+
             // the types are case insensitive and has to be all different as the colors
             var types = [{
                     type: "regular",
@@ -36,30 +36,30 @@
                 },{
                     type: "reduced",
                     color: "#af0000",
-                    price: 7.5      
+                    price: 7.5
                 },{
                     type: "military",
                     color: "red",
-                    price: 7      
+                    price: 7
                 }
             ];
-            
-            var sc = new seatchartJS(map, types);
+
+            var sc = new SeatchartJS(map, types);
             sc.setAssetsSrc("../src/assets");
             sc.setCurrency("£");
             sc.setSoundEnabled(false);
             sc.setShoppingCartWidth(200);
             sc.setShoppingCartHeight(250);
             // sc.setMouseDownInterval(100);
-                
+
             sc.createMap("mapContainer");
             sc.createLegend("legendContainer");
             sc.createShoppingCart("shoppingCartContainer");
-            
+
             // sc.onRemovedSeat = function (seatName, type, price) {
             //     alert("removed " + seatName + " " + type + " " + price);
             // };
-            
+
             // sc.onAddedSeat = function (seatName, type, price) {
             //     alert("added " + seatName + " " + type + " " + price);
             // };
