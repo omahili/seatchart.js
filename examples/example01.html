@@ -1,47 +1,64 @@
 <!DOCTYPE html>
+<html lang="en">
     <head>
         <title>Example 01</title>
         <meta charset="utf-8">
         <link rel="stylesheet" href="../src/css/seatchart.css">
+
+        <style>
+            .right {
+                float: left;
+            }
+
+            .containers {
+                float: left;
+                clear: right;
+                margin-bottom: 20px;
+            }
+
+            .howto {
+                font-family: 'RobotoDraft', 'Roboto', sans-serif;
+                margin-left: 20px;
+            }
+        </style>
     </head>
     <body>
-        <div>
-            <div id="mapContainer" style="float: left;">
+        <div id="mapContainer" class="right"></div>
 
+        <div class="right">
+            <div class="containers">
+                <div id="legendContainer"  class="right"></div>
+                <div id="shoppingCartContainer"  class="right"></div>
             </div>
 
-            <div id="legendContainer"  style="float: left;">
-
-            </div>
-
-            <div id="shoppingCartContainer"  style="float: left;">
-
+            <div class="howto">
+                <h3>HOW TO USE: </h3>
+                <ul>
+                    <li>Right click to select a seat</li>
+                    <li>Left click to unselect a seat</li>
+                    <li>Long press to change seat type</li>
+                </ul>
             </div>
         </div>
 
         <script type="text/javascript" src="../src/js/seatchart.js"></script>
         <script>
+            // Reserved and disabled seats are indexed from left to right
+            // by starting from 0.
+            // Given the seatmap as a 2D array and an index [R, C]
+            // the following values can obtained as follow:
+            // I = cols * R + C
             var map = {
                 rows: 10,
                 cols: 7,
-                reserved: [9, 14],
-                disabled: [12, 21]
+                reserved: [9, 14, 17], // e.g. First Reserved Seat = 7 * 1 + 2 = 9
+                disabled: [12, 21, 23]
             };
 
-            // the types are case insensitive and has to be all different as the colors
-            var types = [{
-                    type: "regular",
-                    color: "orange",
-                    price: 10
-                },{
-                    type: "reduced",
-                    color: "#af0000",
-                    price: 7.5
-                },{
-                    type: "military",
-                    color: "red",
-                    price: 7
-                }
+            var types = [
+                { type: "regular", color: "orange", price: 10 },
+                { type: "reduced", color: "#af0000", price: 7.5 },
+                { type: "military", color: "red", price: 7 }
             ];
 
             var sc = new SeatchartJS(map, types);
