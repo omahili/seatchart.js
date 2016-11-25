@@ -1,0 +1,28 @@
+{
+  "name": "seatchartjs",
+  "version": "1.0.0",
+  "description": "A framework to create beautiful designed seat maps, legends and shopping carts.",
+  "main": "src/js/seatchart.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint src/js/seatchart.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OmarMahili/SeatchartJS.git"
+  },
+  "author": "Omar Mahili",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/OmarMahili/SeatchartJS/issues"
+  },
+  "homepage": "http://omarmahili.github.io/SeatchartJS/",
+  "devDependencies": {
+    "eslint": "^3.10.2",
+    "eslint-config-airbnb-base": "^10.0.1",
+    "eslint-plugin-import": "^2.2.0"
+  }
+}
