@@ -1,6 +1,4 @@
-/****************/
 /* Seat map css */
-/****************/
 
 .seatChart-container {
     cursor: default;
@@ -14,13 +12,14 @@
 
 .seatChart-title {
     margin: 0;
-    padding: 10px 0px 0px 0px;
+    padding: 10px 0 0;
 }
 
 .seatChart-title img {
     float: left;
     display: inline-block;
-    /* ie and edge require height to be set and width to be auto set, not the opposite*/
+
+    /* ie and edge require height to be set and width to be auto set, not the opposite */
     height: 20px;
     width: auto;
     margin: 0;
@@ -32,12 +31,12 @@
     height: 20px;
     line-height: 20px;
     margin: 0;
-    padding: 0px 0px 0px 10px;
+    padding: 0 0 0 10px;
 }
 
 .seatChart-small-title {
     margin: 0;
-    padding: 15px 0px 0px 0px;
+    padding: 15px 0 0;
 }
 
 .seatChart-row {
@@ -68,6 +67,7 @@
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     -ms-border-radius: 4px;
+
     /* 30px - 2px because of border */
     height: 28px;
     line-height: 30px;
@@ -91,13 +91,14 @@
 .seatChart-seat.blank img {
     height: 15px;
     width: auto;
-    /* maked img stay centered*/
+
+    /* makes img stay centered */
     position: absolute;
     margin: auto;
-    top: 0px;
-    bottom: 0px;
-    left: 0px;
-    right: 0px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
 .seatChart-seat.blank {
@@ -105,61 +106,59 @@
 }
 
 .seatChart-seat {
-    color: #FFF;
+    color: #fff;
     line-height: 30px;
     text-align: center;
-    font-family: "Lato",sans-serif;
+    font-family: "Lato", sans-serif;
 }
 
 .seatChart-container {
     cursor: default;
-    font-family: "RobotoDraft","Roboto",sans-serif;
+    font-family: "RobotoDraft", "Roboto", sans-serif;
 }
 
 .seatChart-seat.available {
     cursor: pointer;
     background-color: #80c2d1;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0 , 0, 0, 0.24);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 }
 
 .seatChart-seat.available:hover {
     background-color: #a0d3de;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0 , 0, 0, 0.12);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.12);
 }
 
 .seatChart-seat.unavailable {
     /* 28px instead of 30px because border adds 2 px in width and height */
     width: 28px;
     height: 28px;
-    background-color: #cccccc;
+    background-color: #ccc;
     border: 1px solid #b4b4b4;
     cursor: not-allowed;
 }
 
 .seatChart-seat.clicked {
     cursor: pointer;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0 , 0, 0, 0.12);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.12);
 }
 
-/*******************/
 /* Seat legend css */
-/*******************/
 
 .seatChart-legend-list {
     list-style-type: none;
     margin: 0;
-    padding: 0px 0px 15px 0px;
+    padding: 0 0 15px;
 }
 
 .seatChart-legend-item {
     margin: 0;
-    padding: 10px 0px 0px 0px;
+    padding: 10px 0 0;
     vertical-align: middle;
 }
 
 .seatChart-legend-description {
     display: inline-block;
-    margin: 0px 0px 0px 10px;
+    margin: 0 0 0 10px;
 }
 
 .seatChart-seat.legend-style {
@@ -175,14 +174,12 @@
     pointer-events: none;
 }
 
-/*******************/
-/*Shopping cart css*/
-/*******************/
+/* Shopping cart css */
 
 .seatChart-sc-items-container {
-    margin: 15px 0px 0px 0px;
+    margin: 15px 0 0;
     padding: 0;
-    border: 1px solid #F3F3F3;
+    border: 1px solid #f3f3f3;
     overflow-y: auto;
     overflow-x: hidden;
 }
@@ -191,15 +188,16 @@
     border-bottom: 1px solid #afafaf;
     width: 200px;
     height: 30px;
-    margin: 0px 1px 0px;
-    padding: 6px 0px 0px 0px;
+    margin: 0 1px 0 0;
+    padding: 6px 0 0;
 }
 
 .seatChart-sc-delete {
     /* makes img stay centered */
     position: relative;
     background-color: #db2c2c;
-    /* to make it stay at right of the container */
+
+    /* makes it stay at the right of the container */
     margin: auto 10px auto auto;
     height: 22px;
     width: 22px;
@@ -213,17 +211,18 @@
 .seatChart-sc-delete img {
     height: 14px;
     width: 14px;
+
     /* makes img stay centered */
     position: absolute;
     margin: auto;
-    top: 0px;
-    bottom: 0px;
-    left: 0px;
-    right: 0px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
 .seatChart-sc-delete.all {
-    margin: 15px 0px 0px 0px;
+    margin: 15px 0 0;
     padding: 0;
     width: 50px;
 }
@@ -238,10 +237,11 @@
 .seatChart-sc-delete.all p {
     color: white;
     text-align: center;
+
     /* gives a better effect than the actual height of 24px */
     line-height: 23px;
-    padding: 0px;
-    margin: 0px 0px 0px 15px;
+    padding: 0;
+    margin: 0 0 0 15px;
 }
 
 .seatChart-sc-delete:active {
@@ -249,8 +249,8 @@
 }
 
 .seatChart-sc-total {
-	margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
     float: right;
     display: inline-block;
     line-height: 24px;
@@ -260,8 +260,9 @@
     float: left;
     display: inline-block;
     margin: auto;
-    padding: 0px 10px;
+    padding: 0 10px;
     font-size: 14px;
+
     /* 22 + 2 px because delete button has borders */
     line-height: 24px;
 }
