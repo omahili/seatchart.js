@@ -9,8 +9,7 @@
     -moz-user-select: none;
     -ms-user-select: none;
     font-family: "RobotoDraft", "Roboto", sans-serif;
-    margin: 5px;
-    padding: 5px;
+    margin: 10px;
 }
 
 .seatChart-title {
@@ -38,7 +37,7 @@
 
 .seatChart-small-title {
     margin: 0;
-    padding: 15px 0px 0px 0px; 
+    padding: 15px 0px 0px 0px;
 }
 
 .seatChart-row {
@@ -189,7 +188,7 @@
 }
 
 .seatChart-sc-item {
-    border-bottom: 1px solid #afafaf; 
+    border-bottom: 1px solid #afafaf;
     width: 200px;
     height: 30px;
     margin: 0px 1px 0px;
@@ -230,18 +229,18 @@
 }
 
 .seatChart-sc-delete.all img {
-    right: auto; 
+    right: auto;
     left: auto;
-    padding-left: 5px;  
+    padding-left: 5px;
     float: left;
 }
 
 .seatChart-sc-delete.all p {
-    color: white; 
-    text-align: center; 
+    color: white;
+    text-align: center;
     /* gives a better effect than the actual height of 24px */
-    line-height: 23px; 
-    padding: 0px; 
+    line-height: 23px;
+    padding: 0px;
     margin: 0px 0px 0px 15px;
 }
 
@@ -264,5 +263,5 @@
     padding: 0px 10px;
     font-size: 14px;
     /* 22 + 2 px because delete button has borders */
-    line-height: 24px; 
+    line-height: 24px;
 }
