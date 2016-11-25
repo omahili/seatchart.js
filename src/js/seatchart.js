@@ -60,32 +60,35 @@ function SeatchartJS(seatMap, seatTypes) {
         return typeof hex !== 'undefined' ? hex : color;
     };
 
-    if (seatTypes === undefined)
-        throw "seatTypes in seatChartJS, seatTypes cannot be undefined.";
-    else if (seatMap === undefined)
-        throw "seatMap in seatChartJS, seatMap cannot be undefined.";
-
-    if (!seatMap.hasOwnProperty("rows") || !seatMap.hasOwnProperty("cols"))
-        throw "seatMap in seatChartJS, seatMap doesn't contain a 'row' or 'cols' property.";
+    // check seatMap parameter
+    if (seatMap === undefined)
+        throw new Error("Invalid parameter 'seatMap' supplied to SeatchartJS. Cannot be undefined.");
+    else if (typeof seatMap !== 'object')
+        throw new Error("Invalid parameter 'seatMap' supplied to SeatchartJS. Must be an object.");
+    else if (!seatMap.hasOwnProperty("rows") || !seatMap.hasOwnProperty("cols"))
+        throw new Error("Invalid parameter 'seatMap' supplied to SeatchartJS. 'row' and 'cols' properties cannot be undefined.");
     else if (seatMap.rows > 25 || seatMap.cols > 25)
-        throw "seatMap in seatChartJs, seat map does not support more than 25 rows and 25 columns.";
+        throw new Error("Invalid parameter 'seatMap' supplied to SeatchartJS. 'row' and 'cols' properties cannot be integers greater than 25.");
     else if (seatMap.rows < 2 || seatMap.cols < 2)
-        throw "seatMap in seatChartJs, seat map does not support less than 2 rows and 2 columns.";
+        throw new Error("Invalid parameter 'seatMap' supplied to SeatchartJS. 'row' and 'cols' properties cannot be integers smaller than 2.");
 
+    // check seatTypes parameter
+    if (seatTypes === undefined)
+        throw new Error("Invalid parameter 'seatTypes' supplied to SeatchartJS. Cannot be undefined.");
     // check if seatTypes is an array and contains at least one element
-    if (Object.prototype.toString.call(seatTypes) !== '[object Array]' && seatTypes.length < 1)
-        throw "seatTypes in seatChartJS, seatTypes has to be an array and contain at least one element.";
+    else if (!Array.isArray(seatTypes) || seatTypes.length < 1 || typeof seatTypes[0] !== 'object')
+        throw new Error("Invalid parameter 'seatTypes' supplied to SeatchartJS. Must be an array of objects containing at least one element.");
     else {
         // check if all elements have the needed attribute and contain the right type of value
         for (var i = 0; i < seatTypes.length; i++){
             if(!seatTypes[i].hasOwnProperty("type") || !seatTypes[i].hasOwnProperty("color") || !seatTypes[i].hasOwnProperty("price"))
-                throw "seatTypes in seatChartJS, element at index {0} doesn't contain a 'type', a 'color' or a 'price' property.".format(i);
+                throw new Error("Invalid parameter 'seatTypes' supplied to SeatchartJS. Element at index {0} must contain a 'type', a 'color' and a 'price' property.".format(i));
             else if (!(typeof seatTypes[i].type === 'string' || seatTypes[i].type instanceof String))
-                throw "seatTypes in seatChartJS, 'type' property at index {0} has to be a string.".format(i);
+                throw new Error("Invalid parameter 'seatTypes' supplied to SeatchartJS. 'type' property at index {0} must be a string.".format(i));
             else if (!(typeof seatTypes[i].color === 'string' || seatTypes[i].color instanceof String))
-                throw "seatTypes in seatChartJS, 'color' property at index {0} has to be a string.".format(i);
+                throw new Error("Invalid parameter 'seatTypes' supplied to SeatchartJS. 'color' property at index {0} must be a string.".format(i));
             else if (typeof seatTypes[i].price !== 'number')
-                throw "seatTypes in seatChartJS, 'price' property at index {0} has to be a number.".format(i);
+                throw new Error("Invalid parameter 'seatTypes' supplied to SeatchartJS. 'price' property at index {0} must be a number.".format(i));
         }
     }
 
@@ -93,7 +96,7 @@ function SeatchartJS(seatMap, seatTypes) {
         var color = colorToHex(seatTypes[index].color);
 
         if(color.indexOf("#") != 0)
-            throw "seatTypes in seatChartJS, 'color' property at index {0} has to be a valid color (e.g. 'red' or '#ff0000') , rgb() colors aren't accepted.".format(index);
+            throw new Error("Invalid parameter 'seatTypes' supplied to SeatchartJS. 'color' property at index {0} must be a valid color. (e.g. 'red' or '#ff0000', rgb() colors are not accepted)".format(index));
 
         return color;
     };
@@ -105,13 +108,13 @@ function SeatchartJS(seatMap, seatTypes) {
 
         for (var j = i + 1; j < seatTypes.length; j++) {
             if (seatTypes[i].type == seatTypes[j].type || seatTypes[i].type.capitalizeFirstLetter() == seatTypes[j].type.capitalizeFirstLetter())
-                throw "seatTypes in seatChartJs, '{0}' and '{1}' equals, types has to be different from each other. Types are case insensitive.".format(seatTypes[i].type, seatTypes[j].type);
+                throw new Error("Invalid parameter 'seatTypes' supplied to SeatchartJS. '{0}' and '{1}' are equals and types must be different. Types are case insensitive.".format(seatTypes[i].type, seatTypes[j].type));
 
             // check color value
             var color_j = checkColor(j);
 
             if (color_i == color_j)
-                throw "seatTypes in seatChartJs, '{0}' and '{1}' equals, colors has to be different from each other to be recognized, by the user.".format(seatTypes[i].color, seatTypes[j].color);
+                throw new Error("Invalid parameter 'seatTypes' supplied to SeatchartJS. '{0}' and '{1}' are equals and colors must be different.".format(seatTypes[i].color, seatTypes[j].color));
         }
     }
 
@@ -133,7 +136,7 @@ function SeatchartJS(seatMap, seatTypes) {
         if (typeof value === 'string' || value instanceof String)
             self.currency = value;
         else
-            throw "value in setCurrency, value has to be a string.";
+            throw new Error("Invalid parameter 'value' supplied to SeatchartJS.setCurrency(). Must be a string.");
     };
 
     this.getCurrency = function () {
@@ -144,7 +147,7 @@ function SeatchartJS(seatMap, seatTypes) {
         if (typeof value === 'string' || value instanceof String)
             self.assetsSrc = value;
         else
-            throw "value in setAssetsSrc, value has to be a string.";
+            throw new Error("Invalid parameter 'value' supplied to SeatchartJS.setAssetsSrc(). Must be a string.");
     };
 
     this.getAssetsSrc = function () {
@@ -155,7 +158,7 @@ function SeatchartJS(seatMap, seatTypes) {
         if (typeof value === "boolean")
             self.soundEnabled = value;
         else
-            throw "value in setSoundEnabled, value has to be a boolean.";
+            throw new Error("Invalid parameter 'value' supplied to SeatchartJS.setSoundEnabled(). Must be a boolean.");
     };
 
     this.getSoundEnabled = function () {
@@ -166,7 +169,7 @@ function SeatchartJS(seatMap, seatTypes) {
         if (typeof value === "number" && value >= 0)
             self.shoppingCartWidth = value;
         else
-            throw "value in setShoppingCartWidth, value has to be a positive number.";
+            throw new Error("Invalid parameter 'value' supplied to SeatchartJS.setShoppingCartWidth(). Must be positive number.");
     };
 
     this.getShoppingCartWidth = function () {
@@ -177,7 +180,7 @@ function SeatchartJS(seatMap, seatTypes) {
         if (typeof value === "number" && value >= 0)
             self.shoppingCartHeight = value;
         else
-            throw "value in setShoppingCartHeight, value has to be a positive number.";
+            throw new Error("Invalid parameter 'value' supplied to SeatchartJS.setShoppingCartHeight(). Must be positive number.");
     };
 
     this.getShoppingCartHeight = function () {
@@ -189,7 +192,7 @@ function SeatchartJS(seatMap, seatTypes) {
             // doesn't need self.
             mouseDownInterval = value;
         else
-            throw "value in setMouseDownInterval, value has to be a positive number and be grateare than 99 milliseconds.";
+            throw new Error("Invalid parameter 'value' supplied to SeatchartJS.setMouseDownInterval(). Must be a positive number and greater than 99 milliseconds.");
     };
 
     this.getMouseDownInterval = function () {
