@@ -9,7 +9,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "stylelint src/css/seatchart.css && eslint src/js/seatchart.js",
-    "generate-docs": "jsdoc jsdoc.json src/js/seatchart.js"
+    "generate-docs": "jsdoc -c jsdoc.json src/js/seatchart.js && node scripts/docscolor.js"
   },
   "repository": {
     "type": "git",
