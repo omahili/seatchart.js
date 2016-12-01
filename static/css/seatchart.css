@@ -1,0 +1,268 @@
+/* Seat map css */
+
+.seatChart-container {
+    cursor: default;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    font-family: "RobotoDraft", "Roboto", sans-serif;
+    margin: 10px;
+}
+
+.seatChart-title {
+    margin: 0;
+    padding: 10px 0 0;
+}
+
+.seatChart-title img {
+    float: left;
+    display: inline-block;
+
+    /* ie and edge require height to be set and width to be auto set, not the opposite */
+    height: 20px;
+    width: auto;
+    margin: 0;
+    padding: 0;
+}
+
+.seatChart-title h3 {
+    display: inline-block;
+    height: 20px;
+    line-height: 20px;
+    margin: 0;
+    padding: 0 0 0 10px;
+}
+
+.seatChart-small-title {
+    margin: 0;
+    padding: 15px 0 0;
+}
+
+.seatChart-row {
+    height: 40px;
+}
+
+.seatChart-seat {
+    position: relative;
+    color: white;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 4px;
+    height: 30px;
+    width: 30px;
+    margin: 4px;
+    line-height: 30px;
+    float: left;
+    text-align: center;
+    vertical-align: middle;
+    font-family: "Lato", sans-serif;
+}
+
+.seatChart-front {
+    color: #787878;
+    border: 1px solid #dfdfdf;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+
+    /* 30px - 2px because of border */
+    height: 28px;
+    line-height: 30px;
+    margin: 4px;
+    float: left;
+    text-align: center;
+    vertical-align: middle;
+    background-color: #f3f3f3;
+}
+
+.seatChart-seat.index {
+    background-color: transparent;
+    color: #4b4949;
+}
+
+.seatChart-seat.blank {
+    background-color: transparent;
+    color: transparent;
+}
+
+.seatChart-seat.blank img {
+    height: 15px;
+    width: auto;
+
+    /* makes img stay centered */
+    position: absolute;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.seatChart-seat.blank {
+    color: transparent;
+}
+
+.seatChart-seat {
+    color: #fff;
+    line-height: 30px;
+    text-align: center;
+    font-family: "Lato", sans-serif;
+}
+
+.seatChart-container {
+    cursor: default;
+    font-family: "RobotoDraft", "Roboto", sans-serif;
+}
+
+.seatChart-seat.available {
+    cursor: pointer;
+    background-color: #80c2d1;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+
+.seatChart-seat.available:hover {
+    background-color: #a0d3de;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.12);
+}
+
+.seatChart-seat.unavailable {
+    /* 28px instead of 30px because border adds 2 px in width and height */
+    width: 28px;
+    height: 28px;
+    background-color: #ccc;
+    border: 1px solid #b4b4b4;
+    cursor: not-allowed;
+}
+
+.seatChart-seat.clicked {
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.12);
+}
+
+/* Seat legend css */
+
+.seatChart-legend-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0 0 15px;
+}
+
+.seatChart-legend-item {
+    margin: 0;
+    padding: 10px 0 0;
+    vertical-align: middle;
+}
+
+.seatChart-legend-description {
+    display: inline-block;
+    margin: 0 0 0 10px;
+}
+
+.seatChart-seat.legend-style {
+    cursor: default;
+    float: left;
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    pointer-events: none;
+}
+
+/* Shopping cart css */
+
+.seatChart-sc-items-container {
+    margin: 15px 0 0;
+    padding: 0;
+    border: 1px solid #f3f3f3;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.seatChart-sc-item {
+    border-bottom: 1px solid #afafaf;
+    width: 200px;
+    height: 30px;
+    margin: 0 1px 0 0;
+    padding: 6px 0 0;
+}
+
+.seatChart-sc-delete {
+    /* makes img stay centered */
+    position: relative;
+    background-color: #db2c2c;
+
+    /* makes it stay at the right of the container */
+    margin: auto 10px auto auto;
+    height: 22px;
+    width: 22px;
+    border: 1px solid #dd1616;
+    border-radius: 7px;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    -ms-border-radius: 7px;
+}
+
+.seatChart-sc-delete img {
+    height: 14px;
+    width: 14px;
+
+    /* makes img stay centered */
+    position: absolute;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.seatChart-sc-delete.all {
+    margin: 15px 0 0;
+    padding: 0;
+    width: 50px;
+}
+
+.seatChart-sc-delete.all img {
+    right: auto;
+    left: auto;
+    padding-left: 5px;
+    float: left;
+}
+
+.seatChart-sc-delete.all p {
+    color: white;
+    text-align: center;
+
+    /* gives a better effect than the actual height of 24px */
+    line-height: 23px;
+    padding: 0;
+    margin: 0 0 0 15px;
+}
+
+.seatChart-sc-delete:active {
+    background-color: #db4646;
+}
+
+.seatChart-sc-total {
+    margin: 0;
+    padding: 0;
+    float: right;
+    display: inline-block;
+    line-height: 24px;
+}
+
+.seatChart-sc-description {
+    float: left;
+    display: inline-block;
+    margin: auto;
+    padding: 0 10px;
+    font-size: 14px;
+
+    /* 22 + 2 px because delete button has borders */
+    line-height: 24px;
+}
