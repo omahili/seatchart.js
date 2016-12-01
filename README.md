@@ -19,6 +19,12 @@ Run the linter:
 $ npm run lint
 ```
 
+Generate docs:
+
+```
+$ npm run generate-docs
+```
+
 ##Possible features
 
 * Implement web sockets for real-time reservations
