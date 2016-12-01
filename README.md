@@ -1,7 +1,6 @@
 #SeatchartJS
 
-- [Usage](http://omarmahili.github.io/SeatchartJS)
-- [Docs](http://omarmahili.github.io/SeatchartJS)
+- [Docs and Usage](http://omarmahili.github.io/SeatchartJS)
 
 ----
 
