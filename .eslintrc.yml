@@ -6,3 +6,4 @@ rules:
     block-scoped-var: 0
     no-restricted-syntax: 0
     no-shadow: 0
+    max-len: [2, 120, 4, {"ignoreComments": true}]
