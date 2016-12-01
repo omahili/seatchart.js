@@ -1,5 +1,4 @@
 var fs = require('fs-extra');
-var copy = require('directory-copy');
 
 function printError(err) {
     if (err) console.log(err);
