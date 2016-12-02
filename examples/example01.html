@@ -43,15 +43,16 @@
 
         <script type="text/javascript" src="../src/js/seatchart.js"></script>
         <script>
-            // Reserved and disabled seats are indexed from left to right
-            // by starting from 0.
+            // Reserved and disabled seats are indexed
+            // from left to right by starting from 0.
             // Given the seatmap as a 2D array and an index [R, C]
             // the following values can obtained as follow:
             // I = cols * R + C
             var map = {
                 rows: 10,
                 cols: 7,
-                reserved: [9, 14, 17], // e.g. First Reserved Seat = 7 * 1 + 2 = 9
+                // e.g. First Reserved Seat [1, 2] = 7 * 1 + 2 = 9
+                reserved: [9, 14, 17],
                 disabled: [12, 21, 23]
             };
 
