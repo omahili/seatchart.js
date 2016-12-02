@@ -27,10 +27,15 @@
         color: black;
         margin-left: 60px;
     }
-    .flex {
-        display: flex;
-    }
     .centered {
+        display: block;
+        margin: auto;
+        left: 0;
+        right: 0;
+    }
+    .centered-block {
+        max-width: 700px;
+        display: block;
         margin: auto;
         left: 0;
         right: 0;
@@ -38,58 +43,77 @@
     .text-center {
         text-align: center;
     }
-    .sized-block {
-        max-width: 700px;
-    }
     .usage-content {
         margin-top: 20px;
     }
     .motto {
-        margin-bottom: 100px;
+        margin-bottom: 50px;
         color: #008080;
     }
     .seatchart-container {
+        display: flex;
         margin-top: 50px;
         margin-bottom: 20px;
     }
-    #logo > div {
+    .snippet {
+        margin-top: -10px;
+    }
+    #logo {
         height: 35%;
         width: 35%;
     }
-    #logo > div > img {
+    #logo > img {
         height:100%;
-    }
-    .snippet {
-        margin-top: -10px;
     }
     #legendContainer {
         color: black;
         margin-right: 50px;
         margin-left: 50px;
     }
+    #download-button {
+        background: linear-gradient(to bottom, #008080, #2F2F2F);
+        border-color: black;
+        border-style: solid;
+        border-width: 1px;
+        border-radius: 5px;
+        color: white;
+        cursor: pointer;
+        font-size: 130%;
+        margin-bottom: 70px;
+        padding: 1em;
+        text-align: center;
+        text-shadow: black 2px 2px 2px;
+        text-decoration: none;
+        width: 200px;
+    }
     </style>
 </head>
 <body>
-    <div id="logo">
-        <div class="centered">
-            <img src="./static/assets/logo.svg">
-        </div>
+    <a href="https://github.com/OmarMahili/SeatchartJS" target="_blank"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
+    <div id="logo" class="centered">
+        <img src="./static/assets/logo.svg">
     </div>
 
-    <h1 class="centered text-center sized-block motto">Create beautiful designed seat maps, legends and shopping carts.</h1>
+    <h1 class="centered-block text-center motto">Create beautiful designed seat maps, legends and shopping carts.</h1>
 
-    <h3 class="centered text-center sized-block">Usage</h3>
+    <a href="https://github.com/OmarMahili/SeatchartJS/archive/master.zip" id="download-button" class="centered">Download</a>
+
+    <h3 class="centered-block text-center">Usage</h3>
     <div class="usage-content">
-        <p class="centered sized-block">First of all link the library along with the stylesheet and the script that generates the seatchart.</p>
+        <p class="centered-block">First of all link the library along with the stylesheet and the script that generates the seatchart.</p>
 
-        <pre class="centered sized-block snippet">
+        <pre class="centered-block snippet">
             <code>
-&lt;link&nbsp;rel=&quot;stylesheet&quot;&nbsp;href=&quot;/path/to/seatchart.css&quot;&gt;<br/>&lt;script&nbsp;type=&quot;text/javascript&quot;&nbsp;src=&quot;/path/to/seatchart.js&quot;&gt;&lt;/script&gt;
+&lt;link&nbsp;rel=&quot;stylesheet&quot;&nbsp;href=&quot;/path/to/seatchart.css&quot;&gt;
+&lt;script&nbsp;type=&quot;text/javascript&quot;&nbsp;src=&quot;/path/to/seatchart.js&quot;&gt;&lt;/script&gt;
 
 &lt;script&gt;
     var map = {
         rows: 10,
         cols: 7,
+        // Give a look to the examples (download or github)
+        // to understand how to obtain the following values
         reserved: [9, 14, 17],
         disabled: [12, 21, 23]
     };
@@ -103,7 +127,7 @@
     var sc = new SeatchartJS(map, types);
     sc.setAssetsSrc("/path/to/assets");
 
-    // Create Functions
+    // (1) Create functions
     sc.createMap("map-container");
     sc.createLegend("legend-container");
     sc.createShoppingCart("shoppingCart-container");
@@ -111,8 +135,8 @@
             </code>
         </pre>
 
-        <p class="centered sized-block">Then in you web page body create three containers that are going to contain the three elements: seat map, legend and shopping cart. Their id needs to be the same passed to the create functions, in your script.</p>
-        <pre class="centered sized-block snippet">
+        <p class="centered-block">Then in you web page body create three containers that are going to contain the three elements: seat map, legend and shopping cart. Their id needs to be the same passed to the create functions (1), in your script.</p>
+        <pre class="centered-block snippet">
             <code>
 &lt;div&nbsp;id=&quot;map-container&quot;&gt;&lt;/div&gt;
 &lt;div&nbsp;id=&quot;legend-container&quot;&gt;&lt;/div&gt;
@@ -121,9 +145,9 @@
         </pre>
     </div>
 
-    <p class="centered sized-block">Enjoy the result.</p>
+    <p class="centered-block">Enjoy the result.</p>
 
-    <div class="seatchart-container flex">
+    <div class="seatchart-container">
         <div class="centered">
             <div class="example">
                 <div id="mapContainer" class="right"></div>
@@ -149,25 +173,25 @@
 
     <script type="text/javascript" src="./static/js/seatchart.js"></script>
     <script>
-    var map = {
-        rows: 10,
-        cols: 7,
-        reserved: [9, 14, 17],
-        disabled: [12, 21, 23]
-    };
+        var map = {
+            rows: 10,
+            cols: 7,
+            reserved: [9, 14, 17],
+            disabled: [12, 21, 23]
+        };
 
-    var types = [
-        { type: "regular", color: "orange", price: 10 },
-        { type: "reduced", color: "#af0000", price: 7.5 },
-        { type: "military", color: "red", price: 7 }
-    ];
+        var types = [
+            { type: "regular", color: "orange", price: 10 },
+            { type: "reduced", color: "#af0000", price: 7.5 },
+            { type: "military", color: "red", price: 7 }
+        ];
 
-    var sc = new SeatchartJS(map, types);
+        var sc = new SeatchartJS(map, types);
 
-    sc.setAssetsSrc("./static/assets");
-    sc.createMap("mapContainer");
-    sc.createLegend("legendContainer");
-    sc.createShoppingCart("shoppingCartContainer");
+        sc.setAssetsSrc("./static/assets");
+        sc.createMap("mapContainer");
+        sc.createLegend("legendContainer");
+        sc.createShoppingCart("shoppingCartContainer");
     </script>
 </body>
 </html>
