@@ -99,11 +99,14 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     } else if (typeof seatMap !== 'object') {
         throw new Error("Invalid parameter 'seatMap' supplied to SeatchartJS. Must be an object.");
     } else if (!{}.hasOwnProperty.call(seatMap, 'rows') || !{}.hasOwnProperty.call(seatMap, 'cols')) {
-        throw new Error("Invalid parameter 'seatMap' supplied to SeatchartJS. 'row' and 'cols' properties cannot be undefined.");
+        throw new Error("Invalid parameter 'seatMap' supplied to SeatchartJS. " +
+                        "'row' and 'cols' properties cannot be undefined.");
     } else if (seatMap.rows > 25 || seatMap.cols > 25) {
-        throw new Error("Invalid parameter 'seatMap' supplied to SeatchartJS. 'row' and 'cols' properties cannot be integers greater than 25.");
+        throw new Error("Invalid parameter 'seatMap' supplied to SeatchartJS. " +
+                        "'row' and 'cols' properties cannot be integers greater than 25.");
     } else if (seatMap.rows < 2 || seatMap.cols < 2) {
-        throw new Error("Invalid parameter 'seatMap' supplied to SeatchartJS. 'row' and 'cols' properties cannot be integers smaller than 2.");
+        throw new Error("Invalid parameter 'seatMap' supplied to SeatchartJS. " +
+                        "'row' and 'cols' properties cannot be integers smaller than 2.");
     }
 
     // check seatTypes parameter
@@ -111,18 +114,27 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         throw new Error("Invalid parameter 'seatTypes' supplied to SeatchartJS. Cannot be undefined.");
       // check if seatTypes is an array and contains at least one element
     } else if (!Array.isArray(seatTypes) || seatTypes.length < 1 || typeof seatTypes[0] !== 'object') {
-        throw new Error("Invalid parameter 'seatTypes' supplied to SeatchartJS. Must be an array of objects containing at least one element.");
+        throw new Error("Invalid parameter 'seatTypes' supplied to SeatchartJS. " +
+                        'Must be an array of objects containing at least one element.');
     } else {
         // check if all elements have the needed attribute and contain the right type of value
         for (var i = 0; i < seatTypes.length; i += 1) {
-            if (!{}.hasOwnProperty.call(seatTypes[i], 'type') || !{}.hasOwnProperty.call(seatTypes[i], 'color') || !{}.hasOwnProperty.call(seatTypes[i], 'price')) {
-                throw new Error("Invalid parameter 'seatTypes' supplied to SeatchartJS. Element at index {0} must contain a 'type', a 'color' and a 'price' property.".format(i));
+            if (!{}.hasOwnProperty.call(seatTypes[i], 'type') ||
+                !{}.hasOwnProperty.call(seatTypes[i], 'color') ||
+                !{}.hasOwnProperty.call(seatTypes[i], 'price')) {
+                throw new Error(("Invalid parameter 'seatTypes' supplied to SeatchartJS. " +
+                                "Element at index {0} must contain a 'type', " +
+                                "a 'color' and a 'price' property.").format(i));
             } else if (!(typeof seatTypes[i].type === 'string' || seatTypes[i].type instanceof String)) {
-                throw new Error("Invalid parameter 'seatTypes' supplied to SeatchartJS. 'type' property at index {0} must be a string.".format(i));
-            } else if (!(typeof seatTypes[i].color === 'string' || seatTypes[i].color instanceof String)) {
-                throw new Error("Invalid parameter 'seatTypes' supplied to SeatchartJS. 'color' property at index {0} must be a string.".format(i));
+                throw new Error(("Invalid parameter 'seatTypes' supplied to SeatchartJS. " +
+                                "'type' property at index {0} must be a string.").format(i));
+            } else if (!(typeof seatTypes[i].color === 'string' ||
+                        seatTypes[i].color instanceof String)) {
+                throw new Error(("Invalid parameter 'seatTypes' supplied to SeatchartJS. " +
+                                "'color' property at index {0} must be a string.").format(i));
             } else if (typeof seatTypes[i].price !== 'number') {
-                throw new Error("Invalid parameter 'seatTypes' supplied to SeatchartJS. 'price' property at index {0} must be a number.".format(i));
+                throw new Error(("Invalid parameter 'seatTypes' supplied to SeatchartJS. " +
+                                "'price' property at index {0} must be a number.").format(i));
             }
         }
     }
@@ -137,7 +149,9 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         var color = colorToHex(seatTypes[index].color);
 
         if (color.indexOf('#') !== 0) {
-            throw new Error("Invalid parameter 'seatTypes' supplied to SeatchartJS. 'color' property at index {0} must be a valid color. (e.g. 'red' or '#ff0000', rgb() colors are not accepted)".format(index));
+            throw new Error(("Invalid parameter 'seatTypes' supplied to SeatchartJS. " +
+                            "'color' property at index {0} must be a valid color. " +
+                            "(e.g. 'red' or '#ff0000', rgb() colors are not accepted)").format(index));
         }
 
         return color;
@@ -151,14 +165,18 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         for (var y = x + 1; y < seatTypes.length; y += 1) {
             if (seatTypes[x].type.capitalizeFirstLetter() ===
                 seatTypes[y].type.capitalizeFirstLetter()) {
-                throw new Error("Invalid parameter 'seatTypes' supplied to SeatchartJS. '{0}' and '{1}' are equals and types must be different. Types are case insensitive.".format(seatTypes[x].type, seatTypes[y].type));
+                throw new Error(("Invalid parameter 'seatTypes' supplied to SeatchartJS. " +
+                                "'{0}' and '{1}' are equals and types must be different. " +
+                                'Types are case insensitive.').format(seatTypes[x].type, seatTypes[y].type));
             }
 
             // check color value
             var colorY = checkColor(y);
 
             if (colorX === colorY) {
-                throw new Error("Invalid parameter 'seatTypes' supplied to SeatchartJS. '{0}' and '{1}' are equals and colors must be different.".format(seatTypes[x].color, seatTypes[y].color));
+                throw new Error(("Invalid parameter 'seatTypes' supplied to SeatchartJS. " +
+                                "'{0}' and '{1}' are equals and colors must be different.")
+                                .format(seatTypes[x].color, seatTypes[y].color));
             }
         }
     }
@@ -294,7 +312,8 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         if (typeof value === 'number' && value >= 0) {
             self.shoppingCartWidth = value;
         } else {
-            throw new Error("Invalid parameter 'value' supplied to SeatchartJS.setShoppingCartWidth(). Must be positive number.");
+            throw new Error("Invalid parameter 'value' supplied to SeatchartJS.setShoppingCartWidth(). " +
+                            'Must be positive number.');
         }
     };
 
@@ -314,7 +333,8 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         if (typeof value === 'number' && value >= 0) {
             self.shoppingCartHeight = value;
         } else {
-            throw new Error("Invalid parameter 'value' supplied to SeatchartJS.setShoppingCartHeight(). Must be positive number.");
+            throw new Error("Invalid parameter 'value' supplied to SeatchartJS.setShoppingCartHeight(). " +
+                            'Must be positive number.');
         }
     };
 
@@ -335,7 +355,8 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
             // doesn't need self.
             mouseDownInterval = value;
         } else {
-            throw new Error("Invalid parameter 'value' supplied to SeatchartJS.setMouseDownInterval(). Must be a positive number and greater than 99 milliseconds.");
+            throw new Error("Invalid parameter 'value' supplied to SeatchartJS.setMouseDownInterval(). " +
+                            'Must be a positive number and greater than 99 milliseconds.');
         }
     };
 
@@ -466,7 +487,8 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
             }
         }
 
-        throw new Error("Invalid parameter 'id' supplied to SeatchartJS.getSeatType(). 'id' is not defined in shoppingCartDict.");
+        throw new Error("Invalid parameter 'id' supplied to SeatchartJS.getSeatType(). " +
+                        "'id' is not defined in shoppingCartDict.");
     };
 
     /**
@@ -974,7 +996,8 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
             }
         }
 
-        throw new Error("Invalid parameter 'type' supplied to SeatchartJS.getPrice(). 'type' does not exist in seatTypes.");
+        throw new Error("Invalid parameter 'type' supplied to SeatchartJS.getPrice(). " +
+                        "'type' does not exist in seatTypes.");
     };
 
     /**
@@ -1133,7 +1156,11 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         var yourSeatsListTitle = createSmallTitle('Your seat(s):');
         var yourSeatsList = createLegendList();
         for (var i = 0; i < seatTypes.length; i += 1) {
-            var description = '{0} {1}{2}'.format(seatTypes[i].type.capitalizeFirstLetter(), seatTypes[i].price, self.currency);
+            var description = '{0} {1}{2}'.format(
+                seatTypes[i].type.capitalizeFirstLetter(),
+                seatTypes[i].price,
+                self.currency
+            );
             var item = createLegendItem(description, '', seatTypes[i].color);
             yourSeatsList.appendChild(item);
         }
@@ -1228,7 +1255,11 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      */
     this.createShoppingCart = function createShoppingCart(containerId) {
         var shoppingCartContainer = createContainer();
-        var shoppingCartTitle = createIconedTitle('Shopping cart', '{0}/icons/shoppingcart.svg'.format(self.assetsSrc), 'Shopping cart icon.');
+        var shoppingCartTitle = createIconedTitle(
+            'Shopping cart',
+            '{0}/icons/shoppingcart.svg'.format(self.assetsSrc),
+            'Shopping cart icon.'
+        );
 
         scItemsContainer = createScItemsContainer();
         scItemsContainer.style.width = '{0}px'.format(self.shoppingCartWidth);
