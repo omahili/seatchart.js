@@ -1,4 +1,4 @@
-#SeatchartJS
+##SeatchartJS
 
 - [Docs and Usage](http://omarmahili.github.io/SeatchartJS)
 
@@ -23,7 +23,3 @@ Generate docs:
 ```
 $ npm run generate-docs
 ```
-
-##Possible features
-
-* Implement web sockets for real-time reservations
