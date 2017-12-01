@@ -1,4 +1,4 @@
-##SeatchartJS
+## SeatchartJS
 
 - [Docs and Usage](http://omarmahili.github.io/SeatchartJS)
 
