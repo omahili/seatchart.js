@@ -245,6 +245,15 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     var changedOnMouseDown = false;
 
     /**
+     * @private
+     * An object containing all seats added to the shopping cart, mapped by seat type.
+     * Given the seatmap as a 2D array and an index [R, C] all integer values are obtained
+     * as follow: I = cols * R + C.
+     * @type {Object.<string, Array.<int>>}
+     */
+    var shoppingCart = {};
+
+    /**
      * Sets the current currency.
      * @param {string} value - A character that represents the currency (e.g. "$", "€").
      */
@@ -370,6 +379,14 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
+    * Gets a reference to the shopping cart object.
+    * @returns {Object.<string, Array.<int>>} An object containing all seats added to the shopping cart, mapped by seat type.
+    */
+    this.getShoppingCart = function getShoppingCart() {
+        return shoppingCart;
+    };
+
+    /**
      * @private
      * A string containing all the letters of the english alphabet.
      * @type {string}
@@ -399,10 +416,12 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
     /**
      * @private
-     * A dictionary containing all the seats added to the shopping cart organized per type.
-     * @type {Object.<string, Array.<int>>}
+     * A dictionary containing all seats added to the shopping cart, mapped by seat type.
+     * Each string is composed by row (r) and column (c) indexes in the following format: "r_c",
+     * which is the id in the dom, given to each seat.
+     * @type {Object.<string, Array.<string>>}
      */
-    var shoppingCartDict = [];
+    var shoppingCartDict = {};
 
     /**
      * @private
@@ -598,6 +617,24 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
     /**
      * @private
+     * Updates shopping cart object: values stored into shoppingCartDict are mapped to fit shoppingCart
+     * type and format. (See private variables shoppingCartDict and shoppingCart.)
+     */
+    var updateShoppingCartObject = function updateShoppingCartObject() {
+        for (var s in shoppingCartDict) {
+            if ({}.hasOwnProperty.call(shoppingCartDict, s)) {
+                shoppingCart[s] = shoppingCartDict[s].map(function mapValues(x) {
+                    var values = x.split('_').map(function parseValues(x) {
+                        return parseInt(x, 10);
+                    });
+                    return (seatMap.cols * values[0]) + values[1];
+                });
+            }
+        }
+    };
+
+    /**
+     * @private
      * Updates the shopping cart by adding, removing or updating a seat.
      * @param {string} action - The action to make in the shopping cart ("remove", "add" or "update").
      * @param {string} id - The html id of the seat in the seatmap.
@@ -609,6 +646,8 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         var capitalizedType = type.capitalizeFirstLetter();
         var price = self.getPrice(type);
         var description = '{0} - {1} {2}{3}\n'.format(seatName, capitalizedType, price, self.currency);
+
+        updateShoppingCartObject();
 
         if (action === 'remove') {
             if (scItemsContainer !== undefined) {
