@@ -562,6 +562,19 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
     /**
      * @private
+     * Maps a shoppingCartDict value to a shoppingCart value.
+     * (See private variables shoppingCartDict and shoppingCart.)
+     */
+    var mapShoppingCartValue = function mapValues(x) {
+        var values = x.split('_').map(function parseValues(x) {
+            return parseInt(x, 10);
+        });
+
+        return (seatMap.cols * values[0]) + values[1];
+    };
+
+    /**
+     * @private
      * This function is fired when a delete button is clicked in the shopping cart.
      */
     var deleteClick = function deleteClick() {
@@ -570,6 +583,7 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
         var id = parentId.split('-')[1];
 
+        var seat = mapShoppingCartValue(id);
         var seatName = getSeatName(id);
         var type = getSeatType(id);
 
@@ -584,7 +598,7 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
         // fire event
         if (self.onRemovedSeat != null) {
-            self.onRemovedSeat(seatName, type.capitalizeFirstLetter(), price);
+            self.onRemovedSeat(seatName, type.capitalizeFirstLetter(), price, seat);
         }
     };
 
@@ -623,12 +637,7 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     var updateShoppingCartObject = function updateShoppingCartObject() {
         for (var s in shoppingCartDict) {
             if ({}.hasOwnProperty.call(shoppingCartDict, s)) {
-                shoppingCart[s] = shoppingCartDict[s].map(function mapValues(x) {
-                    var values = x.split('_').map(function parseValues(x) {
-                        return parseInt(x, 10);
-                    });
-                    return (seatMap.cols * values[0]) + values[1];
-                });
+                shoppingCart[s] = shoppingCartDict[s].map(mapShoppingCartValue);
             }
         }
     };
@@ -637,11 +646,12 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * @private
      * Updates the shopping cart by adding, removing or updating a seat.
      * @param {string} action - The action to make in the shopping cart ("remove", "add" or "update").
-     * @param {string} id - The html id of the seat in the seatmap.
+     * @param {string} id - The dom id of the seat in the seatmap.
      * @param {string} type - The new type of the seat (when the seat is updated or added).
      */
-    var updateShoppingCart = function updateShoppingCart(action, id, type) {
+    var updateShoppingCart = function updateShoppingCart(action, id, type, previousType) {
         var seatName = document.getElementById(id).textContent;
+        var seat = mapShoppingCartValue(id);
         var scItem;
         var capitalizedType = type.capitalizeFirstLetter();
         var price = self.getPrice(type);
@@ -654,8 +664,8 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
                 document.getElementById('item-{0}'.format(id)).outerHTML = '';
             }
 
-            if (self.onRemovedSeat != null) {
-                self.onRemovedSeat(seatName, capitalizedType, price);
+            if (self.onRemovedSeat !== null) {
+                self.onRemovedSeat(seatName, capitalizedType, price, seat);
             }
         } else if (action === 'add') {
             if (scItemsContainer !== undefined) {
@@ -663,16 +673,25 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
                 scItemsContainer.appendChild(scItem);
             }
 
-            if (self.onAddedSeat != null) {
-                self.onAddedSeat(seatName, capitalizedType, price);
+            if (self.onAddedSeat !== null) {
+                self.onAddedSeat(seatName, capitalizedType, price, seat);
             }
         } else if (action === 'update') {
+            if (self.onRemovedSeat !== null) {
+                self.onRemovedSeat(
+                    seatName,
+                    previousType.capitalizeFirstLetter(),
+                    self.getPrice(previousType),
+                    seat
+                );
+            }
+
             scItem = document.getElementById('item-{0}'.format(id));
             var p = scItem.getElementsByTagName('p')[0];
             p.textContent = description;
 
-            if (self.onAddedSeat != null) {
-                self.onAddedSeat(seatName, capitalizedType, price);
+            if (self.onAddedSeat !== null) {
+                self.onAddedSeat(seatName, capitalizedType, price, seat);
             }
         }
     };
@@ -800,7 +819,7 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
                             }
                         } else if (addToScDict(this.id, newClass) &&
                                   removeFromScDict(this.id, currentClass)) {
-                            updateShoppingCart('update', this.id, newClass);
+                            updateShoppingCart('update', this.id, newClass, currentClass);
                         }
                     }
                 }
@@ -1240,6 +1259,7 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
                     // deselect seat
                     releaseSeat(id);
 
+                    var seat = mapShoppingCartValue(id);
                     var seatName = getSeatName(id);
                     var type = getSeatType(id);
 
@@ -1248,7 +1268,7 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
                     // fire event
                     if (self.onRemovedSeat != null) {
-                        self.onRemovedSeat(seatName, type.capitalizeFirstLetter(), price);
+                        self.onRemovedSeat(seatName, type.capitalizeFirstLetter(), price, seat);
                     }
                 }
 
