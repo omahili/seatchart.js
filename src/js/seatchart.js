@@ -1090,7 +1090,7 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
                     var id = '{0}_{1}'.format(row, column);
                     var seatName = '{0}{1}'.format(alphabet[row], column + 1);
                     var capitalizedType = type.capitalizeFirstLetter();
-                    var description = '{0} - {1} {2}{3}\n'.format(seatName, capitalizedType, price, this.currency);
+                    var description = '{0} - {1} {2}{3}\n'.format(seatName, capitalizedType, price, self.currency);
 
                     var scItem = createScItem(description, id);
                     scItemsContainer.appendChild(scItem);
