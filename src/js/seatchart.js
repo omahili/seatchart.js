@@ -1222,18 +1222,22 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         front.style.width = '{0}px'.format(((width + margins) * seatMap.cols) - margins);
 
         // add disabled columns to disabled array
-        for (var k = 0; k < seatMap.disabledCols.length; k += 1) {
-            var disabledColumn = seatMap.disabledCols[k];
-            for (var r = 0; r < seatMap.rows; r += 1) {
-                seatMap.disabled.push((seatMap.cols * r) + disabledColumn);
+        if (seatMap.disabledCols) {
+            for (var k = 0; k < seatMap.disabledCols.length; k += 1) {
+                var disabledColumn = seatMap.disabledCols[k];
+                for (var r = 0; r < seatMap.rows; r += 1) {
+                    seatMap.disabled.push((seatMap.cols * r) + disabledColumn);
+                }
             }
         }
 
         // add disabled rows to disabled array
-        for (var m = 0; m < seatMap.disabledRows.length; m += 1) {
-            var disabledRow = seatMap.disabledRows[m];
-            for (var c = 0; c < seatMap.cols; c += 1) {
-                seatMap.disabled.push((seatMap.cols * disabledRow) + c);
+        if (seatMap.disabledRows) {
+            for (var m = 0; m < seatMap.disabledRows.length; m += 1) {
+                var disabledRow = seatMap.disabledRows[m];
+                for (var c = 0; c < seatMap.cols; c += 1) {
+                    seatMap.disabled.push((seatMap.cols * disabledRow) + c);
+                }
             }
         }
 
