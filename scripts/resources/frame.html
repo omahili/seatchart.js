@@ -109,18 +109,24 @@
 &lt;script&nbsp;type=&quot;text/javascript&quot;&nbsp;src=&quot;/path/to/seatchart.js&quot;&gt;&lt;/script&gt;
 
 &lt;script&gt;
+    // Reserved and disabled seats are indexed
+    // from left to right by starting from 0.
+    // Given the seatmap as a 2D array and an index [R, C]
+    // the following values can obtained as follow:
+    // I = cols * R + C
     var map = {
-        rows: 10,
-        cols: 7,
-        // Give a look to the examples (download or github)
-        // to understand how to obtain the following values
-        reserved: [9, 14, 17],
-        disabled: [12, 21, 23]
+        rows: 9,
+        cols: 9,
+        // e.g. Reserved Seat [Row: 1, Col: 2] = 7 * 1 + 2 = 9
+        reserved: [1, 2, 3, 5, 6, 7, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20, 21],
+        disabled: [0, 8],
+        disabledRows: [4],
+        disabledCols: [4]
     };
 
     var types = [
-        { type: "regular", color: "orange", price: 10 },
-        { type: "reduced", color: "#af0000", price: 7.5 },
+        { type: "regular", color: "orange", price: 10, selected: [23, 24] },
+        { type: "reduced", color: "#af0000", price: 7.5, selected: [25, 26] },
         { type: "military", color: "red", price: 7 }
     ];
 
@@ -174,15 +180,17 @@
     <script type="text/javascript" src="./static/js/seatchart.js"></script>
     <script>
         var map = {
-            rows: 10,
-            cols: 7,
-            reserved: [9, 14, 17],
-            disabled: [12, 21, 23]
+            rows: 9,
+            cols: 9,
+            reserved: [1, 2, 3, 5, 6, 7, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20, 21],
+            disabled: [0, 8],
+            disabledRows: [4],
+            disabledCols: [4]
         };
 
         var types = [
-            { type: "regular", color: "orange", price: 10 },
-            { type: "reduced", color: "#af0000", price: 7.5 },
+            { type: "regular", color: "orange", price: 10, selected: [23, 24] },
+            { type: "reduced", color: "#af0000", price: 7.5, selected: [25, 26] },
             { type: "military", color: "red", price: 7 }
         ];
 
