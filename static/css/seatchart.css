@@ -17,7 +17,7 @@
 
 .seatChart-title img {
     float: left;
-    display: inline-block;
+    display: block;
 
     /* ie and edge require height to be set and width to be auto set, not the opposite */
     height: 20px;
@@ -39,21 +39,24 @@
     padding: 15px 0 0;
 }
 
-.seatChart-row {
-    height: 40px;
-}
-
 .seatChart-seat {
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+
     position: relative;
     color: white;
-    border-radius: 10px;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    -ms-border-radius: 4px;
-    height: 30px;
-    width: 30px;
-    margin: 4px;
-    line-height: 30px;
+
+    border-top-left-radius: 10px;
+    -webkit-border-top-left-radius: 10px;
+
+    border-top-right-radius: 10px;
+    -webkit-border-top-right-radius: 10px;
+
+    height: 40px;
+    width: 40px;
+    margin: 3px;
+    line-height: 40px;
     float: left;
     text-align: center;
     vertical-align: middle;
@@ -62,15 +65,10 @@
 
 .seatChart-front {
     color: #787878;
-    border: 1px solid #dfdfdf;
-    border-radius: 4px;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    -ms-border-radius: 4px;
-
-    /* 30px - 2px because of border */
-    height: 28px;
-    line-height: 30px;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    height: 40px;
+    line-height: 40px;
     margin: 4px;
     float: left;
     text-align: center;
@@ -107,7 +105,7 @@
 
 .seatChart-seat {
     color: #fff;
-    line-height: 30px;
+    line-height: 40px;
     text-align: center;
     font-family: "Lato", sans-serif;
 }
@@ -129,17 +127,14 @@
 }
 
 .seatChart-seat.unavailable {
-    /* 28px instead of 30px because border adds 2 px in width and height */
-    width: 28px;
-    height: 28px;
-    background-color: #ccc;
-    border: 1px solid #b4b4b4;
+    background-color: rgb(210, 210, 210);
     cursor: not-allowed;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.06);
 }
 
 .seatChart-seat.clicked {
     cursor: pointer;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 1px 3px rgba(160, 106, 106, 0.06), 0 1px 2px rgba(0, 0, 0, 0.12);
 }
 
 /* Seat legend css */
@@ -154,6 +149,7 @@
     margin: 0;
     padding: 10px 0 0;
     vertical-align: middle;
+    line-height: 25px;
 }
 
 .seatChart-legend-description {
@@ -164,13 +160,16 @@
 .seatChart-seat.legend-style {
     cursor: default;
     float: left;
-    width: 20px;
-    height: 20px;
+    width: 25px;
+    height: 25px;
     margin: 0;
-    border-radius: 10px;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    -ms-border-radius: 10px;
+
+    border-top-right-radius: 5px;
+    -webkit-border-top-right-radius: 5px;
+
+    border-top-left-radius: 5px;
+    -webkit-border-top-left-radius: 5px;
+
     pointer-events: none;
 }
 
@@ -193,24 +192,23 @@
 }
 
 .seatChart-sc-delete {
+    cursor: pointer;
+
     /* makes img stay centered */
     position: relative;
     background-color: #db2c2c;
 
     /* makes it stay at the right of the container */
     margin: auto 10px auto auto;
-    height: 22px;
-    width: 22px;
-    border: 1px solid #dd1616;
-    border-radius: 7px;
-    -webkit-border-radius: 7px;
-    -moz-border-radius: 7px;
-    -ms-border-radius: 7px;
+    height: 25px;
+    width: 25px;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
 }
 
 .seatChart-sc-delete img {
-    height: 14px;
-    width: 14px;
+    height: 15px;
+    width: 15px;
 
     /* makes img stay centered */
     position: absolute;
@@ -224,7 +222,7 @@
 .seatChart-sc-delete.all {
     margin: 15px 0 0;
     padding: 0;
-    width: 50px;
+    width: 60px;
 }
 
 .seatChart-sc-delete.all img {
@@ -238,13 +236,12 @@
     color: white;
     text-align: center;
 
-    /* gives a better effect than the actual height of 24px */
-    line-height: 23px;
+    line-height: 25px;
     padding: 0;
-    margin: 0 0 0 15px;
+    margin: 0 0 0 20px;
 }
 
-.seatChart-sc-delete:active {
+.seatChart-sc-delete:hover {
     background-color: #db4646;
 }
 
@@ -252,17 +249,15 @@
     margin: 0;
     padding: 0;
     float: right;
-    display: inline-block;
-    line-height: 24px;
+    display: block;
+    line-height: 25px;
 }
 
 .seatChart-sc-description {
     float: left;
-    display: inline-block;
+    display: block;
     margin: auto;
     padding: 0 10px;
     font-size: 14px;
-
-    /* 22 + 2 px because delete button has borders */
-    line-height: 24px;
+    line-height: 25px;
 }
