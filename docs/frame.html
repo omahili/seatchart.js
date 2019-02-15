@@ -34,7 +34,7 @@
         right: 0;
     }
     .centered-block {
-        max-width: 700px;
+        max-width: 950px;
         display: block;
         margin: auto;
         left: 0;
@@ -44,7 +44,7 @@
         text-align: center;
     }
     .usage-content {
-        margin-top: 20px;
+        padding: 25px;
     }
     .motto {
         margin-bottom: 50px;
@@ -71,10 +71,7 @@
         margin-left: 50px;
     }
     #download-button {
-        background: linear-gradient(to bottom, #008080, #2F2F2F);
-        border-color: black;
-        border-style: solid;
-        border-width: 1px;
+        background: #008080;
         border-radius: 5px;
         color: white;
         cursor: pointer;
@@ -82,7 +79,6 @@
         margin-bottom: 70px;
         padding: 1em;
         text-align: center;
-        text-shadow: black 2px 2px 2px;
         text-decoration: none;
         width: 200px;
     }
@@ -95,15 +91,16 @@
         <img src="./static/assets/logo.svg">
     </div>
 
-    <h1 class="centered-block text-center motto">Create beautiful designed seat maps, legends and shopping carts.</h1>
+    <h1 class="centered-block text-center motto">Create beautiful designed seat maps.</h1>
 
     <a href="https://github.com/OmarMahili/SeatchartJS/archive/master.zip" id="download-button" class="centered">Download</a>
 
-    <h3 class="centered-block text-center">Usage</h3>
-    <div class="usage-content">
-        <p class="centered-block">First of all link the library along with the stylesheet and the script that generates the seatchart.</p>
+    <div class="centered-block usage-content">
+        <h2>Usage</h2>
 
-        <pre class="centered-block snippet">
+        <p>First of all link the library along with the stylesheet and the script that generates the seatchart.</p>
+
+        <pre class="snippet">
             <code>
 &lt;link&nbsp;rel=&quot;stylesheet&quot;&nbsp;href=&quot;/path/to/seatchart.css&quot;&gt;
 &lt;script&nbsp;type=&quot;text/javascript&quot;&nbsp;src=&quot;/path/to/seatchart.js&quot;&gt;&lt;/script&gt;
@@ -141,17 +138,17 @@
             </code>
         </pre>
 
-        <p class="centered-block">Then in you web page body create three containers that are going to contain the three elements: seat map, legend and shopping cart. Their id needs to be the same passed to the create functions (1), in your script.</p>
-        <pre class="centered-block snippet">
+        <p>Then in your web page body create three containers that are going to contain the three elements: seat map, legend and shopping cart. Their id needs to be the same passed to the create functions (1), in your script.</p>
+        <pre class="snippet">
             <code>
 &lt;div&nbsp;id=&quot;map-container&quot;&gt;&lt;/div&gt;
 &lt;div&nbsp;id=&quot;legend-container&quot;&gt;&lt;/div&gt;
 &lt;div&nbsp;id=&quot;shoppingCart-container&quot;&gt;&lt;/div&gt;
             </code>
         </pre>
-    </div>
 
-    <p class="centered-block">Enjoy the result.</p>
+        <p>Enjoy the result.</p>
+    </div>
 
     <div class="seatchart-container">
         <div class="centered">
