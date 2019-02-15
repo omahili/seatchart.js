@@ -23,7 +23,7 @@ fs.readFile('docs/index.html', 'utf8', function readFile(err, data) {
     }
 
     var mainDivStyle = 'height: calc(100% - 56px); margin-right:-20px; width:calc(100% - 220px);';
-    var iframe = "<iframe src='frame.html' width='100%' height='100%'></iframe>";
+    var iframe = "<iframe src='frame.html' style='border: 0; width: 100%; height: 100%;'></iframe>";
     var mainDiv = `<div id='main' style='${mainDivStyle}'>${iframe}</div>`;
 
     var result = data.replace(/<div id="main">[.\w\s]*<\/div>/, mainDiv);
