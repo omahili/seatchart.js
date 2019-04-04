@@ -34,7 +34,7 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     /**
      * @private
      * Computes the style of an element, it works even on ie :P.
-     * @params {Element} el - The element for which to get the computed style.
+     * @params {Element} el - The element for which we're getting the computed style.
      * @returns {CSSStyleDeclaration} The css of the element.
      */
     var getStyle = function getStyle(el) {
@@ -391,7 +391,7 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * A string containing all the letters of the english alphabet.
      * @type {string}
      */
-    var alphabet = 'ABCDEFGHIJLMNOPQRSTUVWXYZ';
+    var alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
     /**
      * @private
@@ -417,8 +417,8 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     /**
      * @private
      * A dictionary containing all seats added to the shopping cart, mapped by seat type.
-     * Each string is composed by row (r) and column (c) indexes in the following format: "r_c",
-     * which is the id in the dom, given to each seat.
+     * Each string is composed by row (r) and column (c) indexed in the following format: "r_c",
+     * which is the id of the seat in the document.
      * @type {Object.<string, Array.<string>>}
      */
     var shoppingCartDict = {};
@@ -1158,6 +1158,87 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
         return total;
     };
+
+    /**
+     * Checks whether a seat is a gap or not.
+     * @param {number} seatIndex - Seat index.
+     * @returns {boolean} True if it is, false otherwise.
+     */
+    this.isGap = function makesGap(seatIndex) {
+        var row = Math.floor(seatIndex / seatMap.cols);
+        var col = seatIndex % seatMap.cols;
+        
+        var seatId = "{0}_{1}".format(row, col);
+
+        // if current seat is disabled or reserved do not continue
+        if (seatMap.disabled.indexOf(seatIndex) >= 0 || seatMap.disabledCols.indexOf(col) >= 0 || seatMap.disabledRows.indexOf(row) >= 0 || seatMap.reserved.indexOf(seatIndex) >= 0) {
+            return false;
+        }
+
+        // if current seat is selected do not continue
+        for (var key in shoppingCartDict) {
+            if ({}.hasOwnProperty.call(shoppingCartDict, key)) {
+                if (shoppingCartDict[key].indexOf(seatId) >= 0) {
+                    return false;
+                }
+            }
+        }
+
+        var colBefore = col - 1;
+        var colAfter = col + 1;
+
+        var seatBefore = seatIndex - 1;
+        var seatAfter = seatIndex + 1;
+
+        var isSeatBeforeDisabled = seatMap.disabled.indexOf(seatBefore) >= 0;
+        var isSeatAfterDisabled = seatMap.disabled.indexOf(seatAfter) >= 0;
+        
+        // if there's a disabled block before and after (or if the whole row is disabled) do not consider it a gap
+        if (isSeatBeforeDisabled && isSeatAfterDisabled) {
+            return false;
+        }
+
+        // if there's a disabled block before and no seats after because the seatchart ends or, 
+        // a disabled block after and no seats before, then do not consider it a gap 
+        if ((isSeatBeforeDisabled && colAfter >= seatMap.cols) || (colBefore < 0 && isSeatAfterDisabled)) {
+            return false
+        }
+
+        var seatBeforeId = "{0}_{1}".format(row, colBefore);
+        var seatAfterId = "{0}_{1}".format(row, colAfter);
+        
+        var isSeatBeforeSelected = false;
+        var isSeatAfterSelected = false;
+        
+        // check if seat before and after are selected
+        for (var key in shoppingCartDict) {
+            if ({}.hasOwnProperty.call(shoppingCartDict, key)) {
+                if (!isSeatBeforeSelected) {
+                    isSeatBeforeSelected = shoppingCartDict[key].indexOf(seatBeforeId) >= 0;
+                }
+                
+                if (!isSeatAfterSelected) {
+                    isSeatAfterSelected = shoppingCartDict[key].indexOf(seatAfterId) >= 0;
+                }
+
+                if (isSeatAfterSelected && isSeatBeforeSelected) {
+                    break;
+                }
+            }
+        }
+
+        var isSeatBeforeUnavailable = colBefore < 0 || 
+            seatMap.reserved.indexOf(seatBefore) >= 0 || 
+            isSeatBeforeDisabled || 
+            isSeatBeforeSelected;
+
+        var isSeatAfterUnavailable = colAfter >= seatMap.cols || 
+            seatMap.reserved.indexOf(seatAfter) >= 0 || 
+            isSeatAfterDisabled || 
+            isSeatAfterSelected;
+
+        return isSeatBeforeUnavailable && isSeatAfterUnavailable;
+    }
 
     /**
      * This event is triggered when a seat is added to the shopping cart.
