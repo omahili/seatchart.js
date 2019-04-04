@@ -1262,6 +1262,22 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     }
 
     /**
+     * Gets all gaps of the seat map.
+     * @returns {Array.<number>} Array of gaps.
+     */
+    this.getGaps = function getGaps() {
+        const gaps = [];
+        const count = seatMap.cols * seatMap.rows;
+        for (var i = 0; i < count; i++) {
+            if (this.isGap(i)) {
+                gaps.push(i);
+            }
+        }
+
+        return gaps;
+    }
+
+    /**
      * This event is triggered when a seat is added to the shopping cart.
      * (This event works even when a shopping cart isn't created,
      * because the virtual one works independently.)
