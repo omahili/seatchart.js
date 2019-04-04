@@ -1241,6 +1241,27 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     }
 
     /**
+     * Checks whether a seat creates a gap or not.
+     * @param {number} seatIndex - Seat index.
+     * @returns {boolean} True if it does, false otherwise.
+     */
+    this.makesGap = function makesGap(seatIndex) {
+        var col = seatIndex % seatMap.cols;
+
+        var isSeatBeforeGap = false;
+        if (seatIndex - 1 >= 0 && col > 0) {
+            isSeatBeforeGap = this.isGap(seatIndex - 1);
+        }
+
+        var isSeatAfterGap = false;
+        if (seatIndex + 1 < seatMap.cols * seatMap.rows && col < seatMap.cols) {
+            isSeatAfterGap = this.isGap(seatIndex + 1);
+        }
+
+        return isSeatBeforeGap || isSeatAfterGap;
+    }
+
+    /**
      * This event is triggered when a seat is added to the shopping cart.
      * (This event works even when a shopping cart isn't created,
      * because the virtual one works independently.)
