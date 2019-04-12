@@ -1167,11 +1167,15 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     this.isGap = function makesGap(seatIndex) {
         var row = Math.floor(seatIndex / seatMap.cols);
         var col = seatIndex % seatMap.cols;
-        
-        var seatId = "{0}_{1}".format(row, col);
+
+        var seatId = '{0}_{1}'.format(row, col);
 
         // if current seat is disabled or reserved do not continue
-        if (seatMap.disabled.indexOf(seatIndex) >= 0 || seatMap.disabledCols.indexOf(col) >= 0 || seatMap.disabledRows.indexOf(row) >= 0 || seatMap.reserved.indexOf(seatIndex) >= 0) {
+        if (seatMap.disabled.indexOf(seatIndex) >= 0 ||
+            seatMap.disabledCols.indexOf(col) >= 0 ||
+            seatMap.disabledRows.indexOf(row) >= 0 ||
+            seatMap.reserved.indexOf(seatIndex) >= 0
+        ) {
             return false;
         }
 
@@ -1192,33 +1196,33 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
         var isSeatBeforeDisabled = seatMap.disabled.indexOf(seatBefore) >= 0;
         var isSeatAfterDisabled = seatMap.disabled.indexOf(seatAfter) >= 0;
-        
+
         // if there's a disabled block before and after (or if the whole row is disabled) do not consider it a gap
         if (isSeatBeforeDisabled && isSeatAfterDisabled) {
             return false;
         }
 
-        // if there's a disabled block before and no seats after because the seatchart ends or, 
-        // a disabled block after and no seats before, then do not consider it a gap 
+        // if there's a disabled block before and no seats after because the seatchart ends or,
+        // a disabled block after and no seats before, then do not consider it a gap
         if ((isSeatBeforeDisabled && colAfter >= seatMap.cols) || (colBefore < 0 && isSeatAfterDisabled)) {
-            return false
+            return false;
         }
 
-        var seatBeforeId = "{0}_{1}".format(row, colBefore);
-        var seatAfterId = "{0}_{1}".format(row, colAfter);
-        
+        var seatBeforeId = '{0}_{1}'.format(row, colBefore);
+        var seatAfterId = '{0}_{1}'.format(row, colAfter);
+
         var isSeatBeforeSelected = false;
         var isSeatAfterSelected = false;
-        
+
         // check if seat before and after are selected
-        for (var key in shoppingCartDict) {
-            if ({}.hasOwnProperty.call(shoppingCartDict, key)) {
+        for (var types in shoppingCartDict) {
+            if ({}.hasOwnProperty.call(shoppingCartDict, types)) {
                 if (!isSeatBeforeSelected) {
-                    isSeatBeforeSelected = shoppingCartDict[key].indexOf(seatBeforeId) >= 0;
+                    isSeatBeforeSelected = shoppingCartDict[types].indexOf(seatBeforeId) >= 0;
                 }
-                
+
                 if (!isSeatAfterSelected) {
-                    isSeatAfterSelected = shoppingCartDict[key].indexOf(seatAfterId) >= 0;
+                    isSeatAfterSelected = shoppingCartDict[types].indexOf(seatAfterId) >= 0;
                 }
 
                 if (isSeatAfterSelected && isSeatBeforeSelected) {
@@ -1227,18 +1231,18 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
             }
         }
 
-        var isSeatBeforeUnavailable = colBefore < 0 || 
-            seatMap.reserved.indexOf(seatBefore) >= 0 || 
-            isSeatBeforeDisabled || 
+        var isSeatBeforeUnavailable = colBefore < 0 ||
+            seatMap.reserved.indexOf(seatBefore) >= 0 ||
+            isSeatBeforeDisabled ||
             isSeatBeforeSelected;
 
-        var isSeatAfterUnavailable = colAfter >= seatMap.cols || 
-            seatMap.reserved.indexOf(seatAfter) >= 0 || 
-            isSeatAfterDisabled || 
+        var isSeatAfterUnavailable = colAfter >= seatMap.cols ||
+            seatMap.reserved.indexOf(seatAfter) >= 0 ||
+            isSeatAfterDisabled ||
             isSeatAfterSelected;
 
         return isSeatBeforeUnavailable && isSeatAfterUnavailable;
-    }
+    };
 
     /**
      * Checks whether a seat creates a gap or not.
@@ -1259,23 +1263,23 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         }
 
         return isSeatBeforeGap || isSeatAfterGap;
-    }
+    };
 
     /**
      * Gets all gaps of the seat map.
      * @returns {Array.<number>} Array of gaps.
      */
     this.getGaps = function getGaps() {
-        const gaps = [];
-        const count = seatMap.cols * seatMap.rows;
-        for (var i = 0; i < count; i++) {
+        var gaps = [];
+        var count = seatMap.cols * seatMap.rows;
+        for (var i = 0; i < count; i += 1) {
             if (this.isGap(i)) {
                 gaps.push(i);
             }
         }
 
         return gaps;
-    }
+    };
 
     /**
      * This event is triggered when a seat is added to the shopping cart.
