@@ -1200,14 +1200,21 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         var isSeatBeforeDisabled = seatMap.disabled.indexOf(seatBefore) >= 0;
         var isSeatAfterDisabled = seatMap.disabled.indexOf(seatAfter) >= 0;
 
-        // if there's a disabled block before and after (or if the whole row is disabled) do not consider it a gap
-        if (isSeatBeforeDisabled && isSeatAfterDisabled) {
+        var isSeatBeforeReserved = seatMap.reserved.indexOf(seatBefore) >= 0;
+        var isSeatAfterReserved = seatMap.reserved.indexOf(seatAfter) >= 0;
+
+        // if there's a disabled/disabled block before and after do not consider it a gap
+        if ((isSeatBeforeDisabled && isSeatAfterDisabled) || 
+            (isSeatBeforeReserved && isSeatAfterReserved) || 
+            (isSeatBeforeReserved && isSeatAfterDisabled) || 
+            (isSeatBeforeDisabled && isSeatAfterReserved)) {
             return false;
         }
 
-        // if there's a disabled block before and no seats after because the seatchart ends or,
-        // a disabled block after and no seats before, then do not consider it a gap
-        if ((isSeatBeforeDisabled && colAfter >= seatMap.cols) || (colBefore < 0 && isSeatAfterDisabled)) {
+        // if there's a disabled/reserved block before and no seats after because the seatchart ends or,
+        // a disabled/reserved block after and no seats before, then do not consider it a gap
+        if (((isSeatBeforeDisabled || isSeatBeforeReserved) && colAfter >= seatMap.cols) ||
+            (colBefore < 0 && (isSeatAfterDisabled || isSeatAfterReserved))) {
             return false;
         }
 
