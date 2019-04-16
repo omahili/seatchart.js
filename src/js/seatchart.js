@@ -859,11 +859,11 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
                         // so the event is fired just once the seat style is really updated
                         if (currentClass === 'available') {
                             if (addToScDict(this.id, newClass)) {
-                                updateShoppingCart('add', this.id, newClass, true);
+                                updateShoppingCart('add', this.id, newClass, null, true);
                             }
                         } else if (newClass === 'available') {
                             if (removeFromScDict(this.id, currentClass)) {
-                                updateShoppingCart('remove', this.id, currentClass, true);
+                                updateShoppingCart('remove', this.id, currentClass, null, true);
                             }
                         } else if (addToScDict(this.id, newClass) &&
                                   removeFromScDict(this.id, currentClass)) {
@@ -927,7 +927,7 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
             // there's no need to fire onRemoveSeat event since this function fires it
             // fire event after removing seat from shopping cart
-            updateShoppingCart('remove', this.id, type, true);
+            updateShoppingCart('remove', this.id, type, null, true);
             updateTotal();
         }
 
@@ -1381,18 +1381,18 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         if (seat.type !== 'available' && seat.type !== 'disabled' && seat.type !== 'reserved') {
             if (type !== 'available' && type !== 'disabled' && type !== 'reserved') {
                 if (removeFromScDict(seat.id, seat.type) && addToScDict(seat.id, type)) {
-                    updateShoppingCart('update', seat.id, type, emit);
+                    updateShoppingCart('update', seat.id, type, seat.type, emit);
                     element.classList.add('clicked');
                     element.style.setProperty('background-color', seatType.color);
                 }
             } else if (removeFromScDict(seat.id, seat.type)) {
-                updateShoppingCart('remove', seat.id, seat.type, emit);
+                updateShoppingCart('remove', seat.id, seat.type, null, emit);
                 element.classList.remove('clicked');
                 element.style.removeProperty('background-color');
             }
         } else if (type !== 'available' && type !== 'disabled' && type !== 'reserved') {
             if (addToScDict(seat.id, type)) {
-                updateShoppingCart('add', seat.id, type, emit);
+                updateShoppingCart('add', seat.id, type, null, emit);
                 element.classList.add('clicked');
                 element.style.setProperty('background-color', seatType.color);
             }
