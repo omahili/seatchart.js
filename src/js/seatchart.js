@@ -1204,9 +1204,9 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         var isSeatAfterReserved = seatMap.reserved.indexOf(seatAfter) >= 0;
 
         // if there's a disabled/disabled block before and after do not consider it a gap
-        if ((isSeatBeforeDisabled && isSeatAfterDisabled) || 
-            (isSeatBeforeReserved && isSeatAfterReserved) || 
-            (isSeatBeforeReserved && isSeatAfterDisabled) || 
+        if ((isSeatBeforeDisabled && isSeatAfterDisabled) ||
+            (isSeatBeforeReserved && isSeatAfterReserved) ||
+            (isSeatBeforeReserved && isSeatAfterDisabled) ||
             (isSeatBeforeDisabled && isSeatAfterReserved)) {
             return false;
         }
@@ -1374,7 +1374,6 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         if (seat.type === 'disabled' || seat.type === 'reserved') {
             var arrayIndex = seatMap[seat.type].indexOf(index);
             seatMap[seat.type].splice(arrayIndex, 1);
-            element.classList.remove(classes[seat.type]);
         }
 
         if (type === 'reserved' || type === 'disabled') {
@@ -1388,20 +1387,20 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         if (seat.type !== 'available' && seat.type !== 'disabled' && seat.type !== 'reserved') {
             if (type !== 'available' && type !== 'disabled' && type !== 'reserved') {
                 if (removeFromScDict(seat.id, seat.type) && addToScDict(seat.id, type)) {
-                    updateShoppingCart('update', seat.id, type, seat.type, emit);
                     element.classList.add('clicked');
                     element.style.setProperty('background-color', seatType.color);
+                    updateShoppingCart('update', seat.id, type, seat.type, emit);
                 }
             } else if (removeFromScDict(seat.id, seat.type)) {
-                updateShoppingCart('remove', seat.id, seat.type, null, emit);
                 element.classList.remove('clicked');
                 element.style.removeProperty('background-color');
+                updateShoppingCart('remove', seat.id, seat.type, null, emit);
             }
         } else if (type !== 'available' && type !== 'disabled' && type !== 'reserved') {
             if (addToScDict(seat.id, type)) {
-                updateShoppingCart('add', seat.id, type, null, emit);
                 element.classList.add('clicked');
                 element.style.setProperty('background-color', seatType.color);
+                updateShoppingCart('add', seat.id, type, null, emit);
             }
         }
 
@@ -1409,8 +1408,8 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
             classes[x] = x;
         });
 
-        removeAllTypesApplied(element);
         element.classList.add(classes[type]);
+        element.classList.remove(classes[seat.type]);
 
         if (sound) {
             playAsyncClick();
