@@ -1277,7 +1277,7 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
     /**
      * Gets all gaps of the seat map.
-     * @returns {Array.<number>} Array of gaps.
+     * @returns {Array.<number>} Array of indexes.
      */
     this.getGaps = function getGaps() {
         var gaps = [];
@@ -1294,73 +1294,100 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     /**
      * Get seat info.
      * @param {number} index - Seat index.
-     * @returns {Object.<{type: string, id: string, name: string, price: number}>} Seat info.
+     * @returns {Object.<{type: string, id: string, index: number, name: string, price: number}>} Seat info.
      */
     this.get = function get(index) {
-        var row = Math.floor(index / seatMap.cols);
-        var col = index % seatMap.cols;
-        var seatId = '{0}_{1}'.format(row, col);
-        var seatName = getSeatName(seatId);
-
-        // check if seat is reserved
-        if (seatMap.reserved.indexOf(index) >= 0) {
-            return {
-                type: 'reserved',
-                id: seatId,
-                name: seatName,
-                price: null
-            };
+        if (typeof index !== 'number' && Math.floor(index) === index) {
+            throw new Error("Invalid parameter 'index' supplied to SeatchartJS.get(). It must be an integer.");
         }
 
-        // check if seat is reserved
-        if (seatMap.disabled.indexOf(index) >= 0) {
-            return {
-                type: 'disabled',
-                id: seatId,
-                name: seatName,
-                price: null
-            };
-        }
+        if (index < seatMap.rows * seatMap.cols) {
+            var row = Math.floor(index / seatMap.cols);
+            var col = index % seatMap.cols;
+            var seatId = '{0}_{1}'.format(row, col);
+            var seatName = getSeatName(seatId);
 
-        // check if seat is already selected
-        for (var type in shoppingCartDict) {
-            if ({}.hasOwnProperty.call(shoppingCartDict, type)) {
-                var price = this.getPrice(type);
-                if (shoppingCartDict[type].indexOf(seatId) >= 0) {
-                    return {
-                        type: type,
-                        id: seatId,
-                        name: seatName,
-                        price: price
-                    };
+            // check if seat is reserved
+            if (seatMap.reserved.indexOf(index) >= 0) {
+                return {
+                    type: 'reserved',
+                    id: seatId,
+                    index: index,
+                    name: seatName,
+                    price: null
+                };
+            }
+
+            // check if seat is reserved
+            if (seatMap.disabled.indexOf(index) >= 0) {
+                return {
+                    type: 'disabled',
+                    id: seatId,
+                    index: index,
+                    name: seatName,
+                    price: null
+                };
+            }
+
+            // check if seat is already selected
+            for (var type in shoppingCartDict) {
+                if ({}.hasOwnProperty.call(shoppingCartDict, type)) {
+                    var price = this.getPrice(type);
+                    if (shoppingCartDict[type].indexOf(seatId) >= 0) {
+                        return {
+                            type: type,
+                            id: seatId,
+                            index: index,
+                            name: seatName,
+                            price: price
+                        };
+                    }
                 }
             }
-        }
 
-        if (row < seatMap.rows && col < seatMap.cols) {
             return {
                 type: 'available',
                 id: seatId,
+                index: index,
                 name: seatName,
                 price: null
             };
         }
 
-        return null;
+        throw new Error("Invalid parameter 'index' supplied to SeatchartJS.get(). Index is out of range.");
     };
 
     /**
      * Set seat type.
-     * @param {number} index - Seat index.
-     * @param {string} type - Seat type.
-     * @param {boolean} emit - True to trigger onAddedSeat or onRemovedSeat events.
-     * @param {boolean} sound - True to play sound (works if sound is enabled only).
+     * @param {number} index - Index of the seat to update.
+     * @param {string} type - New seat type.
+     * @param {boolean} emit - True to trigger onAddedSeat or onRemovedSeat events (default is false).
+     * @param {boolean} sound - True to play sound (default is false, it works only if sound is enabled).
      */
     this.set = function set(index, type, emit, sound) {
-        // TODO: check arguments
+        if (typeof index !== 'number' && Math.floor(index) === index) {
+            throw new Error("Invalid parameter 'index' supplied to SeatchartJS.set(). It must be an integer.");
+        } else if (index >= seatMap.rows * seatMap.cols) {
+            throw new Error("Invalid parameter 'index' supplied to SeatchartJS.set(). Index is out of range.");
+        } else if (typeof type !== 'string') {
+            throw new Error("Invalid parameter 'type' supplied to SeatchartJS.set(). It must be a string.");
+        } else {
+            var seatType = seatTypes.find(function findSeatType(x) {
+                return x.type === type;
+            });
+
+            // check if type is valid
+            if (['available', 'reserved', 'disabled'].indexOf(type) < 0 && !seatType) {
+                throw new Error("Invalid parameter 'type' supplied to SeatchartJS.set().");
+            } else if (emit && typeof emit !== 'boolean') {
+                throw new Error("Invalid parameter 'emit' supplied to SeatchartJS.set(). It must be a boolean.");
+            } else if (sound && typeof sound !== 'boolean') {
+                throw new Error("Invalid parameter 'sound' supplied to SeatchartJS.set(). It must be a boolean.");
+            }
+        }
 
         var seat = self.get(index);
-        if (seat.type === type) {
+        if (!seat || seat.type === type) {
             return;
         }
 
@@ -1379,10 +1406,6 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         if (type === 'reserved' || type === 'disabled') {
             seatMap[type].push(index);
         }
-
-        var seatType = seatTypes.find(function findSeatType(x) {
-            return x.type === type;
-        });
 
         if (seat.type !== 'available' && seat.type !== 'disabled' && seat.type !== 'reserved') {
             if (type !== 'available' && type !== 'disabled' && type !== 'reserved') {
