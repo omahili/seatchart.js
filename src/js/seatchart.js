@@ -467,10 +467,9 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
     /**
      * @private
-     * Maps a shoppingCartDict value to a shoppingCart value.
-     * (See private variables shoppingCartDict and shoppingCart.)
+     * Converts a seat id to an index.
      */
-    var mapShoppingCartValue = function mapValues(x) {
+    var getIndexFromId = function mapValues(x) {
         var values = x.split('_').map(function parseValues(x) {
             return parseInt(x, 10);
         });
@@ -480,13 +479,13 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
     /**
      * @private
-     * Updates shopping cart object: values stored into shoppingCartDict are mapped to fit shoppingCart
-     * type and format. (See private variables shoppingCartDict and shoppingCart.)
+     * Updates shopping cart object: values stored into shoppingCartDict are mapped to fit
+     * shoppingCart type and format. (See private variables shoppingCartDict and shoppingCart.)
      */
     var updateShoppingCartObject = function updateShoppingCartObject() {
         for (var s in shoppingCartDict) {
             if ({}.hasOwnProperty.call(shoppingCartDict, s)) {
-                shoppingCart[s] = shoppingCartDict[s].map(mapShoppingCartValue);
+                shoppingCart[s] = shoppingCartDict[s].map(getIndexFromId);
             }
         }
     };
@@ -660,7 +659,7 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
         var id = parentId.split('-')[1];
 
-        var seat = mapShoppingCartValue(id);
+        var seat = getIndexFromId(id);
         var seatName = getSeatName(id);
         var type = getSeatType(id);
 
@@ -711,17 +710,32 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * Updates the shopping cart by adding, removing or updating a seat.
      * @param {string} action - Action on the shopping cart ("remove", "add" or "update").
      * @param {string} id - Id of the seat in the dom.
-     * @param {string} type - New seat type when it is updated or added. Current seat type when it is removed.
-     * @param {string} previousType - Previous type of the seat (when the seat is updated or null).
+     * @param {string} type - New seat type.
+     * @param {string} previousType - Previous seat type.
      * @param {boolean} emit - True to trigger onAddedSeat or onRemovedSeat events.
      */
     var updateShoppingCart = function updateShoppingCart(action, id, type, previousType, emit) {
-        var seatName = document.getElementById(id).textContent;
-        var seat = mapShoppingCartValue(id);
+        var seatName = getSeatName(id);
+        var index = getIndexFromId(id);
+        var price = ['available', 'disabled', 'reserved'].indexOf(type) < 0 ? self.getPrice(type) : null;
+
+        var current = {
+            type: type,
+            id: id,
+            index: index,
+            name: seatName,
+            price: price
+        };
+        var previous = {
+            type: previousType,
+            id: id,
+            index: index,
+            name: seatName,
+            price: ['available', 'disabled', 'reserved'].indexOf(previousType) < 0 ? self.getPrice(previousType) : null
+        };
+
         var scItem;
-        var capitalizedType = type.capitalizeFirstLetter();
-        var price = self.getPrice(type);
-        var description = '{0} - {1} {2}{3}\n'.format(seatName, capitalizedType, price, self.currency);
+        var description = '{0} - {1} {2}{3}\n'.format(seatName, type.capitalizeFirstLetter(), price, self.currency);
 
         updateShoppingCartObject();
 
@@ -731,7 +745,7 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
             }
 
             if (emit && self.onRemovedSeat !== null) {
-                self.onRemovedSeat(seatName, capitalizedType, price, seat);
+                self.onRemovedSeat(current, previous);
             }
         } else if (action === 'add') {
             if (scItemsContainer !== undefined) {
@@ -740,16 +754,11 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
             }
 
             if (emit && self.onAddedSeat !== null) {
-                self.onAddedSeat(seatName, capitalizedType, price, seat);
+                self.onAddedSeat(current, previous);
             }
         } else if (action === 'update') {
             if (emit && self.onRemovedSeat !== null) {
-                self.onRemovedSeat(
-                    seatName,
-                    previousType.capitalizeFirstLetter(),
-                    self.getPrice(previousType),
-                    seat
-                );
+                self.onRemovedSeat(current, previous);
             }
 
             scItem = document.getElementById('item-{0}'.format(id));
@@ -757,7 +766,7 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
             p.textContent = description;
 
             if (emit && self.onAddedSeat !== null) {
-                self.onAddedSeat(seatName, capitalizedType, price, seat);
+                self.onAddedSeat(current, previous);
             }
         }
     };
@@ -859,11 +868,11 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
                         // so the event is fired just once the seat style is really updated
                         if (currentClass === 'available') {
                             if (addToScDict(this.id, newClass)) {
-                                updateShoppingCart('add', this.id, newClass, null, true);
+                                updateShoppingCart('add', this.id, newClass, currentClass, true);
                             }
                         } else if (newClass === 'available') {
                             if (removeFromScDict(this.id, currentClass)) {
-                                updateShoppingCart('remove', this.id, currentClass, null, true);
+                                updateShoppingCart('remove', this.id, newClass, currentClass, true);
                             }
                         } else if (addToScDict(this.id, newClass) &&
                                   removeFromScDict(this.id, currentClass)) {
@@ -927,7 +936,7 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
             // there's no need to fire onRemoveSeat event since this function fires it
             // fire event after removing seat from shopping cart
-            updateShoppingCart('remove', this.id, type, null, true);
+            updateShoppingCart('remove', this.id, 'available', type, true);
             updateTotal();
         }
 
@@ -1134,7 +1143,7 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     /**
      * Gets the price for a specific type of seat.
      * @param {string} type - The type of the seat.
-     * @returns {number} The price.
+     * @returns {number} Price.
      */
     this.getPrice = function getPrice(type) {
         for (var i = 0; i < seatTypes.length; i += 1) {
@@ -1417,13 +1426,13 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
             } else if (removeFromScDict(seat.id, seat.type)) {
                 element.classList.remove('clicked');
                 element.style.removeProperty('background-color');
-                updateShoppingCart('remove', seat.id, seat.type, null, emit);
+                updateShoppingCart('remove', seat.id, type, seat.type, emit);
             }
         } else if (type !== 'available' && type !== 'disabled' && type !== 'reserved') {
             if (addToScDict(seat.id, type)) {
                 element.classList.add('clicked');
                 element.style.setProperty('background-color', seatType.color);
-                updateShoppingCart('add', seat.id, type, null, emit);
+                updateShoppingCart('add', seat.id, type, seat.type, emit);
             }
         }
 
@@ -1442,20 +1451,18 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * This event is triggered when a seat is added to the shopping cart.
-     * (This event works even when a shopping cart isn't created,
-     * because the virtual one works independently.)
-     *
+     * This event is triggered when a seat is selected.
      * @event SeatchartJS#onAddedSeat
+     * @param {Object.<{type: string, id: string, index: number, name: string, price: number}>} - Current seat info.
+     * @param {Object.<{type: string, id: string, index: number, name: string, price: number}>} - Previous seat info.
      */
     this.onAddedSeat = null;
 
     /**
-     * This event is triggered when a seat is removed from the shopping cart.
-     * (This event works even when a shopping cart isn't created,
-     * because the virtual one works independently.)
-     *
-     *  @event SeatchartJS#onRemovedSeat
+     * This event is triggered when a seat is unselected.
+     * @event SeatchartJS#onRemovedSeat
+     * @param {Object.<{type: string, id: string, index: number, name: string, price: number}>} - Current seat info.
+     * @param {Object.<{type: string, id: string, index: number, name: string, price: number}>} - Previous seat info.
      */
     this.onRemovedSeat = null;
 
@@ -1645,7 +1652,7 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
                     // deselect seat
                     releaseSeat(id);
 
-                    var seat = mapShoppingCartValue(id);
+                    var seat = getIndexFromId(id);
                     var seatName = getSeatName(id);
                     var type = getSeatType(id);
 
