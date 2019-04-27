@@ -1177,6 +1177,12 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * @returns {boolean} True if it is, false otherwise.
      */
     this.isGap = function isGap(seatIndex) {
+        if (typeof seatIndex !== 'number' && Math.floor(seatIndex) === seatIndex) {
+            throw new Error("Invalid parameter 'seatIndex' supplied to SeatchartJS.isGap(). It must be an integer.");
+        } else if (seatIndex >= seatMap.rows * seatMap.cols) {
+            throw new Error("Invalid parameter 'seatIndex' supplied to SeatchartJS.isGap(). Index is out of range.");
+        }
+
         var row = Math.floor(seatIndex / seatMap.cols);
         var col = seatIndex % seatMap.cols;
 
@@ -1269,6 +1275,12 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * @returns {boolean} True if it does, false otherwise.
      */
     this.makesGap = function makesGap(seatIndex) {
+        if (typeof seatIndex !== 'number' && Math.floor(seatIndex) === seatIndex) {
+            throw new Error("Invalid parameter 'seatIndex' supplied to SeatchartJS.makesGap(). It must be an integer.");
+        } else if (seatIndex >= seatMap.rows * seatMap.cols) {
+            throw new Error("Invalid parameter 'seatIndex' supplied to SeatchartJS.makesGap(). Index is out of range.");
+        }
+
         var col = seatIndex % seatMap.cols;
 
         var isSeatBeforeGap = false;
@@ -1277,7 +1289,7 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         }
 
         var isSeatAfterGap = false;
-        if (seatIndex + 1 < seatMap.cols * seatMap.rows && col < seatMap.cols) {
+        if (seatIndex + 1 < seatMap.cols * seatMap.rows && col + 1 < seatMap.cols) {
             isSeatAfterGap = this.isGap(seatIndex + 1);
         }
 
@@ -1308,6 +1320,8 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     this.get = function get(index) {
         if (typeof index !== 'number' && Math.floor(index) === index) {
             throw new Error("Invalid parameter 'index' supplied to SeatchartJS.get(). It must be an integer.");
+        } else if (index >= seatMap.rows * seatMap.cols) {
+            throw new Error("Invalid parameter 'index' supplied to SeatchartJS.get(). Index is out of range.");
         }
 
         if (index < seatMap.rows * seatMap.cols) {
