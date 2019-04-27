@@ -29,7 +29,7 @@
     "eslint-plugin-import": "^2.2.0",
     "fs-extra": "^1.0.0",
     "jsdoc": "^3.4.3",
-    "stylelint": "^7.6.0",
-    "stylelint-config-standard": "^15.0.0"
+    "stylelint": "^9.10.1",
+    "stylelint-config-standard": "^18.2.0"
   }
 }

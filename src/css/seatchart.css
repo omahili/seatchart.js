@@ -43,16 +43,12 @@
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
-
     position: relative;
     color: white;
-
     border-top-left-radius: 10px;
     -webkit-border-top-left-radius: 10px;
-
     border-top-right-radius: 10px;
     -webkit-border-top-right-radius: 10px;
-
     height: 40px;
     width: 40px;
     margin: 3px;
@@ -81,14 +77,9 @@
     color: #4b4949;
 }
 
-.seatChart-seat.blank {
-    background-color: transparent;
-    color: transparent;
-}
-
-.seatChart-seat.blank img {
+.seatChart-sc-delete img {
     height: 15px;
-    width: auto;
+    width: 15px;
 
     /* makes img stay centered */
     position: absolute;
@@ -100,19 +91,21 @@
 }
 
 .seatChart-seat.blank {
+    background-color: transparent;
     color: transparent;
 }
 
-.seatChart-seat {
-    color: #fff;
-    line-height: 40px;
-    text-align: center;
-    font-family: "Lato", sans-serif;
-}
+.seatChart-seat.blank img {
+    height: 15px;
+    width: auto;
 
-.seatChart-container {
-    cursor: default;
-    font-family: "RobotoDraft", "Roboto", sans-serif;
+    /* centers image */
+    position: absolute;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
 .seatChart-seat.available {
@@ -163,13 +156,10 @@
     width: 25px;
     height: 25px;
     margin: 0;
-
     border-top-right-radius: 5px;
     -webkit-border-top-right-radius: 5px;
-
     border-top-left-radius: 5px;
     -webkit-border-top-left-radius: 5px;
-
     pointer-events: none;
 }
 
@@ -206,19 +196,6 @@
     -webkit-border-radius: 5px;
 }
 
-.seatChart-sc-delete img {
-    height: 15px;
-    width: 15px;
-
-    /* makes img stay centered */
-    position: absolute;
-    margin: auto;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-}
-
 .seatChart-sc-delete.all {
     margin: 15px 0 0;
     padding: 0;
@@ -235,7 +212,6 @@
 .seatChart-sc-delete.all p {
     color: white;
     text-align: center;
-
     line-height: 25px;
     padding: 0;
     margin: 0 0 0 20px;
