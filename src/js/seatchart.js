@@ -1393,7 +1393,7 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     /**
      * Set seat type.
      * @param {number} index - Index of the seat to update.
-     * @param {string} type - New seat type.
+     * @param {string} type - New seat type ('disabled', 'reserved' and 'available' are supported too).
      * @param {boolean} emit - True to trigger onAddedSeat or onRemovedSeat events (default is false).
      * @param {boolean} sound - True to play sound (default is false, it works only if sound is enabled).
      */
@@ -1478,7 +1478,7 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * This event is triggered when a seat is selected.
      * @event SeatchartJS#onAddedSeat
      * @param {Object.<{type: string, id: string, index: number, name: string, price: number}>} - Current seat info.
-     * @param {Object.<{type: string, id: string, index: number, name: string, price: number}>} - Previous seat info.
+     * @param {Object.<{type: string, id: string, index: number, name: string, price: number}>} - Seat info previous to the event.
      */
     this.onAddedSeat = null;
 
@@ -1486,7 +1486,7 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * This event is triggered when a seat is unselected.
      * @event SeatchartJS#onRemovedSeat
      * @param {Object.<{type: string, id: string, index: number, name: string, price: number}>} - Current seat info.
-     * @param {Object.<{type: string, id: string, index: number, name: string, price: number}>} - Previous seat info.
+     * @param {Object.<{type: string, id: string, index: number, name: string, price: number}>} - Seat info previous to the event.
      */
     this.onRemovedSeat = null;
 
