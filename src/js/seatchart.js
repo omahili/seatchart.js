@@ -589,7 +589,7 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     var getSeatType = function getSeatType(id) {
         for (var key in shoppingCartDict) {
             if ({}.hasOwnProperty.call(shoppingCartDict, key)) {
-                if (shoppingCartDict[key].indexOf(id) > -1) {
+                if (shoppingCartDict[key].indexOf(id) >= 0) {
                     return key;
                 }
             }
@@ -658,23 +658,33 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         document.getElementById(parentId).outerHTML = '';
 
         var id = parentId.split('-')[1];
-
-        var seat = getIndexFromId(id);
-        var seatName = getSeatName(id);
         var type = getSeatType(id);
 
-        // get price before capitalizing since indexing is case sensitive
-        var price = self.getPrice(type);
-
-        // deselect seat
         releaseSeat(id);
-
         removeFromScDict(id);
         updateTotal();
 
         // fire event
         if (self.onRemovedSeat != null) {
-            self.onRemovedSeat(seatName, type.capitalizeFirstLetter(), price, seat);
+            var index = getIndexFromId(id);
+            var seatName = getSeatName(id);
+
+            var current = {
+                type: 'available',
+                id: id,
+                index: index,
+                name: seatName,
+                price: null
+            };
+            var previous = {
+                type: type,
+                id: id,
+                index: index,
+                name: seatName,
+                price: self.getPrice(type)
+            };
+
+            self.onRemovedSeat(current, previous);
         }
     };
 
@@ -1663,19 +1673,30 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
                 for (var i = 0; i < shoppingCartDict[key].length; i += 1) {
                     var id = shoppingCartDict[key][i];
 
-                    // deselect seat
                     releaseSeat(id);
-
-                    var seat = getIndexFromId(id);
-                    var seatName = getSeatName(id);
-                    var type = getSeatType(id);
-
-                    // get price before capitalizing since indexing is case sensitive
-                    var price = self.getPrice(type);
 
                     // fire event
                     if (self.onRemovedSeat != null) {
-                        self.onRemovedSeat(seatName, type.capitalizeFirstLetter(), price, seat);
+                        var index = getIndexFromId(id);
+                        var seatName = getSeatName(id);
+                        var type = getSeatType(id);
+
+                        var current = {
+                            type: 'available',
+                            id: id,
+                            index: index,
+                            name: seatName,
+                            price: null
+                        };
+                        var previous = {
+                            type: type,
+                            id: id,
+                            index: index,
+                            name: seatName,
+                            price: self.getPrice(type)
+                        };
+
+                        self.onRemovedSeat(current, previous);
                     }
                 }
 
