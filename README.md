@@ -44,3 +44,8 @@ Generate docs:
 - [ ] Rename SeatchartJS into seatchart.js
 - [ ] Rename SeatchartJS class into Seatchart: ```var sc = new Seatchart()```
 - [ ] Move docs to seatchart.js.org
+- [ ] Create a development branch and follow [Git Flow](https://nvie.com/posts/a-successful-git-branching-model/)
+- [ ] Use [Semantic Versioning](https://semver.org/) and release an alpha
+- [ ] Use Travis CI and deploy to npm
+- [ ] Backend and frontend example with websockets
+- [ ] Roadmap to v1.0.0
