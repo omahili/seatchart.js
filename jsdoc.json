@@ -6,5 +6,15 @@
         "recurse": true,
         "verbose": true
     },
-    "docdash": { }
+    "docdash": {
+        "search": true,
+        "menu":{
+            "Github":{
+                "href":"https://github.com/omarmahili/SeatchartJS",
+                "target":"_blank",
+                "class":"menu-item",
+                "id":"website_link"
+            }
+        }
+    }
 }
