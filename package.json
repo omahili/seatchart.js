@@ -1,6 +1,5 @@
 {
   "name": "seatchartjs",
-  "version": "1.0.0",
   "description": "A framework to create beautiful designed seat maps, legends and shopping carts.",
   "main": "src/js/seatchart.js",
   "directories": {
