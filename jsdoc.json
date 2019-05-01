@@ -6,5 +6,24 @@
         "recurse": true,
         "verbose": true
     },
-    "docdash": { }
+    "source": {
+        "include": ["README.md"]
+    },
+    "docdash": {
+        "search": true,
+        "scripts": [
+            "../src/js/seatchart.js",
+            "../src/css/seatchart.css",
+            "../scripts/docs.css",
+            "../scripts/docs.js"
+        ],
+        "menu":{
+            "Github":{
+                "href":"https://github.com/omarmahili/SeatchartJS",
+                "target":"_blank",
+                "class":"menu-item",
+                "id":"website_link"
+            }
+        }
+    }
 }

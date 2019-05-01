@@ -6,9 +6,9 @@
  */
 function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     /**
-     * @private
      * .NET equivalent of string.Format() method
      * @returns {string} The formatted string.
+     * @private
      */
     String.prototype.format = function format() {
         var args = arguments;
@@ -18,9 +18,9 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * @private
      * Capitalizes the first letter and lowers all the others.
      * @returns {string} The formatted string.
+     * @private
      */
     String.prototype.capitalizeFirstLetter = function capitalizeFirstLetter() {
         var result = this.charAt(0).toUpperCase();
@@ -32,10 +32,10 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * @private
      * Computes the style of an element, it works even on ie :P.
      * @params {Element} el - The element for which we're getting the computed style.
      * @returns {CSSStyleDeclaration} The css of the element.
+     * @private
      */
     var getStyle = function getStyle(el) {
         if (typeof window.getComputedStyle !== 'undefined') {
@@ -46,10 +46,10 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * @private
      * Computes the scroll bar width of the browser.
      * Many thanks to Alexander Gomes (http://www.alexandre-gomes.com/?p=115).
      * @returns {number} The scrollbar width.
+     * @private
      */
     function getScrollBarWidth() {
         var inner = document.createElement('p');
@@ -78,10 +78,10 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     }
 
     /**
-     * @private
      * Converts a color to its equivalent in hexadecimal.
      * @param {string} color - A color (e.g. "#00ffff", "blue").
      * @returns {string} Hexadeciaml representation of the color.
+     * @private
      */
     function colorToHex(color) {
         /* eslint-disable */
@@ -140,10 +140,10 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     }
 
     /**
-     * @private
      * Checks if a color is valid and if it's not hexadecimal it's converted.
      * @param {string} color - A color (a word or a hexadecimal representation).
      * @returns {string} The hexadecimal representation of the color.
+     * @private
      */
     var checkColor = function checkColor(index) {
         var color = colorToHex(seatTypes[index].color);
@@ -182,74 +182,74 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     }
 
     /**
-     * @private
      * This object.
      * @type {seatchartJS}
+     * @private
      */
     var self = this;
 
     /**
-     * @private
      * Gets the current currency.
      * @type {string}
+     * @private
      */
     self.currency = '€';
 
     /**
-     * @private
      * The path where the assets are located.
      * @type {string}
+     * @private
      */
     self.assetsSrc = 'assets';
 
     /**
-     * @private
      * Stores whether the sound is enbled or not.
      * @type {boolean}
+     * @private
      */
     self.soundEnabled = true;
 
     /**
-     * @private
      * The shopping cart width.
      * @type {number}
+     * @private
      */
     self.shoppingCartWidth = 200;
 
     /**
-     * @private
      * The shopping cart height.
      * @type {number}
+     * @private
      */
     self.shoppingCartHeight = 200;
 
     /**
-     * @private
      * The mouse down interval at which the seat type changes.
      * @type {number}
+     * @private
      */
     var mouseDownInterval = 500;
 
     /**
-     * @private
      * The ID value of the timer that is set.
      * @type {number}
+     * @private
      */
     var mouseDown;
 
     /**
-     * @private
      * Stores whether the seat has to change on a mouse down interval or not.
      * @type {boolean}
+     * @private
      */
     var changedOnMouseDown = false;
 
     /**
-     * @private
      * An object containing all seats added to the shopping cart, mapped by seat type.
      * Given the seatmap as a 2D array and an index [R, C] all integer values are obtained
      * as follow: I = cols * R + C.
      * @type {Object.<string, Array.<int>>}
+     * @private
      */
     var shoppingCart = {};
 
@@ -387,55 +387,55 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * @private
      * A string containing all the letters of the english alphabet.
      * @type {string}
+     * @private
      */
     var alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
     /**
-     * @private
      * An array of strings containing all the pickable seat types, "available" included.
      * @type {Array.<string>}
+     * @private
      */
     var types = [];
 
     /**
-     * @private
      * The main div container containing all the shopping cart elements.
      * @type {HTMLDivElement}
+     * @private
      */
     var scItemsContainer;
 
     /**
-     * @private
      * The text that shows the total cost of the items in the shopping cart.
      * @type {HTMLHeadingElement}
+     * @private
      */
     var shoppingCartTotal;
 
     /**
-     * @private
      * A dictionary containing all seats added to the shopping cart, mapped by seat type.
      * Each string is composed by row (r) and column (c) indexed in the following format: "r_c",
      * which is the id of the seat in the document.
      * @type {Object.<string, Array.<string>>}
+     * @private
      */
     var shoppingCartDict = {};
 
     /**
-     * @private
      * The icon that shows whether the sound is enabled or not.
      * @type {HTMLImageElement}
+     * @private
      */
     var soundIcon;
 
     /**
-     * @private
      * Adds a seat to the shopping cart dictionary.
      * @param {string} id - The html id of the seat in the seatmap.
      * @param {string} type - The type of the seat.
      * @returns {boolean} True if the seat is added correctly otherwise false.
+     * @private
      */
     var addToScDict = function addToScDict(id, type) {
         if (type in shoppingCartDict) {
@@ -449,10 +449,10 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * @private
      * Initializes the type of seats that can be clicked and
      * the types of seat that can be added to the shopping cart
      * by using the json, containing the types, given in input.
+     * @private
      */
     var initializeSeatTypes = function initializeSeatTypes() {
         // update types of seat
@@ -466,8 +466,8 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * @private
      * Converts a seat id to an index.
+     * @private
      */
     var getIndexFromId = function mapValues(x) {
         var values = x.split('_').map(function parseValues(x) {
@@ -478,9 +478,9 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * @private
      * Updates shopping cart object: values stored into shoppingCartDict are mapped to fit
      * shoppingCart type and format. (See private variables shoppingCartDict and shoppingCart.)
+     * @private
      */
     var updateShoppingCartObject = function updateShoppingCartObject() {
         for (var s in shoppingCartDict) {
@@ -491,8 +491,8 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * @private
      * Loads seats into shoppingCartDict.
+     * @private
      */
     var preloadShoppingCart = function preloadShoppingCart() {
         // create array of seat types
@@ -520,8 +520,8 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     preloadShoppingCart();
 
     /**
-     * @private
      * Plays an asyncrounous click sound.
+     * @private
      */
     var playAsyncClick = function playAsyncClick() {
         if (self.soundEnabled) {
@@ -533,8 +533,8 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * @private
      * Sets the sound icon by using the given path of the resources.
+     * @private
      */
     var setSoundIconSrc = function setSoundIconSrc() {
         if (self.soundEnabled) {
@@ -545,8 +545,8 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * @private
      * Enables or disables the sound when the volume icon is clicked and plays a sound click when it's enabled to notice it.
+     * @private
      */
     var soundIconClick = function soundIconClick() {
         self.soundEnabled = !self.soundEnabled;
@@ -555,9 +555,9 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * @private
      * Create a delete button for a shopping cart item.
      * @returns {HTMLDivElement} The delete button.
+     * @private
      */
     var createScDeleteButton = function createScDeleteButton() {
         var binImg = document.createElement('img');
@@ -571,20 +571,20 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * @private
      * Gets the name of a seat.
      * @param {string} id - The html id of the seat in the seatmap.
      * @returns {string} The name.
+     * @private
      */
     var getSeatName = function getSeatName(id) {
         return document.getElementById(id).textContent;
     };
 
     /**
-     * @private
      * Gets the type of a seat.
      * @param {string} id - The html id of the seat in the seatmap.
      * @returns {string} The type.
+     * @private
      */
     var getSeatType = function getSeatType(id) {
         for (var key in shoppingCartDict) {
@@ -600,9 +600,9 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * @private
      * Makes a seat available,
      * @param {string} id - The html id of the seat in the seatmap.
+     * @private
      */
     var releaseSeat = function releaseSeat(id) {
         var seat = document.getElementById(id);
@@ -611,11 +611,11 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * @private
      * Removes a seat from the shopping cart dictionary containing it.
      * @param {string} id - The html id of the seat in the seatmap.
      * @param {string} type - The type of the seat.
      * @returns {boolean} True if the seat is removed correctly otherwise false.
+     * @private
      */
     var removeFromScDict = function removeFromScDict(id, type) {
         if (type !== undefined) {
@@ -640,8 +640,8 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * @private
      * Updates the total price of the shopping cart.
+     * @private
      */
     var updateTotal = function updateTotal() {
         if (shoppingCartTotal !== undefined) {
@@ -650,8 +650,8 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * @private
      * This function is fired when a delete button is clicked in the shopping cart.
+     * @private
      */
     var deleteClick = function deleteClick() {
         var parentId = this.parentNode.getAttribute('id');
@@ -689,11 +689,11 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * @private
      * Creates a shopping cart item.
      * @param {string} description - The description of the item in the shopping cart.
      * @param {string} id - The html id of the seat in the seatmap.
      * @returns {HTMLDivElement} The shopping cart item.
+     * @private
      */
     var createScItem = function createScItem(description, id) {
         var item = document.createElement('div');
@@ -716,13 +716,13 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * @private
      * Updates the shopping cart by adding, removing or updating a seat.
      * @param {string} action - Action on the shopping cart ("remove", "add" or "update").
      * @param {string} id - Id of the seat in the dom.
      * @param {string} type - New seat type.
      * @param {string} previousType - Previous seat type.
      * @param {boolean} emit - True to trigger onAddedSeat or onRemovedSeat events.
+     * @private
      */
     var updateShoppingCart = function updateShoppingCart(action, id, type, previousType, emit) {
         var seatName = getSeatName(id);
@@ -782,10 +782,10 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * @private
      * Creates a title.
      * @param {string} content - The content of the title.
      * @returns {HTMLHeadingElement} The title.
+     * @private
      */
     var createTitle = function createTitle(content) {
         var title = document.createElement('h3');
@@ -796,12 +796,12 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * @private
      * Creates a title with an icon.
      * @param {string} content - The title.
      * @param {string} src - The source path of the icon.
      * @param {string} alt - The text to be displed when the image isn't loaded properly.
      * @returns {HTMLDivElement} The iconed title.
+     * @private
      */
     var createIconedTitle = function createIconedTitle(content, src, alt) {
         var container = document.createElement('div');
@@ -820,8 +820,8 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * @private
      * This function is fired when a seat is clicked in the seatmap.
+     * @private
      */
     var seatClick = function seatClick() {
         if (!changedOnMouseDown) {
@@ -897,8 +897,8 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * @private
      * This function is fired when a mouse button is pressed.
+     * @private
      */
     var mouseDownSeat = function mouseDownSeat(e) {
         // restrict mouse down to left button
@@ -919,8 +919,8 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * @private
      * This function is fired when a mouse button is released.
+     * @private
      */
     var mouseUpSeat = function mouseUpSeat(e) {
         // restrict mouse up to left button
@@ -930,8 +930,8 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * @private
      * This function is fired when a seat is right clicked to be released.
+     * @private
      */
     var rightClickDelete = function rightClickDelete(e) {
         e.preventDefault();
@@ -955,12 +955,12 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * @private
      * Creates a new seat.
      * @param {string} type - The type of the seat.
      * @param {string} content - The name representing the seat.
      * @param {string} seatId - The html id of the seat in the seatmap.
      * @returns {HTMLDivElement} The seat.
+     * @private
      */
     var createSeat = function createSeat(type, content, seatId) {
         var seat = document.createElement('div');
@@ -982,10 +982,10 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * @private
      * Creates a seat map row.
      * @param {string} rowIndex - The index that represent the row.
      * @returns {HTMLDivElement} The row.
+     * @private
      */
     var createRow = function createRow(rowIndex) {
         var row = document.createElement('div');
@@ -1001,9 +1001,9 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * @private
      * Creates the header of the seatmap containing the front indicator.
      * @returns {HTMLDivElement} The seatmap header.
+     * @private
      */
     var createFrontHeader = function createFrontHeader() {
         var header = createRow();
@@ -1028,9 +1028,9 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * @private
      * Creates a row containing all the column indexes.
      * @returns {HTMLDivElement} The column indexes.
+     * @private
      */
     var createColumnsIndex = function createColumnsIndex() {
         var columnsIndex = createRow();
@@ -1043,9 +1043,9 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * @private
      * Creates the container for the seat map and the legend.
      * @returns {HTMLDivElement} - The container.
+     * @private
      */
     var createContainer = function createContainer() {
         var container = document.createElement('div');
@@ -1055,9 +1055,9 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * @private
      * Removes all classes regarding the type applied to the seat.
      * @param {HTMLDivElement} seat - Seat element.
+     * @private
      */
     var removeAllTypesApplied = function removeAllTypesApplied(seat) {
         for (var i = 0; i < types.length; i += 1) {
@@ -1066,9 +1066,9 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * @private
      * Sets all disabled seats as blank or reserved seats as unavailable.
      * params {string} type - The type of seats to set.
+     * @private
      */
     var setSeat = function setSeat(type) {
         if (seatMap[type] !== undefined) {
@@ -1094,8 +1094,8 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * @private
      * Loads seats, given with seat types, into the shopping cart.
+     * @private
      */
     var preloadScItems = function preloadScItems() {
         for (var i = 0; i < seatTypes.length; i += 1) {
@@ -1122,8 +1122,8 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * @private
      * Selects seats given with seat types.
+     * @private
      */
     var preselectSeats = function preselectSeats() {
         for (var n = 0; n < seatTypes.length; n += 1) {
@@ -1560,12 +1560,12 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * @private
      * Creates a legend item and applies a type and a color if needed.
      * @param {string} content - The text in the legend that explains the type of seat.
      * @param {string} type - The type of seat.
      * @param {string} color - The background color of the item in the legend.
      * @returns {HTMLListItemElement} The legend item.
+     * @private
      */
     var createLegendItem = function createLegendItem(content, type, color) {
         var item = document.createElement('li');
@@ -1588,9 +1588,9 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * @private
      * Creates a legend list.
      * @returns {HTMLUnorderedListElement} The legend list.
+     * @private
      */
     var createLegendList = function createLegendList() {
         var list = document.createElement('ul');
@@ -1600,10 +1600,10 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * @private
      * Creates a small title.
      * @param {string} content - The content of the title.
      * @returns {HTMLHeadingElement} The small title.
+     * @private
      */
     var createSmallTitle = function createSmallTitle(content) {
         var smallTitle = document.createElement('h5');
@@ -1651,9 +1651,9 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * @private
      * Creates the container of the items in the shopping cart.
      * @returns {HTMLDivElement} The container of the items.
+     * @private
      */
     var createScItemsContainer = function createScItemsContainer() {
         var container = document.createElement('div');
@@ -1663,8 +1663,8 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * @private
      * This function is fired when the "delete all" button is clicked in the shopping cart.
+     * @private
      */
     var deleteAllClick = function deleteAllClick() {
         // release all selected seats and remove them from dictionary
@@ -1712,9 +1712,9 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * @private
      * Creates the total of the shopping cart and a "delete all" button.
      * @returns {HTMLDivElement} The total and "delete all" button.
+     * @private
      */
     var createScTotal = function createScTotal() {
         var container = document.createElement('div');
@@ -1737,8 +1737,8 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * @private
      * Creates the shopping cart.
+     * @private
      */
     this.createShoppingCart = function createShoppingCart(containerId) {
         var shoppingCartContainer = createContainer();
