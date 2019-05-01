@@ -12,10 +12,10 @@
     "docdash": {
         "search": true,
         "scripts": [
-            "../src/js/seatchart.js",
-            "../src/css/seatchart.css",
-            "../scripts/docs.css",
-            "../scripts/docs.js"
+            "scripts/seatchart.js",
+            "styles/seatchart.css",
+            "scripts/docs.css",
+            "styles/docs.js"
         ],
         "menu":{
             "Github":{
