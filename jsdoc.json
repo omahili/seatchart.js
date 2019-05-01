@@ -14,8 +14,8 @@
         "scripts": [
             "scripts/seatchart.js",
             "styles/seatchart.css",
-            "scripts/docs.css",
-            "styles/docs.js"
+            "scripts/docs.js",
+            "styles/docs.css"
         ],
         "menu":{
             "Github":{
