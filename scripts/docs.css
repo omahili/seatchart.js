@@ -55,3 +55,7 @@ h4.name a:hover {
     clear: right;
     margin-bottom: 20px;
 }
+
+#main {
+    min-height: calc(100% - 47px);
+}
