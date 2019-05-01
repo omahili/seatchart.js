@@ -40,7 +40,7 @@ h4.name a:hover {
     color: #0ff;
 }
 
-/* EXAMPLE STYLE */
+/* INDEX STYLE */
 
 .example {
     display: inline-block;
@@ -58,4 +58,8 @@ h4.name a:hover {
 
 #main {
     min-height: calc(100% - 47px);
+}
+
+#demo {
+    margin: 40px 0 40px;
 }
