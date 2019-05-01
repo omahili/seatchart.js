@@ -22,8 +22,8 @@ if (window.location.href.indexOf('index.html') >= 0) {
     containers.append(legendContainer, shoppingCartContainer);
     exampleContainer.append(mapContainer, containers);
 
-    var sections = document.getElementsByTagName('section');
-    main.insertBefore(exampleContainer, sections[0]);
+    var demo = document.getElementById('demo');
+    demo.appendChild(exampleContainer);
 
     // init seatchart
 
