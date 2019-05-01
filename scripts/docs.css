@@ -53,7 +53,7 @@ h4.name a:hover {
 .containers {
     float: left;
     clear: right;
-    margin-bottom: 20px;
+    margin: 0 20px 0 20px;
 }
 
 #main {
@@ -61,5 +61,13 @@ h4.name a:hover {
 }
 
 #demo {
-    margin: 40px 0 40px;
+    margin: 40px 0 20px;
+}
+
+#mapContainer {
+    margin-bottom: 20px;
+}
+
+#shoppingCartContainer {
+    margin-left: 20px;
 }
