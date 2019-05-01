@@ -1,6 +1,6 @@
-<center>
+<p align="center">    
     <img src="logo.svg" alt="SeatchartJS" width="500" />
-</center>
+</p>
 
 # Usage
 
