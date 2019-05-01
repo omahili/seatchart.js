@@ -52,9 +52,11 @@ Then in your web page body create three containers that are going to contain the
 
 Enjoy the result.
 
-----
+## [Demo](http://omarmahili.github.io/SeatchartJS/index.html#demo)
 
-## DEVELOPMENT
+<div id="demo"></div>
+
+## Development
 
 This library is still in development. It can already be used with websockets and it has some nice features like gap detection. <br />
 But things may change a little bit in the future, so give a look to the TODO list below. <br />
