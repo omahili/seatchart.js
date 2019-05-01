@@ -8,6 +8,12 @@
     },
     "docdash": {
         "search": true,
+        "scripts": [
+            "../src/js/seatchart.js",
+            "../src/css/seatchart.css",
+            "../scripts/docs.css",
+            "../scripts/docs.js"
+        ],
         "menu":{
             "Github":{
                 "href":"https://github.com/omarmahili/SeatchartJS",
