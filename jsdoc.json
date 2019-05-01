@@ -6,6 +6,9 @@
         "recurse": true,
         "verbose": true
     },
+    "source": {
+        "include": ["README.md"]
+    },
     "docdash": {
         "search": true,
         "scripts": [
