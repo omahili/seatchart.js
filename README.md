@@ -1,5 +1,5 @@
 <center>
-    <img src="scripts/resources/logo.svg" alt="SeatchartJS" width="500" />
+    <img src="logo.svg" alt="SeatchartJS" width="500" />
 </center>
 
 # Usage
