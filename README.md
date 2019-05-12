@@ -52,7 +52,7 @@ Then in your web page body create three containers that are going to contain the
 
 Enjoy the result.
 
-## [Demo](http://omarmahili.github.io/SeatchartJS/index.html#demo)
+## [Demo](https://seatchart.js.org/#demo)
 
 <div id="demo"></div>
 
