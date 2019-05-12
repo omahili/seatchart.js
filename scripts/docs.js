@@ -1,4 +1,4 @@
-if (window.location.href.indexOf('index.html') >= 0) {
+if (window.location.href.endsWith('index.html') || window.location.href.endsWith('seatchart.js.org/')) {
     var main = document.getElementById('main');
 
     var exampleContainer = document.createElement('div');
@@ -44,7 +44,7 @@ if (window.location.href.indexOf('index.html') >= 0) {
 
     var sc = new SeatchartJS(map, types);
 
-    sc.setAssetsSrc('../src/assets');
+    sc.setAssetsSrc('assets');
     sc.createMap('mapContainer');
     sc.createLegend('legendContainer');
     sc.createShoppingCart('shoppingCartContainer');
