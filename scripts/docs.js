@@ -1,4 +1,4 @@
-if (window.location.href.endsWith('index.html') || window.location.href.endsWith('seatchart.js.org/')) {
+if (window.location.href.endsWith('index.html') || window.location.href.endsWith('#demo') || window.location.href.endsWith('seatchart.js.org/')) {
     var main = document.getElementById('main');
 
     var exampleContainer = document.createElement('div');
