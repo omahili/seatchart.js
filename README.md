@@ -1,5 +1,5 @@
 <p align="center">    
-    <img src="https://raw.githubusercontent.com/omarmahili/SeatchartJS/master/logo.svg?sanitize=true" alt="SeatchartJS Logo" width="500" />
+    <img src="https://raw.githubusercontent.com/omarmahili/SeatchartJS/develop/logo.svg?sanitize=true" alt="SeatchartJS Logo" width="500" />
 </p>
 
 # Usage
