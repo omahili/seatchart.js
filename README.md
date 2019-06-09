@@ -69,9 +69,10 @@ If you want to help in the development of this library please open a PR on githu
 - [x] Improve documentation home page
 - [x] Move docs to seatchart.js.org
 - [x] Add description and examples to README
+- [x] Create a development branch and follow [Git Flow](https://nvie.com/posts/a-successful-git-branching-model/)
 - [ ] Remove long press feature on a seat
 - [ ] Hide/show sound button
-- [ ] Decrease access to the DOM (e.g. getSeatName function)
+- [ ] Decrease access to the DOM (e.g. getSeatName() function)
 - [ ] Replace current seat indexing with a simple one: an object { row: 10, col: 10 }
 - [ ] Add 'static' mode where seat types are defined by default
 - [ ] Add themes
@@ -82,11 +83,11 @@ If you want to help in the development of this library please open a PR on githu
 - [ ] Add onClear event and trigger it when all seats are removed
 - [ ] Improve shopping cart design
 - [ ] Improve legend: remove 'Available' seat from legend, remove 'Your seats' and 'Seats' subtitles
-- [ ] Rename SeatchartJS into seatchart.js
 - [ ] Rename SeatchartJS class into Seatchart: ```var sc = new Seatchart()```
-- [ ] Create a development branch and follow [Git Flow](https://nvie.com/posts/a-successful-git-branching-model/)
 - [ ] Use [Semantic Versioning](https://semver.org/) and release an alpha
 - [ ] Use Travis CI and deploy to npm
 - [ ] Backend and frontend example with websockets
 - [ ] Minified source
+- [ ] IE 11 support: replace append() function not supported on IE11
+- [ ] Add a default font
 - [ ] Roadmap to v1.0.0
