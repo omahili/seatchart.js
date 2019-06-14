@@ -72,7 +72,7 @@ If you want to help in the development of this library please open a PR on githu
 - [x] Create a development branch and follow [Git Flow](https://nvie.com/posts/a-successful-git-branching-model/)
 - [x] Rename SeatchartJS class into Seatchart: ```var sc = new Seatchart()```
 - [x] Remove long press feature on a seat
-- [ ] Hide/show sound button
+- [x] Remove sound
 - [ ] Decrease access to the DOM (e.g. getSeatName() function)
 - [ ] Replace current seat indexing with a simple one: an object { row: 10, col: 10 }
 - [ ] Add 'static' mode where seat types are defined by default
