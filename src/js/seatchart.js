@@ -4,7 +4,7 @@
  * @param {Object.<{rows: number, cols: number, reserved: Array.<number>, disabled: Array.<number>, disabledRows: Array.<number>, disabledCols: Array.<number>}>} seatMap - Info to generate the seatmap.
  * @param {Array.<Object.<{type: string, color: string, price: number, selected: Array.<number>}>>} seatTypes - Seat types and their colors to be represented.
  */
-function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
+function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     /**
      * .NET equivalent of string.Format() method
      * @returns {string} The formatted string.

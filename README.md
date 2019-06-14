@@ -32,7 +32,7 @@ First of all link the library along with the stylesheet and the script that gene
         { type: "military", color: "red", price: 7 }
     ];
 
-    var sc = new SeatchartJS(map, types);
+    var sc = new Seatchart(map, types);
     sc.setAssetsSrc("/path/to/assets");
 
     // (1) Create functions
