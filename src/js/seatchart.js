@@ -4,7 +4,7 @@
  * @param {Object.<{rows: number, cols: number, reserved: Array.<number>, disabled: Array.<number>, disabledRows: Array.<number>, disabledCols: Array.<number>}>} seatMap - Info to generate the seatmap.
  * @param {Array.<Object.<{type: string, color: string, price: number, selected: Array.<number>}>>} seatTypes - Seat types and their colors to be represented.
  */
-function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
+function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     /**
      * .NET equivalent of string.Format() method
      * @returns {string} The formatted string.
@@ -224,27 +224,6 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     self.shoppingCartHeight = 200;
 
     /**
-     * The mouse down interval at which the seat type changes.
-     * @type {number}
-     * @private
-     */
-    var mouseDownInterval = 500;
-
-    /**
-     * The ID value of the timer that is set.
-     * @type {number}
-     * @private
-     */
-    var mouseDown;
-
-    /**
-     * Stores whether the seat has to change on a mouse down interval or not.
-     * @type {boolean}
-     * @private
-     */
-    var changedOnMouseDown = false;
-
-    /**
      * An object containing all seats added to the shopping cart, mapped by seat type.
      * Given the seatmap as a 2D array and an index [R, C] all integer values are obtained
      * as follow: I = cols * R + C.
@@ -353,29 +332,6 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      */
     this.getShoppingCartHeight = function getShoppingCartHeight() {
         return self.shoppingCartHeight;
-    };
-
-    /**
-     * Sets the mouse down interval at which the seat type changes.
-     * @param {number} value - The mouse down interval at which the seat type changes.
-     */
-    this.setMouseDownInterval = function setMouseDownInterval(value) {
-        if (typeof value === 'number' && value >= 100) {
-            // doesn't need self.
-            mouseDownInterval = value;
-        } else {
-            throw new Error("Invalid parameter 'value' supplied to SeatchartJS.setMouseDownInterval(). " +
-                            'Must be a positive number and greater than 99 milliseconds.');
-        }
-    };
-
-    /**
-     * Gets the mouse down interval at which the seat type changes.
-     * @returns {number} The mouse down interval at which the seat type changes.
-     */
-    this.getMouseDownInterval = function getMouseDownInterval() {
-        // doesn't need self...
-        return mouseDownInterval;
     };
 
     /**
@@ -824,109 +780,74 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * @private
      */
     var seatClick = function seatClick() {
-        if (!changedOnMouseDown) {
-            // clone array because it's modified by adding and removing classes
-            var currentClassList = [];
-            for (var j = 0; j < this.classList.length; j += 1) {
-                currentClassList.push(this.classList[j]);
-            }
+        // clone array because it's modified by adding and removing classes
+        var currentClassList = [];
+        for (var j = 0; j < this.classList.length; j += 1) {
+            currentClassList.push(this.classList[j]);
+        }
 
-            for (var i = 0; i < currentClassList.length; i += 1) {
-                var currentClass = currentClassList[i];
-                var newClass;
+        for (var i = 0; i < currentClassList.length; i += 1) {
+            var currentClass = currentClassList[i];
+            var newClass;
 
-                if (currentClass !== 'seatChart-seat' && currentClass !== 'clicked') {
-                    // find index of current
-                    var index = types.indexOf(currentClass);
+            if (currentClass !== 'seatChart-seat' && currentClass !== 'clicked') {
+                // find index of current
+                var index = types.indexOf(currentClass);
 
-                    // if the current class matches a type
-                    // then select the new one
-                    if (index !== -1) {
-                        // a 'selectable' seat is clicked then play the click sound
-                        playAsyncClick();
+                // if the current class matches a type
+                // then select the new one
+                if (index !== -1) {
+                    // a 'selectable' seat is clicked then play the click sound
+                    playAsyncClick();
 
-                        this.classList.remove(types[index]);
-                        index += 1;
+                    this.classList.remove(types[index]);
+                    index += 1;
 
-                        if (index === types.length) {
-                            index = 0;
+                    if (index === types.length) {
+                        index = 0;
+                    }
+
+                    newClass = types[index];
+
+                    this.style.backgroundColor = '';
+                    this.classList.add(newClass);
+
+                    // if the class isn't available then apply the background-color in the config
+                    if (newClass !== 'available') {
+                        // decrease it because there's one less element in seatTypes
+                        // which is 'available', that already exists
+                        index -= 1;
+                        if (index < 0) {
+                            index = seatTypes.length - 1;
                         }
 
-                        newClass = types[index];
+                        this.classList.add('clicked');
+                        this.style.backgroundColor = seatTypes[index].color;
+                    } else {
+                        // otherwise remove the class 'clicked'
+                        // since available has it's own style
+                        this.classList.remove('clicked');
+                    }
 
-                        this.style.backgroundColor = '';
-                        this.classList.add(newClass);
-
-                        // if the class isn't available then apply the background-color in the config
-                        if (newClass !== 'available') {
-                            // decrease it because there's one less element in seatTypes
-                            // which is 'available', that already exists
-                            index -= 1;
-                            if (index < 0) {
-                                index = seatTypes.length - 1;
-                            }
-
-                            this.classList.add('clicked');
-                            this.style.backgroundColor = seatTypes[index].color;
-                        } else {
-                            // otherwise remove the class 'clicked'
-                            // since available has it's own style
-                            this.classList.remove('clicked');
+                    // this has to be done after updating the shopping cart
+                    // so the event is fired just once the seat style is really updated
+                    if (currentClass === 'available') {
+                        if (addToScDict(this.id, newClass)) {
+                            updateShoppingCart('add', this.id, newClass, currentClass, true);
                         }
-
-                        // this has to be done after updating the shopping cart
-                        // so the event is fired just once the seat style is really updated
-                        if (currentClass === 'available') {
-                            if (addToScDict(this.id, newClass)) {
-                                updateShoppingCart('add', this.id, newClass, currentClass, true);
-                            }
-                        } else if (newClass === 'available') {
-                            if (removeFromScDict(this.id, currentClass)) {
-                                updateShoppingCart('remove', this.id, newClass, currentClass, true);
-                            }
-                        } else if (addToScDict(this.id, newClass) &&
-                                  removeFromScDict(this.id, currentClass)) {
-                            updateShoppingCart('update', this.id, newClass, currentClass, true);
+                    } else if (newClass === 'available') {
+                        if (removeFromScDict(this.id, currentClass)) {
+                            updateShoppingCart('remove', this.id, newClass, currentClass, true);
                         }
+                    } else if (addToScDict(this.id, newClass) &&
+                                removeFromScDict(this.id, currentClass)) {
+                        updateShoppingCart('update', this.id, newClass, currentClass, true);
                     }
                 }
             }
-
-            updateTotal();
         }
-    };
 
-    /**
-     * This function is fired when a mouse button is pressed.
-     * @private
-     */
-    var mouseDownSeat = function mouseDownSeat(e) {
-        // restrict mouse down to left button
-        if (e.which === 1) {
-            var id = this.id;
-            // to allow a simple click
-            changedOnMouseDown = false;
-
-            mouseDown = setInterval(function intervalCallback() {
-                // to allow the click simulation
-                changedOnMouseDown = false;
-                document.getElementById(id).click();
-
-                // this prevents from change on mouse release
-                changedOnMouseDown = true;
-            }, mouseDownInterval);
-        }
-    };
-
-    /**
-     * This function is fired when a mouse button is released.
-     * @private
-     */
-    var mouseUpSeat = function mouseUpSeat(e) {
-        // restrict mouse up to left button
-        if (e.which === 1 && mouseDown) {
-            clearTimeout(mouseDown);
-        }
+        updateTotal();
     };
 
     /**
@@ -973,8 +894,6 @@ function SeatchartJS(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
             // add click event just if it's a real seats (when it has and id)
             seat.addEventListener('click', seatClick);
-            seat.addEventListener('mousedown', mouseDownSeat);
-            seat.addEventListener('mouseup', mouseUpSeat);
             seat.addEventListener('contextmenu', rightClickDelete, false);
         }
 
