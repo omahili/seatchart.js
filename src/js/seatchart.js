@@ -203,13 +203,6 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     self.assetsSrc = 'assets';
 
     /**
-     * Stores whether the sound is enbled or not.
-     * @type {boolean}
-     * @private
-     */
-    self.soundEnabled = true;
-
-    /**
      * The shopping cart width.
      * @type {number}
      * @private
@@ -270,26 +263,6 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      */
     this.getAssetsSrc = function getAssetsSrc() {
         return self.assetsSrc;
-    };
-
-    /**
-     * Sets whether the sound has to be enbled or not.
-     * @param {boolean} value - True if it has to be enabled otherwise false.
-     */
-    this.setSoundEnabled = function setSoundEnabled(value) {
-        if (typeof value === 'boolean') {
-            self.soundEnabled = value;
-        } else {
-            throw new Error("Invalid parameter 'value' supplied to SeatchartJS.setSoundEnabled(). Must be a boolean.");
-        }
-    };
-
-    /**
-     * Gets whether the sound is enbled or not.
-     * @returns {boolean} True if it is enabled otherwise false.
-     */
-    this.getSoundEnabled = function getSoundEnabled() {
-        return self.soundEnabled;
     };
 
     /**
@@ -380,13 +353,6 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     var shoppingCartDict = {};
 
     /**
-     * The icon that shows whether the sound is enabled or not.
-     * @type {HTMLImageElement}
-     * @private
-     */
-    var soundIcon;
-
-    /**
      * Adds a seat to the shopping cart dictionary.
      * @param {string} id - The html id of the seat in the seatmap.
      * @param {string} type - The type of the seat.
@@ -474,41 +440,6 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     preloadShoppingCart();
-
-    /**
-     * Plays an asyncrounous click sound.
-     * @private
-     */
-    var playAsyncClick = function playAsyncClick() {
-        if (self.soundEnabled) {
-            var clickSound = new Audio('{0}/sounds/seatclick.mp3'.format(self.assetsSrc));
-            clickSound.volume = 0.2;
-            clickSound.load();
-            clickSound.play();
-        }
-    };
-
-    /**
-     * Sets the sound icon by using the given path of the resources.
-     * @private
-     */
-    var setSoundIconSrc = function setSoundIconSrc() {
-        if (self.soundEnabled) {
-            soundIcon.src = '{0}/icons/soundon.svg'.format(self.assetsSrc);
-        } else {
-            soundIcon.src = '{0}/icons/soundoff.svg'.format(self.assetsSrc);
-        }
-    };
-
-    /**
-     * Enables or disables the sound when the volume icon is clicked and plays a sound click when it's enabled to notice it.
-     * @private
-     */
-    var soundIconClick = function soundIconClick() {
-        self.soundEnabled = !self.soundEnabled;
-        setSoundIconSrc();
-        playAsyncClick();
-    };
 
     /**
      * Create a delete button for a shopping cart item.
@@ -797,9 +728,6 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
                 // if the current class matches a type
                 // then select the new one
                 if (index !== -1) {
-                    // a 'selectable' seat is clicked then play the click sound
-                    playAsyncClick();
-
                     this.classList.remove(types[index]);
                     index += 1;
 
@@ -926,16 +854,6 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      */
     var createFrontHeader = function createFrontHeader() {
         var header = createRow();
-
-        // initialize sound image element
-        soundIcon = document.createElement('img');
-        soundIcon.onclick = soundIconClick;
-        soundIcon.alt = 'Sound icon. Click to enable/disable the sound.';
-        setSoundIconSrc();
-
-        // get header blank 'index' (actually a seat)
-        var blankIndex = header.childNodes[0];
-        blankIndex.appendChild(soundIcon);
 
         // set the perfect width of the front indicator
         var front = document.createElement('div');
@@ -1314,9 +1232,8 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * @param {number} index - Index of the seat to update.
      * @param {string} type - New seat type ('disabled', 'reserved' and 'available' are supported too).
      * @param {boolean} emit - True to trigger onAddedSeat or onRemovedSeat events (default is false).
-     * @param {boolean} sound - True to play sound (default is false, it works only if sound is enabled).
      */
-    this.set = function set(index, type, emit, sound) {
+    this.set = function set(index, type, emit) {
         if (typeof index !== 'number' && Math.floor(index) === index) {
             throw new Error("Invalid parameter 'index' supplied to SeatchartJS.set(). It must be an integer.");
         } else if (index >= seatMap.rows * seatMap.cols) {
@@ -1333,8 +1250,6 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
                 throw new Error("Invalid parameter 'type' supplied to SeatchartJS.set().");
             } else if (emit && typeof emit !== 'boolean') {
                 throw new Error("Invalid parameter 'emit' supplied to SeatchartJS.set(). It must be a boolean.");
-            } else if (sound && typeof sound !== 'boolean') {
-                throw new Error("Invalid parameter 'sound' supplied to SeatchartJS.set(). It must be a boolean.");
             }
         }
 
@@ -1385,10 +1300,6 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
         element.classList.add(classes[type]);
         element.classList.remove(classes[seat.type]);
-
-        if (sound) {
-            playAsyncClick();
-        }
 
         updateTotal();
     };

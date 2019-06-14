@@ -69,21 +69,12 @@
 
             sc.setAssetsSrc("../src/assets");
             sc.setCurrency(currency);
-            sc.setSoundEnabled(false);
             sc.setShoppingCartWidth(200);
             sc.setShoppingCartHeight(250);
 
             sc.createMap("map-container");
             sc.createLegend("legend-container");
             sc.createShoppingCart("shoppingCart-container");
-
-            // sc.onRemovedSeat = function (seatName, type, price, seat) {
-            //    alert("Removed seat: name " + seatName + ", type " + type + ", price " + price + currency + ", index " + seat);
-            // };
-
-            // sc.onAddedSeat = function (seatName, type, price, seat) {
-            //    alert("Added seat: name " + seatName + ", type " + type + ", price " + price + currency + ", index " + seat);
-            // };
         </script>
     </body>
 </html>
