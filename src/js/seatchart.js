@@ -637,13 +637,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
             price: ['available', 'disabled', 'reserved'].indexOf(previousType) < 0 ? self.getPrice(previousType) : null
         };
 
-        var scItem;
-        var description = '{0} - {1} {2}{3}\n'.format(
-            seatName,
-            type.capitalizeFirstLetter(),
-            self.currency,
-            price.toFixed(2)
-        );
+        var cartItem;
 
         updateCartObject();
 
@@ -657,17 +651,18 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
             }
         } else if (action === 'add') {
             if (cartTable !== undefined) {
-                scItem = createCartItem(current);
-                cartTable.appendChild(scItem);
+                cartItem = createCartItem(current);
+                cartTable.appendChild(cartItem);
             }
 
             if (emit && self.onChange !== null) {
                 self.onChange(action, current, previous);
             }
         } else if (action === 'update') {
-            scItem = document.getElementById('item-{0}'.format(id));
-            var p = scItem.getElementsByTagName('p')[0];
-            p.textContent = description;
+            cartItem = document.getElementById('item-{0}'.format(id));
+            var itemContent = cartItem.getElementsByTagName('td');
+            itemContent[1].textContent = current.type.capitalizeFirstLetter();
+            itemContent[2].textContent = '{0}{1}'.format(self.currency, current.price.toFixed(2));
 
             if (emit && self.onChange !== null) {
                 self.onChange(action, current, previous);
@@ -961,8 +956,8 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
                         type: type,
                         price: price
                     };
-                    var scItem = createCartItem(seat);
-                    cartTable.appendChild(scItem);
+                    var cartItem = createCartItem(seat);
+                    cartTable.appendChild(cartItem);
                 }
             }
         }
