@@ -552,7 +552,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         updateTotal();
 
         // fire event
-        if (self.onRemovedSeat != null) {
+        if (self.onChange != null) {
             var index = getIndexFromId(id);
             var seatName = getSeatName(id);
 
@@ -571,7 +571,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
                 price: self.getPrice(type)
             };
 
-            self.onRemovedSeat(current, previous);
+            self.onChange('remove', current, previous);
         }
     };
 
@@ -608,7 +608,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * @param {string} id - Id of the seat in the dom.
      * @param {string} type - New seat type.
      * @param {string} previousType - Previous seat type.
-     * @param {boolean} emit - True to trigger onAddedSeat or onRemovedSeat events.
+     * @param {boolean} emit - True to trigger onChange events.
      * @private
      */
     var updateShoppingCart = function updateShoppingCart(action, id, type, previousType, emit) {
@@ -641,8 +641,8 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
                 document.getElementById('item-{0}'.format(id)).outerHTML = '';
             }
 
-            if (emit && self.onRemovedSeat !== null) {
-                self.onRemovedSeat(current, previous);
+            if (emit && self.onChange !== null) {
+                self.onChange(action, current, previous);
             }
         } else if (action === 'add') {
             if (scItemsContainer !== undefined) {
@@ -650,20 +650,16 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
                 scItemsContainer.appendChild(scItem);
             }
 
-            if (emit && self.onAddedSeat !== null) {
-                self.onAddedSeat(current, previous);
+            if (emit && self.onChange !== null) {
+                self.onChange(action, current, previous);
             }
         } else if (action === 'update') {
-            if (emit && self.onRemovedSeat !== null) {
-                self.onRemovedSeat(current, previous);
-            }
-
             scItem = document.getElementById('item-{0}'.format(id));
             var p = scItem.getElementsByTagName('p')[0];
             p.textContent = description;
 
-            if (emit && self.onAddedSeat !== null) {
-                self.onAddedSeat(current, previous);
+            if (emit && self.onChange !== null) {
+                self.onChange(action, current, previous);
             }
         }
     };
@@ -793,8 +789,8 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
             // remove from virtual sc
             removeFromScDict(this.id, type);
 
-            // there's no need to fire onRemoveSeat event since this function fires it
-            // fire event after removing seat from shopping cart
+            // there's no need to fire onChange event since this function fires
+            // the event after removing the seat from shopping cart
             updateShoppingCart('remove', this.id, 'available', type, true);
             updateTotal();
         }
@@ -1231,7 +1227,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * Set seat type.
      * @param {number} index - Index of the seat to update.
      * @param {string} type - New seat type ('disabled', 'reserved' and 'available' are supported too).
-     * @param {boolean} emit - True to trigger onAddedSeat or onRemovedSeat events (default is false).
+     * @param {boolean} emit - True to trigger onChange event (default is false).
      */
     this.set = function set(index, type, emit) {
         if (typeof index !== 'number' && Math.floor(index) === index) {
@@ -1305,20 +1301,13 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * This event is triggered when a seat is selected.
-     * @event SeatchartJS#onAddedSeat
+     * This event is triggered when a seat is selected/unselected.
+     * @event SeatchartJS#onChange
+     * @param {string} - Action on seat: 'add', 'remove' or 'update'.
      * @param {Object.<{type: string, id: string, index: number, name: string, price: number}>} - Current seat info.
      * @param {Object.<{type: string, id: string, index: number, name: string, price: number}>} - Seat info previous to the event.
      */
-    this.onAddedSeat = null;
-
-    /**
-     * This event is triggered when a seat is unselected.
-     * @event SeatchartJS#onRemovedSeat
-     * @param {Object.<{type: string, id: string, index: number, name: string, price: number}>} - Current seat info.
-     * @param {Object.<{type: string, id: string, index: number, name: string, price: number}>} - Seat info previous to the event.
-     */
-    this.onRemovedSeat = null;
+    this.onChange = null;
 
     /**
      * Creates the seatmap.
@@ -1506,7 +1495,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
                     releaseSeat(id);
 
                     // fire event
-                    if (self.onRemovedSeat != null) {
+                    if (self.onChange != null) {
                         var index = getIndexFromId(id);
                         var seatName = getSeatName(id);
                         var type = getSeatType(id);
@@ -1526,7 +1515,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
                             price: self.getPrice(type)
                         };
 
-                        self.onRemovedSeat(current, previous);
+                        self.onChange('remove', current, previous);
                     }
                 }
 
