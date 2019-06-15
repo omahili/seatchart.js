@@ -174,20 +174,30 @@
 
 /* Shopping cart css */
 
-.sc-cart-items-container {
+.sc-cart-container {
     margin: 15px 0 0;
     padding: 0;
-    border: 1px solid #f3f3f3;
+    border: 1px solid #ddd;
     overflow-y: auto;
     overflow-x: hidden;
 }
 
-.sc-cart-item {
-    border-bottom: 1px solid #afafaf;
+.sc-cart-container table {
+    width: 100%;
+}
+
+.sc-cart-container tr {
+    border-bottom: 1px solid #ddd;
     width: 200px;
-    height: 30px;
     margin: 0 1px 0 0;
     padding: 6px 0 0;
+    height: 40px;
+    min-height: 40px;
+}
+
+.sc-cart-container td {
+    text-align: center;
+    vertical-align: middle;
 }
 
 .sc-cart-delete {
@@ -198,7 +208,7 @@
     background-color: #db2c2c;
 
     /* makes it stay at the right of the container */
-    margin: auto 10px auto auto;
+    margin: auto auto;
     height: 25px;
     width: 25px;
     border-radius: 5px;
