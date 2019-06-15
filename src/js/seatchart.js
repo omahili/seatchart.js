@@ -1532,7 +1532,9 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
         updateTotal();
 
-        self.onClear(removedSeats);
+        if (self.onClear) {
+            self.onClear(removedSeats);
+        }
     };
 
     /**
