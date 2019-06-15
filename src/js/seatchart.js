@@ -532,7 +532,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      */
     var updateTotal = function updateTotal() {
         if (cartTotal !== undefined) {
-            cartTotal.textContent = 'Total: {0}{1}'.format(self.currency, self.getTotal());
+            cartTotal.textContent = 'Total: {0}{1}'.format(self.currency, self.getTotal().toFixed(2));
         }
     };
 
@@ -591,7 +591,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         seatType.textContent = seat.type.capitalizeFirstLetter();
 
         var seatPrice = document.createElement('td');
-        seatPrice.textContent = '{0}{1}'.format(self.currency, seat.price);
+        seatPrice.textContent = '{0}{1}'.format(self.currency, seat.price.toFixed(2));
 
         var deleteTd = document.createElement('td');
         var deleteBtn = createScDeleteButton();
@@ -638,7 +638,12 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         };
 
         var scItem;
-        var description = '{0} - {1} {2}{3}\n'.format(seatName, type.capitalizeFirstLetter(), self.currency, price);
+        var description = '{0} - {1} {2}{3}\n'.format(
+            seatName,
+            type.capitalizeFirstLetter(),
+            self.currency,
+            price.toFixed(2)
+        );
 
         updateCartObject();
 
@@ -1464,7 +1469,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
             var description = '{0} {1}{2}'.format(
                 seatTypes[i].type.capitalizeFirstLetter(),
                 self.currency,
-                seatTypes[i].price
+                seatTypes[i].price.toFixed(2)
             );
             var item = createLegendItem(description, '', seatTypes[i].color);
             seatsList.appendChild(item);
