@@ -532,7 +532,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      */
     var updateTotal = function updateTotal() {
         if (cartTotal !== undefined) {
-            cartTotal.textContent = 'Total: {0}{1}'.format(self.getTotal(), self.currency);
+            cartTotal.textContent = 'Total: {0}{1}'.format(self.currency, self.getTotal());
         }
     };
 
