@@ -1449,13 +1449,8 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
         var legendTitle = createTitle('Legend');
 
-        var seatsListTitle = createSmallTitle('Seats:');
         var seatsList = createLegendList();
-        seatsList.appendChild(createLegendItem('Available', 'available'));
-        seatsList.appendChild(createLegendItem('Already booked', 'unavailable'));
 
-        var yourSeatsListTitle = createSmallTitle('Your seat(s):');
-        var yourSeatsList = createLegendList();
         for (var i = 0; i < seatTypes.length; i += 1) {
             var description = '{0} {1}{2}'.format(
                 seatTypes[i].type.capitalizeFirstLetter(),
@@ -1463,14 +1458,13 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
                 self.currency
             );
             var item = createLegendItem(description, '', seatTypes[i].color);
-            yourSeatsList.appendChild(item);
+            seatsList.appendChild(item);
         }
+        seatsList.appendChild(createLegendItem('Already booked', 'unavailable'));
 
         seatLegendContainer.appendChild(legendTitle);
-        seatLegendContainer.appendChild(seatsListTitle);
         seatLegendContainer.appendChild(seatsList);
-        seatLegendContainer.appendChild(yourSeatsListTitle);
-        seatLegendContainer.appendChild(yourSeatsList);
+        seatLegendContainer.appendChild(seatsList);
 
         var container = document.getElementById(containerId);
         container.appendChild(seatLegendContainer);
@@ -1538,7 +1532,9 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
         updateTotal();
 
-        self.onClear(removedSeats);
+        if (self.onClear) {
+            self.onClear(removedSeats);
+        }
     };
 
     /**

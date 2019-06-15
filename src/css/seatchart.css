@@ -144,9 +144,9 @@
 
 .seatChart-legend-item {
     margin: 0;
-    padding: 10px 0 0;
+    padding: 15px 0 0;
     vertical-align: middle;
-    line-height: 25px;
+    line-height: 24px;
 }
 
 .seatChart-legend-description {
@@ -157,8 +157,8 @@
 .seatChart-seat.legend-style {
     cursor: default;
     float: left;
-    width: 25px;
-    height: 25px;
+    width: 23px;
+    height: 23px;
     margin: 0;
     border-top-right-radius: 5px;
     -webkit-border-top-right-radius: 5px;
