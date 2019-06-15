@@ -632,7 +632,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         };
 
         var scItem;
-        var description = '{0} - {1} {2}{3}\n'.format(seatName, type.capitalizeFirstLetter(), price, self.currency);
+        var description = '{0} - {1} {2}{3}\n'.format(seatName, type.capitalizeFirstLetter(), self.currency, price);
 
         updateShoppingCartObject();
 
@@ -945,7 +945,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
                     var id = '{0}_{1}'.format(row, column);
                     var seatName = '{0}{1}'.format(alphabet[row], column + 1);
                     var capitalizedType = type.capitalizeFirstLetter();
-                    var description = '{0} - {1} {2}{3}\n'.format(seatName, capitalizedType, price, self.currency);
+                    var description = '{0} - {1} {2}{3}\n'.format(seatName, capitalizedType, self.currency, price);
 
                     var scItem = createScItem(description, id);
                     scItemsContainer.appendChild(scItem);
@@ -1454,8 +1454,8 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         for (var i = 0; i < seatTypes.length; i += 1) {
             var description = '{0} {1}{2}'.format(
                 seatTypes[i].type.capitalizeFirstLetter(),
-                seatTypes[i].price,
-                self.currency
+                self.currency,
+                seatTypes[i].price
             );
             var item = createLegendItem(description, '', seatTypes[i].color);
             seatsList.appendChild(item);
@@ -1545,7 +1545,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     var createScTotal = function createScTotal() {
         var container = document.createElement('div');
 
-        shoppingCartTotal = createSmallTitle('Total: {0}{1}'.format(self.getTotal(), self.currency));
+        shoppingCartTotal = createSmallTitle('Total: {0}{1}'.format(self.currency, self.getTotal()));
         shoppingCartTotal.className += ' sc-cart-total';
 
         var deleteBtn = createScDeleteButton();
@@ -1569,7 +1569,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     this.createShoppingCart = function createShoppingCart(containerId) {
         var shoppingCartContainer = createContainer();
         var shoppingCartTitle = createIconedTitle(
-            'Shopping cart',
+            'Your Cart',
             '{0}/icons/shoppingcart.svg'.format(self.assetsSrc),
             'Shopping cart icon.'
         );
