@@ -451,7 +451,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         binImg.src = '{0}/icons/bin.svg'.format(self.assetsSrc);
 
         var deleteBtn = document.createElement('div');
-        deleteBtn.className = 'seatChart-sc-delete';
+        deleteBtn.className = 'sc-cart-delete';
         deleteBtn.appendChild(binImg);
 
         return deleteBtn;
@@ -494,7 +494,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     var releaseSeat = function releaseSeat(id) {
         var seat = document.getElementById(id);
         seat.style.cssText = '';
-        seat.className = 'seatChart-seat available';
+        seat.className = 'sc-seat available';
     };
 
     /**
@@ -584,13 +584,13 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      */
     var createScItem = function createScItem(description, id) {
         var item = document.createElement('div');
-        item.className = 'seatChart-sc-item';
+        item.className = 'sc-cart-item';
         // -2 because of the item left padding
         item.style.width = '{0}px'.format(self.shoppingCartWidth - getScrollBarWidth() - 2);
         item.setAttribute('id', 'item-{0}'.format(id));
 
         var desc = document.createElement('p');
-        desc.className = 'seatChart-sc-description';
+        desc.className = 'sc-cart-description';
         desc.textContent = description;
 
         var deleteBtn = createScDeleteButton();
@@ -673,7 +673,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     var createTitle = function createTitle(content) {
         var title = document.createElement('h3');
         title.textContent = content;
-        title.className = 'seatChart-title';
+        title.className = 'sc-title';
 
         return title;
     };
@@ -717,7 +717,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
             var currentClass = currentClassList[i];
             var newClass;
 
-            if (currentClass !== 'seatChart-seat' && currentClass !== 'clicked') {
+            if (currentClass !== 'sc-seat' && currentClass !== 'clicked') {
                 // find index of current
                 var index = types.indexOf(currentClass);
 
@@ -810,7 +810,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     var createSeat = function createSeat(type, content, seatId) {
         var seat = document.createElement('div');
         seat.textContent = content;
-        seat.className = 'seatChart-seat ' + type;
+        seat.className = 'sc-seat ' + type;
 
         // if seatId wasn't passed as argument then don't set it
         if (seatId !== undefined) {
@@ -832,7 +832,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      */
     var createRow = function createRow(rowIndex) {
         var row = document.createElement('div');
-        row.className = 'seatChart-row';
+        row.className = 'sc-row';
 
         if (rowIndex === undefined) {
             row.appendChild(createSeat('blank', ''));
@@ -854,7 +854,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         // set the perfect width of the front indicator
         var front = document.createElement('div');
         front.textContent = 'Front';
-        front.className = 'seatChart-front';
+        front.className = 'sc-front';
         header.appendChild(front);
 
         return header;
@@ -882,7 +882,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      */
     var createContainer = function createContainer() {
         var container = document.createElement('div');
-        container.className = 'seatChart-container';
+        container.className = 'sc-container';
 
         return container;
     };
@@ -1345,7 +1345,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         container.appendChild(seatMapContainer);
 
         // set front indicator
-        var seat = document.getElementsByClassName('seatChart-seat')[0];
+        var seat = document.getElementsByClassName('sc-seat')[0];
         var width = seat.offsetWidth;
 
         var computedStyle = getStyle(seat);
@@ -1357,7 +1357,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         seatMapContainer.style.width = '{0}px'.format(((width + margins) * (seatMap.cols + 1)) +
                                        margins);
 
-        var front = seatMapContainer.getElementsByClassName('seatChart-front')[0];
+        var front = seatMapContainer.getElementsByClassName('sc-front')[0];
         front.style.width = '{0}px'.format(((width + margins) * seatMap.cols) - margins);
 
         // add disabled columns to disabled array
@@ -1395,11 +1395,11 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      */
     var createLegendItem = function createLegendItem(content, type, color) {
         var item = document.createElement('li');
-        item.className = 'seatChart-legend-item';
+        item.className = 'sc-legend-item';
         var itemStyle = document.createElement('div');
-        itemStyle.className = 'seatChart-seat legend-style {0}'.format(type);
+        itemStyle.className = 'sc-seat legend-style {0}'.format(type);
         var description = document.createElement('p');
-        description.className = 'seatChart-legend-description';
+        description.className = 'sc-legend-description';
         description.textContent = content;
 
         if (color !== undefined) {
@@ -1420,7 +1420,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      */
     var createLegendList = function createLegendList() {
         var list = document.createElement('ul');
-        list.className = 'seatChart-legend-list';
+        list.className = 'sc-legend-list';
 
         return list;
     };
@@ -1434,7 +1434,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     var createSmallTitle = function createSmallTitle(content) {
         var smallTitle = document.createElement('h5');
         smallTitle.textContent = content;
-        smallTitle.className = 'seatChart-small-title';
+        smallTitle.className = 'sc-small-title';
 
         return smallTitle;
     };
@@ -1477,7 +1477,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      */
     var createScItemsContainer = function createScItemsContainer() {
         var container = document.createElement('div');
-        container.className = 'seatChart-sc-items-container';
+        container.className = 'sc-cart-items-container';
 
         return container;
     };
@@ -1546,7 +1546,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         var container = document.createElement('div');
 
         shoppingCartTotal = createSmallTitle('Total: {0}{1}'.format(self.getTotal(), self.currency));
-        shoppingCartTotal.className += ' seatChart-sc-total';
+        shoppingCartTotal.className += ' sc-cart-total';
 
         var deleteBtn = createScDeleteButton();
         deleteBtn.onclick = deleteAllClick;
