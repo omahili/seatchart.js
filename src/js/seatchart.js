@@ -207,14 +207,14 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * @type {number}
      * @private
      */
-    self.shoppingCartWidth = 200;
+    self.cartWidth = 200;
 
     /**
      * The shopping cart height.
      * @type {number}
      * @private
      */
-    self.shoppingCartHeight = 200;
+    self.cartHeight = 200;
 
     /**
      * An object containing all seats added to the shopping cart, mapped by seat type.
@@ -223,7 +223,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * @type {Object.<string, Array.<int>>}
      * @private
      */
-    var shoppingCart = {};
+    var cart = {};
 
     /**
      * Sets the current currency.
@@ -269,11 +269,11 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * Sets the shopping cart width.
      * @param {number} value - The shopping cart width.
      */
-    this.setShoppingCartWidth = function setShoppingCartWidth(value) {
+    this.setCartWidth = function setCartWidth(value) {
         if (typeof value === 'number' && value >= 0) {
-            self.shoppingCartWidth = value;
+            self.cartWidth = value;
         } else {
-            throw new Error("Invalid parameter 'value' supplied to SeatchartJS.setShoppingCartWidth(). " +
+            throw new Error("Invalid parameter 'value' supplied to SeatchartJS.setCartWidth(). " +
                             'Must be positive number.');
         }
     };
@@ -282,19 +282,19 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * Gets the shopping cart width.
      * @returns {number} The shopping cart width.
      */
-    this.getShoppingCartWidth = function getShoppingCartWidth() {
-        return self.shoppingCartWidth;
+    this.getCartWidth = function getCartWidth() {
+        return self.cartWidth;
     };
 
     /**
      * Sets the shopping cart height.
      * @param {number} value - The shopping cart height.
      */
-    this.setShoppingCartHeight = function setShoppingCartHeight(value) {
+    this.setCartHeight = function setCartHeight(value) {
         if (typeof value === 'number' && value >= 0) {
-            self.shoppingCartHeight = value;
+            self.cartHeight = value;
         } else {
-            throw new Error("Invalid parameter 'value' supplied to SeatchartJS.setShoppingCartHeight(). " +
+            throw new Error("Invalid parameter 'value' supplied to SeatchartJS.setCartHeight(). " +
                             'Must be positive number.');
         }
     };
@@ -303,16 +303,16 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * Gets the shopping cart height.
      * @returns {number} The shopping cart height.
      */
-    this.getShoppingCartHeight = function getShoppingCartHeight() {
-        return self.shoppingCartHeight;
+    this.getCartHeight = function getCartHeight() {
+        return self.cartHeight;
     };
 
     /**
     * Gets a reference to the shopping cart object.
     * @returns {Object.<string, Array.<int>>} An object containing all seats added to the shopping cart, mapped by seat type.
     */
-    this.getShoppingCart = function getShoppingCart() {
-        return shoppingCart;
+    this.getCart = function getCart() {
+        return cart;
     };
 
     /**
@@ -334,14 +334,14 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * @type {HTMLDivElement}
      * @private
      */
-    var scItemsContainer;
+    var cartTable;
 
     /**
      * The text that shows the total cost of the items in the shopping cart.
      * @type {HTMLHeadingElement}
      * @private
      */
-    var shoppingCartTotal;
+    var cartTotal;
 
     /**
      * A dictionary containing all seats added to the shopping cart, mapped by seat type.
@@ -350,7 +350,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * @type {Object.<string, Array.<string>>}
      * @private
      */
-    var shoppingCartDict = {};
+    var cartDict = {};
 
     /**
      * Adds a seat to the shopping cart dictionary.
@@ -359,10 +359,10 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * @returns {boolean} True if the seat is added correctly otherwise false.
      * @private
      */
-    var addToScDict = function addToScDict(id, type) {
-        if (type in shoppingCartDict) {
-            if ({}.hasOwnProperty.call(shoppingCartDict, type)) {
-                shoppingCartDict[type].push(id);
+    var addToCartDict = function addToCartDict(id, type) {
+        if (type in cartDict) {
+            if ({}.hasOwnProperty.call(cartDict, type)) {
+                cartDict[type].push(id);
                 return true;
             }
         }
@@ -379,11 +379,11 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     var initializeSeatTypes = function initializeSeatTypes() {
         // update types of seat
         types = ['available'];
-        shoppingCartDict = [];
+        cartDict = [];
 
         for (var i = 0; i < seatTypes.length; i += 1) {
             types.push(seatTypes[i].type);
-            shoppingCartDict[seatTypes[i].type] = [];
+            cartDict[seatTypes[i].type] = [];
         }
     };
 
@@ -400,23 +400,23 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * Updates shopping cart object: values stored into shoppingCartDict are mapped to fit
-     * shoppingCart type and format. (See private variables shoppingCartDict and shoppingCart.)
+     * Updates shopping cart object: values stored into cartDict are mapped to fit
+     * cart type and format. (See private variables cartDict and cart.)
      * @private
      */
-    var updateShoppingCartObject = function updateShoppingCartObject() {
-        for (var s in shoppingCartDict) {
-            if ({}.hasOwnProperty.call(shoppingCartDict, s)) {
-                shoppingCart[s] = shoppingCartDict[s].map(getIndexFromId);
+    var updateCartObject = function updateCartObject() {
+        for (var s in cartDict) {
+            if ({}.hasOwnProperty.call(cartDict, s)) {
+                cart[s] = cartDict[s].map(getIndexFromId);
             }
         }
     };
 
     /**
-     * Loads seats into shoppingCartDict.
+     * Loads seats into cartDict.
      * @private
      */
-    var preloadShoppingCart = function preloadShoppingCart() {
+    var loadCart = function loadCart() {
         // create array of seat types
         initializeSeatTypes();
 
@@ -431,15 +431,15 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
                     var index = seatType.selected[l];
                     var id = '{0}_{1}'.format(Math.floor(index / seatMap.cols), index % seatMap.cols);
                     // add to shopping cart
-                    addToScDict(id, type);
+                    addToCartDict(id, type);
                 }
             }
         }
 
-        updateShoppingCartObject();
+        updateCartObject();
     };
 
-    preloadShoppingCart();
+    loadCart();
 
     /**
      * Create a delete button for a shopping cart item.
@@ -474,16 +474,16 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * @private
      */
     var getSeatType = function getSeatType(id) {
-        for (var key in shoppingCartDict) {
-            if ({}.hasOwnProperty.call(shoppingCartDict, key)) {
-                if (shoppingCartDict[key].indexOf(id) >= 0) {
+        for (var key in cartDict) {
+            if ({}.hasOwnProperty.call(cartDict, key)) {
+                if (cartDict[key].indexOf(id) >= 0) {
                     return key;
                 }
             }
         }
 
         throw new Error("Invalid parameter 'id' supplied to SeatchartJS.getSeatType(). " +
-                        "'id' is not defined in shoppingCartDict.");
+                        "'id' is not defined in cartDict.");
     };
 
     /**
@@ -504,19 +504,19 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * @returns {boolean} True if the seat is removed correctly otherwise false.
      * @private
      */
-    var removeFromScDict = function removeFromScDict(id, type) {
+    var removeFromCartDict = function removeFromCartDict(id, type) {
         if (type !== undefined) {
-            if (type in shoppingCartDict) {
-                var index = shoppingCartDict[type].indexOf(id);
+            if (type in cartDict) {
+                var index = cartDict[type].indexOf(id);
                 if (index > -1) {
-                    shoppingCartDict[type].splice(index, 1);
+                    cartDict[type].splice(index, 1);
                     return true;
                 }
             }
         } else {
-            for (var key in shoppingCartDict) {
-                if ({}.hasOwnProperty.call(shoppingCartDict, key)) {
-                    if (removeFromScDict(id, key)) {
+            for (var key in cartDict) {
+                if ({}.hasOwnProperty.call(cartDict, key)) {
+                    if (removeFromCartDict(id, key)) {
                         return true;
                     }
                 }
@@ -531,8 +531,8 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * @private
      */
     var updateTotal = function updateTotal() {
-        if (shoppingCartTotal !== undefined) {
-            shoppingCartTotal.textContent = 'Total: {0}{1}'.format(self.getTotal(), self.currency);
+        if (cartTotal !== undefined) {
+            cartTotal.textContent = 'Total: {0}{1}'.format(self.getTotal(), self.currency);
         }
     };
 
@@ -548,7 +548,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         var type = getSeatType(id);
 
         releaseSeat(id);
-        removeFromScDict(id);
+        removeFromCartDict(id);
         updateTotal();
 
         // fire event
@@ -582,11 +582,11 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * @returns {HTMLDivElement} The shopping cart item.
      * @private
      */
-    var createScItem = function createScItem(description, id) {
+    var createCartItem = function createCartItem(description, id) {
         var item = document.createElement('div');
         item.className = 'sc-cart-item';
         // -2 because of the item left padding
-        item.style.width = '{0}px'.format(self.shoppingCartWidth - getScrollBarWidth() - 2);
+        item.style.width = '{0}px'.format(self.cartWidth - getScrollBarWidth() - 2);
         item.setAttribute('id', 'item-{0}'.format(id));
 
         var desc = document.createElement('p');
@@ -611,7 +611,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * @param {boolean} emit - True to trigger onChange events.
      * @private
      */
-    var updateShoppingCart = function updateShoppingCart(action, id, type, previousType, emit) {
+    var updateCart = function updateCart(action, id, type, previousType, emit) {
         var seatName = getSeatName(id);
         var index = getIndexFromId(id);
         var price = ['available', 'disabled', 'reserved'].indexOf(type) < 0 ? self.getPrice(type) : null;
@@ -634,10 +634,10 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         var scItem;
         var description = '{0} - {1} {2}{3}\n'.format(seatName, type.capitalizeFirstLetter(), self.currency, price);
 
-        updateShoppingCartObject();
+        updateCartObject();
 
         if (action === 'remove') {
-            if (scItemsContainer !== undefined) {
+            if (cartTable !== undefined) {
                 document.getElementById('item-{0}'.format(id)).outerHTML = '';
             }
 
@@ -645,9 +645,9 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
                 self.onChange(action, current, previous);
             }
         } else if (action === 'add') {
-            if (scItemsContainer !== undefined) {
-                scItem = createScItem(description, id);
-                scItemsContainer.appendChild(scItem);
+            if (cartTable !== undefined) {
+                scItem = createCartItem(description, id);
+                cartTable.appendChild(scItem);
             }
 
             if (emit && self.onChange !== null) {
@@ -756,16 +756,16 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
                     // this has to be done after updating the shopping cart
                     // so the event is fired just once the seat style is really updated
                     if (currentClass === 'available') {
-                        if (addToScDict(this.id, newClass)) {
-                            updateShoppingCart('add', this.id, newClass, currentClass, true);
+                        if (addToCartDict(this.id, newClass)) {
+                            updateCart('add', this.id, newClass, currentClass, true);
                         }
                     } else if (newClass === 'available') {
-                        if (removeFromScDict(this.id, currentClass)) {
-                            updateShoppingCart('remove', this.id, newClass, currentClass, true);
+                        if (removeFromCartDict(this.id, currentClass)) {
+                            updateCart('remove', this.id, newClass, currentClass, true);
                         }
-                    } else if (addToScDict(this.id, newClass) &&
-                                removeFromScDict(this.id, currentClass)) {
-                        updateShoppingCart('update', this.id, newClass, currentClass, true);
+                    } else if (addToCartDict(this.id, newClass) &&
+                                removeFromCartDict(this.id, currentClass)) {
+                        updateCart('update', this.id, newClass, currentClass, true);
                     }
                 }
             }
@@ -787,11 +787,11 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         if (type !== undefined) {
             releaseSeat(this.id);
             // remove from virtual sc
-            removeFromScDict(this.id, type);
+            removeFromCartDict(this.id, type);
 
             // there's no need to fire onChange event since this function fires
             // the event after removing the seat from shopping cart
-            updateShoppingCart('remove', this.id, 'available', type, true);
+            updateCart('remove', this.id, 'available', type, true);
             updateTotal();
         }
 
@@ -947,8 +947,8 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
                     var capitalizedType = type.capitalizeFirstLetter();
                     var description = '{0} - {1} {2}{3}\n'.format(seatName, capitalizedType, self.currency, price);
 
-                    var scItem = createScItem(description, id);
-                    scItemsContainer.appendChild(scItem);
+                    var scItem = createCartItem(description, id);
+                    cartTable.appendChild(scItem);
                 }
             }
         }
@@ -1005,9 +1005,9 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      */
     this.getTotal = function getTotal() {
         var total = 0;
-        for (var key in shoppingCartDict) {
-            if ({}.hasOwnProperty.call(shoppingCartDict, key)) {
-                total += self.getPrice(key) * shoppingCartDict[key].length;
+        for (var key in cartDict) {
+            if ({}.hasOwnProperty.call(cartDict, key)) {
+                total += self.getPrice(key) * cartDict[key].length;
             }
         }
 
@@ -1041,9 +1041,9 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         }
 
         // if current seat is selected do not continue
-        for (var key in shoppingCartDict) {
-            if ({}.hasOwnProperty.call(shoppingCartDict, key)) {
-                if (shoppingCartDict[key].indexOf(seatId) >= 0) {
+        for (var key in cartDict) {
+            if ({}.hasOwnProperty.call(cartDict, key)) {
+                if (cartDict[key].indexOf(seatId) >= 0) {
                     return false;
                 }
             }
@@ -1083,14 +1083,14 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         var isSeatAfterSelected = false;
 
         // check if seat before and after are selected
-        for (var type in shoppingCartDict) {
-            if ({}.hasOwnProperty.call(shoppingCartDict, type)) {
+        for (var type in cartDict) {
+            if ({}.hasOwnProperty.call(cartDict, type)) {
                 if (!isSeatBeforeSelected) {
-                    isSeatBeforeSelected = shoppingCartDict[type].indexOf(seatBeforeId) >= 0;
+                    isSeatBeforeSelected = cartDict[type].indexOf(seatBeforeId) >= 0;
                 }
 
                 if (!isSeatAfterSelected) {
-                    isSeatAfterSelected = shoppingCartDict[type].indexOf(seatAfterId) >= 0;
+                    isSeatAfterSelected = cartDict[type].indexOf(seatAfterId) >= 0;
                 }
 
                 if (isSeatAfterSelected && isSeatBeforeSelected) {
@@ -1196,10 +1196,10 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
             }
 
             // check if seat is already selected
-            for (var type in shoppingCartDict) {
-                if ({}.hasOwnProperty.call(shoppingCartDict, type)) {
+            for (var type in cartDict) {
+                if ({}.hasOwnProperty.call(cartDict, type)) {
                     var price = this.getPrice(type);
-                    if (shoppingCartDict[type].indexOf(seatId) >= 0) {
+                    if (cartDict[type].indexOf(seatId) >= 0) {
                         return {
                             type: type,
                             id: seatId,
@@ -1272,21 +1272,21 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
         if (seat.type !== 'available' && seat.type !== 'disabled' && seat.type !== 'reserved') {
             if (type !== 'available' && type !== 'disabled' && type !== 'reserved') {
-                if (removeFromScDict(seat.id, seat.type) && addToScDict(seat.id, type)) {
+                if (removeFromCartDict(seat.id, seat.type) && addToCartDict(seat.id, type)) {
                     element.classList.add('clicked');
                     element.style.setProperty('background-color', seatType.color);
-                    updateShoppingCart('update', seat.id, type, seat.type, emit);
+                    updateCart('update', seat.id, type, seat.type, emit);
                 }
-            } else if (removeFromScDict(seat.id, seat.type)) {
+            } else if (removeFromCartDict(seat.id, seat.type)) {
                 element.classList.remove('clicked');
                 element.style.removeProperty('background-color');
-                updateShoppingCart('remove', seat.id, type, seat.type, emit);
+                updateCart('remove', seat.id, type, seat.type, emit);
             }
         } else if (type !== 'available' && type !== 'disabled' && type !== 'reserved') {
-            if (addToScDict(seat.id, type)) {
+            if (addToCartDict(seat.id, type)) {
                 element.classList.add('clicked');
                 element.style.setProperty('background-color', seatType.color);
-                updateShoppingCart('add', seat.id, type, seat.type, emit);
+                updateCart('add', seat.id, type, seat.type, emit);
             }
         }
 
@@ -1475,7 +1475,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * @returns {HTMLDivElement} The container of the items.
      * @private
      */
-    var createScItemsContainer = function createScItemsContainer() {
+    var createCartItemsContainer = function createCartItemsContainer() {
         var container = document.createElement('div');
         container.className = 'sc-cart-items-container';
 
@@ -1490,10 +1490,10 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         var removedSeats = [];
 
         // release all selected seats and remove them from dictionary
-        for (var key in shoppingCartDict) {
-            if ({}.hasOwnProperty.call(shoppingCartDict, key)) {
-                for (var i = 0; i < shoppingCartDict[key].length; i += 1) {
-                    var id = shoppingCartDict[key][i];
+        for (var key in cartDict) {
+            if ({}.hasOwnProperty.call(cartDict, key)) {
+                for (var i = 0; i < cartDict[key].length; i += 1) {
+                    var id = cartDict[key][i];
 
                     releaseSeat(id);
 
@@ -1523,12 +1523,12 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
                 }
 
                 // empty array, fastest way instead of removing each seat
-                shoppingCartDict[key] = [];
+                cartDict[key] = [];
             }
         }
 
         // empty shopping cart, fastest way instead of removing each item
-        scItemsContainer.innerHTML = '';
+        cartTable.innerHTML = '';
 
         updateTotal();
 
@@ -1542,11 +1542,11 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * @returns {HTMLDivElement} The total and "delete all" button.
      * @private
      */
-    var createScTotal = function createScTotal() {
+    var createCartTotal = function createCartTotal() {
         var container = document.createElement('div');
 
-        shoppingCartTotal = createSmallTitle('Total: {0}{1}'.format(self.currency, self.getTotal()));
-        shoppingCartTotal.className += ' sc-cart-total';
+        cartTotal = createSmallTitle('Total: {0}{1}'.format(self.currency, self.getTotal()));
+        cartTotal.className += ' sc-cart-total';
 
         var deleteBtn = createScDeleteButton();
         deleteBtn.onclick = deleteAllClick;
@@ -1556,7 +1556,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         label.textContent = 'All';
         deleteBtn.appendChild(label);
 
-        container.appendChild(shoppingCartTotal);
+        container.appendChild(cartTotal);
         container.appendChild(deleteBtn);
 
         return container;
@@ -1566,26 +1566,26 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * Creates the shopping cart.
      * @private
      */
-    this.createShoppingCart = function createShoppingCart(containerId) {
-        var shoppingCartContainer = createContainer();
-        var shoppingCartTitle = createIconedTitle(
+    this.createCart = function createCart(containerId) {
+        var cartContainer = createContainer();
+        var cartTitle = createIconedTitle(
             'Your Cart',
             '{0}/icons/shoppingcart.svg'.format(self.assetsSrc),
             'Shopping cart icon.'
         );
 
-        scItemsContainer = createScItemsContainer();
-        scItemsContainer.style.width = '{0}px'.format(self.shoppingCartWidth);
-        scItemsContainer.style.height = '{0}px'.format(self.shoppingCartHeight);
+        cartTable = createCartItemsContainer();
+        cartTable.style.width = '{0}px'.format(self.cartWidth);
+        cartTable.style.height = '{0}px'.format(self.cartHeight);
 
         preloadScItems();
-        var scTotal = createScTotal();
+        var cartTotal = createCartTotal();
 
-        shoppingCartContainer.appendChild(shoppingCartTitle);
-        shoppingCartContainer.appendChild(scItemsContainer);
-        shoppingCartContainer.appendChild(scTotal);
+        cartContainer.appendChild(cartTitle);
+        cartContainer.appendChild(cartTable);
+        cartContainer.appendChild(cartTotal);
 
         var container = document.getElementById(containerId);
-        container.appendChild(shoppingCartContainer);
+        container.appendChild(cartContainer);
     };
 }
