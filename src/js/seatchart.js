@@ -1310,6 +1310,13 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     this.onChange = null;
 
     /**
+     * This event is triggered when all seats are removed with 'delete all' button in the shopping cart.
+     * @event SeatchartJS#onClear
+     * @param {Array<Object.<{current: {type: string, id: string, index: number, name: string, price: number}, previous: {type: string, id: string, index: number, name: string, price: number}}>>} - Array of removed seats.
+     */
+    this.onClear = null;
+
+    /**
      * Creates the seatmap.
      * @param {string} containerId - The html id of the container that is going to contain the seatmap.
      */
@@ -1486,6 +1493,8 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * @private
      */
     var deleteAllClick = function deleteAllClick() {
+        var removedSeats = [];
+
         // release all selected seats and remove them from dictionary
         for (var key in shoppingCartDict) {
             if ({}.hasOwnProperty.call(shoppingCartDict, key)) {
@@ -1515,7 +1524,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
                             price: self.getPrice(type)
                         };
 
-                        self.onChange('remove', current, previous);
+                        removedSeats.push({ current: current, previous: previous });
                     }
                 }
 
@@ -1528,6 +1537,8 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         scItemsContainer.innerHTML = '';
 
         updateTotal();
+
+        self.onClear(removedSeats);
     };
 
     /**

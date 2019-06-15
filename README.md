@@ -1,4 +1,4 @@
-<p align="center">    
+<p align="center">
     <img src="https://raw.githubusercontent.com/omarmahili/SeatchartJS/develop/logo.svg?sanitize=true" alt="SeatchartJS Logo" width="500" />
 </p>
 
@@ -73,6 +73,8 @@ If you want to help in the development of this library please open a PR on githu
 - [x] Rename SeatchartJS class into Seatchart: ```var sc = new Seatchart()```
 - [x] Remove long press feature on a seat
 - [x] Remove sound
+- [x] Remove onAddedSeat/onRemovedSeat and add onChange event
+- [x] Add onClear event and trigger it when all seats are removed
 - [ ] Decrease access to the DOM (e.g. getSeatName() function)
 - [ ] Replace current seat indexing with a simple one: an object { row: 10, col: 10 }
 - [ ] Add 'static' mode where seat types are defined by default
@@ -80,8 +82,6 @@ If you want to help in the development of this library please open a PR on githu
 - [ ] Add choice for different seat names
 - [ ] Show a dropdown menu, on click, to select seat type
 - [ ] Add multi-language support
-- [ ] Remove onAddedSeat/onRemovedSeat and add onChange event
-- [ ] Add onClear event and trigger it when all seats are removed
 - [ ] Improve shopping cart design
 - [ ] Improve legend: remove 'Available' seat from legend, remove 'Your seats' and 'Seats' subtitles
 - [ ] Use [Semantic Versioning](https://semver.org/) and release an alpha
