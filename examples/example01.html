@@ -6,38 +6,34 @@
         <link rel="stylesheet" href="../src/css/seatchart.css">
 
         <style>
+            .content {
+                display: flex;
+                flex-direction: row;
+            }
+
             .right {
-                float: left;
+                display: flex;
+                flex-direction: column;
+                margin-left: 40px;
             }
 
-            .containers {
-                float: left;
-                clear: right;
-                margin-bottom: 20px;
+            #map-container {
+                display: flex;
+                align-items: center;
             }
 
-            .howto {
-                font-family: 'RobotoDraft', 'Roboto', sans-serif;
-                margin-left: 20px;
+            #legend-container {
+                margin-top: 20px;
             }
         </style>
     </head>
     <body>
-        <div id="map-container" class="right"></div>
+        <div class="content">
+            <div id="map-container"></div>
 
-        <div class="right">
-            <div class="containers">
-                <div id="legend-container"  class="right"></div>
-                <div id="shoppingCart-container"  class="right"></div>
-            </div>
-
-            <div class="howto">
-                <h3>HOW TO USE: </h3>
-                <ul>
-                    <li>Right click to select a seat</li>
-                    <li>Left click to unselect a seat</li>
-                    <li>Long press to change seat type</li>
-                </ul>
+            <div class="right">
+                <div id="cart-container"></div>
+                <div id="legend-container"></div>
             </div>
         </div>
 
@@ -59,9 +55,8 @@
             };
 
             var types = [
-                { type: "regular", color: "orange", price: 10, selected: [23, 24] },
-                { type: "reduced", color: "#af0000", price: 7.5, selected: [25, 26] },
-                { type: "military", color: "red", price: 7 }
+                { type: "regular", backgroundColor: "orange", price: 10, selected: [23, 24] },
+                { type: "reduced", backgroundColor: "#ff0000", price: 7.5, selected: [25, 26] }
             ];
 
             var sc = new Seatchart(map, types);
@@ -69,12 +64,12 @@
 
             sc.setAssetsSrc("../src/assets");
             sc.setCurrency(currency);
-            sc.setShoppingCartWidth(200);
-            sc.setShoppingCartHeight(250);
+            sc.setCartWidth(280);
+            sc.setCartHeight(250);
 
             sc.createMap("map-container");
             sc.createLegend("legend-container");
-            sc.createShoppingCart("shoppingCart-container");
+            sc.createCart("cart-container");
         </script>
     </body>
 </html>
