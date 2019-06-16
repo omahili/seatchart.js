@@ -312,6 +312,13 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     var cartTotal;
 
     /**
+     * Text that show total number of items in the shopping cart.
+     * @type {HTMLHeadingElement}
+     * @private
+     */
+    var cartItemsCounter;
+
+    /**
      * A dictionary containing all seats added to the shopping cart, mapped by seat type.
      * Each string is composed by row (r) and column (c) indexed in the following format: "r_c",
      * which is the id of the seat in the document.
@@ -495,12 +502,16 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * Updates the total price of the shopping cart.
+     * Updates the total price and items counter in the shopping cart.
      * @private
      */
     var updateTotal = function updateTotal() {
         if (cartTotal !== undefined) {
             cartTotal.textContent = 'Total: {0}{1}'.format(self.currency, self.getTotal().toFixed(2));
+        }
+
+        if (cartItemsCounter !== undefined) {
+            cartItemsCounter.textContent = '({0})'.format(cartTable.childNodes.length);
         }
     };
 
@@ -947,12 +958,16 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * @private
      */
     var loadCartItems = function loadCartItems() {
+        var count = 0;
+
         for (var i = 0; i < seatTypes.length; i += 1) {
             var seatType = seatTypes[i];
 
             if ({}.hasOwnProperty.call(seatType, 'selected') && seatType.selected) {
                 var type = seatType.type;
                 var price = seatType.price;
+
+                count += seatType.selected.length;
 
                 for (var j = 0; j < seatType.selected.length; j += 1) {
                     var index = seatType.selected[j];
@@ -971,6 +986,8 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
                 }
             }
         }
+
+        return count;
     };
 
     /**
@@ -1557,6 +1574,18 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
+     * Creates text that contains total number of items in the shopping cart.
+     * @returns {HTMLDivElement} The total and "delete all" button.
+     * @private
+     */
+    var createCartItemsCounter = function createCartItemsCounter(count) {
+        var cartItemsCount = document.createElement('h3');
+        cartItemsCount.textContent = '({0})'.format(count);
+
+        return cartItemsCount;
+    };
+
+    /**
      * Creates the total of the shopping cart and a "delete all" button.
      * @returns {HTMLDivElement} The total and "delete all" button.
      * @private
@@ -1601,8 +1630,11 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         cartTable = createCartTable();
         cartTableContainer.appendChild(cartTable);
 
-        loadCartItems();
+        var itemsCount = loadCartItems();
         var cartTotal = createCartTotal();
+
+        cartItemsCounter = createCartItemsCounter(itemsCount);
+        cartTitle.appendChild(cartItemsCounter);
 
         cartContainer.appendChild(cartTitle);
         cartContainer.appendChild(cartTableContainer);
