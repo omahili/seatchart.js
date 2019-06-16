@@ -256,3 +256,42 @@
     font-size: 14px;
     line-height: 25px;
 }
+
+/* Ticket css */
+
+.sc-ticket-container {
+    padding: 5px;
+    width: 150px;
+}
+
+.sc-ticket {
+    display: flex;
+    justify-content: center;
+    color: black;
+    font-size: 15px;
+    width: 100%;
+    height: 30px;
+    border: 2px solid black;
+}
+
+.sc-ticket div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.sc-ticket .sc-cart-seat-name {
+    border-right: 1px dashed black;
+    box-sizing: border-box;
+    width: 30%;
+}
+
+.sc-ticket .sc-cart-seat-type {
+    width: 60%;
+}
+
+.sc-ticket .sc-ticket-stripes {
+    width: 5%;
+    background: repeating-linear-gradient(45deg, black, black 3px, transparent 3px, transparent 6px);
+}
