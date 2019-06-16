@@ -2,7 +2,7 @@
  * Creates a seatchart.
  * @constructor
  * @param {Object.<{rows: number, cols: number, reserved: Array.<number>, disabled: Array.<number>, disabledRows: Array.<number>, disabledCols: Array.<number>}>} seatMap - Info to generate the seatmap.
- * @param {Array.<Object.<{type: string, color: string, price: number, selected: Array.<number>}>>} seatTypes - Seat types and their colors to be represented.
+ * @param {Array.<Object.<{type: string, color: string, backgroundColor: string, price: number, selected: Array.<number>}>>} seatTypes - Seat types and their colors to be represented.
  */
 function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     /**
@@ -88,18 +88,18 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         // check if all elements have the needed attribute and contain the right type of value
         for (var i = 0; i < seatTypes.length; i += 1) {
             if (!{}.hasOwnProperty.call(seatTypes[i], 'type') ||
-                !{}.hasOwnProperty.call(seatTypes[i], 'color') ||
+                !{}.hasOwnProperty.call(seatTypes[i], 'backgroundColor') ||
                 !{}.hasOwnProperty.call(seatTypes[i], 'price')) {
                 throw new Error(("Invalid parameter 'seatTypes' supplied to SeatchartJS. " +
                                 "Element at index {0} must contain a 'type', " +
-                                "a 'color' and a 'price' property.").format(i));
+                                "a 'backgroundColor' and a 'price' property.").format(i));
             } else if (!(typeof seatTypes[i].type === 'string' || seatTypes[i].type instanceof String)) {
                 throw new Error(("Invalid parameter 'seatTypes' supplied to SeatchartJS. " +
                                 "'type' property at index {0} must be a string.").format(i));
-            } else if (!(typeof seatTypes[i].color === 'string' ||
-                        seatTypes[i].color instanceof String)) {
+            } else if (!(typeof seatTypes[i].backgroundColor === 'string' ||
+                        seatTypes[i].backgroundColor instanceof String)) {
                 throw new Error(("Invalid parameter 'seatTypes' supplied to SeatchartJS. " +
-                                "'color' property at index {0} must be a string.").format(i));
+                                "'backgroundColor' property at index {0} must be a string.").format(i));
             } else if (typeof seatTypes[i].price !== 'number') {
                 throw new Error(("Invalid parameter 'seatTypes' supplied to SeatchartJS. " +
                                 "'price' property at index {0} must be a number.").format(i));
@@ -108,17 +108,17 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     }
 
     /**
-     * Checks if a color is valid and if it's not hexadecimal it's converted.
+     * Checks if background color is valid and if it's not hexadecimal it's converted.
      * @param {string} color - A color (a word or a hexadecimal representation).
      * @returns {string} The hexadecimal representation of the color.
      * @private
      */
     var checkColor = function checkColor(index) {
-        var color = colorToHex(seatTypes[index].color);
+        var color = colorToHex(seatTypes[index].backgroundColor);
 
         if (color.indexOf('#') !== 0) {
             throw new Error(("Invalid parameter 'seatTypes' supplied to SeatchartJS. " +
-                            "'color' property at index {0} must be a valid color. " +
+                            "'backgroundColor' property at index {0} must be a valid color. " +
                             "(e.g. 'red' or '#ff0000', rgb() colors are not accepted)").format(index));
         }
 
@@ -127,7 +127,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
     // check the given input
     for (var x = 0; x < seatTypes.length; x += 1) {
-        // check color value
+        // check background color value
         var colorX = checkColor(x);
 
         for (var y = x + 1; y < seatTypes.length; y += 1) {
@@ -138,13 +138,13 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
                                 'Types are case insensitive.').format(seatTypes[x].type, seatTypes[y].type));
             }
 
-            // check color value
+            // check background color value
             var colorY = checkColor(y);
 
             if (colorX === colorY) {
                 throw new Error(("Invalid parameter 'seatTypes' supplied to SeatchartJS. " +
-                                "'{0}' and '{1}' are equals and colors must be different.")
-                                .format(seatTypes[x].color, seatTypes[y].color));
+                                "'{0}' and '{1}' background colors are equal. They must be different.")
+                                .format(seatTypes[x].backgroundColor, seatTypes[y].backgroundColor));
             }
         }
     }
@@ -563,11 +563,14 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * @private
      */
     var createTicket = function createTicker(seat) {
+        var seatConfig = seatTypes.find(function findSeatType(x) {
+            return x.type === seat.type;
+        });
+
         var ticket = document.createElement('div');
         ticket.className = 'sc-ticket';
-        ticket.style.backgroundColor = seatTypes.find(function findSeatType(x) {
-            return x.type === seat.type;
-        }).color;
+        ticket.style.color = seatConfig.color;
+        ticket.style.backgroundColor = seatConfig.backgroundColor;
 
         var stripes = document.createElement('div');
         stripes.className = 'sc-ticket-stripes';
@@ -674,10 +677,13 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
             cartItem = document.getElementById('item-{0}'.format(id));
             var itemContent = cartItem.getElementsByTagName('td');
 
-            var ticket = itemContent[0].getElementsByClassName('sc-ticket')[0];
-            ticket.style.backgroundColor = seatTypes.find(function findSeatType(x) {
+            var seatConfig = seatTypes.find(function findSeatType(x) {
                 return x.type === current.type;
-            }).color;
+            });
+
+            var ticket = itemContent[0].getElementsByClassName('sc-ticket')[0];
+            ticket.style.backgroundColor = seatConfig.backgroundColor;
+            ticket.style.color = seatConfig.color;
 
             var ticketType = ticket.getElementsByClassName('sc-cart-seat-type')[0];
             ticketType.textContent = current.type.capitalizeFirstLetter();
@@ -761,6 +767,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
                     newClass = types[index];
 
                     this.style.backgroundColor = '';
+                    this.style.color = '';
                     this.classList.add(newClass);
 
                     // if the class isn't available then apply the background-color in the config
@@ -773,7 +780,8 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
                         }
 
                         this.classList.add('clicked');
-                        this.style.backgroundColor = seatTypes[index].color;
+                        this.style.backgroundColor = seatTypes[index].backgroundColor;
+                        this.style.color = seatTypes[index].color;
                     } else {
                         // otherwise remove the class 'clicked'
                         // since available has it's own style
@@ -1000,6 +1008,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
             if ({}.hasOwnProperty.call(seatType, 'selected') && seatType.selected) {
                 var type = seatType.type;
+                var backgroundColor = seatType.backgroundColor;
                 var color = seatType.color;
 
                 for (var l = 0; l < seatType.selected.length; l += 1) {
@@ -1012,7 +1021,8 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
                         element.classList.remove('available');
                         element.classList.add(type);
                         element.classList.add('clicked');
-                        element.style.backgroundColor = color;
+                        element.style.backgroundColor = backgroundColor;
+                        element.style.color = color;
                     }
                 }
             }
@@ -1310,7 +1320,8 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
             if (type !== 'available' && type !== 'disabled' && type !== 'reserved') {
                 if (removeFromCartDict(seat.id, seat.type) && addToCartDict(seat.id, type)) {
                     element.classList.add('clicked');
-                    element.style.setProperty('background-color', seatType.color);
+                    element.style.setProperty('background-color', seatType.backgroundColor);
+                    element.style.setProperty('color', seatType.color);
                     updateCart('update', seat.id, type, seat.type, emit);
                 }
             } else if (removeFromCartDict(seat.id, seat.type)) {
@@ -1321,7 +1332,8 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         } else if (type !== 'available' && type !== 'disabled' && type !== 'reserved') {
             if (addToCartDict(seat.id, type)) {
                 element.classList.add('clicked');
-                element.style.setProperty('background-color', seatType.color);
+                element.style.setProperty('background-color', seatType.backgroundColor);
+                element.style.setProperty('color', seatType.color);
                 updateCart('add', seat.id, type, seat.type, emit);
             }
         }
@@ -1422,14 +1434,14 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * Creates a legend item and applies a type and a color if needed.
+     * Creates a legend item and applies a type and a backgroundColor if needed.
      * @param {string} content - The text in the legend that explains the type of seat.
      * @param {string} type - The type of seat.
-     * @param {string} color - The background color of the item in the legend.
+     * @param {string} backgroundColor - The background color of the item in the legend.
      * @returns {HTMLListItemElement} The legend item.
      * @private
      */
-    var createLegendItem = function createLegendItem(content, type, color) {
+    var createLegendItem = function createLegendItem(content, type, backgroundColor) {
         var item = document.createElement('li');
         item.className = 'sc-legend-item';
         var itemStyle = document.createElement('div');
@@ -1438,9 +1450,9 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         description.className = 'sc-legend-description';
         description.textContent = content;
 
-        if (color !== undefined) {
+        if (backgroundColor !== undefined) {
             itemStyle.className = '{0} clicked'.format(itemStyle.className);
-            itemStyle.style.backgroundColor = color;
+            itemStyle.style.backgroundColor = backgroundColor;
         }
 
         item.appendChild(itemStyle);
@@ -1493,7 +1505,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
                 self.currency,
                 seatTypes[i].price.toFixed(2)
             );
-            var item = createLegendItem(description, '', seatTypes[i].color);
+            var item = createLegendItem(description, '', seatTypes[i].backgroundColor);
             seatsList.appendChild(item);
         }
         seatsList.appendChild(createLegendItem('Already booked', 'unavailable'));
