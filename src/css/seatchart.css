@@ -1,29 +1,33 @@
 /* Seat map css */
 
-.seatChart-container {
+.sc-container {
     display: inline-block;
     cursor: default;
     user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-.seatChart-container * {
+.sc-container * {
     box-sizing: content-box;
     -webkit-box-sizing: content-box;
     -moz-box-sizing: content-box;
 }
 
-.seatChart-title {
+.sc-row {
+    display: flex;
+}
+
+.sc-title {
+    display: flex;
+    align-items: center;
     margin: 0;
     padding: 10px 0 0;
 }
 
-.seatChart-title img {
-    float: left;
-    display: block;
-
+.sc-title img {
     /* ie and edge require height to be set and width to be auto set, not the opposite */
     height: 20px;
     width: auto;
@@ -31,20 +35,25 @@
     padding: 0;
 }
 
-.seatChart-title h3 {
-    display: inline-block;
+.sc-title h3 {
     height: 20px;
     line-height: 20px;
     margin: 0;
     padding: 0 0 0 10px;
 }
 
-.seatChart-small-title {
+.sc-small-title {
     margin: 0;
     padding: 15px 0 0;
 }
 
-.seatChart-seat {
+.sc-seat {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    width: 40px;
+    margin: 3px;
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -54,52 +63,33 @@
     -webkit-border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     -webkit-border-top-right-radius: 10px;
-    height: 40px;
-    width: 40px;
-    margin: 3px;
-    line-height: 40px;
-    float: left;
-    text-align: center;
-    vertical-align: middle;
 }
 
-.seatChart-front {
-    color: #787878;
-    border-radius: 5px;
-    -webkit-border-radius: 5px;
-    height: 40px;
-    line-height: 40px;
-    margin: 4px;
-    float: left;
+.sc-front {
+    display: flex;
+    align-self: center;
+    justify-content: center;
+    color: #b0b0b0;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    height: 30px;
+    line-height: 30px;
     text-align: center;
-    vertical-align: middle;
-    background-color: #f3f3f3;
+    background-color: #f5f5f5;
+    width: 100%;
 }
 
-.seatChart-seat.index {
+.sc-seat.index {
     background-color: transparent;
     color: #4b4949;
 }
 
-.seatChart-sc-delete img {
-    height: 15px;
-    width: 15px;
-
-    /* makes img stay centered */
-    position: absolute;
-    margin: auto;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-}
-
-.seatChart-seat.blank {
+.sc-seat.blank {
     background-color: transparent;
     color: transparent;
 }
 
-.seatChart-seat.blank img {
+.sc-seat.blank img {
     height: 15px;
     width: auto;
 
@@ -112,49 +102,49 @@
     right: 0;
 }
 
-.seatChart-seat.available {
+.sc-seat.available {
     cursor: pointer;
     background-color: #80c2d1;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 }
 
-.seatChart-seat.available:hover {
+.sc-seat.available:hover {
     background-color: #a0d3de;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.12);
 }
 
-.seatChart-seat.unavailable {
+.sc-seat.unavailable {
     background-color: rgb(210, 210, 210);
     cursor: not-allowed;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.06);
 }
 
-.seatChart-seat.clicked {
+.sc-seat.clicked {
     cursor: pointer;
     box-shadow: 0 1px 3px rgba(160, 106, 106, 0.06), 0 1px 2px rgba(0, 0, 0, 0.12);
 }
 
 /* Seat legend css */
 
-.seatChart-legend-list {
+.sc-legend-list {
     list-style-type: none;
     margin: 0;
     padding: 0 0 15px;
 }
 
-.seatChart-legend-item {
+.sc-legend-item {
     margin: 0;
     padding: 15px 0 0;
     vertical-align: middle;
     line-height: 24px;
 }
 
-.seatChart-legend-description {
+.sc-legend-description {
     display: inline-block;
     margin: 0 0 0 10px;
 }
 
-.seatChart-seat.legend-style {
+.sc-seat.legend-style {
     cursor: default;
     float: left;
     width: 23px;
@@ -169,75 +159,118 @@
 
 /* Shopping cart css */
 
-.seatChart-sc-items-container {
+.sc-cart-container {
     margin: 15px 0 0;
     padding: 0;
-    border: 1px solid #f3f3f3;
+    border: 1px solid #ddd;
     overflow-y: auto;
     overflow-x: hidden;
 }
 
-.seatChart-sc-item {
-    border-bottom: 1px solid #afafaf;
-    width: 200px;
-    height: 30px;
-    margin: 0 1px 0 0;
-    padding: 6px 0 0;
+.sc-cart-container table {
+    width: 100%;
 }
 
-.seatChart-sc-delete {
+.sc-cart-container tr {
+    border-bottom: 1px solid #ddd;
+    width: 200px;
+    margin: 0 1px 0 0;
+    padding: 6px 0 0;
+    height: 40px;
+    min-height: 40px;
+}
+
+.sc-cart-container td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.sc-cart-delete {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
-
-    /* makes img stay centered */
-    position: relative;
     background-color: #db2c2c;
-
-    /* makes it stay at the right of the container */
-    margin: auto 10px auto auto;
     height: 25px;
     width: 25px;
     border-radius: 5px;
     -webkit-border-radius: 5px;
 }
 
-.seatChart-sc-delete.all {
-    margin: 15px 0 0;
-    padding: 0;
-    width: 60px;
+.sc-cart-delete img {
+    height: 15px;
+    width: 15px;
 }
 
-.seatChart-sc-delete.all img {
-    right: auto;
-    left: auto;
-    padding-left: 5px;
-    float: left;
+.sc-cart-delete.all {
+    justify-content: flex-start;
+    width: auto;
+    margin-top: 10px;
+    padding: 0 5px;
 }
 
-.seatChart-sc-delete.all p {
+.sc-cart-delete.all p {
     color: white;
-    text-align: center;
-    line-height: 25px;
     padding: 0;
-    margin: 0 0 0 20px;
+    margin: 0 0 0 5px;
 }
 
-.seatChart-sc-delete:hover {
+.sc-cart-delete:hover {
     background-color: #db4646;
 }
 
-.seatChart-sc-total {
-    margin: 0;
+.sc-cart-total {
+    margin: 10px 0 0;
     padding: 0;
     float: right;
     display: block;
     line-height: 25px;
 }
 
-.seatChart-sc-description {
+.sc-cart-description {
     float: left;
     display: block;
     margin: auto;
     padding: 0 10px;
     font-size: 14px;
     line-height: 25px;
+}
+
+/* Ticket css */
+
+.sc-ticket-container {
+    padding: 5px;
+    width: 150px;
+}
+
+.sc-ticket {
+    display: flex;
+    justify-content: center;
+    color: white;
+    font-size: 15px;
+    width: 100%;
+    height: 30px;
+    border: 2px solid black;
+}
+
+.sc-ticket div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.sc-ticket .sc-cart-seat-name {
+    border-right: 1px dashed black;
+    box-sizing: border-box;
+    width: 30%;
+}
+
+.sc-ticket .sc-cart-seat-type {
+    width: 60%;
+}
+
+.sc-ticket .sc-ticket-stripes {
+    width: 5%;
+    background: repeating-linear-gradient(45deg, black, black 3px, transparent 3px, transparent 6px);
 }

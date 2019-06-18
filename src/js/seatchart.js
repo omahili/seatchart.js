@@ -2,7 +2,7 @@
  * Creates a seatchart.
  * @constructor
  * @param {Object.<{rows: number, cols: number, reserved: Array.<number>, disabled: Array.<number>, disabledRows: Array.<number>, disabledCols: Array.<number>}>} seatMap - Info to generate the seatmap.
- * @param {Array.<Object.<{type: string, color: string, price: number, selected: Array.<number>}>>} seatTypes - Seat types and their colors to be represented.
+ * @param {Array.<Object.<{type: string, color: string, backgroundColor: string, price: number, selected: Array.<number>}>>} seatTypes - Seat types and their colors to be represented.
  */
 function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     /**
@@ -45,54 +45,6 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         return el.currentStyle;
     };
 
-    /**
-     * Computes the scroll bar width of the browser.
-     * Many thanks to Alexander Gomes (http://www.alexandre-gomes.com/?p=115).
-     * @returns {number} The scrollbar width.
-     * @private
-     */
-    function getScrollBarWidth() {
-        var inner = document.createElement('p');
-        inner.style.width = '100%';
-        inner.style.height = '200px';
-
-        var outer = document.createElement('div');
-        outer.style.position = 'absolute';
-        outer.style.top = '0px';
-        outer.style.left = '0px';
-        outer.style.visibility = 'hidden';
-        outer.style.width = '200px';
-        outer.style.height = '150px';
-        outer.style.overflow = 'hidden';
-        outer.appendChild(inner);
-
-        document.body.appendChild(outer);
-        var w1 = inner.offsetWidth;
-        outer.style.overflow = 'scroll';
-        var w2 = inner.offsetWidth;
-        if (w1 === w2) w2 = outer.clientWidth;
-
-        document.body.removeChild(outer);
-
-        return (w1 - w2);
-    }
-
-    /**
-     * Converts a color to its equivalent in hexadecimal.
-     * @param {string} color - A color (e.g. "#00ffff", "blue").
-     * @returns {string} Hexadeciaml representation of the color.
-     * @private
-     */
-    function colorToHex(color) {
-        /* eslint-disable */
-        var colors = {'aliceblue':'#f0f8ff','antiquewhite':'#faebd7','aqua':'#00ffff','aquamarine':'#7fffd4','azure':'#f0ffff','beige':'#f5f5dc','bisque':'#ffe4c4','black':'#000000','blanchedalmond':'#ffebcd','blue':'#0000ff','blueviolet':'#8a2be2','brown':'#a52a2a','burlywood':'#deb887','cadetblue':'#5f9ea0','chartreuse':'#7fff00','chocolate':'#d2691e','coral':'#ff7f50','cornflowerblue':'#6495ed','cornsilk':'#fff8dc','crimson':'#dc143c','cyan':'#00ffff','darkblue':'#00008b','darkcyan':'#008b8b','darkgoldenrod':'#b8860b','darkgray':'#a9a9a9','darkgreen':'#006400','darkkhaki':'#bdb76b','darkmagenta':'#8b008b','darkolivegreen':'#556b2f','darkorange':'#ff8c00','darkorchid':'#9932cc','darkred':'#8b0000','darksalmon':'#e9967a','darkseagreen':'#8fbc8f','darkslateblue':'#483d8b','darkslategray':'#2f4f4f','darkturquoise':'#00ced1','darkviolet':'#9400d3','deeppink':'#ff1493','deepskyblue':'#00bfff','dimgray':'#696969','dodgerblue':'#1e90ff','firebrick':'#b22222','floralwhite':'#fffaf0','forestgreen':'#228b22','fuchsia':'#ff00ff','gainsboro':'#dcdcdc','ghostwhite':'#f8f8ff','gold':'#ffd700','goldenrod':'#daa520','gray':'#808080','green':'#008000','greenyellow':'#adff2f','honeydew':'#f0fff0','hotpink':'#ff69b4','indianred ':'#cd5c5c','indigo':'#4b0082','ivory':'#fffff0','khaki':'#f0e68c','lavender':'#e6e6fa','lavenderblush':'#fff0f5','lawngreen':'#7cfc00','lemonchiffon':'#fffacd','lightblue':'#add8e6','lightcoral':'#f08080','lightcyan':'#e0ffff','lightgoldenrodyellow':'#fafad2','lightgrey':'#d3d3d3','lightgreen':'#90ee90','lightpink':'#ffb6c1','lightsalmon':'#ffa07a','lightseagreen':'#20b2aa','lightskyblue':'#87cefa','lightslategray':'#778899','lightsteelblue':'#b0c4de','lightyellow':'#ffffe0','lime':'#00ff00','limegreen':'#32cd32','linen':'#faf0e6','magenta':'#ff00ff','maroon':'#800000','mediumaquamarine':'#66cdaa','mediumblue':'#0000cd','mediumorchid':'#ba55d3','mediumpurple':'#9370d8','mediumseagreen':'#3cb371','mediumslateblue':'#7b68ee','mediumspringgreen':'#00fa9a','mediumturquoise':'#48d1cc','mediumvioletred':'#c71585','midnightblue':'#191970','mintcream':'#f5fffa','mistyrose':'#ffe4e1','moccasin':'#ffe4b5','navajowhite':'#ffdead','navy':'#000080','oldlace':'#fdf5e6','olive':'#808000','olivedrab':'#6b8e23','orange':'#ffa500','orangered':'#ff4500','orchid':'#da70d6','palegoldenrod':'#eee8aa','palegreen':'#98fb98','paleturquoise':'#afeeee','palevioletred':'#d87093','papayawhip':'#ffefd5','peachpuff':'#ffdab9','peru':'#cd853f','pink':'#ffc0cb','plum':'#dda0dd','powderblue':'#b0e0e6','purple':'#800080','red':'#ff0000','rosybrown':'#bc8f8f','royalblue':'#4169e1','saddlebrown':'#8b4513','salmon':'#fa8072','sandybrown':'#f4a460','seagreen':'#2e8b57','seashell':'#fff5ee','sienna':'#a0522d','silver':'#c0c0c0','skyblue':'#87ceeb','slateblue':'#6a5acd','slategray':'#708090','snow':'#fffafa','springgreen':'#00ff7f','steelblue':'#4682b4','tan':'#d2b48c','teal':'#008080','thistle':'#d8bfd8','tomato':'#ff6347','turquoise':'#40e0d0','violet':'#ee82ee','wheat':'#f5deb3','white':'#ffffff','whitesmoke':'#f5f5f5','yellow':'#ffff00','yellowgreen':'#9acd32'};
-        /* eslint-enable */
-
-        var hex = colors[color.toLowerCase()];
-
-        return typeof hex !== 'undefined' ? hex : color;
-    }
-
     // check seatMap parameter
     if (seatMap === undefined) {
         throw new Error("Invalid parameter 'seatMap' supplied to SeatchartJS. Cannot be undefined.");
@@ -120,18 +72,18 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         // check if all elements have the needed attribute and contain the right type of value
         for (var i = 0; i < seatTypes.length; i += 1) {
             if (!{}.hasOwnProperty.call(seatTypes[i], 'type') ||
-                !{}.hasOwnProperty.call(seatTypes[i], 'color') ||
+                !{}.hasOwnProperty.call(seatTypes[i], 'backgroundColor') ||
                 !{}.hasOwnProperty.call(seatTypes[i], 'price')) {
                 throw new Error(("Invalid parameter 'seatTypes' supplied to SeatchartJS. " +
                                 "Element at index {0} must contain a 'type', " +
-                                "a 'color' and a 'price' property.").format(i));
+                                "a 'backgroundColor' and a 'price' property.").format(i));
             } else if (!(typeof seatTypes[i].type === 'string' || seatTypes[i].type instanceof String)) {
                 throw new Error(("Invalid parameter 'seatTypes' supplied to SeatchartJS. " +
                                 "'type' property at index {0} must be a string.").format(i));
-            } else if (!(typeof seatTypes[i].color === 'string' ||
-                        seatTypes[i].color instanceof String)) {
+            } else if (!(typeof seatTypes[i].backgroundColor === 'string' ||
+                        seatTypes[i].backgroundColor instanceof String)) {
                 throw new Error(("Invalid parameter 'seatTypes' supplied to SeatchartJS. " +
-                                "'color' property at index {0} must be a string.").format(i));
+                                "'backgroundColor' property at index {0} must be a string.").format(i));
             } else if (typeof seatTypes[i].price !== 'number') {
                 throw new Error(("Invalid parameter 'seatTypes' supplied to SeatchartJS. " +
                                 "'price' property at index {0} must be a number.").format(i));
@@ -139,44 +91,14 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         }
     }
 
-    /**
-     * Checks if a color is valid and if it's not hexadecimal it's converted.
-     * @param {string} color - A color (a word or a hexadecimal representation).
-     * @returns {string} The hexadecimal representation of the color.
-     * @private
-     */
-    var checkColor = function checkColor(index) {
-        var color = colorToHex(seatTypes[index].color);
-
-        if (color.indexOf('#') !== 0) {
-            throw new Error(("Invalid parameter 'seatTypes' supplied to SeatchartJS. " +
-                            "'color' property at index {0} must be a valid color. " +
-                            "(e.g. 'red' or '#ff0000', rgb() colors are not accepted)").format(index));
-        }
-
-        return color;
-    };
-
     // check the given input
     for (var x = 0; x < seatTypes.length; x += 1) {
-        // check color value
-        var colorX = checkColor(x);
-
         for (var y = x + 1; y < seatTypes.length; y += 1) {
             if (seatTypes[x].type.capitalizeFirstLetter() ===
                 seatTypes[y].type.capitalizeFirstLetter()) {
                 throw new Error(("Invalid parameter 'seatTypes' supplied to SeatchartJS. " +
-                                "'{0}' and '{1}' are equals and types must be different. " +
+                                "'{0}' and '{1}' types are equal and must be different. " +
                                 'Types are case insensitive.').format(seatTypes[x].type, seatTypes[y].type));
-            }
-
-            // check color value
-            var colorY = checkColor(y);
-
-            if (colorX === colorY) {
-                throw new Error(("Invalid parameter 'seatTypes' supplied to SeatchartJS. " +
-                                "'{0}' and '{1}' are equals and colors must be different.")
-                                .format(seatTypes[x].color, seatTypes[y].color));
             }
         }
     }
@@ -207,14 +129,14 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * @type {number}
      * @private
      */
-    self.shoppingCartWidth = 200;
+    self.cartWidth = 200;
 
     /**
      * The shopping cart height.
      * @type {number}
      * @private
      */
-    self.shoppingCartHeight = 200;
+    self.cartHeight = 200;
 
     /**
      * An object containing all seats added to the shopping cart, mapped by seat type.
@@ -223,7 +145,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * @type {Object.<string, Array.<int>>}
      * @private
      */
-    var shoppingCart = {};
+    var cart = {};
 
     /**
      * Sets the current currency.
@@ -269,11 +191,11 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * Sets the shopping cart width.
      * @param {number} value - The shopping cart width.
      */
-    this.setShoppingCartWidth = function setShoppingCartWidth(value) {
+    this.setCartWidth = function setCartWidth(value) {
         if (typeof value === 'number' && value >= 0) {
-            self.shoppingCartWidth = value;
+            self.cartWidth = value;
         } else {
-            throw new Error("Invalid parameter 'value' supplied to SeatchartJS.setShoppingCartWidth(). " +
+            throw new Error("Invalid parameter 'value' supplied to SeatchartJS.setCartWidth(). " +
                             'Must be positive number.');
         }
     };
@@ -282,19 +204,19 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * Gets the shopping cart width.
      * @returns {number} The shopping cart width.
      */
-    this.getShoppingCartWidth = function getShoppingCartWidth() {
-        return self.shoppingCartWidth;
+    this.getCartWidth = function getCartWidth() {
+        return self.cartWidth;
     };
 
     /**
      * Sets the shopping cart height.
      * @param {number} value - The shopping cart height.
      */
-    this.setShoppingCartHeight = function setShoppingCartHeight(value) {
+    this.setCartHeight = function setCartHeight(value) {
         if (typeof value === 'number' && value >= 0) {
-            self.shoppingCartHeight = value;
+            self.cartHeight = value;
         } else {
-            throw new Error("Invalid parameter 'value' supplied to SeatchartJS.setShoppingCartHeight(). " +
+            throw new Error("Invalid parameter 'value' supplied to SeatchartJS.setCartHeight(). " +
                             'Must be positive number.');
         }
     };
@@ -303,16 +225,16 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * Gets the shopping cart height.
      * @returns {number} The shopping cart height.
      */
-    this.getShoppingCartHeight = function getShoppingCartHeight() {
-        return self.shoppingCartHeight;
+    this.getCartHeight = function getCartHeight() {
+        return self.cartHeight;
     };
 
     /**
     * Gets a reference to the shopping cart object.
     * @returns {Object.<string, Array.<int>>} An object containing all seats added to the shopping cart, mapped by seat type.
     */
-    this.getShoppingCart = function getShoppingCart() {
-        return shoppingCart;
+    this.getCart = function getCart() {
+        return cart;
     };
 
     /**
@@ -334,14 +256,21 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * @type {HTMLDivElement}
      * @private
      */
-    var scItemsContainer;
+    var cartTable;
 
     /**
      * The text that shows the total cost of the items in the shopping cart.
      * @type {HTMLHeadingElement}
      * @private
      */
-    var shoppingCartTotal;
+    var cartTotal;
+
+    /**
+     * Text that show total number of items in the shopping cart.
+     * @type {HTMLHeadingElement}
+     * @private
+     */
+    var cartItemsCounter;
 
     /**
      * A dictionary containing all seats added to the shopping cart, mapped by seat type.
@@ -350,7 +279,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * @type {Object.<string, Array.<string>>}
      * @private
      */
-    var shoppingCartDict = {};
+    var cartDict = {};
 
     /**
      * Adds a seat to the shopping cart dictionary.
@@ -359,10 +288,10 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * @returns {boolean} True if the seat is added correctly otherwise false.
      * @private
      */
-    var addToScDict = function addToScDict(id, type) {
-        if (type in shoppingCartDict) {
-            if ({}.hasOwnProperty.call(shoppingCartDict, type)) {
-                shoppingCartDict[type].push(id);
+    var addToCartDict = function addToCartDict(id, type) {
+        if (type in cartDict) {
+            if ({}.hasOwnProperty.call(cartDict, type)) {
+                cartDict[type].push(id);
                 return true;
             }
         }
@@ -379,11 +308,11 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     var initializeSeatTypes = function initializeSeatTypes() {
         // update types of seat
         types = ['available'];
-        shoppingCartDict = [];
+        cartDict = [];
 
         for (var i = 0; i < seatTypes.length; i += 1) {
             types.push(seatTypes[i].type);
-            shoppingCartDict[seatTypes[i].type] = [];
+            cartDict[seatTypes[i].type] = [];
         }
     };
 
@@ -400,23 +329,23 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * Updates shopping cart object: values stored into shoppingCartDict are mapped to fit
-     * shoppingCart type and format. (See private variables shoppingCartDict and shoppingCart.)
+     * Updates shopping cart object: values stored into cartDict are mapped to fit
+     * cart type and format. (See private variables cartDict and cart.)
      * @private
      */
-    var updateShoppingCartObject = function updateShoppingCartObject() {
-        for (var s in shoppingCartDict) {
-            if ({}.hasOwnProperty.call(shoppingCartDict, s)) {
-                shoppingCart[s] = shoppingCartDict[s].map(getIndexFromId);
+    var updateCartObject = function updateCartObject() {
+        for (var s in cartDict) {
+            if ({}.hasOwnProperty.call(cartDict, s)) {
+                cart[s] = cartDict[s].map(getIndexFromId);
             }
         }
     };
 
     /**
-     * Loads seats into shoppingCartDict.
+     * Loads seats into cartDict.
      * @private
      */
-    var preloadShoppingCart = function preloadShoppingCart() {
+    var loadCart = function loadCart() {
         // create array of seat types
         initializeSeatTypes();
 
@@ -431,15 +360,15 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
                     var index = seatType.selected[l];
                     var id = '{0}_{1}'.format(Math.floor(index / seatMap.cols), index % seatMap.cols);
                     // add to shopping cart
-                    addToScDict(id, type);
+                    addToCartDict(id, type);
                 }
             }
         }
 
-        updateShoppingCartObject();
+        updateCartObject();
     };
 
-    preloadShoppingCart();
+    loadCart();
 
     /**
      * Create a delete button for a shopping cart item.
@@ -451,7 +380,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         binImg.src = '{0}/icons/bin.svg'.format(self.assetsSrc);
 
         var deleteBtn = document.createElement('div');
-        deleteBtn.className = 'seatChart-sc-delete';
+        deleteBtn.className = 'sc-cart-delete';
         deleteBtn.appendChild(binImg);
 
         return deleteBtn;
@@ -474,16 +403,16 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * @private
      */
     var getSeatType = function getSeatType(id) {
-        for (var key in shoppingCartDict) {
-            if ({}.hasOwnProperty.call(shoppingCartDict, key)) {
-                if (shoppingCartDict[key].indexOf(id) >= 0) {
+        for (var key in cartDict) {
+            if ({}.hasOwnProperty.call(cartDict, key)) {
+                if (cartDict[key].indexOf(id) >= 0) {
                     return key;
                 }
             }
         }
 
         throw new Error("Invalid parameter 'id' supplied to SeatchartJS.getSeatType(). " +
-                        "'id' is not defined in shoppingCartDict.");
+                        "'id' is not defined in cartDict.");
     };
 
     /**
@@ -494,7 +423,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     var releaseSeat = function releaseSeat(id) {
         var seat = document.getElementById(id);
         seat.style.cssText = '';
-        seat.className = 'seatChart-seat available';
+        seat.className = 'sc-seat available';
     };
 
     /**
@@ -504,19 +433,19 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * @returns {boolean} True if the seat is removed correctly otherwise false.
      * @private
      */
-    var removeFromScDict = function removeFromScDict(id, type) {
+    var removeFromCartDict = function removeFromCartDict(id, type) {
         if (type !== undefined) {
-            if (type in shoppingCartDict) {
-                var index = shoppingCartDict[type].indexOf(id);
+            if (type in cartDict) {
+                var index = cartDict[type].indexOf(id);
                 if (index > -1) {
-                    shoppingCartDict[type].splice(index, 1);
+                    cartDict[type].splice(index, 1);
                     return true;
                 }
             }
         } else {
-            for (var key in shoppingCartDict) {
-                if ({}.hasOwnProperty.call(shoppingCartDict, key)) {
-                    if (removeFromScDict(id, key)) {
+            for (var key in cartDict) {
+                if ({}.hasOwnProperty.call(cartDict, key)) {
+                    if (removeFromCartDict(id, key)) {
                         return true;
                     }
                 }
@@ -527,12 +456,16 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * Updates the total price of the shopping cart.
+     * Updates the total price and items counter in the shopping cart.
      * @private
      */
     var updateTotal = function updateTotal() {
-        if (shoppingCartTotal !== undefined) {
-            shoppingCartTotal.textContent = 'Total: {0}{1}'.format(self.getTotal(), self.currency);
+        if (cartTotal !== undefined) {
+            cartTotal.textContent = 'Total: {0}{1}'.format(self.currency, self.getTotal().toFixed(2));
+        }
+
+        if (cartItemsCounter !== undefined) {
+            cartItemsCounter.textContent = '({0})'.format(cartTable.childNodes.length);
         }
     };
 
@@ -541,14 +474,16 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * @private
      */
     var deleteClick = function deleteClick() {
-        var parentId = this.parentNode.getAttribute('id');
+        var column = this.parentNode;
+        var item = column.parentNode;
+        var parentId = item.getAttribute('id');
         document.getElementById(parentId).outerHTML = '';
 
         var id = parentId.split('-')[1];
         var type = getSeatType(id);
 
         releaseSeat(id);
-        removeFromScDict(id);
+        removeFromCartDict(id);
         updateTotal();
 
         // fire event
@@ -576,28 +511,68 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
+     * Creates a ticket to place into the shopping cart.
+     * @param {Object.<{type: string, id: string, name: string, price: number}>} - Seat info.
+     * @returns {HTMLDivElement} The ticket.
+     * @private
+     */
+    var createTicket = function createTicker(seat) {
+        var seatConfig = seatTypes.find(function findSeatType(x) {
+            return x.type === seat.type;
+        });
+
+        var ticket = document.createElement('div');
+        ticket.className = 'sc-ticket';
+        ticket.style.color = seatConfig.color;
+        ticket.style.backgroundColor = seatConfig.backgroundColor;
+
+        var stripes = document.createElement('div');
+        stripes.className = 'sc-ticket-stripes';
+
+        var seatName = document.createElement('div');
+        seatName.textContent = seat.name;
+        seatName.className = 'sc-cart-seat-name';
+
+        var seatType = document.createElement('div');
+        seatType.textContent = seat.type.capitalizeFirstLetter();
+        seatType.className = 'sc-cart-seat-type';
+
+        ticket.appendChild(stripes);
+        ticket.appendChild(seatName);
+        ticket.appendChild(seatType);
+        ticket.appendChild(stripes.cloneNode(true));
+
+        return ticket;
+    };
+
+    /**
      * Creates a shopping cart item.
-     * @param {string} description - The description of the item in the shopping cart.
-     * @param {string} id - The html id of the seat in the seatmap.
+     * @param {Object.<{type: string, id: string, name: string, price: number}>} - Seat info.
      * @returns {HTMLDivElement} The shopping cart item.
      * @private
      */
-    var createScItem = function createScItem(description, id) {
-        var item = document.createElement('div');
-        item.className = 'seatChart-sc-item';
-        // -2 because of the item left padding
-        item.style.width = '{0}px'.format(self.shoppingCartWidth - getScrollBarWidth() - 2);
-        item.setAttribute('id', 'item-{0}'.format(id));
+    var createCartItem = function createCartItem(seat) {
+        var item = document.createElement('tr');
 
-        var desc = document.createElement('p');
-        desc.className = 'seatChart-sc-description';
-        desc.textContent = description;
+        var ticketTd = document.createElement('td');
+        ticketTd.className = 'sc-ticket-container';
 
+        var ticket = createTicket(seat);
+        ticketTd.appendChild(ticket);
+
+        var seatPrice = document.createElement('td');
+        seatPrice.textContent = '{0}{1}'.format(self.currency, seat.price.toFixed(2));
+
+        var deleteTd = document.createElement('td');
         var deleteBtn = createScDeleteButton();
         deleteBtn.onclick = deleteClick;
 
-        item.appendChild(desc);
-        item.appendChild(deleteBtn);
+        deleteTd.appendChild(deleteBtn);
+
+        item.setAttribute('id', 'item-{0}'.format(seat.id));
+        item.appendChild(ticketTd);
+        item.appendChild(seatPrice);
+        item.appendChild(deleteTd);
 
         return item;
     };
@@ -611,7 +586,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * @param {boolean} emit - True to trigger onChange events.
      * @private
      */
-    var updateShoppingCart = function updateShoppingCart(action, id, type, previousType, emit) {
+    var updateCart = function updateCart(action, id, type, previousType, emit) {
         var seatName = getSeatName(id);
         var index = getIndexFromId(id);
         var price = ['available', 'disabled', 'reserved'].indexOf(type) < 0 ? self.getPrice(type) : null;
@@ -631,13 +606,12 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
             price: ['available', 'disabled', 'reserved'].indexOf(previousType) < 0 ? self.getPrice(previousType) : null
         };
 
-        var scItem;
-        var description = '{0} - {1} {2}{3}\n'.format(seatName, type.capitalizeFirstLetter(), price, self.currency);
+        var cartItem;
 
-        updateShoppingCartObject();
+        updateCartObject();
 
         if (action === 'remove') {
-            if (scItemsContainer !== undefined) {
+            if (cartTable !== undefined) {
                 document.getElementById('item-{0}'.format(id)).outerHTML = '';
             }
 
@@ -645,18 +619,31 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
                 self.onChange(action, current, previous);
             }
         } else if (action === 'add') {
-            if (scItemsContainer !== undefined) {
-                scItem = createScItem(description, id);
-                scItemsContainer.appendChild(scItem);
+            if (cartTable !== undefined) {
+                cartItem = createCartItem(current);
+                cartTable.appendChild(cartItem);
             }
 
             if (emit && self.onChange !== null) {
                 self.onChange(action, current, previous);
             }
         } else if (action === 'update') {
-            scItem = document.getElementById('item-{0}'.format(id));
-            var p = scItem.getElementsByTagName('p')[0];
-            p.textContent = description;
+            cartItem = document.getElementById('item-{0}'.format(id));
+            var itemContent = cartItem.getElementsByTagName('td');
+
+            var seatConfig = seatTypes.find(function findSeatType(x) {
+                return x.type === current.type;
+            });
+
+            var ticket = itemContent[0].getElementsByClassName('sc-ticket')[0];
+            ticket.style.backgroundColor = seatConfig.backgroundColor;
+            ticket.style.color = seatConfig.color;
+
+            var ticketType = ticket.getElementsByClassName('sc-cart-seat-type')[0];
+            ticketType.textContent = current.type.capitalizeFirstLetter();
+
+            var ticketPrice = itemContent[1];
+            ticketPrice.textContent = '{0}{1}'.format(self.currency, current.price.toFixed(2));
 
             if (emit && self.onChange !== null) {
                 self.onChange(action, current, previous);
@@ -673,7 +660,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     var createTitle = function createTitle(content) {
         var title = document.createElement('h3');
         title.textContent = content;
-        title.className = 'seatChart-title';
+        title.className = 'sc-title';
 
         return title;
     };
@@ -717,7 +704,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
             var currentClass = currentClassList[i];
             var newClass;
 
-            if (currentClass !== 'seatChart-seat' && currentClass !== 'clicked') {
+            if (currentClass !== 'sc-seat' && currentClass !== 'clicked') {
                 // find index of current
                 var index = types.indexOf(currentClass);
 
@@ -734,6 +721,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
                     newClass = types[index];
 
                     this.style.backgroundColor = '';
+                    this.style.color = '';
                     this.classList.add(newClass);
 
                     // if the class isn't available then apply the background-color in the config
@@ -746,7 +734,8 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
                         }
 
                         this.classList.add('clicked');
-                        this.style.backgroundColor = seatTypes[index].color;
+                        this.style.backgroundColor = seatTypes[index].backgroundColor;
+                        this.style.color = seatTypes[index].color;
                     } else {
                         // otherwise remove the class 'clicked'
                         // since available has it's own style
@@ -756,16 +745,16 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
                     // this has to be done after updating the shopping cart
                     // so the event is fired just once the seat style is really updated
                     if (currentClass === 'available') {
-                        if (addToScDict(this.id, newClass)) {
-                            updateShoppingCart('add', this.id, newClass, currentClass, true);
+                        if (addToCartDict(this.id, newClass)) {
+                            updateCart('add', this.id, newClass, currentClass, true);
                         }
                     } else if (newClass === 'available') {
-                        if (removeFromScDict(this.id, currentClass)) {
-                            updateShoppingCart('remove', this.id, newClass, currentClass, true);
+                        if (removeFromCartDict(this.id, currentClass)) {
+                            updateCart('remove', this.id, newClass, currentClass, true);
                         }
-                    } else if (addToScDict(this.id, newClass) &&
-                                removeFromScDict(this.id, currentClass)) {
-                        updateShoppingCart('update', this.id, newClass, currentClass, true);
+                    } else if (addToCartDict(this.id, newClass) &&
+                                removeFromCartDict(this.id, currentClass)) {
+                        updateCart('update', this.id, newClass, currentClass, true);
                     }
                 }
             }
@@ -787,11 +776,11 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         if (type !== undefined) {
             releaseSeat(this.id);
             // remove from virtual sc
-            removeFromScDict(this.id, type);
+            removeFromCartDict(this.id, type);
 
             // there's no need to fire onChange event since this function fires
             // the event after removing the seat from shopping cart
-            updateShoppingCart('remove', this.id, 'available', type, true);
+            updateCart('remove', this.id, 'available', type, true);
             updateTotal();
         }
 
@@ -810,7 +799,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     var createSeat = function createSeat(type, content, seatId) {
         var seat = document.createElement('div');
         seat.textContent = content;
-        seat.className = 'seatChart-seat ' + type;
+        seat.className = 'sc-seat ' + type;
 
         // if seatId wasn't passed as argument then don't set it
         if (seatId !== undefined) {
@@ -832,7 +821,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      */
     var createRow = function createRow(rowIndex) {
         var row = document.createElement('div');
-        row.className = 'seatChart-row';
+        row.className = 'sc-row';
 
         if (rowIndex === undefined) {
             row.appendChild(createSeat('blank', ''));
@@ -854,7 +843,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         // set the perfect width of the front indicator
         var front = document.createElement('div');
         front.textContent = 'Front';
-        front.className = 'seatChart-front';
+        front.className = 'sc-front';
         header.appendChild(front);
 
         return header;
@@ -882,7 +871,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      */
     var createContainer = function createContainer() {
         var container = document.createElement('div');
-        container.className = 'seatChart-container';
+        container.className = 'sc-container';
 
         return container;
     };
@@ -930,7 +919,9 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * Loads seats, given with seat types, into the shopping cart.
      * @private
      */
-    var preloadScItems = function preloadScItems() {
+    var loadCartItems = function loadCartItems() {
+        var count = 0;
+
         for (var i = 0; i < seatTypes.length; i += 1) {
             var seatType = seatTypes[i];
 
@@ -938,32 +929,40 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
                 var type = seatType.type;
                 var price = seatType.price;
 
+                count += seatType.selected.length;
+
                 for (var j = 0; j < seatType.selected.length; j += 1) {
                     var index = seatType.selected[j];
                     var row = Math.floor(index / seatMap.cols);
                     var column = index % seatMap.cols;
                     var id = '{0}_{1}'.format(row, column);
                     var seatName = '{0}{1}'.format(alphabet[row], column + 1);
-                    var capitalizedType = type.capitalizeFirstLetter();
-                    var description = '{0} - {1} {2}{3}\n'.format(seatName, capitalizedType, price, self.currency);
-
-                    var scItem = createScItem(description, id);
-                    scItemsContainer.appendChild(scItem);
+                    var seat = {
+                        id: id,
+                        name: seatName,
+                        type: type,
+                        price: price
+                    };
+                    var cartItem = createCartItem(seat);
+                    cartTable.appendChild(cartItem);
                 }
             }
         }
+
+        return count;
     };
 
     /**
      * Selects seats given with seat types.
      * @private
      */
-    var preselectSeats = function preselectSeats() {
+    var selectSeats = function selectSeats() {
         for (var n = 0; n < seatTypes.length; n += 1) {
             var seatType = seatTypes[n];
 
             if ({}.hasOwnProperty.call(seatType, 'selected') && seatType.selected) {
                 var type = seatType.type;
+                var backgroundColor = seatType.backgroundColor;
                 var color = seatType.color;
 
                 for (var l = 0; l < seatType.selected.length; l += 1) {
@@ -976,7 +975,8 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
                         element.classList.remove('available');
                         element.classList.add(type);
                         element.classList.add('clicked');
-                        element.style.backgroundColor = color;
+                        element.style.backgroundColor = backgroundColor;
+                        element.style.color = color;
                     }
                 }
             }
@@ -1005,9 +1005,9 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      */
     this.getTotal = function getTotal() {
         var total = 0;
-        for (var key in shoppingCartDict) {
-            if ({}.hasOwnProperty.call(shoppingCartDict, key)) {
-                total += self.getPrice(key) * shoppingCartDict[key].length;
+        for (var key in cartDict) {
+            if ({}.hasOwnProperty.call(cartDict, key)) {
+                total += self.getPrice(key) * cartDict[key].length;
             }
         }
 
@@ -1041,9 +1041,9 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         }
 
         // if current seat is selected do not continue
-        for (var key in shoppingCartDict) {
-            if ({}.hasOwnProperty.call(shoppingCartDict, key)) {
-                if (shoppingCartDict[key].indexOf(seatId) >= 0) {
+        for (var key in cartDict) {
+            if ({}.hasOwnProperty.call(cartDict, key)) {
+                if (cartDict[key].indexOf(seatId) >= 0) {
                     return false;
                 }
             }
@@ -1083,14 +1083,14 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         var isSeatAfterSelected = false;
 
         // check if seat before and after are selected
-        for (var type in shoppingCartDict) {
-            if ({}.hasOwnProperty.call(shoppingCartDict, type)) {
+        for (var type in cartDict) {
+            if ({}.hasOwnProperty.call(cartDict, type)) {
                 if (!isSeatBeforeSelected) {
-                    isSeatBeforeSelected = shoppingCartDict[type].indexOf(seatBeforeId) >= 0;
+                    isSeatBeforeSelected = cartDict[type].indexOf(seatBeforeId) >= 0;
                 }
 
                 if (!isSeatAfterSelected) {
-                    isSeatAfterSelected = shoppingCartDict[type].indexOf(seatAfterId) >= 0;
+                    isSeatAfterSelected = cartDict[type].indexOf(seatAfterId) >= 0;
                 }
 
                 if (isSeatAfterSelected && isSeatBeforeSelected) {
@@ -1196,10 +1196,10 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
             }
 
             // check if seat is already selected
-            for (var type in shoppingCartDict) {
-                if ({}.hasOwnProperty.call(shoppingCartDict, type)) {
+            for (var type in cartDict) {
+                if ({}.hasOwnProperty.call(cartDict, type)) {
                     var price = this.getPrice(type);
-                    if (shoppingCartDict[type].indexOf(seatId) >= 0) {
+                    if (cartDict[type].indexOf(seatId) >= 0) {
                         return {
                             type: type,
                             id: seatId,
@@ -1272,21 +1272,23 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
         if (seat.type !== 'available' && seat.type !== 'disabled' && seat.type !== 'reserved') {
             if (type !== 'available' && type !== 'disabled' && type !== 'reserved') {
-                if (removeFromScDict(seat.id, seat.type) && addToScDict(seat.id, type)) {
+                if (removeFromCartDict(seat.id, seat.type) && addToCartDict(seat.id, type)) {
                     element.classList.add('clicked');
-                    element.style.setProperty('background-color', seatType.color);
-                    updateShoppingCart('update', seat.id, type, seat.type, emit);
+                    element.style.setProperty('background-color', seatType.backgroundColor);
+                    element.style.setProperty('color', seatType.color);
+                    updateCart('update', seat.id, type, seat.type, emit);
                 }
-            } else if (removeFromScDict(seat.id, seat.type)) {
+            } else if (removeFromCartDict(seat.id, seat.type)) {
                 element.classList.remove('clicked');
                 element.style.removeProperty('background-color');
-                updateShoppingCart('remove', seat.id, type, seat.type, emit);
+                updateCart('remove', seat.id, type, seat.type, emit);
             }
         } else if (type !== 'available' && type !== 'disabled' && type !== 'reserved') {
-            if (addToScDict(seat.id, type)) {
+            if (addToCartDict(seat.id, type)) {
                 element.classList.add('clicked');
-                element.style.setProperty('background-color', seatType.color);
-                updateShoppingCart('add', seat.id, type, seat.type, emit);
+                element.style.setProperty('background-color', seatType.backgroundColor);
+                element.style.setProperty('color', seatType.color);
+                updateCart('add', seat.id, type, seat.type, emit);
             }
         }
 
@@ -1345,7 +1347,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         container.appendChild(seatMapContainer);
 
         // set front indicator
-        var seat = document.getElementsByClassName('seatChart-seat')[0];
+        var seat = document.getElementsByClassName('sc-seat')[0];
         var width = seat.offsetWidth;
 
         var computedStyle = getStyle(seat);
@@ -1357,8 +1359,8 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         seatMapContainer.style.width = '{0}px'.format(((width + margins) * (seatMap.cols + 1)) +
                                        margins);
 
-        var front = seatMapContainer.getElementsByClassName('seatChart-front')[0];
-        front.style.width = '{0}px'.format(((width + margins) * seatMap.cols) - margins);
+        var front = seatMapContainer.getElementsByClassName('sc-front')[0];
+        front.style.width = '{0}px'.format((width + margins) * seatMap.cols);
 
         // add disabled columns to disabled array
         if (seatMap.disabledCols) {
@@ -1382,29 +1384,29 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
         setSeat('reserved');
         setSeat('disabled');
-        preselectSeats();
+        selectSeats();
     };
 
     /**
-     * Creates a legend item and applies a type and a color if needed.
+     * Creates a legend item and applies a type and a backgroundColor if needed.
      * @param {string} content - The text in the legend that explains the type of seat.
      * @param {string} type - The type of seat.
-     * @param {string} color - The background color of the item in the legend.
+     * @param {string} backgroundColor - The background color of the item in the legend.
      * @returns {HTMLListItemElement} The legend item.
      * @private
      */
-    var createLegendItem = function createLegendItem(content, type, color) {
+    var createLegendItem = function createLegendItem(content, type, backgroundColor) {
         var item = document.createElement('li');
-        item.className = 'seatChart-legend-item';
+        item.className = 'sc-legend-item';
         var itemStyle = document.createElement('div');
-        itemStyle.className = 'seatChart-seat legend-style {0}'.format(type);
+        itemStyle.className = 'sc-seat legend-style {0}'.format(type);
         var description = document.createElement('p');
-        description.className = 'seatChart-legend-description';
+        description.className = 'sc-legend-description';
         description.textContent = content;
 
-        if (color !== undefined) {
+        if (backgroundColor !== undefined) {
             itemStyle.className = '{0} clicked'.format(itemStyle.className);
-            itemStyle.style.backgroundColor = color;
+            itemStyle.style.backgroundColor = backgroundColor;
         }
 
         item.appendChild(itemStyle);
@@ -1420,7 +1422,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      */
     var createLegendList = function createLegendList() {
         var list = document.createElement('ul');
-        list.className = 'seatChart-legend-list';
+        list.className = 'sc-legend-list';
 
         return list;
     };
@@ -1434,7 +1436,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     var createSmallTitle = function createSmallTitle(content) {
         var smallTitle = document.createElement('h5');
         smallTitle.textContent = content;
-        smallTitle.className = 'seatChart-small-title';
+        smallTitle.className = 'sc-small-title';
 
         return smallTitle;
     };
@@ -1454,10 +1456,10 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         for (var i = 0; i < seatTypes.length; i += 1) {
             var description = '{0} {1}{2}'.format(
                 seatTypes[i].type.capitalizeFirstLetter(),
-                seatTypes[i].price,
-                self.currency
+                self.currency,
+                seatTypes[i].price.toFixed(2)
             );
-            var item = createLegendItem(description, '', seatTypes[i].color);
+            var item = createLegendItem(description, '', seatTypes[i].backgroundColor);
             seatsList.appendChild(item);
         }
         seatsList.appendChild(createLegendItem('Already booked', 'unavailable'));
@@ -1475,9 +1477,9 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * @returns {HTMLDivElement} The container of the items.
      * @private
      */
-    var createScItemsContainer = function createScItemsContainer() {
-        var container = document.createElement('div');
-        container.className = 'seatChart-sc-items-container';
+    var createCartTable = function createCartTable() {
+        var container = document.createElement('table');
+        container.className = 'sc-cart-items-container';
 
         return container;
     };
@@ -1490,10 +1492,10 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         var removedSeats = [];
 
         // release all selected seats and remove them from dictionary
-        for (var key in shoppingCartDict) {
-            if ({}.hasOwnProperty.call(shoppingCartDict, key)) {
-                for (var i = 0; i < shoppingCartDict[key].length; i += 1) {
-                    var id = shoppingCartDict[key][i];
+        for (var key in cartDict) {
+            if ({}.hasOwnProperty.call(cartDict, key)) {
+                for (var i = 0; i < cartDict[key].length; i += 1) {
+                    var id = cartDict[key][i];
 
                     releaseSeat(id);
 
@@ -1523,12 +1525,12 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
                 }
 
                 // empty array, fastest way instead of removing each seat
-                shoppingCartDict[key] = [];
+                cartDict[key] = [];
             }
         }
 
         // empty shopping cart, fastest way instead of removing each item
-        scItemsContainer.innerHTML = '';
+        cartTable.innerHTML = '';
 
         updateTotal();
 
@@ -1538,15 +1540,27 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
+     * Creates text that contains total number of items in the shopping cart.
+     * @returns {HTMLDivElement} The total and "delete all" button.
+     * @private
+     */
+    var createCartItemsCounter = function createCartItemsCounter(count) {
+        var cartItemsCount = document.createElement('h3');
+        cartItemsCount.textContent = '({0})'.format(count);
+
+        return cartItemsCount;
+    };
+
+    /**
      * Creates the total of the shopping cart and a "delete all" button.
      * @returns {HTMLDivElement} The total and "delete all" button.
      * @private
      */
-    var createScTotal = function createScTotal() {
+    var createCartTotal = function createCartTotal() {
         var container = document.createElement('div');
 
-        shoppingCartTotal = createSmallTitle('Total: {0}{1}'.format(self.getTotal(), self.currency));
-        shoppingCartTotal.className += ' seatChart-sc-total';
+        cartTotal = createSmallTitle('Total: {0}{1}'.format(self.currency, self.getTotal()));
+        cartTotal.className += ' sc-cart-total';
 
         var deleteBtn = createScDeleteButton();
         deleteBtn.onclick = deleteAllClick;
@@ -1556,7 +1570,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         label.textContent = 'All';
         deleteBtn.appendChild(label);
 
-        container.appendChild(shoppingCartTotal);
+        container.appendChild(cartTotal);
         container.appendChild(deleteBtn);
 
         return container;
@@ -1566,26 +1580,33 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * Creates the shopping cart.
      * @private
      */
-    this.createShoppingCart = function createShoppingCart(containerId) {
-        var shoppingCartContainer = createContainer();
-        var shoppingCartTitle = createIconedTitle(
-            'Shopping cart',
+    this.createCart = function createCart(containerId) {
+        var cartContainer = createContainer();
+        var cartTitle = createIconedTitle(
+            'Your Cart',
             '{0}/icons/shoppingcart.svg'.format(self.assetsSrc),
             'Shopping cart icon.'
         );
 
-        scItemsContainer = createScItemsContainer();
-        scItemsContainer.style.width = '{0}px'.format(self.shoppingCartWidth);
-        scItemsContainer.style.height = '{0}px'.format(self.shoppingCartHeight);
+        var cartTableContainer = document.createElement('div');
+        cartTableContainer.classList.add('sc-cart-container');
+        cartTableContainer.style.width = '{0}px'.format(self.cartWidth);
+        cartTableContainer.style.height = '{0}px'.format(self.cartHeight);
 
-        preloadScItems();
-        var scTotal = createScTotal();
+        cartTable = createCartTable();
+        cartTableContainer.appendChild(cartTable);
 
-        shoppingCartContainer.appendChild(shoppingCartTitle);
-        shoppingCartContainer.appendChild(scItemsContainer);
-        shoppingCartContainer.appendChild(scTotal);
+        var itemsCount = loadCartItems();
+        var cartTotal = createCartTotal();
+
+        cartItemsCounter = createCartItemsCounter(itemsCount);
+        cartTitle.appendChild(cartItemsCounter);
+
+        cartContainer.appendChild(cartTitle);
+        cartContainer.appendChild(cartTableContainer);
+        cartContainer.appendChild(cartTotal);
 
         var container = document.getElementById(containerId);
-        container.appendChild(shoppingCartContainer);
+        container.appendChild(cartContainer);
     };
 }
