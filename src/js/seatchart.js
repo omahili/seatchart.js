@@ -1360,7 +1360,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
                                        margins);
 
         var front = seatMapContainer.getElementsByClassName('sc-front')[0];
-        front.style.width = '{0}px'.format(((width + margins) * seatMap.cols) - margins);
+        front.style.width = '{0}px'.format((width + margins) * seatMap.cols);
 
         // add disabled columns to disabled array
         if (seatMap.disabledCols) {
