@@ -52,7 +52,7 @@ Then in your web page body create three containers that are going to contain the
 
 Enjoy the result.
 
-## [Demo](https://seatchart.js.org/#demo)
+## [View Demo](https://seatchart.js.org/demo.html)
 
 <div id="demo"></div>
 
@@ -75,19 +75,23 @@ If you want to help in the development of this library please open a PR on githu
 - [x] Remove sound
 - [x] Remove onAddedSeat/onRemovedSeat and add onChange event
 - [x] Add onClear event and trigger it when all seats are removed
+- [x] Add a default font
+- [x] Improve legend: remove 'Available' seat from legend, remove 'Your seats' and 'Seats' subtitles
+- [x] Improve shopping cart design
+- [x] Use flexbox where simpler
+- [ ] Hide and skip seat indexer where a column or row is completely blank
+- [ ] Show/hide seat indexer on top and left
+- [ ] Add choice for different indexers
+- [ ] Show/hide front
+- [ ] Create svg icons
 - [ ] Decrease access to the DOM (e.g. getSeatName() function)
 - [ ] Replace current seat indexing with a simple one: an object { row: 10, col: 10 }
 - [ ] Add 'static' mode where seat types are defined by default
 - [ ] Add themes
-- [ ] Add choice for different seat names
 - [ ] Show a dropdown menu, on click, to select seat type
 - [ ] Add multi-language support
-- [ ] Improve shopping cart design
-- [ ] Improve legend: remove 'Available' seat from legend, remove 'Your seats' and 'Seats' subtitles
 - [ ] Use [Semantic Versioning](https://semver.org/) and release an alpha
 - [ ] Use Travis CI and deploy to npm
 - [ ] Backend and frontend example with websockets
 - [ ] Minified source
-- [ ] IE 11 support: replace append() function not supported on IE11
-- [ ] Add a default font
 - [ ] Roadmap to v1.0.0
