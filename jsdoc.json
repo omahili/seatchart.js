@@ -18,6 +18,12 @@
             "styles/docs.css"
         ],
         "menu":{
+            "Demo":{
+                "href":"https://seatchart.js.org/demo.html",
+                "target":"_blank",
+                "class":"menu-item",
+                "id":"website_link"
+            },
             "Github":{
                 "href":"https://github.com/omarmahili/SeatchartJS",
                 "target":"_blank",
