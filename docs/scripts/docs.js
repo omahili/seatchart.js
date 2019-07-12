@@ -1,4 +1,4 @@
-if (window.location.href.endsWith('index.html') || window.location.href.endsWith('seatchart.js.org/')) {
+if (window.location.href.endsWith('index.html') || window.location.href.endsWith('#demo') || window.location.href.endsWith('seatchart.js.org/')) {
     var main = document.getElementById('main');
 
     var exampleContainer = document.createElement('div');
@@ -42,7 +42,7 @@ if (window.location.href.endsWith('index.html') || window.location.href.endsWith
         { type: 'military', color: 'red', price: 7 }
     ];
 
-    var sc = new SeatchartJS(map, types);
+    var sc = new Seatchart(map, types);
 
     sc.setAssetsSrc('assets');
     sc.createMap('mapContainer');
