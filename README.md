@@ -54,8 +54,6 @@ Enjoy the result.
 
 ## [View Demo](https://seatchart.js.org/demo.html)
 
-<div id="demo"></div>
-
 ## Development
 
 This library is still in development. It can already be used with websockets and it has some nice features like gap detection. <br />
