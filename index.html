@@ -28,7 +28,7 @@
     
     <input type="text" id="nav-search" placeholder="Search" />
     
-    <h2><a href="index.html">Home</a></h2><h2><a href="https://github.com/omarmahili/SeatchartJS" target="_blank" class="menu-item" id="website_link" >Github</a></h2><h3>Classes</h3><ul><li><a href="SeatchartJS.html">SeatchartJS</a><ul class='methods'><li data-type='method'><a href="SeatchartJS.html#createLegend">createLegend</a></li><li data-type='method'><a href="SeatchartJS.html#createMap">createMap</a></li><li data-type='method'><a href="SeatchartJS.html#get">get</a></li><li data-type='method'><a href="SeatchartJS.html#getAssetsSrc">getAssetsSrc</a></li><li data-type='method'><a href="SeatchartJS.html#getCurrency">getCurrency</a></li><li data-type='method'><a href="SeatchartJS.html#getGaps">getGaps</a></li><li data-type='method'><a href="SeatchartJS.html#getMouseDownInterval">getMouseDownInterval</a></li><li data-type='method'><a href="SeatchartJS.html#getPrice">getPrice</a></li><li data-type='method'><a href="SeatchartJS.html#getShoppingCart">getShoppingCart</a></li><li data-type='method'><a href="SeatchartJS.html#getShoppingCartHeight">getShoppingCartHeight</a></li><li data-type='method'><a href="SeatchartJS.html#getShoppingCartWidth">getShoppingCartWidth</a></li><li data-type='method'><a href="SeatchartJS.html#getSoundEnabled">getSoundEnabled</a></li><li data-type='method'><a href="SeatchartJS.html#getTotal">getTotal</a></li><li data-type='method'><a href="SeatchartJS.html#isGap">isGap</a></li><li data-type='method'><a href="SeatchartJS.html#makesGap">makesGap</a></li><li data-type='method'><a href="SeatchartJS.html#set">set</a></li><li data-type='method'><a href="SeatchartJS.html#setAssetsSrc">setAssetsSrc</a></li><li data-type='method'><a href="SeatchartJS.html#setCurrency">setCurrency</a></li><li data-type='method'><a href="SeatchartJS.html#setMouseDownInterval">setMouseDownInterval</a></li><li data-type='method'><a href="SeatchartJS.html#setShoppingCartHeight">setShoppingCartHeight</a></li><li data-type='method'><a href="SeatchartJS.html#setShoppingCartWidth">setShoppingCartWidth</a></li><li data-type='method'><a href="SeatchartJS.html#setSoundEnabled">setSoundEnabled</a></li></ul></li></ul><h3>Events</h3><ul><li><a href="SeatchartJS.html#event:onAddedSeat">onAddedSeat</a></li><li><a href="SeatchartJS.html#event:onRemovedSeat">onRemovedSeat</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h2><a href="https://seatchart.js.org/demo.html" target="_blank" class="menu-item" id="website_link" >Demo</a></h2><h2><a href="https://github.com/omarmahili/SeatchartJS" target="_blank" class="menu-item" id="website_link" >Github</a></h2><h3>Classes</h3><ul><li><a href="Seatchart.html">Seatchart</a><ul class='methods'><li data-type='method'><a href="Seatchart.html#createLegend">createLegend</a></li><li data-type='method'><a href="Seatchart.html#createMap">createMap</a></li><li data-type='method'><a href="Seatchart.html#get">get</a></li><li data-type='method'><a href="Seatchart.html#getAssetsSrc">getAssetsSrc</a></li><li data-type='method'><a href="Seatchart.html#getCart">getCart</a></li><li data-type='method'><a href="Seatchart.html#getCartHeight">getCartHeight</a></li><li data-type='method'><a href="Seatchart.html#getCartWidth">getCartWidth</a></li><li data-type='method'><a href="Seatchart.html#getCurrency">getCurrency</a></li><li data-type='method'><a href="Seatchart.html#getGaps">getGaps</a></li><li data-type='method'><a href="Seatchart.html#getPrice">getPrice</a></li><li data-type='method'><a href="Seatchart.html#getTotal">getTotal</a></li><li data-type='method'><a href="Seatchart.html#isGap">isGap</a></li><li data-type='method'><a href="Seatchart.html#makesGap">makesGap</a></li><li data-type='method'><a href="Seatchart.html#set">set</a></li><li data-type='method'><a href="Seatchart.html#setAssetsSrc">setAssetsSrc</a></li><li data-type='method'><a href="Seatchart.html#setCartHeight">setCartHeight</a></li><li data-type='method'><a href="Seatchart.html#setCartWidth">setCartWidth</a></li><li data-type='method'><a href="Seatchart.html#setCurrency">setCurrency</a></li></ul></li></ul><h3>Events</h3><ul><li><a href="SeatchartJS.html#event:onChange">onChange</a></li><li><a href="SeatchartJS.html#event:onClear">onClear</a></li></ul>
 </nav>
 
 <div id="main">
@@ -58,7 +58,8 @@
 
 
     <section class="readme">
-        <article><p align="center"><br>    <img src="https://raw.githubusercontent.com/omarmahili/SeatchartJS/master/logo.svg?sanitize=true" alt="SeatchartJS Logo" width="500" />
+        <article><p align="center">
+    <img src="https://raw.githubusercontent.com/omarmahili/SeatchartJS/develop/logo.svg?sanitize=true" alt="SeatchartJS Logo" width="500" />
 </p>
 
 <h1>Usage</h1><p>First of all link the library along with the stylesheet and the script that generates the seatchart.</p>
@@ -87,7 +88,7 @@
         { type: &quot;military&quot;, color: &quot;red&quot;, price: 7 }
     ];
 
-    var sc = new SeatchartJS(map, types);
+    var sc = new Seatchart(map, types);
     sc.setAssetsSrc(&quot;/path/to/assets&quot;);
 
     // (1) Create functions
@@ -98,7 +99,7 @@
 <pre class="prettyprint source lang-html"><code>&lt;div id=&quot;map-container&quot;>&lt;/div>
 &lt;div id=&quot;legend-container&quot;>&lt;/div>
 &lt;div id=&quot;shoppingCart-container&quot;>&lt;/div></code></pre><p>Enjoy the result.</p>
-<h2><a href="https://seatchart.js.org/#demo">Demo</a></h2><div id="demo"></div>
+<h2><a href="https://seatchart.js.org/demo.html">View Demo</a></h2><div id="demo"></div>
 
 <h2>Development</h2><p>This library is still in development. It can already be used with websockets and it has some nice features like gap detection. <br />
 But things may change a little bit in the future, so give a look to the TODO list below. <br />
@@ -111,26 +112,27 @@ If you want to help in the development of this library please open a PR on githu
 <li>[x] Improve documentation home page</li>
 <li>[x] Move docs to seatchart.js.org</li>
 <li>[x] Add description and examples to README</li>
-<li>[ ] Remove long press feature on a seat</li>
-<li>[ ] Hide/show sound button</li>
-<li>[ ] Decrease access to the DOM (e.g. getSeatName function)</li>
+<li>[x] Create a development branch and follow <a href="https://nvie.com/posts/a-successful-git-branching-model/">Git Flow</a></li>
+<li>[x] Rename SeatchartJS class into Seatchart: <code>var sc = new Seatchart()</code></li>
+<li>[x] Remove long press feature on a seat</li>
+<li>[x] Remove sound</li>
+<li>[x] Remove onAddedSeat/onRemovedSeat and add onChange event</li>
+<li>[x] Add onClear event and trigger it when all seats are removed</li>
+<li>[ ] Decrease access to the DOM (e.g. getSeatName() function)</li>
 <li>[ ] Replace current seat indexing with a simple one: an object { row: 10, col: 10 }</li>
 <li>[ ] Add 'static' mode where seat types are defined by default</li>
 <li>[ ] Add themes</li>
 <li>[ ] Add choice for different seat names</li>
 <li>[ ] Show a dropdown menu, on click, to select seat type</li>
 <li>[ ] Add multi-language support</li>
-<li>[ ] Remove onAddedSeat/onRemovedSeat and add onChange event</li>
-<li>[ ] Add onClear event and trigger it when all seats are removed</li>
 <li>[ ] Improve shopping cart design</li>
 <li>[ ] Improve legend: remove 'Available' seat from legend, remove 'Your seats' and 'Seats' subtitles</li>
-<li>[ ] Rename SeatchartJS into seatchart.js</li>
-<li>[ ] Rename SeatchartJS class into Seatchart: <code>var sc = new Seatchart()</code></li>
-<li>[ ] Create a development branch and follow <a href="https://nvie.com/posts/a-successful-git-branching-model/">Git Flow</a></li>
 <li>[ ] Use <a href="https://semver.org/">Semantic Versioning</a> and release an alpha</li>
 <li>[ ] Use Travis CI and deploy to npm</li>
 <li>[ ] Backend and frontend example with websockets</li>
 <li>[ ] Minified source</li>
+<li>[ ] IE 11 support: replace append() function not supported on IE11</li>
+<li>[ ] Add a default font</li>
 <li>[ ] Roadmap to v1.0.0</li>
 </ul></article>
     </section>
@@ -147,7 +149,7 @@ If you want to help in the development of this library please open a PR on githu
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun May 12 2019 02:19:15 GMT+0200 (GMT+02:00) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Jul 12 2019 20:30:57 GMT+0200 (GMT+02:00) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
