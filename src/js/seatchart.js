@@ -549,7 +549,11 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
                 price: self.getPrice(type)
             };
 
-            self.onChange('remove', current, previous);
+            self.onChange({
+                action: 'remove',
+                current: current,
+                previous: previous
+            });
         }
     };
 
@@ -659,7 +663,11 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
             }
 
             if (emit && self.onChange !== null) {
-                self.onChange(action, current, previous);
+                self.onChange({
+                    action: action,
+                    current: current,
+                    previous: previous
+                });
             }
         } else if (action === 'add') {
             if (cartTable !== undefined) {
@@ -668,7 +676,11 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
             }
 
             if (emit && self.onChange !== null) {
-                self.onChange(action, current, previous);
+                self.onChange({
+                    action: action,
+                    current: current,
+                    previous: previous
+                });
             }
         } else if (action === 'update') {
             cartItem = document.getElementById('item-{0}'.format(id));
@@ -689,7 +701,11 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
             ticketPrice.textContent = '{0}{1}'.format(self.currency, current.price.toFixed(2));
 
             if (emit && self.onChange !== null) {
-                self.onChange(action, current, previous);
+                self.onChange({
+                    action: action,
+                    current: current,
+                    previous: previous
+                });
             }
         }
     };

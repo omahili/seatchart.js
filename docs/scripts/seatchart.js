@@ -1,8 +1,21 @@
 /**
  * Creates a seatchart.
  * @constructor
- * @param {Object.<{rows: number, cols: number, reserved: Array.<number>, disabled: Array.<number>, disabledRows: Array.<number>, disabledCols: Array.<number>}>} seatMap - Info to generate the seatmap.
- * @param {Array.<Object.<{type: string, color: string, backgroundColor: string, price: number, selected: Array.<number>}>>} seatTypes - Seat types and their colors to be represented.
+ *
+ * @param {Object} seatMap - Seatmap options.
+ * @param {number} seatMap.rows - Number of rows.
+ * @param {number} seatMap.cols - Number of columns.
+ * @param {Array.<number>} [seatMap.reserved] - Array of reserved seats.
+ * @param {Array.<number>} [seatMap.disabled] - Array of disabled seats.
+ * @param {Array.<number>} [seatMap.disabledRows] - Array of the disabled rows of seats.
+ * @param {Array.<number>} [seatMap.disabledCols] - Array of the disabled columns of seats.
+ *
+ * @param {Array.<Object>} seatTypes - Seat type options.
+ * @param {string} seatTypes.type - Name of seat type.
+ * @param {string} seatTypes.backgroundColor - Background color of the defined seat type.
+ * @param {number} seatTypes.price - Price of the defined seat type.
+ * @param {string} [seatTypes.color = 'white'] - Text color of the defined seat type.
+ * @param {Array.<number>} [seatTypes.selected] - Selected seats of the defined seat type.
  */
 function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     /**
@@ -47,26 +60,26 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
     // check seatMap parameter
     if (seatMap === undefined) {
-        throw new Error("Invalid parameter 'seatMap' supplied to SeatchartJS. Cannot be undefined.");
+        throw new Error("Invalid parameter 'seatMap' supplied to Seatchart. Cannot be undefined.");
     } else if (typeof seatMap !== 'object') {
-        throw new Error("Invalid parameter 'seatMap' supplied to SeatchartJS. Must be an object.");
+        throw new Error("Invalid parameter 'seatMap' supplied to Seatchart. Must be an object.");
     } else if (!{}.hasOwnProperty.call(seatMap, 'rows') || !{}.hasOwnProperty.call(seatMap, 'cols')) {
-        throw new Error("Invalid parameter 'seatMap' supplied to SeatchartJS. " +
+        throw new Error("Invalid parameter 'seatMap' supplied to Seatchart. " +
                         "'row' and 'cols' properties cannot be undefined.");
     } else if (seatMap.rows > 25 || seatMap.cols > 25) {
-        throw new Error("Invalid parameter 'seatMap' supplied to SeatchartJS. " +
+        throw new Error("Invalid parameter 'seatMap' supplied to Seatchart. " +
                         "'row' and 'cols' properties cannot be integers greater than 25.");
     } else if (seatMap.rows < 2 || seatMap.cols < 2) {
-        throw new Error("Invalid parameter 'seatMap' supplied to SeatchartJS. " +
+        throw new Error("Invalid parameter 'seatMap' supplied to Seatchart. " +
                         "'row' and 'cols' properties cannot be integers smaller than 2.");
     }
 
     // check seatTypes parameter
     if (seatTypes === undefined) {
-        throw new Error("Invalid parameter 'seatTypes' supplied to SeatchartJS. Cannot be undefined.");
+        throw new Error("Invalid parameter 'seatTypes' supplied to Seatchart. Cannot be undefined.");
       // check if seatTypes is an array and contains at least one element
     } else if (!Array.isArray(seatTypes) || seatTypes.length < 1 || typeof seatTypes[0] !== 'object') {
-        throw new Error("Invalid parameter 'seatTypes' supplied to SeatchartJS. " +
+        throw new Error("Invalid parameter 'seatTypes' supplied to Seatchart. " +
                         'Must be an array of objects containing at least one element.');
     } else {
         // check if all elements have the needed attribute and contain the right type of value
@@ -74,18 +87,18 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
             if (!{}.hasOwnProperty.call(seatTypes[i], 'type') ||
                 !{}.hasOwnProperty.call(seatTypes[i], 'backgroundColor') ||
                 !{}.hasOwnProperty.call(seatTypes[i], 'price')) {
-                throw new Error(("Invalid parameter 'seatTypes' supplied to SeatchartJS. " +
+                throw new Error(("Invalid parameter 'seatTypes' supplied to Seatchart. " +
                                 "Element at index {0} must contain a 'type', " +
                                 "a 'backgroundColor' and a 'price' property.").format(i));
             } else if (!(typeof seatTypes[i].type === 'string' || seatTypes[i].type instanceof String)) {
-                throw new Error(("Invalid parameter 'seatTypes' supplied to SeatchartJS. " +
+                throw new Error(("Invalid parameter 'seatTypes' supplied to Seatchart. " +
                                 "'type' property at index {0} must be a string.").format(i));
             } else if (!(typeof seatTypes[i].backgroundColor === 'string' ||
                         seatTypes[i].backgroundColor instanceof String)) {
-                throw new Error(("Invalid parameter 'seatTypes' supplied to SeatchartJS. " +
+                throw new Error(("Invalid parameter 'seatTypes' supplied to Seatchart. " +
                                 "'backgroundColor' property at index {0} must be a string.").format(i));
             } else if (typeof seatTypes[i].price !== 'number') {
-                throw new Error(("Invalid parameter 'seatTypes' supplied to SeatchartJS. " +
+                throw new Error(("Invalid parameter 'seatTypes' supplied to Seatchart. " +
                                 "'price' property at index {0} must be a number.").format(i));
             }
         }
@@ -96,12 +109,40 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         for (var y = x + 1; y < seatTypes.length; y += 1) {
             if (seatTypes[x].type.capitalizeFirstLetter() ===
                 seatTypes[y].type.capitalizeFirstLetter()) {
-                throw new Error(("Invalid parameter 'seatTypes' supplied to SeatchartJS. " +
+                throw new Error(("Invalid parameter 'seatTypes' supplied to Seatchart. " +
                                 "'{0}' and '{1}' types are equal and must be different. " +
                                 'Types are case insensitive.').format(seatTypes[x].type, seatTypes[y].type));
             }
         }
     }
+
+
+    /*
+     * TYPE DEFINITIONS
+     */
+
+    /**
+     * @typedef {Object} Seat
+     * @property {string} type - Seat type.
+     * @property {number} id - Seat id.
+     * @property {number} index - Seat index.
+     * @property {string} name - Seat name.
+     * @property {number} price - Seat price.
+     */
+
+    /**
+     * @typedef {Object} ChangeEvent
+     * @property {('add' | 'remove' | 'update')} action - Action on seat.
+     * @property {Seat} current - Current seat info.
+     * @property {Seat} previous - Seat info previous to the event.
+     */
+
+    /**
+     * @typedef {Array.<Object>} ClearEvent
+     * @property {Seat} current - Current seat info.
+     * @property {Seat} previous - Seat info previous to the event.
+     */
+
 
     /**
      * This object.
@@ -140,28 +181,28 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
     /**
      * An object containing all seats added to the shopping cart, mapped by seat type.
-     * Given the seatmap as a 2D array and an index [R, C] all integer values are obtained
-     * as follow: I = cols * R + C.
-     * @type {Object.<string, Array.<int>>}
+     * @type {Object<string, Array.<number>>}
      * @private
      */
     var cart = {};
 
     /**
      * Sets the current currency.
-     * @param {string} value - A character that represents the currency (e.g. "$", "€").
+     * @example
+     * sc.setCurrency('$');
+     * @param {string} value - A string that represents the currency.
      */
     this.setCurrency = function setCurrency(value) {
         if (typeof value === 'string' || value instanceof String) {
             self.currency = value;
         } else {
-            throw new Error("Invalid parameter 'value' supplied to SeatchartJS.setCurrency(). Must be a string.");
+            throw new Error("Invalid parameter 'value' supplied to Seatchart.setCurrency(). Must be a string.");
         }
     };
 
     /**
      * Gets the current currency.
-     * @returns {string} A character that represents the currency (e.g. "$", "€"...).
+     * @returns {string} A string that represents the currency.
      */
     this.getCurrency = function getCurrency() {
         return self.currency;
@@ -169,13 +210,13 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
     /**
      * Sets the path where the assets are located.
-     * @param {string} value - The path where the assets are located (e.g. "../src/assets").
+     * @param {string} value - The path where the assets are located.
      */
     this.setAssetsSrc = function setAssetsSrc(value) {
         if (typeof value === 'string' || value instanceof String) {
             self.assetsSrc = value;
         } else {
-            throw new Error("Invalid parameter 'value' supplied to SeatchartJS.setAssetsSrc(). Must be a string.");
+            throw new Error("Invalid parameter 'value' supplied to Seatchart.setAssetsSrc(). Must be a string.");
         }
     };
 
@@ -195,7 +236,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         if (typeof value === 'number' && value >= 0) {
             self.cartWidth = value;
         } else {
-            throw new Error("Invalid parameter 'value' supplied to SeatchartJS.setCartWidth(). " +
+            throw new Error("Invalid parameter 'value' supplied to Seatchart.setCartWidth(). " +
                             'Must be positive number.');
         }
     };
@@ -216,7 +257,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         if (typeof value === 'number' && value >= 0) {
             self.cartHeight = value;
         } else {
-            throw new Error("Invalid parameter 'value' supplied to SeatchartJS.setCartHeight(). " +
+            throw new Error("Invalid parameter 'value' supplied to Seatchart.setCartHeight(). " +
                             'Must be positive number.');
         }
     };
@@ -231,7 +272,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
     /**
     * Gets a reference to the shopping cart object.
-    * @returns {Object.<string, Array.<int>>} An object containing all seats added to the shopping cart, mapped by seat type.
+    * @returns {Object<string, Array.<number>>} An object containing all seats added to the shopping cart, mapped by seat type.
     */
     this.getCart = function getCart() {
         return cart;
@@ -276,14 +317,16 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * A dictionary containing all seats added to the shopping cart, mapped by seat type.
      * Each string is composed by row (r) and column (c) indexed in the following format: "r_c",
      * which is the id of the seat in the document.
-     * @type {Object.<string, Array.<string>>}
+     * @type {Object<string, Array.<number>>}
+     * @property {string} - Seat type.
+     * @property {Array.<number>} - Ids of the seats added to the cart.
      * @private
      */
     var cartDict = {};
 
     /**
      * Adds a seat to the shopping cart dictionary.
-     * @param {string} id - The html id of the seat in the seatmap.
+     * @param {string} id - The dom id of the seat in the seatmap.
      * @param {string} type - The type of the seat.
      * @returns {boolean} True if the seat is added correctly otherwise false.
      * @private
@@ -388,7 +431,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
     /**
      * Gets the name of a seat.
-     * @param {string} id - The html id of the seat in the seatmap.
+     * @param {string} id - The dom id of the seat in the seatmap.
      * @returns {string} The name.
      * @private
      */
@@ -398,7 +441,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
     /**
      * Gets the type of a seat.
-     * @param {string} id - The html id of the seat in the seatmap.
+     * @param {string} id - The dom id of the seat in the seatmap.
      * @returns {string} The type.
      * @private
      */
@@ -411,13 +454,13 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
             }
         }
 
-        throw new Error("Invalid parameter 'id' supplied to SeatchartJS.getSeatType(). " +
+        throw new Error("Invalid parameter 'id' supplied to Seatchart.getSeatType(). " +
                         "'id' is not defined in cartDict.");
     };
 
     /**
      * Makes a seat available,
-     * @param {string} id - The html id of the seat in the seatmap.
+     * @param {string} id - The dom id of the seat in the seatmap.
      * @private
      */
     var releaseSeat = function releaseSeat(id) {
@@ -428,7 +471,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
     /**
      * Removes a seat from the shopping cart dictionary containing it.
-     * @param {string} id - The html id of the seat in the seatmap.
+     * @param {string} id - The dom id of the seat in the seatmap.
      * @param {string} type - The type of the seat.
      * @returns {boolean} True if the seat is removed correctly otherwise false.
      * @private
@@ -506,13 +549,17 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
                 price: self.getPrice(type)
             };
 
-            self.onChange('remove', current, previous);
+            self.onChange({
+                action: 'remove',
+                current: current,
+                previous: previous
+            });
         }
     };
 
     /**
      * Creates a ticket to place into the shopping cart.
-     * @param {Object.<{type: string, id: string, name: string, price: number}>} - Seat info.
+     * @param {Seat} seat - Seat info.
      * @returns {HTMLDivElement} The ticket.
      * @private
      */
@@ -547,7 +594,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
     /**
      * Creates a shopping cart item.
-     * @param {Object.<{type: string, id: string, name: string, price: number}>} - Seat info.
+     * @param {Seat} seat - Seat info.
      * @returns {HTMLDivElement} The shopping cart item.
      * @private
      */
@@ -579,7 +626,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
     /**
      * Updates the shopping cart by adding, removing or updating a seat.
-     * @param {string} action - Action on the shopping cart ("remove", "add" or "update").
+     * @param {('remove' | 'add' | 'update')} action - Action on the shopping cart.
      * @param {string} id - Id of the seat in the dom.
      * @param {string} type - New seat type.
      * @param {string} previousType - Previous seat type.
@@ -616,7 +663,11 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
             }
 
             if (emit && self.onChange !== null) {
-                self.onChange(action, current, previous);
+                self.onChange({
+                    action: action,
+                    current: current,
+                    previous: previous
+                });
             }
         } else if (action === 'add') {
             if (cartTable !== undefined) {
@@ -625,7 +676,11 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
             }
 
             if (emit && self.onChange !== null) {
-                self.onChange(action, current, previous);
+                self.onChange({
+                    action: action,
+                    current: current,
+                    previous: previous
+                });
             }
         } else if (action === 'update') {
             cartItem = document.getElementById('item-{0}'.format(id));
@@ -646,7 +701,11 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
             ticketPrice.textContent = '{0}{1}'.format(self.currency, current.price.toFixed(2));
 
             if (emit && self.onChange !== null) {
-                self.onChange(action, current, previous);
+                self.onChange({
+                    action: action,
+                    current: current,
+                    previous: previous
+                });
             }
         }
     };
@@ -792,7 +851,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * Creates a new seat.
      * @param {string} type - The type of the seat.
      * @param {string} content - The name representing the seat.
-     * @param {string} seatId - The html id of the seat in the seatmap.
+     * @param {string} seatId - The dom id of the seat in the seatmap.
      * @returns {HTMLDivElement} The seat.
      * @private
      */
@@ -995,7 +1054,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
             }
         }
 
-        throw new Error("Invalid parameter 'type' supplied to SeatchartJS.getPrice(). " +
+        throw new Error("Invalid parameter 'type' supplied to Seatchart.getPrice(). " +
                         "'type' does not exist in seatTypes.");
     };
 
@@ -1021,9 +1080,9 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      */
     this.isGap = function isGap(seatIndex) {
         if (typeof seatIndex !== 'number' && Math.floor(seatIndex) === seatIndex) {
-            throw new Error("Invalid parameter 'seatIndex' supplied to SeatchartJS.isGap(). It must be an integer.");
+            throw new Error("Invalid parameter 'seatIndex' supplied to Seatchart.isGap(). It must be an integer.");
         } else if (seatIndex >= seatMap.rows * seatMap.cols) {
-            throw new Error("Invalid parameter 'seatIndex' supplied to SeatchartJS.isGap(). Index is out of range.");
+            throw new Error("Invalid parameter 'seatIndex' supplied to Seatchart.isGap(). Index is out of range.");
         }
 
         var row = Math.floor(seatIndex / seatMap.cols);
@@ -1119,9 +1178,9 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      */
     this.makesGap = function makesGap(seatIndex) {
         if (typeof seatIndex !== 'number' && Math.floor(seatIndex) === seatIndex) {
-            throw new Error("Invalid parameter 'seatIndex' supplied to SeatchartJS.makesGap(). It must be an integer.");
+            throw new Error("Invalid parameter 'seatIndex' supplied to Seatchart.makesGap(). It must be an integer.");
         } else if (seatIndex >= seatMap.rows * seatMap.cols) {
-            throw new Error("Invalid parameter 'seatIndex' supplied to SeatchartJS.makesGap(). Index is out of range.");
+            throw new Error("Invalid parameter 'seatIndex' supplied to Seatchart.makesGap(). Index is out of range.");
         }
 
         var col = seatIndex % seatMap.cols;
@@ -1140,7 +1199,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * Gets all gaps of the seat map.
+     * Gets all seats which represent a gap of the seat map.
      * @returns {Array.<number>} Array of indexes.
      */
     this.getGaps = function getGaps() {
@@ -1156,15 +1215,15 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * Get seat info.
+     * Gets seat info.
      * @param {number} index - Seat index.
-     * @returns {Object.<{type: string, id: string, index: number, name: string, price: number}>} Seat info.
+     * @returns {Seat} Seat info.
      */
     this.get = function get(index) {
         if (typeof index !== 'number' && Math.floor(index) === index) {
-            throw new Error("Invalid parameter 'index' supplied to SeatchartJS.get(). It must be an integer.");
+            throw new Error("Invalid parameter 'index' supplied to Seatchart.get(). It must be an integer.");
         } else if (index >= seatMap.rows * seatMap.cols) {
-            throw new Error("Invalid parameter 'index' supplied to SeatchartJS.get(). Index is out of range.");
+            throw new Error("Invalid parameter 'index' supplied to Seatchart.get(). Index is out of range.");
         }
 
         if (index < seatMap.rows * seatMap.cols) {
@@ -1220,22 +1279,22 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
             };
         }
 
-        throw new Error("Invalid parameter 'index' supplied to SeatchartJS.get(). Index is out of range.");
+        throw new Error("Invalid parameter 'index' supplied to Seatchart.get(). Index is out of range.");
     };
 
     /**
      * Set seat type.
      * @param {number} index - Index of the seat to update.
      * @param {string} type - New seat type ('disabled', 'reserved' and 'available' are supported too).
-     * @param {boolean} emit - True to trigger onChange event (default is false).
+     * @param {boolean} [emit = false] - True to trigger onChange event.
      */
     this.set = function set(index, type, emit) {
         if (typeof index !== 'number' && Math.floor(index) === index) {
-            throw new Error("Invalid parameter 'index' supplied to SeatchartJS.set(). It must be an integer.");
+            throw new Error("Invalid parameter 'index' supplied to Seatchart.set(). It must be an integer.");
         } else if (index >= seatMap.rows * seatMap.cols) {
-            throw new Error("Invalid parameter 'index' supplied to SeatchartJS.set(). Index is out of range.");
+            throw new Error("Invalid parameter 'index' supplied to Seatchart.set(). Index is out of range.");
         } else if (typeof type !== 'string') {
-            throw new Error("Invalid parameter 'type' supplied to SeatchartJS.set(). It must be a string.");
+            throw new Error("Invalid parameter 'type' supplied to Seatchart.set(). It must be a string.");
         } else {
             var seatType = seatTypes.find(function findSeatType(x) {
                 return x.type === type;
@@ -1243,9 +1302,9 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
             // check if type is valid
             if (['available', 'reserved', 'disabled'].indexOf(type) < 0 && !seatType) {
-                throw new Error("Invalid parameter 'type' supplied to SeatchartJS.set().");
+                throw new Error("Invalid parameter 'type' supplied to Seatchart.set().");
             } else if (emit && typeof emit !== 'boolean') {
-                throw new Error("Invalid parameter 'emit' supplied to SeatchartJS.set(). It must be a boolean.");
+                throw new Error("Invalid parameter 'emit' supplied to Seatchart.set(). It must be a boolean.");
             }
         }
 
@@ -1303,24 +1362,22 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * This event is triggered when a seat is selected/unselected.
-     * @event SeatchartJS#onChange
-     * @param {string} - Action on seat: 'add', 'remove' or 'update'.
-     * @param {Object.<{type: string, id: string, index: number, name: string, price: number}>} - Current seat info.
-     * @param {Object.<{type: string, id: string, index: number, name: string, price: number}>} - Seat info previous to the event.
+     * Triggered when a seat is selected or unselected.
+     * @event Seatchart#onChange
+     * @type {ChangeEvent}
      */
     this.onChange = null;
 
     /**
-     * This event is triggered when all seats are removed with 'delete all' button in the shopping cart.
-     * @event SeatchartJS#onClear
-     * @param {Array<Object.<{current: {type: string, id: string, index: number, name: string, price: number}, previous: {type: string, id: string, index: number, name: string, price: number}}>>} - Array of removed seats.
+     * Triggered when all seats are removed with the 'delete all' button in the shopping cart.
+     * @event Seatchart#onClear
+     * @type {ClearEvent}
      */
     this.onClear = null;
 
     /**
      * Creates the seatmap.
-     * @param {string} containerId - The html id of the container that is going to contain the seatmap.
+     * @param {string} containerId - Id of the container that is going to contain the seatmap.
      */
     this.createMap = function createMap(containerId) {
         // create seat map container
@@ -1443,7 +1500,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
     /**
      * Creates the legend of the seatmap.
-     * @param {string} containerId - The id of the container that is going to contain the legend.
+     * @param {string} containerId - Id of the container that is going to contain the legend.
      */
     this.createLegend = function createLegend(containerId) {
         // create legend container
@@ -1578,7 +1635,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
     /**
      * Creates the shopping cart.
-     * @private
+     * @param {string} containerId - Id of the container that is going to contain the shopping cart.
      */
     this.createCart = function createCart(containerId) {
         var cartContainer = createContainer();
