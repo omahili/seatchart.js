@@ -138,7 +138,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
     /**
      * @typedef {Object} ChangeEvent
-     * @property {string} action - Action on seat: 'add', 'remove' or 'update'.
+     * @property {('add' | 'remove' | 'update')} action - Action on seat.
      * @property {Seat} current - Current seat info.
      * @property {Seat} previous - Seat info previous to the event.
      */
@@ -626,7 +626,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
     /**
      * Updates the shopping cart by adding, removing or updating a seat.
-     * @param {string} action - Action on the shopping cart ("remove", "add" or "update").
+     * @param {('remove' | 'add' | 'update')} action - Action on the shopping cart.
      * @param {string} id - Id of the seat in the dom.
      * @param {string} type - New seat type.
      * @param {string} previousType - Previous seat type.
