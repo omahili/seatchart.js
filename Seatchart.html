@@ -28,7 +28,7 @@
     
     <input type="text" id="nav-search" placeholder="Search" />
     
-    <h2><a href="index.html">Home</a></h2><h2><a href="https://seatchart.js.org/demo.html" target="_blank" class="menu-item" id="website_link" >Demo</a></h2><h2><a href="https://github.com/omarmahili/SeatchartJS" target="_blank" class="menu-item" id="website_link" >Github</a></h2><h3>Classes</h3><ul><li><a href="Seatchart.html">Seatchart</a><ul class='methods'><li data-type='method'><a href="Seatchart.html#createLegend">createLegend</a></li><li data-type='method'><a href="Seatchart.html#createMap">createMap</a></li><li data-type='method'><a href="Seatchart.html#get">get</a></li><li data-type='method'><a href="Seatchart.html#getAssetsSrc">getAssetsSrc</a></li><li data-type='method'><a href="Seatchart.html#getCart">getCart</a></li><li data-type='method'><a href="Seatchart.html#getCartHeight">getCartHeight</a></li><li data-type='method'><a href="Seatchart.html#getCartWidth">getCartWidth</a></li><li data-type='method'><a href="Seatchart.html#getCurrency">getCurrency</a></li><li data-type='method'><a href="Seatchart.html#getGaps">getGaps</a></li><li data-type='method'><a href="Seatchart.html#getPrice">getPrice</a></li><li data-type='method'><a href="Seatchart.html#getTotal">getTotal</a></li><li data-type='method'><a href="Seatchart.html#isGap">isGap</a></li><li data-type='method'><a href="Seatchart.html#makesGap">makesGap</a></li><li data-type='method'><a href="Seatchart.html#set">set</a></li><li data-type='method'><a href="Seatchart.html#setAssetsSrc">setAssetsSrc</a></li><li data-type='method'><a href="Seatchart.html#setCartHeight">setCartHeight</a></li><li data-type='method'><a href="Seatchart.html#setCartWidth">setCartWidth</a></li><li data-type='method'><a href="Seatchart.html#setCurrency">setCurrency</a></li></ul></li></ul><h3>Events</h3><ul><li><a href="SeatchartJS.html#event:onChange">onChange</a></li><li><a href="SeatchartJS.html#event:onClear">onClear</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h2><a href="https://seatchart.js.org/demo.html" target="_blank" class="menu-item" id="website_link" >Demo</a></h2><h2><a href="https://github.com/omarmahili/seatchart.js" target="_blank" class="menu-item" id="website_link" >Github</a></h2><h3>Classes</h3><ul><li><a href="Seatchart.html">Seatchart</a><ul class='methods'><li data-type='method'><a href="Seatchart.html#createCart">createCart</a></li><li data-type='method'><a href="Seatchart.html#createLegend">createLegend</a></li><li data-type='method'><a href="Seatchart.html#createMap">createMap</a></li><li data-type='method'><a href="Seatchart.html#get">get</a></li><li data-type='method'><a href="Seatchart.html#getAssetsSrc">getAssetsSrc</a></li><li data-type='method'><a href="Seatchart.html#getCart">getCart</a></li><li data-type='method'><a href="Seatchart.html#getCartHeight">getCartHeight</a></li><li data-type='method'><a href="Seatchart.html#getCartWidth">getCartWidth</a></li><li data-type='method'><a href="Seatchart.html#getCurrency">getCurrency</a></li><li data-type='method'><a href="Seatchart.html#getGaps">getGaps</a></li><li data-type='method'><a href="Seatchart.html#getPrice">getPrice</a></li><li data-type='method'><a href="Seatchart.html#getTotal">getTotal</a></li><li data-type='method'><a href="Seatchart.html#isGap">isGap</a></li><li data-type='method'><a href="Seatchart.html#makesGap">makesGap</a></li><li data-type='method'><a href="Seatchart.html#set">set</a></li><li data-type='method'><a href="Seatchart.html#setAssetsSrc">setAssetsSrc</a></li><li data-type='method'><a href="Seatchart.html#setCartHeight">setCartHeight</a></li><li data-type='method'><a href="Seatchart.html#setCartWidth">setCartWidth</a></li><li data-type='method'><a href="Seatchart.html#setCurrency">setCurrency</a></li></ul></li></ul><h3>Events</h3><ul><li><a href="Seatchart.html#event:onChange">onChange</a></li><li><a href="Seatchart.html#event:onClear">onClear</a></li></ul><h3><a href="global.html">Global</a></h3>
 </nav>
 
 <div id="main">
@@ -72,7 +72,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line7">line 7</a>
+        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line20">line 20</a>
     </li></ul></dd>
     
 
@@ -156,7 +156,7 @@
             <td class="type">
             
                 
-<span class="param-type">Object.&lt;{rows: number, cols: number, reserved: Array.&lt;number>, disabled: Array.&lt;number>, disabledRows: Array.&lt;number>, disabledCols: Array.&lt;number>}></span>
+<span class="param-type">Object</span>
 
 
             
@@ -166,7 +166,229 @@
 
             
 
-            <td class="description last">Info to generate the seatmap.</td>
+            <td class="description last">Seatmap options.
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>rows</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Number of rows.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cols</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Number of columns.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>reserved</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;number></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Array of reserved seats.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>disabled</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;number></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Array of disabled seats.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>disabledRows</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;number></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Array of the disabled rows of seats.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>disabledCols</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;number></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Array of the disabled columns of seats.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -179,7 +401,7 @@
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;Object.&lt;{type: string, color: string, backgroundColor: string, price: number, selected: Array.&lt;number>}>></span>
+<span class="param-type">Array.&lt;Object></span>
 
 
             
@@ -189,7 +411,218 @@
 
             
 
-            <td class="description last">Seat types and their colors to be represented.</td>
+            <td class="description last">Seat type options.
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">Name of seat type.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>backgroundColor</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">Background color of the defined seat type.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>price</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">Price of the defined seat type.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>color</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>'white'</code>
+                
+                </td>
+            
+
+            <td class="description last">Text color of the defined seat type.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>selected</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;number></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">Selected seats of the defined seat type.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -240,6 +673,142 @@
 
     
 
+    <h4 class="name" id="createCart"><span class="type-signature"></span>createCart<span class="signature">(containerId)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line1640">line 1640</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Creates the shopping cart.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>containerId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Id of the container that is going to contain the shopping cart.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
     <h4 class="name" id="createLegend"><span class="type-signature"></span>createLegend<span class="signature">(containerId)</span><span class="type-signature"></span></h4>
 
     
@@ -252,7 +821,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line1448">line 1448</a>
+        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line1505">line 1505</a>
     </li></ul></dd>
     
 
@@ -346,7 +915,7 @@
 
             
 
-            <td class="description last">The id of the container that is going to contain the legend.</td>
+            <td class="description last">Id of the container that is going to contain the legend.</td>
         </tr>
 
     
@@ -388,7 +957,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line1325">line 1325</a>
+        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line1382">line 1382</a>
     </li></ul></dd>
     
 
@@ -482,7 +1051,7 @@
 
             
 
-            <td class="description last">The html id of the container that is going to contain the seatmap.</td>
+            <td class="description last">Id of the container that is going to contain the seatmap.</td>
         </tr>
 
     
@@ -512,7 +1081,7 @@
 
     
 
-    <h4 class="name" id="get"><span class="type-signature"></span>get<span class="signature">(index)</span><span class="type-signature"> &rarr; {Object.&lt;{type: string, id: string, index: number, name: string, price: number}>}</span></h4>
+    <h4 class="name" id="get"><span class="type-signature"></span>get<span class="signature">(index)</span><span class="type-signature"> &rarr; {<a href="global.html#Seat">Seat</a>}</span></h4>
 
     
 
@@ -524,7 +1093,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line1163">line 1163</a>
+        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line1222">line 1222</a>
     </li></ul></dd>
     
 
@@ -564,7 +1133,7 @@
 
 
 <div class="description">
-    Get seat info.
+    Gets seat info.
 </div>
 
 
@@ -655,7 +1224,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Object.&lt;{type: string, id: string, index: number, name: string, price: number}></span>
+<span class="param-type"><a href="global.html#Seat">Seat</a></span>
 
 
     </dd>
@@ -682,7 +1251,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line186">line 186</a>
+        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line227">line 227</a>
     </li></ul></dd>
     
 
@@ -779,7 +1348,7 @@
 
     
 
-    <h4 class="name" id="getCart"><span class="type-signature"></span>getCart<span class="signature">()</span><span class="type-signature"> &rarr; {Object.&lt;string, Array.&lt;int>>}</span></h4>
+    <h4 class="name" id="getCart"><span class="type-signature"></span>getCart<span class="signature">()</span><span class="type-signature"> &rarr; {Object.&lt;string, Array.&lt;number>>}</span></h4>
 
     
 
@@ -791,7 +1360,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line236">line 236</a>
+        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line277">line 277</a>
     </li></ul></dd>
     
 
@@ -873,7 +1442,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Object.&lt;string, Array.&lt;int>></span>
+<span class="param-type">Object.&lt;string, Array.&lt;number>></span>
 
 
     </dd>
@@ -900,7 +1469,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line228">line 228</a>
+        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line269">line 269</a>
     </li></ul></dd>
     
 
@@ -1009,7 +1578,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line207">line 207</a>
+        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line248">line 248</a>
     </li></ul></dd>
     
 
@@ -1118,7 +1687,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line166">line 166</a>
+        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line207">line 207</a>
     </li></ul></dd>
     
 
@@ -1189,7 +1758,7 @@
 
         
 <div class="param-desc">
-    A character that represents the currency (e.g. "$", "€"...).
+    A string that represents the currency.
 </div>
 
 
@@ -1227,7 +1796,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line1146">line 1146</a>
+        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line1205">line 1205</a>
     </li></ul></dd>
     
 
@@ -1267,7 +1836,7 @@
 
 
 <div class="description">
-    Gets all gaps of the seat map.
+    Gets all seats which represent a gap of the seat map.
 </div>
 
 
@@ -1336,7 +1905,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line991">line 991</a>
+        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line1050">line 1050</a>
     </li></ul></dd>
     
 
@@ -1494,7 +2063,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line1006">line 1006</a>
+        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line1065">line 1065</a>
     </li></ul></dd>
     
 
@@ -1603,7 +2172,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line1022">line 1022</a>
+        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line1081">line 1081</a>
     </li></ul></dd>
     
 
@@ -1761,7 +2330,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line1120">line 1120</a>
+        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line1179">line 1179</a>
     </li></ul></dd>
     
 
@@ -1907,7 +2476,7 @@
 
     
 
-    <h4 class="name" id="set"><span class="type-signature"></span>set<span class="signature">(index, type, emit)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="set"><span class="type-signature"></span>set<span class="signature">(index, type, emit<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
 
     
 
@@ -1919,7 +2488,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line1232">line 1232</a>
+        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line1291">line 1291</a>
     </li></ul></dd>
     
 
@@ -1985,7 +2554,11 @@
         <th>Type</th>
 
         
+        <th>Attributes</th>
+        
 
+        
+        <th>Default</th>
         
 
         <th class="last">Description</th>
@@ -2010,7 +2583,19 @@
             </td>
 
             
+                <td class="attributes">
+                
 
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
             
 
             <td class="description last">Index of the seat to update.</td>
@@ -2033,7 +2618,19 @@
             </td>
 
             
+                <td class="attributes">
+                
 
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
             
 
             <td class="description last">New seat type ('disabled', 'reserved' and 'available' are supported too).</td>
@@ -2056,10 +2653,26 @@
             </td>
 
             
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
 
+                
+
+                
+                </td>
             
 
-            <td class="description last">True to trigger onChange event (default is false).</td>
+            
+                <td class="default">
+                
+                    <code>false</code>
+                
+                </td>
+            
+
+            <td class="description last">True to trigger onChange event.</td>
         </tr>
 
     
@@ -2101,7 +2714,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line174">line 174</a>
+        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line215">line 215</a>
     </li></ul></dd>
     
 
@@ -2195,7 +2808,7 @@
 
             
 
-            <td class="description last">The path where the assets are located (e.g. "../src/assets").</td>
+            <td class="description last">The path where the assets are located.</td>
         </tr>
 
     
@@ -2237,7 +2850,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line215">line 215</a>
+        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line256">line 256</a>
     </li></ul></dd>
     
 
@@ -2373,7 +2986,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line194">line 194</a>
+        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line235">line 235</a>
     </li></ul></dd>
     
 
@@ -2509,7 +3122,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line154">line 154</a>
+        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line195">line 195</a>
     </li></ul></dd>
     
 
@@ -2560,6 +3173,11 @@
 
 
 
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>sc.setCurrency('$');</code></pre>
+
+
 
 
     <h5>Parameters:</h5>
@@ -2603,7 +3221,7 @@
 
             
 
-            <td class="description last">A character that represents the currency (e.g. "$", "€").</td>
+            <td class="description last">A string that represents the currency.</td>
         </tr>
 
     
@@ -2634,6 +3252,204 @@
     
 
     
+        <h3 class="subsection-title">Events</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="event:onChange">onChange</h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line1364">line 1364</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Triggered when a seat is selected or unselected.
+</div>
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><a href="global.html#ChangeEvent">ChangeEvent</a></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="event:onClear">onClear</h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line1371">line 1371</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Triggered when all seats are removed with the 'delete all' button in the shopping cart.
+</div>
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><a href="global.html#ClearEvent">ClearEvent</a></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
 </article>
 
 </section>
@@ -2648,7 +3464,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Jul 12 2019 21:10:02 GMT+0200 (GMT+02:00) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Jul 13 2019 14:45:12 GMT+0200 (GMT+02:00) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
