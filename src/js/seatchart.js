@@ -1,8 +1,21 @@
 /**
  * Creates a seatchart.
  * @constructor
- * @param {Object.<{rows: number, cols: number, reserved: Array.<number>, disabled: Array.<number>, disabledRows: Array.<number>, disabledCols: Array.<number>}>} seatMap - Info to generate the seatmap.
- * @param {Array.<Object.<{type: string, color: string, backgroundColor: string, price: number, selected: Array.<number>}>>} seatTypes - Seat types and their colors to be represented.
+ *
+ * @param {Object} seatMap - Seatmap options.
+ * @param {number} seatMap.rows - Number of rows.
+ * @param {number} seatMap.cols - Number of columns.
+ * @param {Array.<number>} [seatMap.reserved] - Array of reserved seats.
+ * @param {Array.<number>} [seatMap.disabled] - Array of disabled seats.
+ * @param {Array.<number>} [seatMap.disabledRows] - Array of the disabled rows of seats.
+ * @param {Array.<number>} [seatMap.disabledCols] - Array of the disabled columns of seats.
+ *
+ * @param {Array.<Object>} seatTypes - Seat type options.
+ * @param {string} seatTypes.type - Name of seat type.
+ * @param {string} seatTypes.backgroundColor - Background color of the defined seat type.
+ * @param {number} seatTypes.price - Price of the defined seat type.
+ * @param {string} [seatTypes.color = 'white'] - Text color of the defined seat type.
+ * @param {Array.<number>} [seatTypes.selected] - Selected seats of the defined seat type.
  */
 function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     /**
@@ -103,6 +116,40 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         }
     }
 
+
+    /*
+     * TYPE DEFINITIONS
+     */
+
+    /**
+     * @typedef {Object} Seat
+     * @property {string} type - Seat type.
+     * @property {number} id - Seat id.
+     * @property {number} index - Seat index.
+     * @property {string} name - Seat name.
+     * @property {number} price - Seat price.
+     */
+
+    /**
+     * @typedef {Array.<Object>} Cart
+     * @property {string} type - Seat type.
+     * @property {Array.<number>} indexes - Indexes of the seats added to the cart.
+     */
+
+    /**
+     * @typedef {Object} ChangeEvent
+     * @property {string} action - Action on seat: 'add', 'remove' or 'update'.
+     * @property {Seat} current - Current seat info.
+     * @property {Seat} previous - Seat info previous to the event.
+     */
+
+    /**
+     * @typedef {Array.<Object>} ClearEvent
+     * @property {Seat} current - Current seat info.
+     * @property {Seat} previous - Seat info previous to the event.
+     */
+
+
     /**
      * This object.
      * @type {seatchartJS}
@@ -140,16 +187,16 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
     /**
      * An object containing all seats added to the shopping cart, mapped by seat type.
-     * Given the seatmap as a 2D array and an index [R, C] all integer values are obtained
-     * as follow: I = cols * R + C.
-     * @type {Object.<string, Array.<int>>}
+     * @type {Cart}
      * @private
      */
     var cart = {};
 
     /**
      * Sets the current currency.
-     * @param {string} value - A character that represents the currency (e.g. "$", "€").
+     * @example
+     * sc.setCurrency('$');
+     * @param {string} value - A string that represents the currency.
      */
     this.setCurrency = function setCurrency(value) {
         if (typeof value === 'string' || value instanceof String) {
@@ -161,7 +208,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
     /**
      * Gets the current currency.
-     * @returns {string} A character that represents the currency (e.g. "$", "€"...).
+     * @returns {string} A string that represents the currency.
      */
     this.getCurrency = function getCurrency() {
         return self.currency;
@@ -169,7 +216,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
     /**
      * Sets the path where the assets are located.
-     * @param {string} value - The path where the assets are located (e.g. "../src/assets").
+     * @param {string} value - The path where the assets are located.
      */
     this.setAssetsSrc = function setAssetsSrc(value) {
         if (typeof value === 'string' || value instanceof String) {
@@ -231,7 +278,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
     /**
     * Gets a reference to the shopping cart object.
-    * @returns {Object.<string, Array.<int>>} An object containing all seats added to the shopping cart, mapped by seat type.
+    * @returns {Cart} An object containing all seats added to the shopping cart, mapped by seat type.
     */
     this.getCart = function getCart() {
         return cart;
@@ -1140,7 +1187,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * Gets all gaps of the seat map.
+     * Gets all seats which represent a gap of the seat map.
      * @returns {Array.<number>} Array of indexes.
      */
     this.getGaps = function getGaps() {
@@ -1156,9 +1203,9 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * Get seat info.
+     * Gets seat info.
      * @param {number} index - Seat index.
-     * @returns {Object.<{type: string, id: string, index: number, name: string, price: number}>} Seat info.
+     * @returns {Seat} Seat info.
      */
     this.get = function get(index) {
         if (typeof index !== 'number' && Math.floor(index) === index) {
@@ -1227,7 +1274,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * Set seat type.
      * @param {number} index - Index of the seat to update.
      * @param {string} type - New seat type ('disabled', 'reserved' and 'available' are supported too).
-     * @param {boolean} emit - True to trigger onChange event (default is false).
+     * @param {boolean} [emit = false] - True to trigger onChange event.
      */
     this.set = function set(index, type, emit) {
         if (typeof index !== 'number' && Math.floor(index) === index) {
@@ -1303,18 +1350,16 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * This event is triggered when a seat is selected/unselected.
+     * Triggered when a seat is selected or unselected.
      * @event Seatchart#onChange
-     * @param {string} - Action on seat: 'add', 'remove' or 'update'.
-     * @param {Object.<{type: string, id: string, index: number, name: string, price: number}>} - Current seat info.
-     * @param {Object.<{type: string, id: string, index: number, name: string, price: number}>} - Seat info previous to the event.
+     * @type {ChangeEvent}
      */
     this.onChange = null;
 
     /**
-     * This event is triggered when all seats are removed with 'delete all' button in the shopping cart.
+     * Triggered when all seats are removed with the 'delete all' button in the shopping cart.
      * @event Seatchart#onClear
-     * @param {Array<Object.<{current: {type: string, id: string, index: number, name: string, price: number}, previous: {type: string, id: string, index: number, name: string, price: number}}>>} - Array of removed seats.
+     * @type {ClearEvent}
      */
     this.onClear = null;
 
