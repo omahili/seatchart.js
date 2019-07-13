@@ -131,12 +131,6 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      */
 
     /**
-     * @typedef {Array.<Object>} Cart
-     * @property {string} type - Seat type.
-     * @property {Array.<number>} indexes - Indexes of the seats added to the cart.
-     */
-
-    /**
      * @typedef {Object} ChangeEvent
      * @property {('add' | 'remove' | 'update')} action - Action on seat.
      * @property {Seat} current - Current seat info.
@@ -187,7 +181,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
     /**
      * An object containing all seats added to the shopping cart, mapped by seat type.
-     * @type {Cart}
+     * @type {Object<string, Array.<number>>}
      * @private
      */
     var cart = {};
@@ -278,7 +272,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
     /**
     * Gets a reference to the shopping cart object.
-    * @returns {Cart} An object containing all seats added to the shopping cart, mapped by seat type.
+    * @returns {Object<string, Array.<number>>} An object containing all seats added to the shopping cart, mapped by seat type.
     */
     this.getCart = function getCart() {
         return cart;
@@ -323,7 +317,9 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * A dictionary containing all seats added to the shopping cart, mapped by seat type.
      * Each string is composed by row (r) and column (c) indexed in the following format: "r_c",
      * which is the id of the seat in the document.
-     * @type {Object.<string, Array.<string>>}
+     * @type {Object<string, Array.<number>>}
+     * @property {string} - Seat type.
+     * @property {Array.<number>} - Ids of the seats added to the cart.
      * @private
      */
     var cartDict = {};
@@ -559,7 +555,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
     /**
      * Creates a ticket to place into the shopping cart.
-     * @param {Object.<{type: string, id: string, name: string, price: number}>} - Seat info.
+     * @param {Seat} seat - Seat info.
      * @returns {HTMLDivElement} The ticket.
      * @private
      */
@@ -594,7 +590,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
     /**
      * Creates a shopping cart item.
-     * @param {Object.<{type: string, id: string, name: string, price: number}>} - Seat info.
+     * @param {Seat} seat - Seat info.
      * @returns {HTMLDivElement} The shopping cart item.
      * @private
      */
