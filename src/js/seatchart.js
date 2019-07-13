@@ -330,7 +330,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
     /**
      * Adds a seat to the shopping cart dictionary.
-     * @param {string} id - The html id of the seat in the seatmap.
+     * @param {string} id - The dom id of the seat in the seatmap.
      * @param {string} type - The type of the seat.
      * @returns {boolean} True if the seat is added correctly otherwise false.
      * @private
@@ -435,7 +435,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
     /**
      * Gets the name of a seat.
-     * @param {string} id - The html id of the seat in the seatmap.
+     * @param {string} id - The dom id of the seat in the seatmap.
      * @returns {string} The name.
      * @private
      */
@@ -445,7 +445,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
     /**
      * Gets the type of a seat.
-     * @param {string} id - The html id of the seat in the seatmap.
+     * @param {string} id - The dom id of the seat in the seatmap.
      * @returns {string} The type.
      * @private
      */
@@ -464,7 +464,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
     /**
      * Makes a seat available,
-     * @param {string} id - The html id of the seat in the seatmap.
+     * @param {string} id - The dom id of the seat in the seatmap.
      * @private
      */
     var releaseSeat = function releaseSeat(id) {
@@ -475,7 +475,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
     /**
      * Removes a seat from the shopping cart dictionary containing it.
-     * @param {string} id - The html id of the seat in the seatmap.
+     * @param {string} id - The dom id of the seat in the seatmap.
      * @param {string} type - The type of the seat.
      * @returns {boolean} True if the seat is removed correctly otherwise false.
      * @private
@@ -839,7 +839,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * Creates a new seat.
      * @param {string} type - The type of the seat.
      * @param {string} content - The name representing the seat.
-     * @param {string} seatId - The html id of the seat in the seatmap.
+     * @param {string} seatId - The dom id of the seat in the seatmap.
      * @returns {HTMLDivElement} The seat.
      * @private
      */
@@ -1365,7 +1365,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
     /**
      * Creates the seatmap.
-     * @param {string} containerId - The html id of the container that is going to contain the seatmap.
+     * @param {string} containerId - Id of the container that is going to contain the seatmap.
      */
     this.createMap = function createMap(containerId) {
         // create seat map container
@@ -1488,7 +1488,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
     /**
      * Creates the legend of the seatmap.
-     * @param {string} containerId - The id of the container that is going to contain the legend.
+     * @param {string} containerId - Id of the container that is going to contain the legend.
      */
     this.createLegend = function createLegend(containerId) {
         // create legend container
@@ -1623,7 +1623,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
     /**
      * Creates the shopping cart.
-     * @private
+     * @param {string} containerId - Id of the container that is going to contain the shopping cart.
      */
     this.createCart = function createCart(containerId) {
         var cartContainer = createContainer();
