@@ -359,8 +359,7 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
             }
         }
 
-        throw new Error("Invalid parameter 'id' supplied to Seatchart.getSeatType(). " +
-                        "'id' is not defined in cartDict.");
+        return undefined;
     };
 
     /**
@@ -541,7 +540,7 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
     var updateCart = function updateCart(action, id, type, previousType, emit) {
         var seatName = getSeatName(id);
         var index = getIndexFromId(id);
-        var price = ['available', 'disabled', 'reserved'].indexOf(type) < 0 ?
+        var price = type && ['available', 'disabled', 'reserved'].indexOf(type) < 0 ?
             self.getPrice(type) :
             null;
 
@@ -557,7 +556,7 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
             id: id,
             index: index,
             name: seatName,
-            price: ['available', 'disabled', 'reserved'].indexOf(previousType) < 0 ?
+            price: previousType && ['available', 'disabled', 'reserved'].indexOf(previousType) < 0 ?
                 self.getPrice(previousType) :
                 null
         };
@@ -1010,8 +1009,7 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
             }
         }
 
-        throw new Error("Invalid parameter 'type' supplied to Seatchart.getPrice(). " +
-                        "'type' does not exist in options.types.");
+        return undefined;
     };
 
     /**
