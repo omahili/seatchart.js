@@ -1,23 +1,37 @@
 /**
  * Creates a seatchart.
  * @constructor
+ * @param {Object} options - Seatmap options.
  *
- * @param {Object} seatMap - Seatmap options.
- * @param {number} seatMap.rows - Number of rows.
- * @param {number} seatMap.cols - Number of columns.
- * @param {Array.<number>} [seatMap.reserved] - Array of reserved seats.
- * @param {Array.<number>} [seatMap.disabled] - Array of disabled seats.
- * @param {Array.<number>} [seatMap.disabledRows] - Array of the disabled rows of seats.
- * @param {Array.<number>} [seatMap.disabledCols] - Array of the disabled columns of seats.
+ * @param {Object} options.map - Map options.
+ * @param {number} options.map.id - Container id.
+ * @param {number} options.map.rows - Number of rows.
+ * @param {number} options.map.cols - Number of columns.
+ * @param {Array.<number>} [options.map.reserved] - Array of reserved seats.
+ * @param {Array.<number>} [options.map.disabled] - Array of disabled seats.
+ * @param {Array.<number>} [options.map.disabledRows] - Array of the disabled rows of seats.
+ * @param {Array.<number>} [options.map.disabledCols] - Array of the disabled columns of seats.
  *
- * @param {Array.<Object>} seatTypes - Seat type options.
- * @param {string} seatTypes.type - Name of seat type.
- * @param {string} seatTypes.backgroundColor - Background color of the defined seat type.
- * @param {number} seatTypes.price - Price of the defined seat type.
- * @param {string} [seatTypes.color = 'white'] - Text color of the defined seat type.
- * @param {Array.<number>} [seatTypes.selected] - Selected seats of the defined seat type.
+ * @param {Array.<Object>} options.types - Seat types options.
+ * @param {string} options.types.type - Name of seat type.
+ * @param {string} options.types.backgroundColor - Background color of the defined seat type.
+ * @param {number} options.types.price - Price of the defined seat type.
+ * @param {string} [options.types.color = 'white'] - Text color of the defined seat type.
+ * @param {Array.<number>} [options.types.selected] - Selected seats of the defined seat type.
+ *
+ * @param {Array.<Object>} [options.cart] - Cart options.
+ * @param {string} [options.cart.id] - Container id.
+ * @param {string} [options.cart.height] - Cart height.
+ * @param {string} [options.cart.width] - Cart width.
+ * @param {string} [options.cart.currency] - Current currency.
+ *
+ * @param {string} [options.legend] - Legend options.
+ * @param {string} [options.legend.id] - Container id.
+ *
+ * @param {Array.<Object>} [options.assets] - Assets options.
+ * @param {string} [options.assets.path] - Path to assets.
  */
-function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
+function Seatchart(options) { // eslint-disable-line no-unused-vars
     /**
      * .NET equivalent of string.Format() method
      * @returns {string} The formatted string.
@@ -58,60 +72,60 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         return el.currentStyle;
     };
 
-    // check seatMap parameter
-    if (seatMap === undefined) {
-        throw new Error("Invalid parameter 'seatMap' supplied to Seatchart. Cannot be undefined.");
-    } else if (typeof seatMap !== 'object') {
-        throw new Error("Invalid parameter 'seatMap' supplied to Seatchart. Must be an object.");
-    } else if (!{}.hasOwnProperty.call(seatMap, 'rows') || !{}.hasOwnProperty.call(seatMap, 'cols')) {
-        throw new Error("Invalid parameter 'seatMap' supplied to Seatchart. " +
+    // check options.map parameter
+    if (options.map === undefined) {
+        throw new Error("Invalid parameter 'options.map' supplied to Seatchart. Cannot be undefined.");
+    } else if (typeof options.map !== 'object') {
+        throw new Error("Invalid parameter 'options.map' supplied to Seatchart. Must be an object.");
+    } else if (!{}.hasOwnProperty.call(options.map, 'rows') || !{}.hasOwnProperty.call(options.map, 'cols')) {
+        throw new Error("Invalid parameter 'options.map' supplied to Seatchart. " +
                         "'row' and 'cols' properties cannot be undefined.");
-    } else if (seatMap.rows > 25 || seatMap.cols > 25) {
-        throw new Error("Invalid parameter 'seatMap' supplied to Seatchart. " +
+    } else if (options.map.rows > 25 || options.map.cols > 25) {
+        throw new Error("Invalid parameter 'options.map' supplied to Seatchart. " +
                         "'row' and 'cols' properties cannot be integers greater than 25.");
-    } else if (seatMap.rows < 2 || seatMap.cols < 2) {
-        throw new Error("Invalid parameter 'seatMap' supplied to Seatchart. " +
+    } else if (options.map.rows < 2 || options.map.cols < 2) {
+        throw new Error("Invalid parameter 'options.map' supplied to Seatchart. " +
                         "'row' and 'cols' properties cannot be integers smaller than 2.");
     }
 
-    // check seatTypes parameter
-    if (seatTypes === undefined) {
-        throw new Error("Invalid parameter 'seatTypes' supplied to Seatchart. Cannot be undefined.");
-      // check if seatTypes is an array and contains at least one element
-    } else if (!Array.isArray(seatTypes) || seatTypes.length < 1 || typeof seatTypes[0] !== 'object') {
-        throw new Error("Invalid parameter 'seatTypes' supplied to Seatchart. " +
+    // check options.types parameter
+    if (options.types === undefined) {
+        throw new Error("Invalid parameter 'options.types' supplied to Seatchart. Cannot be undefined.");
+      // check if options.types is an array and contains at least one element
+    } else if (!Array.isArray(options.types) || options.types.length < 1 || typeof options.types[0] !== 'object') {
+        throw new Error("Invalid parameter 'options.types' supplied to Seatchart. " +
                         'Must be an array of objects containing at least one element.');
     } else {
         // check if all elements have the needed attribute and contain the right type of value
-        for (var i = 0; i < seatTypes.length; i += 1) {
-            if (!{}.hasOwnProperty.call(seatTypes[i], 'type') ||
-                !{}.hasOwnProperty.call(seatTypes[i], 'backgroundColor') ||
-                !{}.hasOwnProperty.call(seatTypes[i], 'price')) {
-                throw new Error(("Invalid parameter 'seatTypes' supplied to Seatchart. " +
+        for (var i = 0; i < options.types.length; i += 1) {
+            if (!{}.hasOwnProperty.call(options.types[i], 'type') ||
+                !{}.hasOwnProperty.call(options.types[i], 'backgroundColor') ||
+                !{}.hasOwnProperty.call(options.types[i], 'price')) {
+                throw new Error(("Invalid parameter 'options.types' supplied to Seatchart. " +
                                 "Element at index {0} must contain a 'type', " +
                                 "a 'backgroundColor' and a 'price' property.").format(i));
-            } else if (!(typeof seatTypes[i].type === 'string' || seatTypes[i].type instanceof String)) {
-                throw new Error(("Invalid parameter 'seatTypes' supplied to Seatchart. " +
+            } else if (!(typeof options.types[i].type === 'string' || options.types[i].type instanceof String)) {
+                throw new Error(("Invalid parameter 'options.types' supplied to Seatchart. " +
                                 "'type' property at index {0} must be a string.").format(i));
-            } else if (!(typeof seatTypes[i].backgroundColor === 'string' ||
-                        seatTypes[i].backgroundColor instanceof String)) {
-                throw new Error(("Invalid parameter 'seatTypes' supplied to Seatchart. " +
+            } else if (!(typeof options.types[i].backgroundColor === 'string' ||
+                        options.types[i].backgroundColor instanceof String)) {
+                throw new Error(("Invalid parameter 'options.types' supplied to Seatchart. " +
                                 "'backgroundColor' property at index {0} must be a string.").format(i));
-            } else if (typeof seatTypes[i].price !== 'number') {
-                throw new Error(("Invalid parameter 'seatTypes' supplied to Seatchart. " +
+            } else if (typeof options.types[i].price !== 'number') {
+                throw new Error(("Invalid parameter 'options.types' supplied to Seatchart. " +
                                 "'price' property at index {0} must be a number.").format(i));
             }
         }
     }
 
     // check the given input
-    for (var x = 0; x < seatTypes.length; x += 1) {
-        for (var y = x + 1; y < seatTypes.length; y += 1) {
-            if (seatTypes[x].type.capitalizeFirstLetter() ===
-                seatTypes[y].type.capitalizeFirstLetter()) {
-                throw new Error(("Invalid parameter 'seatTypes' supplied to Seatchart. " +
+    for (var x = 0; x < options.types.length; x += 1) {
+        for (var y = x + 1; y < options.types.length; y += 1) {
+            if (options.types[x].type.capitalizeFirstLetter() ===
+                options.types[y].type.capitalizeFirstLetter()) {
+                throw new Error(("Invalid parameter 'options.types' supplied to Seatchart. " +
                                 "'{0}' and '{1}' types are equal and must be different. " +
-                                'Types are case insensitive.').format(seatTypes[x].type, seatTypes[y].type));
+                                'Types are case insensitive.').format(options.types[x].type, options.types[y].type));
             }
         }
     }
@@ -353,9 +367,9 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         types = ['available'];
         cartDict = [];
 
-        for (var i = 0; i < seatTypes.length; i += 1) {
-            types.push(seatTypes[i].type);
-            cartDict[seatTypes[i].type] = [];
+        for (var i = 0; i < options.types.length; i += 1) {
+            types.push(options.types[i].type);
+            cartDict[options.types[i].type] = [];
         }
     };
 
@@ -368,7 +382,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
             return parseInt(x, 10);
         });
 
-        return (seatMap.cols * values[0]) + values[1];
+        return (options.map.cols * values[0]) + values[1];
     };
 
     /**
@@ -393,15 +407,15 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         initializeSeatTypes();
 
         // Add selected seats to shopping cart
-        for (var n = 0; n < seatTypes.length; n += 1) {
-            var seatType = seatTypes[n];
+        for (var n = 0; n < options.types.length; n += 1) {
+            var seatType = options.types[n];
 
             if ({}.hasOwnProperty.call(seatType, 'selected') && seatType.selected) {
                 var type = seatType.type;
 
                 for (var l = 0; l < seatType.selected.length; l += 1) {
                     var index = seatType.selected[l];
-                    var id = '{0}_{1}'.format(Math.floor(index / seatMap.cols), index % seatMap.cols);
+                    var id = '{0}_{1}'.format(Math.floor(index / options.map.cols), index % options.map.cols);
                     // add to shopping cart
                     addToCartDict(id, type);
                 }
@@ -564,7 +578,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * @private
      */
     var createTicket = function createTicker(seat) {
-        var seatConfig = seatTypes.find(function findSeatType(x) {
+        var seatConfig = options.types.find(function findSeatType(x) {
             return x.type === seat.type;
         });
 
@@ -690,7 +704,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
             cartItem = document.getElementById('item-{0}'.format(id));
             var itemContent = cartItem.getElementsByTagName('td');
 
-            var seatConfig = seatTypes.find(function findSeatType(x) {
+            var seatConfig = options.types.find(function findSeatType(x) {
                 return x.type === current.type;
             });
 
@@ -789,16 +803,16 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
                     // if the class isn't available then apply the background-color in the config
                     if (newClass !== 'available') {
-                        // decrease it because there's one less element in seatTypes
+                        // decrease it because there's one less element in options.types
                         // which is 'available', that already exists
                         index -= 1;
                         if (index < 0) {
-                            index = seatTypes.length - 1;
+                            index = options.types.length - 1;
                         }
 
                         this.classList.add('clicked');
-                        this.style.backgroundColor = seatTypes[index].backgroundColor;
-                        this.style.color = seatTypes[index].color;
+                        this.style.backgroundColor = options.types[index].backgroundColor;
+                        this.style.color = options.types[index].color;
                     } else {
                         // otherwise remove the class 'clicked'
                         // since available has it's own style
@@ -925,7 +939,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         var rowsIndex = document.createElement('div');
         rowsIndex.className = 'sc-vertical-index';
 
-        for (var i = 0; i < seatMap.cols; i += 1) {
+        for (var i = 0; i < options.map.cols; i += 1) {
             rowsIndex.appendChild(createIndex(alphabet[i]));
         }
 
@@ -942,7 +956,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         var columnsIndex = document.createElement('div');
         columnsIndex.className = 'sc-horizontal-index';
 
-        for (var i = 1; i <= seatMap.cols; i += 1) {
+        for (var i = 1; i <= options.map.cols; i += 1) {
             columnsIndex.appendChild(createIndex(i));
         }
 
@@ -1001,11 +1015,11 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * @private
      */
     var setSeat = function setSeat(type) {
-        if (seatMap[type] !== undefined) {
-            var cols = seatMap.cols;
+        if (options.map[type] !== undefined) {
+            var cols = options.map.cols;
 
-            for (var i = 0; i < seatMap[type].length; i += 1) {
-                var index = seatMap[type][i];
+            for (var i = 0; i < options.map[type].length; i += 1) {
+                var index = options.map[type][i];
                 var id = '{0}_{1}'.format(Math.floor(index / cols), index % cols);
                 var seat = document.getElementById(id);
 
@@ -1030,8 +1044,8 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     var loadCartItems = function loadCartItems() {
         var count = 0;
 
-        for (var i = 0; i < seatTypes.length; i += 1) {
-            var seatType = seatTypes[i];
+        for (var i = 0; i < options.types.length; i += 1) {
+            var seatType = options.types[i];
 
             if ({}.hasOwnProperty.call(seatType, 'selected') && seatType.selected) {
                 var type = seatType.type;
@@ -1041,8 +1055,8 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
                 for (var j = 0; j < seatType.selected.length; j += 1) {
                     var index = seatType.selected[j];
-                    var row = Math.floor(index / seatMap.cols);
-                    var column = index % seatMap.cols;
+                    var row = Math.floor(index / options.map.cols);
+                    var column = index % options.map.cols;
                     var id = '{0}_{1}'.format(row, column);
                     var seatName = '{0}{1}'.format(alphabet[row], column + 1);
                     var seat = {
@@ -1065,8 +1079,8 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * @private
      */
     var selectSeats = function selectSeats() {
-        for (var n = 0; n < seatTypes.length; n += 1) {
-            var seatType = seatTypes[n];
+        for (var n = 0; n < options.types.length; n += 1) {
+            var seatType = options.types[n];
 
             if ({}.hasOwnProperty.call(seatType, 'selected') && seatType.selected) {
                 var type = seatType.type;
@@ -1075,7 +1089,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
                 for (var l = 0; l < seatType.selected.length; l += 1) {
                     var index = seatType.selected[l];
-                    var id = '{0}_{1}'.format(Math.floor(index / seatMap.cols), index % seatMap.cols);
+                    var id = '{0}_{1}'.format(Math.floor(index / options.map.cols), index % options.map.cols);
 
                     var element = document.getElementById(id);
                     if (element) {
@@ -1097,14 +1111,14 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * @returns {number} Price.
      */
     this.getPrice = function getPrice(type) {
-        for (var i = 0; i < seatTypes.length; i += 1) {
-            if (seatTypes[i].type === type) {
-                return seatTypes[i].price;
+        for (var i = 0; i < options.types.length; i += 1) {
+            if (options.types[i].type === type) {
+                return options.types[i].price;
             }
         }
 
         throw new Error("Invalid parameter 'type' supplied to Seatchart.getPrice(). " +
-                        "'type' does not exist in seatTypes.");
+                        "'type' does not exist in options.types.");
     };
 
     /**
@@ -1130,20 +1144,20 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     this.isGap = function isGap(seatIndex) {
         if (typeof seatIndex !== 'number' && Math.floor(seatIndex) === seatIndex) {
             throw new Error("Invalid parameter 'seatIndex' supplied to Seatchart.isGap(). It must be an integer.");
-        } else if (seatIndex >= seatMap.rows * seatMap.cols) {
+        } else if (seatIndex >= options.map.rows * options.map.cols) {
             throw new Error("Invalid parameter 'seatIndex' supplied to Seatchart.isGap(). Index is out of range.");
         }
 
-        var row = Math.floor(seatIndex / seatMap.cols);
-        var col = seatIndex % seatMap.cols;
+        var row = Math.floor(seatIndex / options.map.cols);
+        var col = seatIndex % options.map.cols;
 
         var seatId = '{0}_{1}'.format(row, col);
 
         // if current seat is disabled or reserved do not continue
-        if (seatMap.disabled.indexOf(seatIndex) >= 0 ||
-            seatMap.disabledCols.indexOf(col) >= 0 ||
-            seatMap.disabledRows.indexOf(row) >= 0 ||
-            seatMap.reserved.indexOf(seatIndex) >= 0
+        if (options.map.disabled.indexOf(seatIndex) >= 0 ||
+            options.map.disabledCols.indexOf(col) >= 0 ||
+            options.map.disabledRows.indexOf(row) >= 0 ||
+            options.map.reserved.indexOf(seatIndex) >= 0
         ) {
             return false;
         }
@@ -1163,11 +1177,11 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         var seatBefore = seatIndex - 1;
         var seatAfter = seatIndex + 1;
 
-        var isSeatBeforeDisabled = seatMap.disabled.indexOf(seatBefore) >= 0;
-        var isSeatAfterDisabled = seatMap.disabled.indexOf(seatAfter) >= 0;
+        var isSeatBeforeDisabled = options.map.disabled.indexOf(seatBefore) >= 0;
+        var isSeatAfterDisabled = options.map.disabled.indexOf(seatAfter) >= 0;
 
-        var isSeatBeforeReserved = seatMap.reserved.indexOf(seatBefore) >= 0;
-        var isSeatAfterReserved = seatMap.reserved.indexOf(seatAfter) >= 0;
+        var isSeatBeforeReserved = options.map.reserved.indexOf(seatBefore) >= 0;
+        var isSeatAfterReserved = options.map.reserved.indexOf(seatAfter) >= 0;
 
         // if there's a disabled/disabled block before and after do not consider it a gap
         if ((isSeatBeforeDisabled && isSeatAfterDisabled) ||
@@ -1179,7 +1193,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
         // if there's a disabled/reserved block before and no seats after because the seatchart ends or,
         // a disabled/reserved block after and no seats before, then do not consider it a gap
-        if (((isSeatBeforeDisabled || isSeatBeforeReserved) && colAfter >= seatMap.cols) ||
+        if (((isSeatBeforeDisabled || isSeatBeforeReserved) && colAfter >= options.map.cols) ||
             (colBefore < 0 && (isSeatAfterDisabled || isSeatAfterReserved))) {
             return false;
         }
@@ -1208,12 +1222,12 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         }
 
         var isSeatBeforeUnavailable = colBefore < 0 ||
-            seatMap.reserved.indexOf(seatBefore) >= 0 ||
+            options.map.reserved.indexOf(seatBefore) >= 0 ||
             isSeatBeforeDisabled ||
             isSeatBeforeSelected;
 
-        var isSeatAfterUnavailable = colAfter >= seatMap.cols ||
-            seatMap.reserved.indexOf(seatAfter) >= 0 ||
+        var isSeatAfterUnavailable = colAfter >= options.map.cols ||
+            options.map.reserved.indexOf(seatAfter) >= 0 ||
             isSeatAfterDisabled ||
             isSeatAfterSelected;
 
@@ -1228,11 +1242,11 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     this.makesGap = function makesGap(seatIndex) {
         if (typeof seatIndex !== 'number' && Math.floor(seatIndex) === seatIndex) {
             throw new Error("Invalid parameter 'seatIndex' supplied to Seatchart.makesGap(). It must be an integer.");
-        } else if (seatIndex >= seatMap.rows * seatMap.cols) {
+        } else if (seatIndex >= options.map.rows * options.map.cols) {
             throw new Error("Invalid parameter 'seatIndex' supplied to Seatchart.makesGap(). Index is out of range.");
         }
 
-        var col = seatIndex % seatMap.cols;
+        var col = seatIndex % options.map.cols;
 
         var isSeatBeforeGap = false;
         if (seatIndex - 1 >= 0 && col > 0) {
@@ -1240,7 +1254,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         }
 
         var isSeatAfterGap = false;
-        if (seatIndex + 1 < seatMap.cols * seatMap.rows && col + 1 < seatMap.cols) {
+        if (seatIndex + 1 < options.map.cols * options.map.rows && col + 1 < options.map.cols) {
             isSeatAfterGap = this.isGap(seatIndex + 1);
         }
 
@@ -1253,7 +1267,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      */
     this.getGaps = function getGaps() {
         var gaps = [];
-        var count = seatMap.cols * seatMap.rows;
+        var count = options.map.cols * options.map.rows;
         for (var i = 0; i < count; i += 1) {
             if (this.isGap(i)) {
                 gaps.push(i);
@@ -1271,18 +1285,18 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     this.get = function get(index) {
         if (typeof index !== 'number' && Math.floor(index) === index) {
             throw new Error("Invalid parameter 'index' supplied to Seatchart.get(). It must be an integer.");
-        } else if (index >= seatMap.rows * seatMap.cols) {
+        } else if (index >= options.map.rows * options.map.cols) {
             throw new Error("Invalid parameter 'index' supplied to Seatchart.get(). Index is out of range.");
         }
 
-        if (index < seatMap.rows * seatMap.cols) {
-            var row = Math.floor(index / seatMap.cols);
-            var col = index % seatMap.cols;
+        if (index < options.map.rows * options.map.cols) {
+            var row = Math.floor(index / options.map.cols);
+            var col = index % options.map.cols;
             var seatId = '{0}_{1}'.format(row, col);
             var seatName = getSeatName(seatId);
 
             // check if seat is reserved
-            if (seatMap.reserved.indexOf(index) >= 0) {
+            if (options.map.reserved.indexOf(index) >= 0) {
                 return {
                     type: 'reserved',
                     id: seatId,
@@ -1293,7 +1307,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
             }
 
             // check if seat is reserved
-            if (seatMap.disabled.indexOf(index) >= 0) {
+            if (options.map.disabled.indexOf(index) >= 0) {
                 return {
                     type: 'disabled',
                     id: seatId,
@@ -1340,12 +1354,12 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     this.set = function set(index, type, emit) {
         if (typeof index !== 'number' && Math.floor(index) === index) {
             throw new Error("Invalid parameter 'index' supplied to Seatchart.set(). It must be an integer.");
-        } else if (index >= seatMap.rows * seatMap.cols) {
+        } else if (index >= options.map.rows * options.map.cols) {
             throw new Error("Invalid parameter 'index' supplied to Seatchart.set(). Index is out of range.");
         } else if (typeof type !== 'string') {
             throw new Error("Invalid parameter 'type' supplied to Seatchart.set(). It must be a string.");
         } else {
-            var seatType = seatTypes.find(function findSeatType(x) {
+            var seatType = options.types.find(function findSeatType(x) {
                 return x.type === type;
             });
 
@@ -1370,12 +1384,12 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         var element = document.getElementById(seat.id);
 
         if (seat.type === 'disabled' || seat.type === 'reserved') {
-            var arrayIndex = seatMap[seat.type].indexOf(index);
-            seatMap[seat.type].splice(arrayIndex, 1);
+            var arrayIndex = options.map[seat.type].indexOf(index);
+            options.map[seat.type].splice(arrayIndex, 1);
         }
 
         if (type === 'reserved' || type === 'disabled') {
-            seatMap[type].push(index);
+            options.map[type].push(index);
         }
 
         if (seat.type !== 'available' && seat.type !== 'disabled' && seat.type !== 'reserved') {
@@ -1439,11 +1453,11 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         map.classList.add('sc-map');
 
         // add rows containing seats
-        for (var i = 0; i < seatMap.rows; i += 1) {
+        for (var i = 0; i < options.map.rows; i += 1) {
             var rowIndex = alphabet[i];
             var row = createRow(rowIndex);
 
-            for (var j = 0; j < seatMap.cols; j += 1) {
+            for (var j = 0; j < options.map.cols; j += 1) {
                 row.appendChild(createSeat('available', rowIndex + (j + 1), i + '_' + j));
             }
 
@@ -1470,25 +1484,25 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
                       parseInt(computedStyle.marginRight, 10);
 
         // set front header and map width
-        map.style.width = '{0}px'.format((width + margins) * seatMap.cols);
-        frontHeader.style.width = '{0}px'.format((width + margins) * seatMap.cols);
+        map.style.width = '{0}px'.format((width + margins) * options.map.cols);
+        frontHeader.style.width = '{0}px'.format((width + margins) * options.map.cols);
 
         // add disabled columns to disabled array
-        if (seatMap.disabledCols) {
-            for (var k = 0; k < seatMap.disabledCols.length; k += 1) {
-                var disabledColumn = seatMap.disabledCols[k];
-                for (var r = 0; r < seatMap.rows; r += 1) {
-                    seatMap.disabled.push((seatMap.cols * r) + disabledColumn);
+        if (options.map.disabledCols) {
+            for (var k = 0; k < options.map.disabledCols.length; k += 1) {
+                var disabledColumn = options.map.disabledCols[k];
+                for (var r = 0; r < options.map.rows; r += 1) {
+                    options.map.disabled.push((options.map.cols * r) + disabledColumn);
                 }
             }
         }
 
         // add disabled rows to disabled array
-        if (seatMap.disabledRows) {
-            for (var m = 0; m < seatMap.disabledRows.length; m += 1) {
-                var disabledRow = seatMap.disabledRows[m];
-                for (var c = 0; c < seatMap.cols; c += 1) {
-                    seatMap.disabled.push((seatMap.cols * disabledRow) + c);
+        if (options.map.disabledRows) {
+            for (var m = 0; m < options.map.disabledRows.length; m += 1) {
+                var disabledRow = options.map.disabledRows[m];
+                for (var c = 0; c < options.map.cols; c += 1) {
+                    options.map.disabled.push((options.map.cols * disabledRow) + c);
                 }
             }
         }
@@ -1563,13 +1577,13 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
 
         var seatsList = createLegendList();
 
-        for (var i = 0; i < seatTypes.length; i += 1) {
+        for (var i = 0; i < options.types.length; i += 1) {
             var description = '{0} {1}{2}'.format(
-                seatTypes[i].type.capitalizeFirstLetter(),
+                options.types[i].type.capitalizeFirstLetter(),
                 self.currency,
-                seatTypes[i].price.toFixed(2)
+                options.types[i].price.toFixed(2)
             );
-            var item = createLegendItem(description, '', seatTypes[i].backgroundColor);
+            var item = createLegendItem(description, '', options.types[i].backgroundColor);
             seatsList.appendChild(item);
         }
         seatsList.appendChild(createLegendItem('Already booked', 'unavailable'));
