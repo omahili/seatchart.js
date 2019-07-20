@@ -636,7 +636,9 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
     var updateCart = function updateCart(action, id, type, previousType, emit) {
         var seatName = getSeatName(id);
         var index = getIndexFromId(id);
-        var price = ['available', 'disabled', 'reserved'].indexOf(type) < 0 ? self.getPrice(type) : null;
+        var price = ['available', 'disabled', 'reserved'].indexOf(type) < 0 ?
+            self.getPrice(type) :
+            null;
 
         var current = {
             type: type,
@@ -650,7 +652,9 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
             id: id,
             index: index,
             name: seatName,
-            price: ['available', 'disabled', 'reserved'].indexOf(previousType) < 0 ? self.getPrice(previousType) : null
+            price: ['available', 'disabled', 'reserved'].indexOf(previousType) < 0 ?
+                self.getPrice(previousType) :
+                null
         };
 
         var cartItem;
@@ -878,15 +882,9 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * @returns {HTMLDivElement} The row.
      * @private
      */
-    var createRow = function createRow(rowIndex) {
+    var createRow = function createRow() {
         var row = document.createElement('div');
-        row.className = 'sc-row';
-
-        if (rowIndex === undefined) {
-            row.appendChild(createSeat('blank', ''));
-        } else {
-            row.appendChild(createSeat('index', rowIndex));
-        }
+        row.className = 'sc-map-row';
 
         return row;
     };
@@ -897,40 +895,91 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * @private
      */
     var createFrontHeader = function createFrontHeader() {
-        var header = createRow();
-
         // set the perfect width of the front indicator
         var front = document.createElement('div');
         front.textContent = 'Front';
         front.className = 'sc-front';
-        header.appendChild(front);
 
-        return header;
+        return front;
     };
 
     /**
-     * Creates a row containing all the column indexes.
-     * @returns {HTMLDivElement} The column indexes.
+     * Creates a seatmap index.
+     * @returns {HTMLDivElement} The seatmap index.
      * @private
      */
-    var createColumnsIndex = function createColumnsIndex() {
-        var columnsIndex = createRow();
+    var createIndex = function createIndex(content) {
+        var index = document.createElement('div');
+        index.textContent = content;
+        index.className = 'sc-index';
+
+        return index;
+    };
+
+    /**
+     * Creates a row containing all the vertical indexes.
+     * @returns {HTMLDivElement} Vertical indexes.
+     * @private
+     */
+    var createVerticalIndex = function createVerticalIndex() {
+        var rowsIndex = document.createElement('div');
+        rowsIndex.className = 'sc-vertical-index';
+
+        for (var i = 0; i < seatMap.cols; i += 1) {
+            rowsIndex.appendChild(createIndex(alphabet[i]));
+        }
+
+        return rowsIndex;
+    };
+
+
+    /**
+     * Creates a row containing all the horizontal indexes.
+     * @returns {HTMLDivElement} Horizontal indexes.
+     * @private
+     */
+    var createHorizontalIndex = function createHorizontalIndex() {
+        var columnsIndex = document.createElement('div');
+        columnsIndex.className = 'sc-horizontal-index';
 
         for (var i = 1; i <= seatMap.cols; i += 1) {
-            columnsIndex.appendChild(createSeat('index', i));
+            columnsIndex.appendChild(createIndex(i));
         }
 
         return columnsIndex;
     };
 
     /**
-     * Creates the container for the seat map and the legend.
+     * Creates a container.
      * @returns {HTMLDivElement} - The container.
+     * @param {string} - Container name
+     * @param {( 'column' | 'row' )} direction - Flex direction.
+     * @param {( 'left' | 'right' | 'top' | 'bottom' )} contentPosition - Content position.
      * @private
      */
-    var createContainer = function createContainer() {
+    var createContainer = function createContainer(name, direction, contentPosition) {
+        if (['column', 'row'].indexOf(direction) < 0) {
+            throw new Error("'direction' must have one of the following values: 'column', 'row'");
+        }
+
+        if (contentPosition && ['left', 'right', 'top', 'bottom'].indexOf(contentPosition) < 0) {
+            throw new Error(
+                "'contentPosition' must have one of the following values: " +
+                "'left', 'right', 'top', 'bottom'"
+            );
+        }
+
         var container = document.createElement('div');
-        container.className = 'sc-container';
+
+        if (name) {
+            container.className = 'sc-{0}-container'.format(name);
+        }
+
+        container.classList.add('sc-container-{0}'.format(direction));
+
+        if (contentPosition) {
+            container.classList.add('sc-{0}'.format(contentPosition));
+        }
 
         return container;
     };
@@ -1314,8 +1363,8 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         }
 
         var classes = {
-            disabled: 'blank',
-            reserved: 'unavailable'
+            disabled: 'sc-blank',
+            reserved: 'sc-unavailable'
         };
 
         var element = document.getElementById(seat.id);
@@ -1380,12 +1429,14 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * @param {string} containerId - Id of the container that is going to contain the seatmap.
      */
     this.createMap = function createMap(containerId) {
-        // create seat map container
-        var seatMapContainer = createContainer();
-        // add header to container
-        seatMapContainer.appendChild(createFrontHeader());
-        // add columns index to container
-        seatMapContainer.appendChild(createColumnsIndex());
+        var frontHeader = createFrontHeader();
+        frontHeader.classList.add('sc-margin-bottom');
+
+        var horizontalIndex = createHorizontalIndex();
+        var verticalIndex = createVerticalIndex();
+
+        var map = document.createElement('div');
+        map.classList.add('sc-map');
 
         // add rows containing seats
         for (var i = 0; i < seatMap.rows; i += 1) {
@@ -1396,14 +1447,21 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
                 row.appendChild(createSeat('available', rowIndex + (j + 1), i + '_' + j));
             }
 
-            seatMapContainer.appendChild(row);
+            map.appendChild(row);
         }
 
-        // inject the seat map into the container given as input
-        var container = document.getElementById(containerId);
-        container.appendChild(seatMapContainer);
+        var verticalIndexContainer = createContainer(null, 'row');
+        verticalIndexContainer.append(verticalIndex, map);
 
-        // set front indicator
+        var horizontalIndexContainer = createContainer(null, 'column', 'right');
+        horizontalIndexContainer.append(horizontalIndex, verticalIndexContainer);
+
+        // create map container which will contain everything
+        var mapContainer = createContainer('map', 'column', 'right');
+        mapContainer.append(frontHeader, horizontalIndexContainer);
+
+        document.getElementById(containerId).appendChild(mapContainer);
+
         var seat = document.getElementsByClassName('sc-seat')[0];
         var width = seat.offsetWidth;
 
@@ -1411,13 +1469,9 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         var margins = parseInt(computedStyle.marginLeft, 10) +
                       parseInt(computedStyle.marginRight, 10);
 
-        // set seatmap width
-        // +1 because of the row indexer
-        seatMapContainer.style.width = '{0}px'.format(((width + margins) * (seatMap.cols + 1)) +
-                                       margins);
-
-        var front = seatMapContainer.getElementsByClassName('sc-front')[0];
-        front.style.width = '{0}px'.format((width + margins) * seatMap.cols);
+        // set front header and map width
+        map.style.width = '{0}px'.format((width + margins) * seatMap.cols);
+        frontHeader.style.width = '{0}px'.format((width + margins) * seatMap.cols);
 
         // add disabled columns to disabled array
         if (seatMap.disabledCols) {
@@ -1479,7 +1533,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      */
     var createLegendList = function createLegendList() {
         var list = document.createElement('ul');
-        list.className = 'sc-legend-list';
+        list.className = 'sc-legend';
 
         return list;
     };
@@ -1504,8 +1558,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      */
     this.createLegend = function createLegend(containerId) {
         // create legend container
-        var seatLegendContainer = createContainer();
-
+        var legendContainer = createContainer('legend', 'column');
         var legendTitle = createTitle('Legend');
 
         var seatsList = createLegendList();
@@ -1521,12 +1574,11 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         }
         seatsList.appendChild(createLegendItem('Already booked', 'unavailable'));
 
-        seatLegendContainer.appendChild(legendTitle);
-        seatLegendContainer.appendChild(seatsList);
-        seatLegendContainer.appendChild(seatsList);
+        legendContainer.appendChild(legendTitle);
+        legendContainer.appendChild(seatsList);
+        legendContainer.appendChild(seatsList);
 
-        var container = document.getElementById(containerId);
-        container.appendChild(seatLegendContainer);
+        document.getElementById(containerId).appendChild(legendContainer);
     };
 
     /**
@@ -1536,7 +1588,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      */
     var createCartTable = function createCartTable() {
         var container = document.createElement('table');
-        container.className = 'sc-cart-items-container';
+        container.className = 'sc-cart-items';
 
         return container;
     };
@@ -1638,7 +1690,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
      * @param {string} containerId - Id of the container that is going to contain the shopping cart.
      */
     this.createCart = function createCart(containerId) {
-        var cartContainer = createContainer();
+        var cartContainer = createContainer('cart', 'column');
         var cartTitle = createIconedTitle(
             'Your Cart',
             '{0}/icons/shoppingcart.svg'.format(self.assetsSrc),
@@ -1646,7 +1698,7 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         );
 
         var cartTableContainer = document.createElement('div');
-        cartTableContainer.classList.add('sc-cart-container');
+        cartTableContainer.classList.add('sc-cart');
         cartTableContainer.style.width = '{0}px'.format(self.cartWidth);
         cartTableContainer.style.height = '{0}px'.format(self.cartHeight);
 
@@ -1663,7 +1715,6 @@ function Seatchart(seatMap, seatTypes) { // eslint-disable-line no-unused-vars
         cartContainer.appendChild(cartTableContainer);
         cartContainer.appendChild(cartTotal);
 
-        var container = document.getElementById(containerId);
-        container.appendChild(cartContainer);
+        document.getElementById(containerId).appendChild(cartContainer);
     };
 }
