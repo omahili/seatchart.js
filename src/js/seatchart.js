@@ -77,6 +77,9 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
         throw new Error("Invalid parameter 'options.map' supplied to Seatchart. Cannot be undefined.");
     } else if (typeof options.map !== 'object') {
         throw new Error("Invalid parameter 'options.map' supplied to Seatchart. Must be an object.");
+    } else if (!{}.hasOwnProperty.call(options.map, 'id')) {
+        throw new Error("Invalid parameter 'options.map' supplied to Seatchart. " +
+                        "'id' property cannot be undefined.");
     } else if (!{}.hasOwnProperty.call(options.map, 'rows') || !{}.hasOwnProperty.call(options.map, 'cols')) {
         throw new Error("Invalid parameter 'options.map' supplied to Seatchart. " +
                         "'row' and 'cols' properties cannot be undefined.");
@@ -1327,80 +1330,6 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
     this.onClear = null;
 
     /**
-     * Creates the seatmap.
-     * @param {string} containerId - Id of the container that is going to contain the seatmap.
-     */
-    this.createMap = function createMap(containerId) {
-        var frontHeader = createFrontHeader();
-        frontHeader.classList.add('sc-margin-bottom');
-
-        var horizontalIndex = createHorizontalIndex();
-        var verticalIndex = createVerticalIndex();
-
-        var map = document.createElement('div');
-        map.classList.add('sc-map');
-
-        // add rows containing seats
-        for (var i = 0; i < options.map.rows; i += 1) {
-            var rowIndex = alphabet[i];
-            var row = createRow(rowIndex);
-
-            for (var j = 0; j < options.map.cols; j += 1) {
-                row.appendChild(createSeat('available', rowIndex + (j + 1), i + '_' + j));
-            }
-
-            map.appendChild(row);
-        }
-
-        var verticalIndexContainer = createContainer(null, 'row');
-        verticalIndexContainer.append(verticalIndex, map);
-
-        var horizontalIndexContainer = createContainer(null, 'column', 'right');
-        horizontalIndexContainer.append(horizontalIndex, verticalIndexContainer);
-
-        // create map container which will contain everything
-        var mapContainer = createContainer('map', 'column', 'right');
-        mapContainer.append(frontHeader, horizontalIndexContainer);
-
-        document.getElementById(containerId).appendChild(mapContainer);
-
-        var seat = document.getElementsByClassName('sc-seat')[0];
-        var width = seat.offsetWidth;
-
-        var computedStyle = getStyle(seat);
-        var margins = parseInt(computedStyle.marginLeft, 10) +
-                      parseInt(computedStyle.marginRight, 10);
-
-        // set front header and map width
-        map.style.width = '{0}px'.format((width + margins) * options.map.cols);
-        frontHeader.style.width = '{0}px'.format((width + margins) * options.map.cols);
-
-        // add disabled columns to disabled array
-        if (options.map.disabledCols) {
-            for (var k = 0; k < options.map.disabledCols.length; k += 1) {
-                var disabledColumn = options.map.disabledCols[k];
-                for (var r = 0; r < options.map.rows; r += 1) {
-                    options.map.disabled.push((options.map.cols * r) + disabledColumn);
-                }
-            }
-        }
-
-        // add disabled rows to disabled array
-        if (options.map.disabledRows) {
-            for (var m = 0; m < options.map.disabledRows.length; m += 1) {
-                var disabledRow = options.map.disabledRows[m];
-                for (var c = 0; c < options.map.cols; c += 1) {
-                    options.map.disabled.push((options.map.cols * disabledRow) + c);
-                }
-            }
-        }
-
-        setSeat('reserved');
-        setSeat('disabled');
-        selectSeats();
-    };
-
-    /**
      * Creates a legend item and applies a type and a backgroundColor if needed.
      * @param {string} content - The text in the legend that explains the type of seat.
      * @param {string} type - The type of seat.
@@ -1452,35 +1381,6 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
         smallTitle.className = 'sc-small-title';
 
         return smallTitle;
-    };
-
-    /**
-     * Creates the legend of the seatmap.
-     * @param {string} containerId - Id of the container that is going to contain the legend.
-     */
-    this.createLegend = function createLegend(containerId) {
-        // create legend container
-        var legendContainer = createContainer('legend', 'column');
-        var legendTitle = createTitle('Legend');
-
-        var seatsList = createLegendList();
-
-        for (var i = 0; i < options.types.length; i += 1) {
-            var description = '{0} {1}{2}'.format(
-                options.types[i].type.capitalizeFirstLetter(),
-                options.cart.currency,
-                options.types[i].price.toFixed(2)
-            );
-            var item = createLegendItem(description, '', options.types[i].backgroundColor);
-            seatsList.appendChild(item);
-        }
-        seatsList.appendChild(createLegendItem('Already booked', 'unavailable'));
-
-        legendContainer.appendChild(legendTitle);
-        legendContainer.appendChild(seatsList);
-        legendContainer.appendChild(seatsList);
-
-        document.getElementById(containerId).appendChild(legendContainer);
     };
 
     /**
@@ -1588,10 +1488,39 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * Creates the shopping cart.
-     * @param {string} containerId - Id of the container that is going to contain the shopping cart.
+     * Creates the legend of the seatmap.
+     * @private
      */
-    this.createCart = function createCart(containerId) {
+    var createLegend = function createLegend() {
+        // create legend container
+        var legendContainer = createContainer('legend', 'column');
+        var legendTitle = createTitle('Legend');
+
+        var seatsList = createLegendList();
+
+        for (var i = 0; i < options.types.length; i += 1) {
+            var description = '{0} {1}{2}'.format(
+                options.types[i].type.capitalizeFirstLetter(),
+                options.cart.currency,
+                options.types[i].price.toFixed(2)
+            );
+            var item = createLegendItem(description, '', options.types[i].backgroundColor);
+            seatsList.appendChild(item);
+        }
+        seatsList.appendChild(createLegendItem('Already booked', 'unavailable'));
+
+        legendContainer.appendChild(legendTitle);
+        legendContainer.appendChild(seatsList);
+        legendContainer.appendChild(seatsList);
+
+        document.getElementById(options.legend.id).appendChild(legendContainer);
+    };
+
+    /**
+     * Creates the shopping cart.
+     * @private
+     */
+    var createCart = function createCart() {
         var cartContainer = createContainer('cart', 'column');
         var cartTitle = createIconedTitle(
             'Your Cart',
@@ -1617,6 +1546,90 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
         cartContainer.appendChild(cartTableContainer);
         cartContainer.appendChild(cartTotal);
 
-        document.getElementById(containerId).appendChild(cartContainer);
+        document.getElementById(options.cart.id).appendChild(cartContainer);
     };
+
+    /**
+     * Creates the seatmap.
+     * @private
+     */
+    var createMap = function createMap() {
+        var frontHeader = createFrontHeader();
+        frontHeader.classList.add('sc-margin-bottom');
+
+        var horizontalIndex = createHorizontalIndex();
+        var verticalIndex = createVerticalIndex();
+
+        var map = document.createElement('div');
+        map.classList.add('sc-map');
+
+        // add rows containing seats
+        for (var i = 0; i < options.map.rows; i += 1) {
+            var rowIndex = alphabet[i];
+            var row = createRow(rowIndex);
+
+            for (var j = 0; j < options.map.cols; j += 1) {
+                row.appendChild(createSeat('available', rowIndex + (j + 1), i + '_' + j));
+            }
+
+            map.appendChild(row);
+        }
+
+        var verticalIndexContainer = createContainer(null, 'row');
+        verticalIndexContainer.append(verticalIndex, map);
+
+        var horizontalIndexContainer = createContainer(null, 'column', 'right');
+        horizontalIndexContainer.append(horizontalIndex, verticalIndexContainer);
+
+        // create map container which will contain everything
+        var mapContainer = createContainer('map', 'column', 'right');
+        mapContainer.append(frontHeader, horizontalIndexContainer);
+
+        document.getElementById(options.map.id).appendChild(mapContainer);
+
+        var seat = document.getElementsByClassName('sc-seat')[0];
+        var width = seat.offsetWidth;
+
+        var computedStyle = getStyle(seat);
+        var margins = parseInt(computedStyle.marginLeft, 10) +
+                      parseInt(computedStyle.marginRight, 10);
+
+        // set front header and map width
+        map.style.width = '{0}px'.format((width + margins) * options.map.cols);
+        frontHeader.style.width = '{0}px'.format((width + margins) * options.map.cols);
+
+        // add disabled columns to disabled array
+        if (options.map.disabledCols) {
+            for (var k = 0; k < options.map.disabledCols.length; k += 1) {
+                var disabledColumn = options.map.disabledCols[k];
+                for (var r = 0; r < options.map.rows; r += 1) {
+                    options.map.disabled.push((options.map.cols * r) + disabledColumn);
+                }
+            }
+        }
+
+        // add disabled rows to disabled array
+        if (options.map.disabledRows) {
+            for (var m = 0; m < options.map.disabledRows.length; m += 1) {
+                var disabledRow = options.map.disabledRows[m];
+                for (var c = 0; c < options.map.cols; c += 1) {
+                    options.map.disabled.push((options.map.cols * disabledRow) + c);
+                }
+            }
+        }
+
+        setSeat('reserved');
+        setSeat('disabled');
+        selectSeats();
+    };
+
+    createMap();
+
+    if (options.cart && options.cart.id) {
+        createCart();
+    }
+
+    if (options.legend && options.legend.id) {
+        createLegend();
+    }
 }
