@@ -567,7 +567,7 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
         updateCartObject();
 
         if (action === 'remove') {
-            if (cartTable !== undefined) {
+            if (cartTable) {
                 document.getElementById('item-{0}'.format(id)).outerHTML = '';
             }
 
@@ -579,7 +579,7 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
                 });
             }
         } else if (action === 'add') {
-            if (cartTable !== undefined) {
+            if (cartTable) {
                 cartItem = createCartItem(current);
                 cartTable.appendChild(cartItem);
             }
@@ -592,22 +592,24 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
                 });
             }
         } else if (action === 'update') {
-            cartItem = document.getElementById('item-{0}'.format(id));
-            var itemContent = cartItem.getElementsByTagName('td');
+            if (cartTable) {
+                cartItem = document.getElementById('item-{0}'.format(id));
+                var itemContent = cartItem.getElementsByTagName('td');
 
-            var seatConfig = options.types.find(function findSeatType(x) {
-                return x.type === current.type;
-            });
+                var seatConfig = options.types.find(function findSeatType(x) {
+                    return x.type === current.type;
+                });
 
-            var ticket = itemContent[0].getElementsByClassName('sc-ticket')[0];
-            ticket.style.backgroundColor = seatConfig.backgroundColor;
-            ticket.style.color = seatConfig.color;
+                var ticket = itemContent[0].getElementsByClassName('sc-ticket')[0];
+                ticket.style.backgroundColor = seatConfig.backgroundColor;
+                ticket.style.color = seatConfig.color;
 
-            var ticketType = ticket.getElementsByClassName('sc-cart-seat-type')[0];
-            ticketType.textContent = current.type.capitalizeFirstLetter();
+                var ticketType = ticket.getElementsByClassName('sc-cart-seat-type')[0];
+                ticketType.textContent = current.type.capitalizeFirstLetter();
 
-            var ticketPrice = itemContent[1];
-            ticketPrice.textContent = '{0}{1}'.format(options.cart.currency, current.price.toFixed(2));
+                var ticketPrice = itemContent[1];
+                ticketPrice.textContent = '{0}{1}'.format(options.cart.currency, current.price.toFixed(2));
+            }
 
             if (emit && self.onChange !== null) {
                 self.onChange({
