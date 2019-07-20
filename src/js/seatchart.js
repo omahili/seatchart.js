@@ -166,123 +166,11 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
     var self = this;
 
     /**
-     * Gets the current currency.
-     * @type {string}
-     * @private
-     */
-    self.currency = '€';
-
-    /**
-     * The path where the assets are located.
-     * @type {string}
-     * @private
-     */
-    self.assetsSrc = 'assets';
-
-    /**
-     * The shopping cart width.
-     * @type {number}
-     * @private
-     */
-    self.cartWidth = 200;
-
-    /**
-     * The shopping cart height.
-     * @type {number}
-     * @private
-     */
-    self.cartHeight = 200;
-
-    /**
      * An object containing all seats added to the shopping cart, mapped by seat type.
      * @type {Object<string, Array.<number>>}
      * @private
      */
     var cart = {};
-
-    /**
-     * Sets the current currency.
-     * @example
-     * sc.setCurrency('$');
-     * @param {string} value - A string that represents the currency.
-     */
-    this.setCurrency = function setCurrency(value) {
-        if (typeof value === 'string' || value instanceof String) {
-            self.currency = value;
-        } else {
-            throw new Error("Invalid parameter 'value' supplied to Seatchart.setCurrency(). Must be a string.");
-        }
-    };
-
-    /**
-     * Gets the current currency.
-     * @returns {string} A string that represents the currency.
-     */
-    this.getCurrency = function getCurrency() {
-        return self.currency;
-    };
-
-    /**
-     * Sets the path where the assets are located.
-     * @param {string} value - The path where the assets are located.
-     */
-    this.setAssetsSrc = function setAssetsSrc(value) {
-        if (typeof value === 'string' || value instanceof String) {
-            self.assetsSrc = value;
-        } else {
-            throw new Error("Invalid parameter 'value' supplied to Seatchart.setAssetsSrc(). Must be a string.");
-        }
-    };
-
-    /**
-     * Gets the path where the assets are located.
-     * @returns {string} The path where the assets are located.
-     */
-    this.getAssetsSrc = function getAssetsSrc() {
-        return self.assetsSrc;
-    };
-
-    /**
-     * Sets the shopping cart width.
-     * @param {number} value - The shopping cart width.
-     */
-    this.setCartWidth = function setCartWidth(value) {
-        if (typeof value === 'number' && value >= 0) {
-            self.cartWidth = value;
-        } else {
-            throw new Error("Invalid parameter 'value' supplied to Seatchart.setCartWidth(). " +
-                            'Must be positive number.');
-        }
-    };
-
-    /**
-     * Gets the shopping cart width.
-     * @returns {number} The shopping cart width.
-     */
-    this.getCartWidth = function getCartWidth() {
-        return self.cartWidth;
-    };
-
-    /**
-     * Sets the shopping cart height.
-     * @param {number} value - The shopping cart height.
-     */
-    this.setCartHeight = function setCartHeight(value) {
-        if (typeof value === 'number' && value >= 0) {
-            self.cartHeight = value;
-        } else {
-            throw new Error("Invalid parameter 'value' supplied to Seatchart.setCartHeight(). " +
-                            'Must be positive number.');
-        }
-    };
-
-    /**
-     * Gets the shopping cart height.
-     * @returns {number} The shopping cart height.
-     */
-    this.getCartHeight = function getCartHeight() {
-        return self.cartHeight;
-    };
 
     /**
     * Gets a reference to the shopping cart object.
@@ -434,7 +322,7 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
      */
     var createScDeleteButton = function createScDeleteButton() {
         var binImg = document.createElement('img');
-        binImg.src = '{0}/icons/bin.svg'.format(self.assetsSrc);
+        binImg.src = '{0}/icons/bin.svg'.format(options.assets.path);
 
         var deleteBtn = document.createElement('div');
         deleteBtn.className = 'sc-cart-delete';
@@ -518,7 +406,7 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
      */
     var updateTotal = function updateTotal() {
         if (cartTotal !== undefined) {
-            cartTotal.textContent = 'Total: {0}{1}'.format(self.currency, self.getTotal().toFixed(2));
+            cartTotal.textContent = 'Total: {0}{1}'.format(options.cart.currency, self.getTotal().toFixed(2));
         }
 
         if (cartItemsCounter !== undefined) {
@@ -622,7 +510,7 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
         ticketTd.appendChild(ticket);
 
         var seatPrice = document.createElement('td');
-        seatPrice.textContent = '{0}{1}'.format(self.currency, seat.price.toFixed(2));
+        seatPrice.textContent = '{0}{1}'.format(options.cart.currency, seat.price.toFixed(2));
 
         var deleteTd = document.createElement('td');
         var deleteBtn = createScDeleteButton();
@@ -716,7 +604,7 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
             ticketType.textContent = current.type.capitalizeFirstLetter();
 
             var ticketPrice = itemContent[1];
-            ticketPrice.textContent = '{0}{1}'.format(self.currency, current.price.toFixed(2));
+            ticketPrice.textContent = '{0}{1}'.format(options.cart.currency, current.price.toFixed(2));
 
             if (emit && self.onChange !== null) {
                 self.onChange({
@@ -1580,7 +1468,7 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
         for (var i = 0; i < options.types.length; i += 1) {
             var description = '{0} {1}{2}'.format(
                 options.types[i].type.capitalizeFirstLetter(),
-                self.currency,
+                options.cart.currency,
                 options.types[i].price.toFixed(2)
             );
             var item = createLegendItem(description, '', options.types[i].backgroundColor);
@@ -1682,7 +1570,7 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
     var createCartTotal = function createCartTotal() {
         var container = document.createElement('div');
 
-        cartTotal = createSmallTitle('Total: {0}{1}'.format(self.currency, self.getTotal()));
+        cartTotal = createSmallTitle('Total: {0}{1}'.format(options.cart.currency, self.getTotal()));
         cartTotal.className += ' sc-cart-total';
 
         var deleteBtn = createScDeleteButton();
@@ -1707,14 +1595,14 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
         var cartContainer = createContainer('cart', 'column');
         var cartTitle = createIconedTitle(
             'Your Cart',
-            '{0}/icons/shoppingcart.svg'.format(self.assetsSrc),
+            '{0}/icons/shoppingcart.svg'.format(options.assets.path),
             'Shopping cart icon.'
         );
 
         var cartTableContainer = document.createElement('div');
         cartTableContainer.classList.add('sc-cart');
-        cartTableContainer.style.width = '{0}px'.format(self.cartWidth);
-        cartTableContainer.style.height = '{0}px'.format(self.cartHeight);
+        cartTableContainer.style.width = '{0}px'.format(options.cart.width);
+        cartTableContainer.style.height = '{0}px'.format(options.cart.height);
 
         cartTable = createCartTable();
         cartTableContainer.appendChild(cartTable);
