@@ -1,23 +1,76 @@
 /* Seat map css */
 
-.sc-container {
-    display: inline-block;
-    cursor: default;
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    font-family: Arial, Helvetica, sans-serif;
+.sc-container-row {
+    display: flex;
+    flex-direction: row;
 }
 
-.sc-container * {
+.sc-container-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.sc-container-row-reverse {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.sc-container-column-reverse {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.sc-left {
+    align-items: flex-start;
+}
+
+.sc-right {
+    align-items: flex-end;
+}
+
+.sc-top {
+    justify-content: flex-start;
+}
+
+.sc-bottom {
+    justify-content: flex-end;
+}
+
+.sc-margin-top {
+    margin-top: 5px;
+}
+
+.sc-margin-bottom {
+    margin-bottom: 5px;
+}
+
+.sc-container-row *,
+.sc-container-column *,
+.sc-container-row-reverse *,
+.sc-container-column-reverse * {
     box-sizing: content-box;
     -webkit-box-sizing: content-box;
     -moz-box-sizing: content-box;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-.sc-row {
+.sc-map {
     display: flex;
+    flex-flow: column;
+}
+
+.sc-map-row {
+    display: flex;
+}
+
+.sc-horizontal-index {
+    display: flex;
+    flex-direction: row;
+}
+
+.sc-vertical-index {
+    display: flex;
+    flex-direction: column;
 }
 
 .sc-title {
@@ -63,11 +116,14 @@
     -webkit-border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     -webkit-border-top-right-radius: 10px;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 .sc-front {
     display: flex;
-    align-self: center;
     justify-content: center;
     color: #b0b0b0;
     border-radius: 3px;
@@ -79,7 +135,13 @@
     width: 100%;
 }
 
-.sc-seat.index {
+.sc-index {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    width: 40px;
+    margin: 3px;
     background-color: transparent;
     color: #4b4949;
 }
@@ -126,7 +188,7 @@
 
 /* Seat legend css */
 
-.sc-legend-list {
+.sc-legend {
     list-style-type: none;
     margin: 0;
     padding: 0 0 15px;
@@ -159,7 +221,7 @@
 
 /* Shopping cart css */
 
-.sc-cart-container {
+.sc-cart {
     margin: 15px 0 0;
     padding: 0;
     border: 1px solid #ddd;
@@ -167,11 +229,11 @@
     overflow-x: hidden;
 }
 
-.sc-cart-container table {
+.sc-cart table {
     width: 100%;
 }
 
-.sc-cart-container tr {
+.sc-cart tr {
     border-bottom: 1px solid #ddd;
     width: 200px;
     margin: 0 1px 0 0;
@@ -180,7 +242,7 @@
     min-height: 40px;
 }
 
-.sc-cart-container td {
+.sc-cart td {
     text-align: center;
     vertical-align: middle;
 }
