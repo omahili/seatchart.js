@@ -3,14 +3,32 @@
  * @constructor
  * @param {Object} options - Seatmap options.
  *
+ *
  * @param {Object} options.map - Map options.
  * @param {number} options.map.id - Container id.
  * @param {number} options.map.rows - Number of rows.
  * @param {number} options.map.cols - Number of columns.
  * @param {Array.<number>} [options.map.reserved] - Array of reserved seats.
- * @param {Array.<number>} [options.map.disabled] - Array of disabled seats.
- * @param {Array.<number>} [options.map.disabledRows] - Array of the disabled rows of seats.
- * @param {Array.<number>} [options.map.disabledCols] - Array of the disabled columns of seats.
+ *
+ * @param {Object} [options.map.disabled] - Disabled seats options.
+ * @param {Array.<number>} [options.map.disabled.seats] - Array of the disabled seats.
+ * @param {Array.<number>} [options.map.disabled.rows] - Array of the disabled rows of seats.
+ * @param {Array.<number>} [options.map.disabled.cols] - Array of the disabled columns of seats.
+ *
+ * @param {Object} [options.map.indexes] - Indexes options.
+ *
+ * @param {Object} [options.map.indexes.vertical] - Vertical index options.
+ * @param {boolean} [options.map.indexes.vertical.visible = true] - Vertical index visibility.
+ * @param {( 'left' | 'right' )} [options.map.indexes.vertical.position = 'left'] - Vertical index position.
+ *
+ * @param {Object} [options.map.indexes.horizontal] - Horizontal index options.
+ * @param {boolean} [options.map.indexes.horizontal.visible = true] - Horizontal index visibility.
+ * @param {( 'top' | 'bottom' )} [options.map.indexes.horizontal.position = 'top'] - Horizontal index position.
+ *
+ * @param {Object} [options.map.front] - Front header options.
+ * @param {boolean} [options.map.front.visible = true] - Front header visibility.
+ * @param {( 'top' | 'bottom' )} [options.map.front.position = 'top'] - Front header position.
+ *
  *
  * @param {Array.<Object>} options.types - Seat types options.
  * @param {string} options.types.type - Name of seat type.
@@ -19,14 +37,17 @@
  * @param {string} [options.types.color = 'white'] - Text color of the defined seat type.
  * @param {Array.<number>} [options.types.selected] - Selected seats of the defined seat type.
  *
+ *
  * @param {Array.<Object>} [options.cart] - Cart options.
  * @param {string} [options.cart.id] - Container id.
  * @param {string} [options.cart.height] - Cart height.
  * @param {string} [options.cart.width] - Cart width.
  * @param {string} [options.cart.currency] - Current currency.
  *
+ *
  * @param {string} [options.legend] - Legend options.
  * @param {string} [options.legend.id] - Container id.
+ *
  *
  * @param {Array.<Object>} [options.assets] - Assets options.
  * @param {string} [options.assets.path] - Path to assets.
