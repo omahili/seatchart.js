@@ -8,7 +8,9 @@
  * @param {number} options.map.id - Container id.
  * @param {number} options.map.rows - Number of rows.
  * @param {number} options.map.cols - Number of columns.
+ *
  * @param {Array.<number>} [options.map.reserved] - Array of reserved seats.
+ * @param {Array.<number>} [options.map.reserved.seats] - Array of the reserved seats.
  *
  * @param {Object} [options.map.disabled] - Disabled seats options.
  * @param {Array.<number>} [options.map.disabled.seats] - Array of the disabled seats.
@@ -53,6 +55,7 @@
  * @param {string} [options.assets.path] - Path to assets.
  */
 function Seatchart(options) { // eslint-disable-line no-unused-vars
+    debugger;
     /**
      * .NET equivalent of string.Format() method
      * @returns {string} The formatted string.
@@ -924,15 +927,15 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
 
     /**
      * Sets all disabled seats as blank or reserved seats as unavailable.
-     * params {string} type - The type of seats to set.
+     * @param {( 'reserved' | 'disabled' )} type - The type of seats to set.
      * @private
      */
     var setSeat = function setSeat(type) {
-        if (options.map[type] !== undefined) {
+        if (options.map[type] && options.map[type].seats) {
             var cols = options.map.cols;
 
-            for (var i = 0; i < options.map[type].length; i += 1) {
-                var index = options.map[type][i];
+            for (var i = 0; i < options.map[type].seats.length; i += 1) {
+                var index = options.map[type].seats[i];
                 var id = '{0}_{1}'.format(Math.floor(index / cols), index % cols);
                 var seat = document.getElementById(id);
 
@@ -1066,10 +1069,10 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
         var seatId = '{0}_{1}'.format(row, col);
 
         // if current seat is disabled or reserved do not continue
-        if (options.map.disabled.indexOf(seatIndex) >= 0 ||
-            options.map.disabledCols.indexOf(col) >= 0 ||
-            options.map.disabledRows.indexOf(row) >= 0 ||
-            options.map.reserved.indexOf(seatIndex) >= 0
+        if (options.map.disabled.seats.indexOf(seatIndex) >= 0 ||
+            options.map.disabled.cols.indexOf(col) >= 0 ||
+            options.map.disabled.rows.indexOf(row) >= 0 ||
+            options.map.reserved.seats.indexOf(seatIndex) >= 0
         ) {
             return false;
         }
@@ -1089,13 +1092,13 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
         var seatBefore = seatIndex - 1;
         var seatAfter = seatIndex + 1;
 
-        var isSeatBeforeDisabled = options.map.disabled.indexOf(seatBefore) >= 0;
-        var isSeatAfterDisabled = options.map.disabled.indexOf(seatAfter) >= 0;
+        var isSeatBeforeDisabled = options.map.disabled.seats.indexOf(seatBefore) >= 0;
+        var isSeatAfterDisabled = options.map.disabled.seats.indexOf(seatAfter) >= 0;
 
-        var isSeatBeforeReserved = options.map.reserved.indexOf(seatBefore) >= 0;
-        var isSeatAfterReserved = options.map.reserved.indexOf(seatAfter) >= 0;
+        var isSeatBeforeReserved = options.map.reserved.seats.indexOf(seatBefore) >= 0;
+        var isSeatAfterReserved = options.map.reserved.seats.indexOf(seatAfter) >= 0;
 
-        // if there's a disabled/disabled block before and after do not consider it a gap
+        // if there's a disabled/reserved block before and after do not consider it a gap
         if ((isSeatBeforeDisabled && isSeatAfterDisabled) ||
             (isSeatBeforeReserved && isSeatAfterReserved) ||
             (isSeatBeforeReserved && isSeatAfterDisabled) ||
@@ -1134,12 +1137,12 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
         }
 
         var isSeatBeforeUnavailable = colBefore < 0 ||
-            options.map.reserved.indexOf(seatBefore) >= 0 ||
+            options.map.reserved.seats.indexOf(seatBefore) >= 0 ||
             isSeatBeforeDisabled ||
             isSeatBeforeSelected;
 
         var isSeatAfterUnavailable = colAfter >= options.map.cols ||
-            options.map.reserved.indexOf(seatAfter) >= 0 ||
+            options.map.reserved.seats.indexOf(seatAfter) >= 0 ||
             isSeatAfterDisabled ||
             isSeatAfterSelected;
 
@@ -1208,7 +1211,7 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
             var seatName = getSeatName(seatId);
 
             // check if seat is reserved
-            if (options.map.reserved.indexOf(index) >= 0) {
+            if (options.map.reserved.seats.indexOf(index) >= 0) {
                 return {
                     type: 'reserved',
                     id: seatId,
@@ -1219,7 +1222,7 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
             }
 
             // check if seat is reserved
-            if (options.map.disabled.indexOf(index) >= 0) {
+            if (options.map.disabled.seats.indexOf(index) >= 0) {
                 return {
                     type: 'disabled',
                     id: seatId,
@@ -1620,21 +1623,21 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
         frontHeader.style.width = '{0}px'.format((width + margins) * options.map.cols);
 
         // add disabled columns to disabled array
-        if (options.map.disabledCols) {
-            for (var k = 0; k < options.map.disabledCols.length; k += 1) {
-                var disabledColumn = options.map.disabledCols[k];
+        if (options.map.disabled.cols) {
+            for (var k = 0; k < options.map.disabled.cols.length; k += 1) {
+                var disabledColumn = options.map.disabled.cols[k];
                 for (var r = 0; r < options.map.rows; r += 1) {
-                    options.map.disabled.push((options.map.cols * r) + disabledColumn);
+                    options.map.disabled.seats.push((options.map.cols * r) + disabledColumn);
                 }
             }
         }
 
         // add disabled rows to disabled array
-        if (options.map.disabledRows) {
-            for (var m = 0; m < options.map.disabledRows.length; m += 1) {
-                var disabledRow = options.map.disabledRows[m];
+        if (options.map.disabled.rows) {
+            for (var m = 0; m < options.map.disabled.rows.length; m += 1) {
+                var disabledRow = options.map.disabled.rows[m];
                 for (var c = 0; c < options.map.cols; c += 1) {
-                    options.map.disabled.push((options.map.cols * disabledRow) + c);
+                    options.map.disabled.seats.push((options.map.cols * disabledRow) + c);
                 }
             }
         }
