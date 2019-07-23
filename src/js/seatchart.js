@@ -15,6 +15,7 @@
  * @param {Object} [options.map.disabled] - Disabled seats options.
  * @param {Array.<number>} [options.map.disabled.seats] - Array of the disabled seats.
  * @param {Array.<number>} [options.map.disabled.rows] - Array of the disabled rows of seats.
+ *
  * @param {Array.<number>} [options.map.disabled.cols] - Array of the disabled columns of seats.
  *
  * @param {Object} [options.map.indexes] - Indexes options.
@@ -29,7 +30,6 @@
  *
  * @param {Object} [options.map.front] - Front header options.
  * @param {boolean} [options.map.front.visible = true] - Front header visibility.
- * @param {( 'top' | 'bottom' )} [options.map.front.position = 'top'] - Front header position.
  *
  *
  * @param {Array.<Object>} options.types - Seat types options.
@@ -55,7 +55,6 @@
  * @param {string} [options.assets.path] - Path to assets.
  */
 function Seatchart(options) { // eslint-disable-line no-unused-vars
-    debugger;
     /**
      * .NET equivalent of string.Format() method
      * @returns {string} The formatted string.
@@ -888,8 +887,9 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
      * @private
      */
     var createContainer = function createContainer(name, direction, contentPosition) {
-        if (['column', 'row'].indexOf(direction) < 0) {
-            throw new Error("'direction' must have one of the following values: 'column', 'row'");
+        if (['column', 'row', 'column-reverse', 'row-reverse'].indexOf(direction) < 0) {
+            throw new Error("'direction' must have one of the following values: " +
+                            "'column', 'row', 'column-reverse', 'row-reverse'");
         }
 
         if (contentPosition && ['left', 'right', 'top', 'bottom'].indexOf(contentPosition) < 0) {
@@ -1578,12 +1578,6 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
      * @private
      */
     var createMap = function createMap() {
-        var frontHeader = createFrontHeader();
-        frontHeader.classList.add('sc-margin-bottom');
-
-        var horizontalIndex = createHorizontalIndex();
-        var verticalIndex = createVerticalIndex();
-
         var map = document.createElement('div');
         map.classList.add('sc-map');
 
@@ -1599,15 +1593,55 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
             map.appendChild(row);
         }
 
-        var verticalIndexContainer = createContainer(null, 'row');
-        verticalIndexContainer.append(verticalIndex, map);
+        var indexes = options.map.indexes;
+        var front = options.map.front;
 
-        var horizontalIndexContainer = createContainer(null, 'column', 'right');
-        horizontalIndexContainer.append(horizontalIndex, verticalIndexContainer);
+        var horizontalContainerDirection = 'column';
+        if (indexes && indexes.horizontal && indexes.horizontal.position === 'bottom') {
+            horizontalContainerDirection = 'column-reverse';
+        }
+
+        var itemsPosition = 'right';
+        var verticalContainerDirection = 'row';
+        if (indexes && indexes.vertical && indexes.vertical.position === 'right') {
+            verticalContainerDirection = 'row-reverse';
+            itemsPosition = 'left';
+        }
+
+        var verticalIndexContainer = createContainer(null, verticalContainerDirection);
+        var horizontalIndexContainer = createContainer(null, horizontalContainerDirection, itemsPosition);
+        horizontalIndexContainer.append(verticalIndexContainer);
+
+        // var mapContainerDirection = 'column';
+        // var mapContainerMargin = 'sc-margin-bottom';
+        // if (front && front.position === 'bottom') {
+        //     mapContainerDirection = 'column-reverse';
+        //     mapContainerMargin = 'sc-margin-top';
+        // }
 
         // create map container which will contain everything
-        var mapContainer = createContainer('map', 'column', 'right');
-        mapContainer.append(frontHeader, horizontalIndexContainer);
+        var mapContainer = createContainer('map', 'column', itemsPosition);
+
+        if (!front || front.visible === undefined || front.visible) {
+            var frontHeader = createFrontHeader();
+            frontHeader.classList.add('sc-margin-bottom');
+
+            mapContainer.appendChild(frontHeader);
+        }
+
+        if (!indexes || !indexes.horizontal || indexes.horizontal.visible === undefined || indexes.horizontal.visible) {
+            var horizontalIndex = createHorizontalIndex();
+            horizontalIndexContainer.appendChild(horizontalIndex);
+        }
+
+        if (!indexes || !indexes.vertical || indexes.vertical.visible === undefined || indexes.vertical.visible) {
+            var verticalIndex = createVerticalIndex();
+            verticalIndexContainer.appendChild(verticalIndex);
+        }
+
+        verticalIndexContainer.append(map);
+        horizontalIndexContainer.append(verticalIndexContainer);
+        mapContainer.append(horizontalIndexContainer);
 
         document.getElementById(options.map.id).appendChild(mapContainer);
 
@@ -1620,7 +1654,10 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
 
         // set front header and map width
         map.style.width = '{0}px'.format((width + margins) * options.map.cols);
-        frontHeader.style.width = '{0}px'.format((width + margins) * options.map.cols);
+
+        if (!front || front.visible === undefined || options.map.front.visible) {
+            frontHeader.style.width = '{0}px'.format((width + margins) * options.map.cols);
+        }
 
         // add disabled columns to disabled array
         if (options.map.disabled.cols) {
