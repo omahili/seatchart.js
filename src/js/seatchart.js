@@ -846,19 +846,39 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
     };
 
     /**
+     * Creates a seatmap blank spot.
+     * @returns {HTMLDivElement} The seatmap blank spot.
+     * @private
+     */
+    var createBlank = function createBlank() {
+        var blank = document.createElement('div');
+        blank.className = 'sc-seat blank';
+
+        return blank;
+    };
+
+    /**
      * Creates a row containing all the vertical indexes.
      * @returns {HTMLDivElement} Vertical indexes.
      * @private
      */
     var createVerticalIndex = function createVerticalIndex() {
-        var rowsIndex = document.createElement('div');
-        rowsIndex.className = 'sc-vertical-index';
+        var verticalIndex = document.createElement('div');
+        verticalIndex.className = 'sc-vertical-index';
+
+        var disabled = options.map.disabled;
+        var counter = 0;
 
         for (var i = 0; i < options.map.rows; i += 1) {
-            rowsIndex.appendChild(createIndex(alphabet[i]));
+            if (disabled && disabled.rows && disabled.rows.indexOf(i) < 0) {
+                verticalIndex.appendChild(createIndex(alphabet[counter]));
+                counter += 1;
+            } else {
+                verticalIndex.appendChild(createBlank());
+            }
         }
 
-        return rowsIndex;
+        return verticalIndex;
     };
 
 
@@ -868,14 +888,22 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
      * @private
      */
     var createHorizontalIndex = function createHorizontalIndex() {
-        var columnsIndex = document.createElement('div');
-        columnsIndex.className = 'sc-horizontal-index';
+        var horizontalIndex = document.createElement('div');
+        horizontalIndex.className = 'sc-horizontal-index';
 
-        for (var i = 1; i <= options.map.cols; i += 1) {
-            columnsIndex.appendChild(createIndex(i));
+        var disabled = options.map.disabled;
+        var counter = 1;
+
+        for (var i = 0; i < options.map.cols; i += 1) {
+            if (disabled && disabled.cols && disabled.cols.indexOf(i) < 0) {
+                horizontalIndex.appendChild(createIndex(counter));
+                counter += 1;
+            } else {
+                horizontalIndex.appendChild(createBlank());
+            }
         }
 
-        return columnsIndex;
+        return horizontalIndex;
     };
 
     /**
@@ -1585,6 +1613,7 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
         for (var i = 0; i < options.map.rows; i += 1) {
             var rowIndex = alphabet[i];
             var row = createRow(rowIndex);
+
 
             for (var j = 0; j < options.map.cols; j += 1) {
                 row.appendChild(createSeat('available', rowIndex + (j + 1), i + '_' + j));
