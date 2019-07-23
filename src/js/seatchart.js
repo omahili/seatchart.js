@@ -857,12 +857,20 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
         return blank;
     };
 
+    /**
+     * Generates a vertical index.
+     * @param {number} row - Row index (starts from 0).
+     * @param {boolean} disabled - True if current row is disabled.
+     * @param {number} disabledCount - Number of disabled rows till that one (including current one if disabled).
+     * @returns {string} Vertical index. Return null or undefined if empty.
+     * @private
+     */
     var generateVerticalIndex = function generateVerticalIndex(row, disabled, disabledCount) {
-        if (disabled) {
-            return false;
+        if (!disabled) {
+            return alphabet[row - disabledCount];
         }
 
-        return alphabet[row - disabledCount];
+        return null;
     };
 
     /**
@@ -892,12 +900,19 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
         return verticalIndex;
     };
 
+    /**
+     * Generates a horizontal index.
+     * @param {number} column - Column index (starts from 0).
+     * @param {boolean} disabled - True if current column is disabled.
+     * @param {number} disabledCount - Number of disabled columns till that one (including current one if disabled).
+     * @returns {string} Horizontal index. Return null or undefined if empty.
+     */
     var generateHorizontalIndex = function generateHorizontalIndex(column, disabled, disabledCount) {
-        if (disabled) {
-            return false;
+        if (!disabled) {
+            return ((column - disabledCount) + 1).toString();
         }
 
-        return (column - disabledCount) + 1;
+        return null;
     };
 
     /**
