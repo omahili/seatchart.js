@@ -1609,15 +1609,29 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
         var map = document.createElement('div');
         map.classList.add('sc-map');
 
+        var disabled = options.map.disabled;
+        var verticalCounter = 0;
+
         // add rows containing seats
         for (var i = 0; i < options.map.rows; i += 1) {
-            var rowIndex = alphabet[i];
-            var row = createRow(rowIndex);
+            var verticalIndex = alphabet[verticalCounter];
+            var row = createRow();
 
+            var isRowDisabled = disabled && disabled.rows && disabled.rows.indexOf(i) >= 0;
+            var horizontalCounter = 1;
 
             for (var j = 0; j < options.map.cols; j += 1) {
-                row.appendChild(createSeat('available', rowIndex + (j + 1), i + '_' + j));
+                var horizontalIndex = horizontalCounter;
+                var isColumnDisabled = disabled && disabled.cols && disabled.cols.indexOf(j) >= 0;
+                var seatTextContent = isColumnDisabled || isRowDisabled ?
+                    '' :
+                    '{0}{1}'.format(verticalIndex, horizontalIndex);
+
+                row.appendChild(createSeat('available', seatTextContent, '{0}_{1}'.format(i, j)));
+                horizontalCounter = isColumnDisabled ? horizontalCounter : horizontalCounter + 1;
             }
+
+            verticalCounter = isRowDisabled ? verticalCounter : verticalCounter + 1;
 
             map.appendChild(row);
         }
