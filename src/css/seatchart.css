@@ -61,6 +61,7 @@
 
 .sc-map-row {
     display: flex;
+    height: 46px;
 }
 
 .sc-horizontal-index {

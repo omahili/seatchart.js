@@ -1654,7 +1654,12 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
                     seatTextContent = '{0}{1}'.format(verticalIndex, horizontalIndex);
                 }
 
-                row.appendChild(createSeat('available', seatTextContent, '{0}_{1}'.format(i, j)));
+                // draw empty row if row is disabled,
+                // while draw blank seat if column is disabled
+                if (!isRowDisabled) {
+                    row.appendChild(createSeat('available', seatTextContent, '{0}_{1}'.format(i, j)));
+                }
+
             }
 
             map.appendChild(row);
