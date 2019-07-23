@@ -857,6 +857,14 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
         return blank;
     };
 
+    var generateVerticalIndex = function generateVerticalIndex(row, disabled, disabledCount) {
+        if (disabled) {
+            return false;
+        }
+
+        return alphabet[row - disabledCount];
+    };
+
     /**
      * Creates a row containing all the vertical indexes.
      * @returns {HTMLDivElement} Vertical indexes.
@@ -867,12 +875,15 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
         verticalIndex.className = 'sc-vertical-index';
 
         var disabled = options.map.disabled;
-        var counter = 0;
+        var disabledCount = 0;
 
         for (var i = 0; i < options.map.rows; i += 1) {
-            if (disabled && disabled.rows && disabled.rows.indexOf(i) < 0) {
-                verticalIndex.appendChild(createIndex(alphabet[counter]));
-                counter += 1;
+            var isRowDisabled = disabled && disabled.rows && disabled.rows.indexOf(i) >= 0;
+            disabledCount = isRowDisabled ? disabledCount + 1 : disabledCount;
+
+            var index = generateVerticalIndex(i, isRowDisabled, disabledCount);
+            if (index) {
+                verticalIndex.appendChild(createIndex(index));
             } else {
                 verticalIndex.appendChild(createBlank());
             }
@@ -881,6 +892,13 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
         return verticalIndex;
     };
 
+    var generateHorizontalIndex = function generateHorizontalIndex(column, disabled, disabledCount) {
+        if (disabled) {
+            return false;
+        }
+
+        return (column - disabledCount) + 1;
+    };
 
     /**
      * Creates a row containing all the horizontal indexes.
@@ -892,12 +910,15 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
         horizontalIndex.className = 'sc-horizontal-index';
 
         var disabled = options.map.disabled;
-        var counter = 1;
+        var disabledCount = 0;
 
         for (var i = 0; i < options.map.cols; i += 1) {
-            if (disabled && disabled.cols && disabled.cols.indexOf(i) < 0) {
-                horizontalIndex.appendChild(createIndex(counter));
-                counter += 1;
+            var isColumnDisabled = disabled && disabled.cols && disabled.cols.indexOf(i) >= 0;
+            disabledCount = isColumnDisabled ? disabledCount + 1 : disabledCount;
+
+            var index = generateHorizontalIndex(i, isColumnDisabled, disabledCount);
+            if (index) {
+                horizontalIndex.appendChild(createIndex(index));
             } else {
                 horizontalIndex.appendChild(createBlank());
             }
@@ -1610,28 +1631,31 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
         map.classList.add('sc-map');
 
         var disabled = options.map.disabled;
-        var verticalCounter = 0;
+        var disabledRowsCounter = 0;
 
         // add rows containing seats
         for (var i = 0; i < options.map.rows; i += 1) {
-            var verticalIndex = alphabet[verticalCounter];
             var row = createRow();
 
             var isRowDisabled = disabled && disabled.rows && disabled.rows.indexOf(i) >= 0;
-            var horizontalCounter = 1;
+            disabledRowsCounter = isRowDisabled ? disabledRowsCounter + 1 : disabledRowsCounter;
+
+            var disabledColumnsCounter = 0;
 
             for (var j = 0; j < options.map.cols; j += 1) {
-                var horizontalIndex = horizontalCounter;
                 var isColumnDisabled = disabled && disabled.cols && disabled.cols.indexOf(j) >= 0;
-                var seatTextContent = isColumnDisabled || isRowDisabled ?
-                    '' :
-                    '{0}{1}'.format(verticalIndex, horizontalIndex);
+                disabledColumnsCounter = isColumnDisabled ? disabledColumnsCounter + 1 : disabledColumnsCounter;
+
+                var verticalIndex = generateVerticalIndex(i, isRowDisabled, disabledRowsCounter);
+                var horizontalIndex = generateHorizontalIndex(j, isColumnDisabled, disabledColumnsCounter);
+
+                var seatTextContent = '';
+                if (verticalIndex && horizontalIndex) {
+                    seatTextContent = '{0}{1}'.format(verticalIndex, horizontalIndex);
+                }
 
                 row.appendChild(createSeat('available', seatTextContent, '{0}_{1}'.format(i, j)));
-                horizontalCounter = isColumnDisabled ? horizontalCounter : horizontalCounter + 1;
             }
-
-            verticalCounter = isRowDisabled ? verticalCounter : verticalCounter + 1;
 
             map.appendChild(row);
         }
@@ -1673,13 +1697,11 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
         }
 
         if (!indexes || !indexes.horizontal || indexes.horizontal.visible === undefined || indexes.horizontal.visible) {
-            var horizontalIndex = createHorizontalIndex();
-            horizontalIndexContainer.appendChild(horizontalIndex);
+            horizontalIndexContainer.appendChild(createHorizontalIndex());
         }
 
         if (!indexes || !indexes.vertical || indexes.vertical.visible === undefined || indexes.vertical.visible) {
-            var verticalIndex = createVerticalIndex();
-            verticalIndexContainer.appendChild(verticalIndex);
+            verticalIndexContainer.appendChild(createVerticalIndex());
         }
 
         verticalIndexContainer.append(map);
