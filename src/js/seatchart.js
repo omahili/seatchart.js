@@ -781,6 +781,63 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
     };
 
     /**
+     * Generates a vertical index.
+     * @param {number} row - Row index (starts from 0).
+     * @param {boolean} disabled - True if current row is disabled.
+     * @param {number} disabledCount - Number of disabled rows till that one (including current one if disabled).
+     * @returns {string} Vertical index. Return null or undefined if empty.
+     * @private
+     */
+    var generateVerticalIndex = function generateVerticalIndex(row, disabled, disabledCount) {
+        if (!disabled) {
+            return alphabet[row - disabledCount];
+        }
+
+        return null;
+    };
+
+    /**
+     * Generates a horizontal index.
+     * @param {number} column - Column index (starts from 0).
+     * @param {boolean} disabled - True if current column is disabled.
+     * @param {number} disabledCount - Number of disabled columns till that one (including current one if disabled).
+     * @returns {string} Horizontal index. Return null or undefined if empty.
+     */
+    var generateHorizontalIndex = function generateHorizontalIndex(column, disabled, disabledCount) {
+        if (!disabled) {
+            return ((column - disabledCount) + 1).toString();
+        }
+
+        return null;
+    };
+
+    /**
+     * Generates a seat name.
+     * @param {object} row
+     * @param {number} row.index - Row index (starts from 0).
+     * @param {boolean} row.disabled - True if current row is disabled.
+     * @param {number} row.disabledCount - Number of disabled rows till that one (including current one if disabled).
+     *
+     * @param {object} column
+     * @param {number} column.index - Column index (starts from 0).
+     * @param {boolean} column.disabled - True if current column is disabled.
+     * @param {number} column.disabledCount - Number of disabled columns till that one (including current one if disabled).
+     *
+     * @returns {string} Seat name. Return null or undefined if empty.
+     * @private
+     */
+    var generateSeatName = function generateSeatName(row, column) {
+        if (!row.disabled && !column.disabled) {
+            var verticalIndex = generateVerticalIndex(row.index, row.disabled, row.disabledCount);
+            var horizontalIndex = generateHorizontalIndex(column.index, column.disabled, column.disabledCount);
+
+            return '{0}{1}'.format(verticalIndex, horizontalIndex);
+        }
+
+        return null;
+    };
+
+    /**
      * Creates a new seat.
      * @param {string} type - The type of the seat.
      * @param {string} content - The name representing the seat.
@@ -858,22 +915,6 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * Generates a vertical index.
-     * @param {number} row - Row index (starts from 0).
-     * @param {boolean} disabled - True if current row is disabled.
-     * @param {number} disabledCount - Number of disabled rows till that one (including current one if disabled).
-     * @returns {string} Vertical index. Return null or undefined if empty.
-     * @private
-     */
-    var generateVerticalIndex = function generateVerticalIndex(row, disabled, disabledCount) {
-        if (!disabled) {
-            return alphabet[row - disabledCount];
-        }
-
-        return null;
-    };
-
-    /**
      * Creates a row containing all the vertical indexes.
      * @returns {HTMLDivElement} Vertical indexes.
      * @private
@@ -898,21 +939,6 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
         }
 
         return verticalIndex;
-    };
-
-    /**
-     * Generates a horizontal index.
-     * @param {number} column - Column index (starts from 0).
-     * @param {boolean} disabled - True if current column is disabled.
-     * @param {number} disabledCount - Number of disabled columns till that one (including current one if disabled).
-     * @returns {string} Horizontal index. Return null or undefined if empty.
-     */
-    var generateHorizontalIndex = function generateHorizontalIndex(column, disabled, disabledCount) {
-        if (!disabled) {
-            return ((column - disabledCount) + 1).toString();
-        }
-
-        return null;
     };
 
     /**
@@ -1661,20 +1687,16 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
                 var isColumnDisabled = disabled && disabled.cols && disabled.cols.indexOf(j) >= 0;
                 disabledColumnsCounter = isColumnDisabled ? disabledColumnsCounter + 1 : disabledColumnsCounter;
 
-                var verticalIndex = generateVerticalIndex(i, isRowDisabled, disabledRowsCounter);
-                var horizontalIndex = generateHorizontalIndex(j, isColumnDisabled, disabledColumnsCounter);
-
-                var seatTextContent = '';
-                if (verticalIndex && horizontalIndex) {
-                    seatTextContent = '{0}{1}'.format(verticalIndex, horizontalIndex);
-                }
+                var seatTextContent = generateSeatName(
+                    { index: i, disabled: isRowDisabled, disabledCount: disabledRowsCounter },
+                    { index: j, disabled: isColumnDisabled, disabledCount: disabledColumnsCounter }
+                );
 
                 // draw empty row if row is disabled,
                 // while draw blank seat if column is disabled
                 if (!isRowDisabled) {
                     row.appendChild(createSeat('available', seatTextContent, '{0}_{1}'.format(i, j)));
                 }
-
             }
 
             map.appendChild(row);
