@@ -77,10 +77,11 @@ If you want to help in the development of this library please open a PR on githu
 - [x] Improve legend: remove 'Available' seat from legend, remove 'Your seats' and 'Seats' subtitles
 - [x] Improve shopping cart design
 - [x] Use flexbox where simpler
-- [ ] Hide and skip seat indexer where a column or row is completely blank
-- [ ] Show/hide seat indexer on top and left
-- [ ] Add choice for different indexers
-- [ ] Show/hide front
+- [x] Remove useless getters/setters and configure seatchart throught a single object 'options'
+- [x] Hide and skip seat indexes where a column or row is completely blank
+- [x] Add visible and position options to indexes
+- [x] Add visible and position options to front header
+- [ ] Add choice for different indexes
 - [ ] Create svg icons
 - [ ] Decrease access to the DOM (e.g. getSeatName() function)
 - [ ] Replace current seat indexing with a simple one: an object { row: 10, col: 10 }
