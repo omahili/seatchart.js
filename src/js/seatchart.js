@@ -854,7 +854,7 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
         var rowsIndex = document.createElement('div');
         rowsIndex.className = 'sc-vertical-index';
 
-        for (var i = 0; i < options.map.cols; i += 1) {
+        for (var i = 0; i < options.map.rows; i += 1) {
             rowsIndex.appendChild(createIndex(alphabet[i]));
         }
 
