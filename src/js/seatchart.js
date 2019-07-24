@@ -972,7 +972,10 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
         var disabled = options.map.disabled;
         var disabledCount = 0;
 
-        var generateName = options.map.indexes.row.name || rowName;
+        var generateName = rowName;
+        if (options.map.indexes && options.map.indexes.row && options.map.indexes.row.name) {
+            generateName = options.map.indexes.row.name;
+        }
 
         for (var i = 0; i < options.map.rows; i += 1) {
             var isRowDisabled = disabled && disabled.rows && disabled.rows.indexOf(i) >= 0;
@@ -1002,7 +1005,10 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
         var disabled = options.map.disabled;
         var disabledCount = 0;
 
-        var generateName = options.map.indexes.column.name || columnName;
+        var generateName = columnName;
+        if (options.map.indexes && options.map.indexes.column && options.map.indexes.column.name) {
+            generateName = options.map.indexes.column.name;
+        }
 
         for (var i = 0; i < options.map.cols; i += 1) {
             var isColumnDisabled = disabled && disabled.cols && disabled.cols.indexOf(i) >= 0;
