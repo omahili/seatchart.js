@@ -37,11 +37,11 @@
 }
 
 .sc-margin-top {
-    margin-top: 5px;
+    margin-top: 15px;
 }
 
 .sc-margin-bottom {
-    margin-bottom: 5px;
+    margin-bottom: 15px;
 }
 
 .sc-container-row *,
@@ -61,14 +61,15 @@
 
 .sc-map-row {
     display: flex;
+    height: 46px;
 }
 
-.sc-horizontal-index {
+.sc-column-index {
     display: flex;
     flex-direction: row;
 }
 
-.sc-vertical-index {
+.sc-row-index {
     display: flex;
     flex-direction: column;
 }

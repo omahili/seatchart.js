@@ -28,7 +28,7 @@
     
     <input type="text" id="nav-search" placeholder="Search" />
     
-    <h2><a href="index.html">Home</a></h2><h2><a href="https://seatchart.js.org/demo.html" target="_blank" class="menu-item" id="website_link" >Demo</a></h2><h2><a href="https://github.com/omarmahili/seatchart.js" target="_blank" class="menu-item" id="website_link" >Github</a></h2><h3>Classes</h3><ul><li><a href="Seatchart.html">Seatchart</a><ul class='methods'><li data-type='method'><a href="Seatchart.html#get">get</a></li><li data-type='method'><a href="Seatchart.html#getCart">getCart</a></li><li data-type='method'><a href="Seatchart.html#getGaps">getGaps</a></li><li data-type='method'><a href="Seatchart.html#getPrice">getPrice</a></li><li data-type='method'><a href="Seatchart.html#getTotal">getTotal</a></li><li data-type='method'><a href="Seatchart.html#isGap">isGap</a></li><li data-type='method'><a href="Seatchart.html#makesGap">makesGap</a></li><li data-type='method'><a href="Seatchart.html#set">set</a></li></ul></li></ul><h3>Events</h3><ul><li><a href="Seatchart.html#event:onChange">onChange</a></li><li><a href="Seatchart.html#event:onClear">onClear</a></li></ul><h3><a href="global.html">Global</a></h3>
+    <h2><a href="index.html">Home</a></h2><h2><a href="https://seatchart.js.org/demo.html" target="_blank" class="menu-item" id="website_link" >Demo</a></h2><h2><a href="https://github.com/omarmahili/seatchart.js" target="_blank" class="menu-item" id="website_link" >Github</a></h2><h3>Classes</h3><ul><li><a href="Seatchart.html">Seatchart</a><ul class='methods'><li data-type='method'><a href="Seatchart.html#get">get</a></li><li data-type='method'><a href="Seatchart.html#getCart">getCart</a></li><li data-type='method'><a href="Seatchart.html#getGaps">getGaps</a></li><li data-type='method'><a href="Seatchart.html#getPrice">getPrice</a></li><li data-type='method'><a href="Seatchart.html#getTotal">getTotal</a></li><li data-type='method'><a href="Seatchart.html#isGap">isGap</a></li><li data-type='method'><a href="Seatchart.html#makesGap">makesGap</a></li><li data-type='method'><a href="Seatchart.html#set">set</a></li><li data-type='method'><a href="Seatchart.html#~columnName">columnName</a></li></ul></li></ul><h3>Events</h3><ul><li><a href="Seatchart.html#event:onChange">onChange</a></li><li><a href="Seatchart.html#event:onClear">onClear</a></li></ul><h3><a href="global.html">Global</a></h3>
 </nav>
 
 <div id="main">
@@ -135,7 +135,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line150">line 150</a>
+        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line219">line 219</a>
     </li></ul></dd>
     
 
@@ -308,7 +308,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line157">line 157</a>
+        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line226">line 226</a>
     </li></ul></dd>
     
 
@@ -441,6 +441,414 @@
 
             
                 
+
+    
+
+    <h4 class="name" id="columnNameCallback"><span class="type-signature"></span>columnNameCallback<span class="signature">(index, disabled, disabledCount)</span><span class="type-signature"> &rarr; {string}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line31">line 31</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Callback to generate a column name.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>index</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Column index (starts from 0).</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>disabled</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">True if current column is disabled.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>disabledCount</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Number of disabled columns till that one (including current one if disabled).</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Column name. Return null or undefined if empty.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+            
+                
+
+    
+
+    <h4 class="name" id="rowNameCallback"><span class="type-signature"></span>rowNameCallback<span class="signature">(index, disabled, disabledCount)</span><span class="type-signature"> &rarr; {string}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line19">line 19</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Callback to generate a row name.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>index</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Row index (starts from 0).</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>disabled</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">True if current row is disabled.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>disabledCount</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Number of disabled rows till that one (including current one if disabled).</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Row name. Return null or undefined if empty.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+            
+                
 <h4 class="name" id="Seat">Seat</h4>
 
 
@@ -452,7 +860,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line141">line 141</a>
+        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line210">line 210</a>
     </li></ul></dd>
     
 
@@ -653,6 +1061,377 @@
 
 
             
+                
+
+    
+
+    <h4 class="name" id="seatNameCallback"><span class="type-signature"></span>seatNameCallback<span class="signature">(row, column)</span><span class="type-signature"> &rarr; {string}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Callback to generate a seat name.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>row</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>index</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Row index (starts from 0).</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>disabled</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">True if current row is disabled.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>disabledCount</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Number of disabled rows till that one (including current one if disabled).</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>column</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>index</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Column index (starts from 0).</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>disabled</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">True if current column is disabled.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>disabledCount</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Number of disabled columns till that one (including current one if disabled).</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Seat name. Return null or undefined if empty.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+            
     
 
     
@@ -670,7 +1449,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Jul 21 2019 11:18:14 GMT+0200 (GMT+02:00) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Jul 24 2019 23:35:01 GMT+0200 (GMT+02:00) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
