@@ -1,7 +1,7 @@
 /**
  * Callback to generate a seat name.
  *
- * @callback generateSeatName
+ * @callback seatNameCallback
  *
  * @param {object} row
  * @param {number} row.index - Row index (starts from 0).
@@ -19,7 +19,7 @@
 /**
  * Callback to generate a row name.
  *
- * @callback generateRowName
+ * @callback rowNameCallback
  *
  * @param {number} index - Row index (starts from 0).
  * @param {boolean} disabled - True if current row is disabled.
@@ -31,7 +31,7 @@
 /**
  * Callback to generate a column name.
  *
- * @callback generateColumnName
+ * @callback columnNameCallback
  *
  * @param {number} index - Column index (starts from 0).
  * @param {boolean} disabled - True if current column is disabled.
@@ -51,7 +51,7 @@
  * @param {number} options.map.id - Container id.
  * @param {number} options.map.rows - Number of rows.
  * @param {number} options.map.cols - Number of columns.
- * @param {generateSeatName} [options.map.generateSeatName] - Seat name generator.
+ * @param {seatNameCallback} [options.map.seatName] - Seat name generator.
  *
  * @param {Array.<number>} [options.map.reserved] - Array of reserved seats.
  * @param {Array.<number>} [options.map.reserved.seats] - Array of the reserved seats.
@@ -67,12 +67,12 @@
  * @param {Object} [options.map.indexes.row] - Row index options.
  * @param {boolean} [options.map.indexes.row.visible = true] - Row index visibility.
  * @param {( 'left' | 'right' )} [options.map.indexes.row.position = 'left'] - Row index position.
- * @param {generateRowName} [options.map.indexes.row.generateName] - Row name generator.
+ * @param {rowNameCallback} [options.map.indexes.row.name] - Row name generator.
  *
  * @param {Object} [options.map.indexes.column] - Column index options.
  * @param {boolean} [options.map.indexes.column.visible = true] - Column index visibility.
  * @param {( 'top' | 'bottom' )} [options.map.indexes.column.position = 'top'] - Column index position.
- * @param {generateColumnName} [options.map.indexes.column.generateName] - Column name generator.
+ * @param {columnNameCallback} [options.map.indexes.column.name] - Column name generator.
  *
  * @param {Object} [options.map.front] - Front header options.
  * @param {boolean} [options.map.front.visible = true] - Front header visibility.
@@ -834,7 +834,7 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
      * @returns {string} Row name. Return null or undefined if empty.
      * @private
      */
-    var generateRowName = function generateRowName(index, disabled, disabledCount) {
+    var rowName = function rowName(index, disabled, disabledCount) {
         if (!disabled) {
             return alphabet[index - disabledCount];
         }
@@ -849,7 +849,7 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
      * @param {number} disabledCount - Number of disabled columns till that one (including current one if disabled).
      * @returns {string} Column name. Return null or undefined if empty.
      */
-    var generateColumnName = function generateColumnName(index, disabled, disabledCount) {
+    var columnName = function columnName(index, disabled, disabledCount) {
         if (!disabled) {
             return ((index - disabledCount) + 1).toString();
         }
@@ -872,10 +872,10 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
      * @returns {string} Seat name. Return null or undefined if empty.
      * @private
      */
-    var generateSeatName = function generateSeatName(row, column) {
+    var seatName = function seatName(row, column) {
         if (!row.disabled && !column.disabled) {
-            var rowIndex = generateRowName(row.index, row.disabled, row.disabledCount);
-            var columnIndex = generateColumnName(column.index, column.disabled, column.disabledCount);
+            var rowIndex = rowName(row.index, row.disabled, row.disabledCount);
+            var columnIndex = columnName(column.index, column.disabled, column.disabledCount);
 
             return '{0}{1}'.format(rowIndex, columnIndex);
         }
@@ -972,7 +972,7 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
         var disabled = options.map.disabled;
         var disabledCount = 0;
 
-        var generateName = options.map.indexes.row.generateName || generateRowName;
+        var generateName = options.map.indexes.row.name || rowName;
 
         for (var i = 0; i < options.map.rows; i += 1) {
             var isRowDisabled = disabled && disabled.rows && disabled.rows.indexOf(i) >= 0;
@@ -1002,7 +1002,7 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
         var disabled = options.map.disabled;
         var disabledCount = 0;
 
-        var generateName = options.map.indexes.column.generateName || generateColumnName;
+        var generateName = options.map.indexes.column.name || columnName;
 
         for (var i = 0; i < options.map.cols; i += 1) {
             var isColumnDisabled = disabled && disabled.cols && disabled.cols.indexOf(i) >= 0;
@@ -1725,7 +1725,7 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
         var disabled = options.map.disabled;
         var disabledRowsCounter = 0;
 
-        var generateName = options.map.generateSeatName || generateSeatName;
+        var generateName = options.map.seatName || seatName;
 
         // add rows containing seats
         for (var i = 0; i < options.map.rows; i += 1) {
