@@ -1115,7 +1115,7 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
                     var row = Math.floor(index / options.map.cols);
                     var column = index % options.map.cols;
                     var id = '{0}_{1}'.format(row, column);
-                    var seatName = '{0}{1}'.format(alphabet[row], column + 1);
+                    var seatName = getSeatName(id);
                     var seat = {
                         id: id,
                         name: seatName,
