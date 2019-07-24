@@ -980,7 +980,7 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
 
             var index = generateName(i, isRowDisabled, disabledCount);
 
-            if (index) {
+            if (index !== undefined && index !== null) {
                 rowIndex.appendChild(createIndex(index));
             } else {
                 rowIndex.appendChild(createBlank());
@@ -1009,7 +1009,7 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
             disabledCount = isColumnDisabled ? disabledCount + 1 : disabledCount;
 
             var index = generateName(i, isColumnDisabled, disabledCount);
-            if (index) {
+            if (index !== undefined && index !== null) {
                 columnIndex.appendChild(createIndex(index));
             } else {
                 columnIndex.appendChild(createBlank());
