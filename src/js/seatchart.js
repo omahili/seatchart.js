@@ -20,13 +20,13 @@
  *
  * @param {Object} [options.map.indexes] - Indexes options.
  *
- * @param {Object} [options.map.indexes.vertical] - Vertical index options.
- * @param {boolean} [options.map.indexes.vertical.visible = true] - Vertical index visibility.
- * @param {( 'left' | 'right' )} [options.map.indexes.vertical.position = 'left'] - Vertical index position.
+ * @param {Object} [options.map.indexes.row] - Row index options.
+ * @param {boolean} [options.map.indexes.row.visible = true] - Row index visibility.
+ * @param {( 'left' | 'right' )} [options.map.indexes.row.position = 'left'] - Row index position.
  *
- * @param {Object} [options.map.indexes.horizontal] - Horizontal index options.
- * @param {boolean} [options.map.indexes.horizontal.visible = true] - Horizontal index visibility.
- * @param {( 'top' | 'bottom' )} [options.map.indexes.horizontal.position = 'top'] - Horizontal index position.
+ * @param {Object} [options.map.indexes.column] - Column index options.
+ * @param {boolean} [options.map.indexes.column.visible = true] - Column index visibility.
+ * @param {( 'top' | 'bottom' )} [options.map.indexes.column.position = 'top'] - Column index position.
  *
  * @param {Object} [options.map.front] - Front header options.
  * @param {boolean} [options.map.front.visible = true] - Front header visibility.
@@ -781,14 +781,14 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * Generates a vertical index.
+     * Generates a row index.
      * @param {number} row - Row index (starts from 0).
      * @param {boolean} disabled - True if current row is disabled.
      * @param {number} disabledCount - Number of disabled rows till that one (including current one if disabled).
-     * @returns {string} Vertical index. Return null or undefined if empty.
+     * @returns {string} Row index. Return null or undefined if empty.
      * @private
      */
-    var generateVerticalIndex = function generateVerticalIndex(row, disabled, disabledCount) {
+    var generateRowIndex = function generateRowIndex(row, disabled, disabledCount) {
         if (!disabled) {
             return alphabet[row - disabledCount];
         }
@@ -797,13 +797,13 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * Generates a horizontal index.
+     * Generates a column index.
      * @param {number} column - Column index (starts from 0).
      * @param {boolean} disabled - True if current column is disabled.
      * @param {number} disabledCount - Number of disabled columns till that one (including current one if disabled).
-     * @returns {string} Horizontal index. Return null or undefined if empty.
+     * @returns {string} Column index. Return null or undefined if empty.
      */
-    var generateHorizontalIndex = function generateHorizontalIndex(column, disabled, disabledCount) {
+    var generateColumnIndex = function generateColumnIndex(column, disabled, disabledCount) {
         if (!disabled) {
             return ((column - disabledCount) + 1).toString();
         }
@@ -828,10 +828,10 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
      */
     var generateSeatName = function generateSeatName(row, column) {
         if (!row.disabled && !column.disabled) {
-            var verticalIndex = generateVerticalIndex(row.index, row.disabled, row.disabledCount);
-            var horizontalIndex = generateHorizontalIndex(column.index, column.disabled, column.disabledCount);
+            var rowIndex = generateRowIndex(row.index, row.disabled, row.disabledCount);
+            var columnIndex = generateColumnIndex(column.index, column.disabled, column.disabledCount);
 
-            return '{0}{1}'.format(verticalIndex, horizontalIndex);
+            return '{0}{1}'.format(rowIndex, columnIndex);
         }
 
         return null;
@@ -915,13 +915,13 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
     };
 
     /**
-     * Creates a row containing all the vertical indexes.
-     * @returns {HTMLDivElement} Vertical indexes.
+     * Creates a row containing all the row indexes.
+     * @returns {HTMLDivElement} Row indexes.
      * @private
      */
-    var createVerticalIndex = function createVerticalIndex() {
-        var verticalIndex = document.createElement('div');
-        verticalIndex.className = 'sc-vertical-index';
+    var createRowIndex = function createRowIndex() {
+        var rowIndex = document.createElement('div');
+        rowIndex.className = 'sc-row-index';
 
         var disabled = options.map.disabled;
         var disabledCount = 0;
@@ -930,25 +930,25 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
             var isRowDisabled = disabled && disabled.rows && disabled.rows.indexOf(i) >= 0;
             disabledCount = isRowDisabled ? disabledCount + 1 : disabledCount;
 
-            var index = generateVerticalIndex(i, isRowDisabled, disabledCount);
+            var index = generateRowIndex(i, isRowDisabled, disabledCount);
             if (index) {
-                verticalIndex.appendChild(createIndex(index));
+                rowIndex.appendChild(createIndex(index));
             } else {
-                verticalIndex.appendChild(createBlank());
+                rowIndex.appendChild(createBlank());
             }
         }
 
-        return verticalIndex;
+        return rowIndex;
     };
 
     /**
-     * Creates a row containing all the horizontal indexes.
-     * @returns {HTMLDivElement} Horizontal indexes.
+     * Creates a row containing all the column indexes.
+     * @returns {HTMLDivElement} Column indexes.
      * @private
      */
-    var createHorizontalIndex = function createHorizontalIndex() {
-        var horizontalIndex = document.createElement('div');
-        horizontalIndex.className = 'sc-horizontal-index';
+    var createColumnIndex = function createColumnIndex() {
+        var columnIndex = document.createElement('div');
+        columnIndex.className = 'sc-column-index';
 
         var disabled = options.map.disabled;
         var disabledCount = 0;
@@ -957,15 +957,15 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
             var isColumnDisabled = disabled && disabled.cols && disabled.cols.indexOf(i) >= 0;
             disabledCount = isColumnDisabled ? disabledCount + 1 : disabledCount;
 
-            var index = generateHorizontalIndex(i, isColumnDisabled, disabledCount);
+            var index = generateColumnIndex(i, isColumnDisabled, disabledCount);
             if (index) {
-                horizontalIndex.appendChild(createIndex(index));
+                columnIndex.appendChild(createIndex(index));
             } else {
-                horizontalIndex.appendChild(createBlank());
+                columnIndex.appendChild(createBlank());
             }
         }
 
-        return horizontalIndex;
+        return columnIndex;
     };
 
     /**
@@ -1705,21 +1705,21 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
         var indexes = options.map.indexes;
         var front = options.map.front;
 
-        var horizontalContainerDirection = 'column';
-        if (indexes && indexes.horizontal && indexes.horizontal.position === 'bottom') {
-            horizontalContainerDirection = 'column-reverse';
+        var columnContainerDirection = 'column';
+        if (indexes && indexes.column && indexes.column.position === 'bottom') {
+            columnContainerDirection = 'column-reverse';
         }
 
         var itemsPosition = 'right';
-        var verticalContainerDirection = 'row';
-        if (indexes && indexes.vertical && indexes.vertical.position === 'right') {
-            verticalContainerDirection = 'row-reverse';
+        var rowContainerDirection = 'row';
+        if (indexes && indexes.row && indexes.row.position === 'right') {
+            rowContainerDirection = 'row-reverse';
             itemsPosition = 'left';
         }
 
-        var verticalIndexContainer = createContainer(null, verticalContainerDirection);
-        var horizontalIndexContainer = createContainer(null, horizontalContainerDirection, itemsPosition);
-        horizontalIndexContainer.append(verticalIndexContainer);
+        var rowIndexContainer = createContainer(null, rowContainerDirection);
+        var columnIndexContainer = createContainer(null, columnContainerDirection, itemsPosition);
+        columnIndexContainer.append(rowIndexContainer);
 
         // var mapContainerDirection = 'column';
         // var mapContainerMargin = 'sc-margin-bottom';
@@ -1738,17 +1738,17 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
             mapContainer.appendChild(frontHeader);
         }
 
-        if (!indexes || !indexes.horizontal || indexes.horizontal.visible === undefined || indexes.horizontal.visible) {
-            horizontalIndexContainer.appendChild(createHorizontalIndex());
+        if (!indexes || !indexes.column || indexes.column.visible === undefined || indexes.column.visible) {
+            columnIndexContainer.appendChild(createColumnIndex());
         }
 
-        if (!indexes || !indexes.vertical || indexes.vertical.visible === undefined || indexes.vertical.visible) {
-            verticalIndexContainer.appendChild(createVerticalIndex());
+        if (!indexes || !indexes.row || indexes.row.visible === undefined || indexes.row.visible) {
+            rowIndexContainer.appendChild(createRowIndex());
         }
 
-        verticalIndexContainer.append(map);
-        horizontalIndexContainer.append(verticalIndexContainer);
-        mapContainer.append(horizontalIndexContainer);
+        rowIndexContainer.append(map);
+        columnIndexContainer.append(rowIndexContainer);
+        mapContainer.append(columnIndexContainer);
 
         document.getElementById(options.map.id).appendChild(mapContainer);
 

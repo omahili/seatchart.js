@@ -64,12 +64,12 @@
     height: 46px;
 }
 
-.sc-horizontal-index {
+.sc-column-index {
     display: flex;
     flex-direction: row;
 }
 
-.sc-vertical-index {
+.sc-row-index {
     display: flex;
     flex-direction: column;
 }
