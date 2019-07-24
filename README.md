@@ -11,34 +11,45 @@ First of all link the library along with the stylesheet and the script that gene
 <script type="text/javascript" src="/path/to/seatchart.js"></script>
 
 <script>
-    // Reserved and disabled seats are indexed
-    // from left to right by starting from 0.
-    // Given the seatmap as a 2D array and an index [R, C]
-    // the following values can obtained as follow:
-    // I = cols * R + C
-    var map = {
-        rows: 9,
-        cols: 9,
-        // e.g. Reserved Seat { Row: 1 (starts from 0), Col: 2 } = 9 * 1 + 2 = 11
-        reserved: [1, 2, 3, 5, 6, 7, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20, 21],
-        disabled: [0, 8],
-        disabledRows: [4],
-        disabledCols: [4]
+    var options = {
+        // Reserved and disabled seats are indexed
+        // from left to right by starting from 0.
+        // Given the seatmap as a 2D array and an index [R, C]
+        // the following values can obtained as follow:
+        // I = cols * R + C
+        map: {
+            id: 'map-container',
+            rows: 9,
+            cols: 9,
+            // e.g. Reserved Seat [Row: 1, Col: 2] = 7 * 1 + 2 = 9
+            reserved: {
+                seats: [1, 2, 3, 5, 6, 7, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20, 21],
+            },
+            disabled: {
+                seats: [0, 8],
+                rows: [4],
+                cols: [4]
+            }
+        },
+        types: [
+            { type: "regular", backgroundColor: "#006c80", price: 10, selected: [23, 24] },
+            { type: "reduced", backgroundColor: "#287233", price: 7.5, selected: [25, 26] }
+        ],
+        cart: {
+            id: 'cart-container',
+            width: 280,
+            height: 250,
+            currency: '£',
+        },
+        legend: {
+            id: 'legend-container',
+        },
+        assets: {
+            path: "./assets",
+        }
     };
 
-    var types = [
-        { type: "regular", color: "orange", price: 10, selected: [23, 24] },
-        { type: "reduced", color: "#af0000", price: 7.5, selected: [25, 26] },
-        { type: "military", color: "red", price: 7 }
-    ];
-
-    var sc = new Seatchart(map, types);
-    sc.setAssetsSrc("/path/to/assets");
-
-    // (1) Create functions
-    sc.createMap("map-container");
-    sc.createLegend("legend-container"); // optional
-    sc.createShoppingCart("shoppingCart-container"); // optional
+    var sc = new Seatchart(options);
 </script>
 ```
 
@@ -81,7 +92,7 @@ If you want to help in the development of this library please open a PR on githu
 - [x] Hide and skip seat indexes where a column or row is completely blank
 - [x] Add visible and position options to indexes
 - [x] Add visible and position options to front header
-- [ ] Add choice for different indexes
+- [x] Add choice for different indexes
 - [ ] Create svg icons
 - [ ] Decrease access to the DOM (e.g. getSeatName() function)
 - [ ] Replace current seat indexing with a simple one: an object { row: 10, col: 10 }
