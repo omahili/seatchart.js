@@ -50,7 +50,7 @@
  * @param {Object} options.map - Map options.
  * @param {number} options.map.id - Container id.
  * @param {number} options.map.rows - Number of rows.
- * @param {number} options.map.cols - Number of columns.
+ * @param {number} options.map.columns - Number of columns.
  * @param {seatNameCallback} [options.map.seatName] - Seat name generator.
  *
  * @param {Array.<number>} [options.map.reserved] - Array of reserved seats.
@@ -60,7 +60,7 @@
  * @param {Array.<number>} [options.map.disabled.seats] - Array of the disabled seats.
  * @param {Array.<number>} [options.map.disabled.rows] - Array of the disabled rows of seats.
  *
- * @param {Array.<number>} [options.map.disabled.cols] - Array of the disabled columns of seats.
+ * @param {Array.<number>} [options.map.disabled.columns] - Array of the disabled columns of seats.
  *
  * @param {Object} [options.map.indexes] - Indexes options.
  *
@@ -149,15 +149,15 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
     } else if (!{}.hasOwnProperty.call(options.map, 'id')) {
         throw new Error("Invalid parameter 'options.map' supplied to Seatchart. " +
                         "'id' property cannot be undefined.");
-    } else if (!{}.hasOwnProperty.call(options.map, 'rows') || !{}.hasOwnProperty.call(options.map, 'cols')) {
+    } else if (!{}.hasOwnProperty.call(options.map, 'rows') || !{}.hasOwnProperty.call(options.map, 'columns')) {
         throw new Error("Invalid parameter 'options.map' supplied to Seatchart. " +
-                        "'row' and 'cols' properties cannot be undefined.");
-    } else if (options.map.rows > 25 || options.map.cols > 25) {
+                        "'row' and 'columns' properties cannot be undefined.");
+    } else if (options.map.rows > 25 || options.map.columns > 25) {
         throw new Error("Invalid parameter 'options.map' supplied to Seatchart. " +
-                        "'row' and 'cols' properties cannot be integers greater than 25.");
-    } else if (options.map.rows < 2 || options.map.cols < 2) {
+                        "'row' and 'columns' properties cannot be integers greater than 25.");
+    } else if (options.map.rows < 2 || options.map.columns < 2) {
         throw new Error("Invalid parameter 'options.map' supplied to Seatchart. " +
-                        "'row' and 'cols' properties cannot be integers smaller than 2.");
+                        "'row' and 'columns' properties cannot be integers smaller than 2.");
     }
 
     // check options.types parameter
@@ -342,7 +342,7 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
             return parseInt(x, 10);
         });
 
-        return (options.map.cols * values[0]) + values[1];
+        return (options.map.columns * values[0]) + values[1];
     };
 
     /**
@@ -375,7 +375,7 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
 
                 for (var l = 0; l < seatType.selected.length; l += 1) {
                     var index = seatType.selected[l];
-                    var id = '{0}_{1}'.format(Math.floor(index / options.map.cols), index % options.map.cols);
+                    var id = '{0}_{1}'.format(Math.floor(index / options.map.columns), index % options.map.columns);
                     // add to shopping cart
                     addToCartDict(id, type);
                 }
@@ -1010,8 +1010,8 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
             generateName = options.map.indexes.columns.name;
         }
 
-        for (var i = 0; i < options.map.cols; i += 1) {
-            var isColumnDisabled = disabled && disabled.cols && disabled.cols.indexOf(i) >= 0;
+        for (var i = 0; i < options.map.columns; i += 1) {
+            var isColumnDisabled = disabled && disabled.columns && disabled.columns.indexOf(i) >= 0;
             disabledCount = isColumnDisabled ? disabledCount + 1 : disabledCount;
 
             var index = generateName(i, isColumnDisabled, disabledCount);
@@ -1079,11 +1079,11 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
      */
     var setSeat = function setSeat(type) {
         if (options.map[type] && options.map[type].seats) {
-            var cols = options.map.cols;
+            var columns = options.map.columns;
 
             for (var i = 0; i < options.map[type].seats.length; i += 1) {
                 var index = options.map[type].seats[i];
-                var id = '{0}_{1}'.format(Math.floor(index / cols), index % cols);
+                var id = '{0}_{1}'.format(Math.floor(index / columns), index % columns);
                 var seat = document.getElementById(id);
 
                 // prevents from null reference exception when json goes out of range
@@ -1118,8 +1118,8 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
 
                 for (var j = 0; j < seatType.selected.length; j += 1) {
                     var index = seatType.selected[j];
-                    var row = Math.floor(index / options.map.cols);
-                    var column = index % options.map.cols;
+                    var row = Math.floor(index / options.map.columns);
+                    var column = index % options.map.columns;
                     var id = '{0}_{1}'.format(row, column);
                     var seatName = getSeatName(id);
                     var seat = {
@@ -1152,7 +1152,7 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
 
                 for (var l = 0; l < seatType.selected.length; l += 1) {
                     var index = seatType.selected[l];
-                    var id = '{0}_{1}'.format(Math.floor(index / options.map.cols), index % options.map.cols);
+                    var id = '{0}_{1}'.format(Math.floor(index / options.map.columns), index % options.map.columns);
 
                     var element = document.getElementById(id);
                     if (element) {
@@ -1206,18 +1206,18 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
     this.isGap = function isGap(seatIndex) {
         if (typeof seatIndex !== 'number' && Math.floor(seatIndex) === seatIndex) {
             throw new Error("Invalid parameter 'seatIndex' supplied to Seatchart.isGap(). It must be an integer.");
-        } else if (seatIndex >= options.map.rows * options.map.cols) {
+        } else if (seatIndex >= options.map.rows * options.map.columns) {
             throw new Error("Invalid parameter 'seatIndex' supplied to Seatchart.isGap(). Index is out of range.");
         }
 
-        var row = Math.floor(seatIndex / options.map.cols);
-        var col = seatIndex % options.map.cols;
+        var row = Math.floor(seatIndex / options.map.columns);
+        var col = seatIndex % options.map.columns;
 
         var seatId = '{0}_{1}'.format(row, col);
 
         // if current seat is disabled or reserved do not continue
         if (options.map.disabled.seats.indexOf(seatIndex) >= 0 ||
-            options.map.disabled.cols.indexOf(col) >= 0 ||
+            options.map.disabled.columns.indexOf(col) >= 0 ||
             options.map.disabled.rows.indexOf(row) >= 0 ||
             options.map.reserved.seats.indexOf(seatIndex) >= 0
         ) {
@@ -1255,7 +1255,7 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
 
         // if there's a disabled/reserved block before and no seats after because the seatchart ends or,
         // a disabled/reserved block after and no seats before, then do not consider it a gap
-        if (((isSeatBeforeDisabled || isSeatBeforeReserved) && colAfter >= options.map.cols) ||
+        if (((isSeatBeforeDisabled || isSeatBeforeReserved) && colAfter >= options.map.columns) ||
             (colBefore < 0 && (isSeatAfterDisabled || isSeatAfterReserved))) {
             return false;
         }
@@ -1288,7 +1288,7 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
             isSeatBeforeDisabled ||
             isSeatBeforeSelected;
 
-        var isSeatAfterUnavailable = colAfter >= options.map.cols ||
+        var isSeatAfterUnavailable = colAfter >= options.map.columns ||
             options.map.reserved.seats.indexOf(seatAfter) >= 0 ||
             isSeatAfterDisabled ||
             isSeatAfterSelected;
@@ -1304,11 +1304,11 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
     this.makesGap = function makesGap(seatIndex) {
         if (typeof seatIndex !== 'number' && Math.floor(seatIndex) === seatIndex) {
             throw new Error("Invalid parameter 'seatIndex' supplied to Seatchart.makesGap(). It must be an integer.");
-        } else if (seatIndex >= options.map.rows * options.map.cols) {
+        } else if (seatIndex >= options.map.rows * options.map.columns) {
             throw new Error("Invalid parameter 'seatIndex' supplied to Seatchart.makesGap(). Index is out of range.");
         }
 
-        var col = seatIndex % options.map.cols;
+        var col = seatIndex % options.map.columns;
 
         var isSeatBeforeGap = false;
         if (seatIndex - 1 >= 0 && col > 0) {
@@ -1316,7 +1316,7 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
         }
 
         var isSeatAfterGap = false;
-        if (seatIndex + 1 < options.map.cols * options.map.rows && col + 1 < options.map.cols) {
+        if (seatIndex + 1 < options.map.columns * options.map.rows && col + 1 < options.map.columns) {
             isSeatAfterGap = this.isGap(seatIndex + 1);
         }
 
@@ -1329,7 +1329,7 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
      */
     this.getGaps = function getGaps() {
         var gaps = [];
-        var count = options.map.cols * options.map.rows;
+        var count = options.map.columns * options.map.rows;
         for (var i = 0; i < count; i += 1) {
             if (this.isGap(i)) {
                 gaps.push(i);
@@ -1347,13 +1347,13 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
     this.get = function get(index) {
         if (typeof index !== 'number' && Math.floor(index) === index) {
             throw new Error("Invalid parameter 'index' supplied to Seatchart.get(). It must be an integer.");
-        } else if (index >= options.map.rows * options.map.cols) {
+        } else if (index >= options.map.rows * options.map.columns) {
             throw new Error("Invalid parameter 'index' supplied to Seatchart.get(). Index is out of range.");
         }
 
-        if (index < options.map.rows * options.map.cols) {
-            var row = Math.floor(index / options.map.cols);
-            var col = index % options.map.cols;
+        if (index < options.map.rows * options.map.columns) {
+            var row = Math.floor(index / options.map.columns);
+            var col = index % options.map.columns;
             var seatId = '{0}_{1}'.format(row, col);
             var seatName = getSeatName(seatId);
 
@@ -1416,7 +1416,7 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
     this.set = function set(index, type, emit) {
         if (typeof index !== 'number' && Math.floor(index) === index) {
             throw new Error("Invalid parameter 'index' supplied to Seatchart.set(). It must be an integer.");
-        } else if (index >= options.map.rows * options.map.cols) {
+        } else if (index >= options.map.rows * options.map.columns) {
             throw new Error("Invalid parameter 'index' supplied to Seatchart.set(). Index is out of range.");
         } else if (typeof type !== 'string') {
             throw new Error("Invalid parameter 'type' supplied to Seatchart.set(). It must be a string.");
@@ -1742,8 +1742,8 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
 
             var disabledColumnsCounter = 0;
 
-            for (var j = 0; j < options.map.cols; j += 1) {
-                var isColumnDisabled = disabled && disabled.cols && disabled.cols.indexOf(j) >= 0;
+            for (var j = 0; j < options.map.columns; j += 1) {
+                var isColumnDisabled = disabled && disabled.columns && disabled.columns.indexOf(j) >= 0;
                 disabledColumnsCounter = isColumnDisabled ? disabledColumnsCounter + 1 : disabledColumnsCounter;
 
                 var seatTextContent = generateName(
@@ -1819,18 +1819,18 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
                       parseInt(computedStyle.marginRight, 10);
 
         // set front header and map width
-        map.style.width = '{0}px'.format((width + margins) * options.map.cols);
+        map.style.width = '{0}px'.format((width + margins) * options.map.columns);
 
         if (!front || front.visible === undefined || options.map.front.visible) {
-            frontHeader.style.width = '{0}px'.format((width + margins) * options.map.cols);
+            frontHeader.style.width = '{0}px'.format((width + margins) * options.map.columns);
         }
 
         // add disabled columns to disabled array
-        if (options.map.disabled.cols) {
-            for (var k = 0; k < options.map.disabled.cols.length; k += 1) {
-                var disabledColumn = options.map.disabled.cols[k];
+        if (options.map.disabled.columns) {
+            for (var k = 0; k < options.map.disabled.columns.length; k += 1) {
+                var disabledColumn = options.map.disabled.columns[k];
                 for (var r = 0; r < options.map.rows; r += 1) {
-                    options.map.disabled.seats.push((options.map.cols * r) + disabledColumn);
+                    options.map.disabled.seats.push((options.map.columns * r) + disabledColumn);
                 }
             }
         }
@@ -1839,8 +1839,8 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
         if (options.map.disabled.rows) {
             for (var m = 0; m < options.map.disabled.rows.length; m += 1) {
                 var disabledRow = options.map.disabled.rows[m];
-                for (var c = 0; c < options.map.cols; c += 1) {
-                    options.map.disabled.seats.push((options.map.cols * disabledRow) + c);
+                for (var c = 0; c < options.map.columns; c += 1) {
+                    options.map.disabled.seats.push((options.map.columns * disabledRow) + c);
                 }
             }
         }
