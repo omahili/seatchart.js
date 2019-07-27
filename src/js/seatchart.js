@@ -64,15 +64,15 @@
  *
  * @param {Object} [options.map.indexes] - Indexes options.
  *
- * @param {Object} [options.map.indexes.row] - Row index options.
- * @param {boolean} [options.map.indexes.row.visible = true] - Row index visibility.
- * @param {( 'left' | 'right' )} [options.map.indexes.row.position = 'left'] - Row index position.
- * @param {rowNameCallback} [options.map.indexes.row.name] - Row name generator.
+ * @param {Object} [options.map.indexes.rows] - Rows index options.
+ * @param {boolean} [options.map.indexes.rows.visible = true] - Row index visibility.
+ * @param {( 'left' | 'right' )} [options.map.indexes.rows.position = 'left'] - Row index position.
+ * @param {rowNameCallback} [options.map.indexes.rows.name] - Row name generator.
  *
- * @param {Object} [options.map.indexes.column] - Column index options.
- * @param {boolean} [options.map.indexes.column.visible = true] - Column index visibility.
- * @param {( 'top' | 'bottom' )} [options.map.indexes.column.position = 'top'] - Column index position.
- * @param {columnNameCallback} [options.map.indexes.column.name] - Column name generator.
+ * @param {Object} [options.map.indexes.columns] - Columns index options.
+ * @param {boolean} [options.map.indexes.columns.visible = true] - Column index visibility.
+ * @param {( 'top' | 'bottom' )} [options.map.indexes.columns.position = 'top'] - Column index position.
+ * @param {columnNameCallback} [options.map.indexes.columns.name] - Column name generator.
  *
  * @param {Object} [options.map.front] - Front header options.
  * @param {boolean} [options.map.front.visible = true] - Front header visibility.
@@ -973,8 +973,8 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
         var disabledCount = 0;
 
         var generateName = rowName;
-        if (options.map.indexes && options.map.indexes.row && options.map.indexes.row.name) {
-            generateName = options.map.indexes.row.name;
+        if (options.map.indexes && options.map.indexes.rows && options.map.indexes.rows.name) {
+            generateName = options.map.indexes.rows.name;
         }
 
         for (var i = 0; i < options.map.rows; i += 1) {
@@ -1006,8 +1006,8 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
         var disabledCount = 0;
 
         var generateName = columnName;
-        if (options.map.indexes && options.map.indexes.column && options.map.indexes.column.name) {
-            generateName = options.map.indexes.column.name;
+        if (options.map.indexes && options.map.indexes.columns && options.map.indexes.columns.name) {
+            generateName = options.map.indexes.columns.name;
         }
 
         for (var i = 0; i < options.map.cols; i += 1) {
@@ -1765,13 +1765,13 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
         var front = options.map.front;
 
         var columnContainerDirection = 'column';
-        if (indexes && indexes.column && indexes.column.position === 'bottom') {
+        if (indexes && indexes.columns && indexes.columns.position === 'bottom') {
             columnContainerDirection = 'column-reverse';
         }
 
         var itemsPosition = 'right';
         var rowContainerDirection = 'row';
-        if (indexes && indexes.row && indexes.row.position === 'right') {
+        if (indexes && indexes.rows && indexes.rows.position === 'right') {
             rowContainerDirection = 'row-reverse';
             itemsPosition = 'left';
         }
@@ -1797,11 +1797,11 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
             mapContainer.appendChild(frontHeader);
         }
 
-        if (!indexes || !indexes.column || indexes.column.visible === undefined || indexes.column.visible) {
+        if (!indexes || !indexes.columns || indexes.columns.visible === undefined || indexes.columns.visible) {
             columnIndexContainer.appendChild(createColumnIndex());
         }
 
-        if (!indexes || !indexes.row || indexes.row.visible === undefined || indexes.row.visible) {
+        if (!indexes || !indexes.rows || indexes.rows.visible === undefined || indexes.rows.visible) {
             rowIndexContainer.appendChild(createRowIndex());
         }
 
