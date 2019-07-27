@@ -28,7 +28,7 @@
     
     <input type="text" id="nav-search" placeholder="Search" />
     
-    <h2><a href="index.html">Home</a></h2><h2><a href="https://seatchart.js.org/demo.html" target="_blank" class="menu-item" id="website_link" >Demo</a></h2><h2><a href="https://github.com/omarmahili/seatchart.js" target="_blank" class="menu-item" id="website_link" >Github</a></h2><h3>Classes</h3><ul><li><a href="Seatchart.html">Seatchart</a><ul class='methods'><li data-type='method'><a href="Seatchart.html#get">get</a></li><li data-type='method'><a href="Seatchart.html#getCart">getCart</a></li><li data-type='method'><a href="Seatchart.html#getGaps">getGaps</a></li><li data-type='method'><a href="Seatchart.html#getPrice">getPrice</a></li><li data-type='method'><a href="Seatchart.html#getTotal">getTotal</a></li><li data-type='method'><a href="Seatchart.html#isGap">isGap</a></li><li data-type='method'><a href="Seatchart.html#makesGap">makesGap</a></li><li data-type='method'><a href="Seatchart.html#set">set</a></li></ul></li></ul><h3>Events</h3><ul><li><a href="Seatchart.html#event:onChange">onChange</a></li><li><a href="Seatchart.html#event:onClear">onClear</a></li></ul><h3><a href="global.html">Global</a></h3>
+    <h2><a href="index.html">Home</a></h2><h2><a href="https://seatchart.js.org/demo.html" target="_blank" class="menu-item" id="website_link" >Demo</a></h2><h2><a href="https://github.com/omarmahili/seatchart.js" target="_blank" class="menu-item" id="website_link" >Github</a></h2><h3>Classes</h3><ul><li><a href="Seatchart.html">Seatchart</a><ul class='methods'><li data-type='method'><a href="Seatchart.html#get">get</a></li><li data-type='method'><a href="Seatchart.html#getCart">getCart</a></li><li data-type='method'><a href="Seatchart.html#getGaps">getGaps</a></li><li data-type='method'><a href="Seatchart.html#getPrice">getPrice</a></li><li data-type='method'><a href="Seatchart.html#getTotal">getTotal</a></li><li data-type='method'><a href="Seatchart.html#isGap">isGap</a></li><li data-type='method'><a href="Seatchart.html#makesGap">makesGap</a></li><li data-type='method'><a href="Seatchart.html#set">set</a></li><li data-type='method'><a href="Seatchart.html#~columnName">columnName</a></li></ul></li></ul><h3>Events</h3><ul><li><a href="Seatchart.html#event:onChange">onChange</a></li><li><a href="Seatchart.html#event:onClear">onClear</a></li></ul><h3><a href="global.html">Global</a></h3>
 </nav>
 
 <div id="main">
@@ -72,7 +72,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line34">line 34</a>
+        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line103">line 103</a>
     </li></ul></dd>
     
 
@@ -308,7 +308,7 @@
 
         <tr>
             
-                <td class="name"><code>cols</code></td>
+                <td class="name"><code>columns</code></td>
             
 
             <td class="type">
@@ -333,6 +333,39 @@
             
 
             <td class="description last">Number of columns.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>seatName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#seatNameCallback">seatNameCallback</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Seat name generator.</td>
         </tr>
 
     
@@ -365,14 +398,35 @@
 
             
 
-            <td class="description last">Array of reserved seats.</td>
-        </tr>
+            <td class="description last">Array of reserved seats.
+                <h6>Properties</h6>
+                
 
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
     
 
         <tr>
             
-                <td class="name"><code>disabled</code></td>
+                <td class="name"><code>seats</code></td>
             
 
             <td class="type">
@@ -398,14 +452,108 @@
 
             
 
-            <td class="description last">Array of disabled seats.</td>
+            <td class="description last">Array of the reserved seats.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>disabledRows</code></td>
+                <td class="name"><code>disabled</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Disabled seats options.
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>seats</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;number></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Array of the disabled seats.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>rows</code></td>
             
 
             <td class="type">
@@ -438,7 +586,7 @@
 
         <tr>
             
-                <td class="name"><code>disabledCols</code></td>
+                <td class="name"><code>columns</code></td>
             
 
             <td class="type">
@@ -465,6 +613,538 @@
             
 
             <td class="description last">Array of the disabled columns of seats.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>indexes</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Indexes options.
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>rows</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Rows index options.
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>visible</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>true</code>
+                
+                </td>
+            
+
+            <td class="description last">Row index visibility.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>position</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">'left'</span>
+|
+
+<span class="param-type">'right'</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>'left'</code>
+                
+                </td>
+            
+
+            <td class="description last">Row index position.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#rowNameCallback">rowNameCallback</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">Row name generator.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>columns</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Columns index options.
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>visible</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>true</code>
+                
+                </td>
+            
+
+            <td class="description last">Column index visibility.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>position</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">'top'</span>
+|
+
+<span class="param-type">'bottom'</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>'top'</code>
+                
+                </td>
+            
+
+            <td class="description last">Column index position.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#columnNameCallback">columnNameCallback</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">Column name generator.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>front</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Front header options.
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>visible</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>true</code>
+                
+                </td>
+            
+
+            <td class="description last">Front header visibility.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -637,7 +1317,7 @@
 
         <tr>
             
-                <td class="name"><code>color</code></td>
+                <td class="name"><code>textColor</code></td>
             
 
             <td class="type">
@@ -1164,7 +1844,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line1176">line 1176</a>
+        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line1347">line 1347</a>
     </li></ul></dd>
     
 
@@ -1322,7 +2002,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line182">line 182</a>
+        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line251">line 251</a>
     </li></ul></dd>
     
 
@@ -1431,7 +2111,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line1159">line 1159</a>
+        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line1330">line 1330</a>
     </li></ul></dd>
     
 
@@ -1540,7 +2220,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line1005">line 1005</a>
+        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line1176">line 1176</a>
     </li></ul></dd>
     
 
@@ -1698,7 +2378,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line1019">line 1019</a>
+        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line1190">line 1190</a>
     </li></ul></dd>
     
 
@@ -1807,7 +2487,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line1035">line 1035</a>
+        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line1206">line 1206</a>
     </li></ul></dd>
     
 
@@ -1965,7 +2645,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line1133">line 1133</a>
+        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line1304">line 1304</a>
     </li></ul></dd>
     
 
@@ -2123,7 +2803,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line1245">line 1245</a>
+        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line1416">line 1416</a>
     </li></ul></dd>
     
 
@@ -2333,6 +3013,210 @@
 
 
         
+            
+
+    
+
+    <h4 class="name" id="~columnName"><span class="type-signature">(inner) </span>columnName<span class="signature">(column, disabled, disabledCount)</span><span class="type-signature"> &rarr; {string}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line852">line 852</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Generates a column name.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>column</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Column index (starts from 0).</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>disabled</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">True if current column is disabled.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>disabledCount</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Number of disabled columns till that one (including current one if disabled).</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Column name. Return null or undefined if empty.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
     
 
     
@@ -2357,7 +3241,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line1318">line 1318</a>
+        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line1489">line 1489</a>
     </li></ul></dd>
     
 
@@ -2454,7 +3338,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line1325">line 1325</a>
+        <a href="seatchart.js.html">seatchart.js</a>, <a href="seatchart.js.html#line1496">line 1496</a>
     </li></ul></dd>
     
 
@@ -2550,7 +3434,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Jul 21 2019 11:18:14 GMT+0200 (GMT+02:00) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Jul 27 2019 12:02:19 GMT+0200 (GMT+02:00) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
