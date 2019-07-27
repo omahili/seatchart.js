@@ -28,7 +28,7 @@
     
     <input type="text" id="nav-search" placeholder="Search" />
     
-    <h2><a href="index.html">Home</a></h2><h2><a href="https://seatchart.js.org/demo.html" target="_blank" class="menu-item" id="website_link" >Demo</a></h2><h2><a href="https://github.com/omarmahili/seatchart.js" target="_blank" class="menu-item" id="website_link" >Github</a></h2><h3>Classes</h3><ul><li><a href="Seatchart.html">Seatchart</a><ul class='methods'><li data-type='method'><a href="Seatchart.html#get">get</a></li><li data-type='method'><a href="Seatchart.html#getCart">getCart</a></li><li data-type='method'><a href="Seatchart.html#getGaps">getGaps</a></li><li data-type='method'><a href="Seatchart.html#getPrice">getPrice</a></li><li data-type='method'><a href="Seatchart.html#getTotal">getTotal</a></li><li data-type='method'><a href="Seatchart.html#isGap">isGap</a></li><li data-type='method'><a href="Seatchart.html#makesGap">makesGap</a></li><li data-type='method'><a href="Seatchart.html#set">set</a></li></ul></li></ul><h3>Events</h3><ul><li><a href="Seatchart.html#event:onChange">onChange</a></li><li><a href="Seatchart.html#event:onClear">onClear</a></li></ul><h3><a href="global.html">Global</a></h3>
+    <h2><a href="index.html">Home</a></h2><h2><a href="https://seatchart.js.org/demo.html" target="_blank" class="menu-item" id="website_link" >Demo</a></h2><h2><a href="https://github.com/omarmahili/seatchart.js" target="_blank" class="menu-item" id="website_link" >Github</a></h2><h3>Classes</h3><ul><li><a href="Seatchart.html">Seatchart</a><ul class='methods'><li data-type='method'><a href="Seatchart.html#get">get</a></li><li data-type='method'><a href="Seatchart.html#getCart">getCart</a></li><li data-type='method'><a href="Seatchart.html#getGaps">getGaps</a></li><li data-type='method'><a href="Seatchart.html#getPrice">getPrice</a></li><li data-type='method'><a href="Seatchart.html#getTotal">getTotal</a></li><li data-type='method'><a href="Seatchart.html#isGap">isGap</a></li><li data-type='method'><a href="Seatchart.html#makesGap">makesGap</a></li><li data-type='method'><a href="Seatchart.html#set">set</a></li><li data-type='method'><a href="Seatchart.html#~columnName">columnName</a></li></ul></li></ul><h3>Events</h3><ul><li><a href="Seatchart.html#event:onChange">onChange</a></li><li><a href="Seatchart.html#event:onClear">onClear</a></li></ul><h3><a href="global.html">Global</a></h3>
 </nav>
 
 <div id="main">
@@ -67,34 +67,45 @@
 &lt;script type=&quot;text/javascript&quot; src=&quot;/path/to/seatchart.js&quot;>&lt;/script>
 
 &lt;script>
-    // Reserved and disabled seats are indexed
-    // from left to right by starting from 0.
-    // Given the seatmap as a 2D array and an index [R, C]
-    // the following values can obtained as follow:
-    // I = cols * R + C
-    var map = {
-        rows: 9,
-        cols: 9,
-        // e.g. Reserved Seat { Row: 1 (starts from 0), Col: 2 } = 9 * 1 + 2 = 11
-        reserved: [1, 2, 3, 5, 6, 7, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20, 21],
-        disabled: [0, 8],
-        disabledRows: [4],
-        disabledCols: [4]
+    var options = {
+        // Reserved and disabled seats are indexed
+        // from left to right by starting from 0.
+        // Given the seatmap as a 2D array and an index [R, C]
+        // the following values can obtained as follow:
+        // I = columns * R + C
+        map: {
+            id: 'map-container',
+            rows: 9,
+            columns: 9,
+            // e.g. Reserved Seat [Row: 1, Col: 2] = 7 * 1 + 2 = 9
+            reserved: {
+                seats: [1, 2, 3, 5, 6, 7, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20, 21],
+            },
+            disabled: {
+                seats: [0, 8],
+                rows: [4],
+                columns: [4]
+            }
+        },
+        types: [
+            { type: &quot;regular&quot;, backgroundColor: &quot;#006c80&quot;, price: 10, selected: [23, 24] },
+            { type: &quot;reduced&quot;, backgroundColor: &quot;#287233&quot;, price: 7.5, selected: [25, 26] }
+        ],
+        cart: {
+            id: 'cart-container',
+            width: 280,
+            height: 250,
+            currency: '£',
+        },
+        legend: {
+            id: 'legend-container',
+        },
+        assets: {
+            path: &quot;./assets&quot;,
+        }
     };
 
-    var types = [
-        { type: &quot;regular&quot;, color: &quot;orange&quot;, price: 10, selected: [23, 24] },
-        { type: &quot;reduced&quot;, color: &quot;#af0000&quot;, price: 7.5, selected: [25, 26] },
-        { type: &quot;military&quot;, color: &quot;red&quot;, price: 7 }
-    ];
-
-    var sc = new Seatchart(map, types);
-    sc.setAssetsSrc(&quot;/path/to/assets&quot;);
-
-    // (1) Create functions
-    sc.createMap(&quot;map-container&quot;);
-    sc.createLegend(&quot;legend-container&quot;); // optional
-    sc.createShoppingCart(&quot;shoppingCart-container&quot;); // optional
+    var sc = new Seatchart(options);
 &lt;/script></code></pre><p>Then in your web page body create three containers that are going to contain the three elements: seat map, legend and shopping cart. Their id needs to be the same passed to the create functions (1), in your script.</p>
 <pre class="prettyprint source lang-html"><code>&lt;div id=&quot;map-container&quot;>&lt;/div>
 &lt;div id=&quot;legend-container&quot;>&lt;/div>
@@ -120,10 +131,11 @@ If you want to help in the development of this library please open a PR on githu
 <li>[x] Improve legend: remove 'Available' seat from legend, remove 'Your seats' and 'Seats' subtitles</li>
 <li>[x] Improve shopping cart design</li>
 <li>[x] Use flexbox where simpler</li>
-<li>[ ] Hide and skip seat indexer where a column or row is completely blank</li>
-<li>[ ] Show/hide seat indexer on top and left</li>
-<li>[ ] Add choice for different indexers</li>
-<li>[ ] Show/hide front</li>
+<li>[x] Remove useless getters/setters and configure seatchart throught a single object 'options'</li>
+<li>[x] Hide and skip seat indexes where a column or row is completely blank</li>
+<li>[x] Add visible and position options to indexes</li>
+<li>[x] Add visible and position options to front header</li>
+<li>[x] Add choice for different indexes</li>
 <li>[ ] Create svg icons</li>
 <li>[ ] Decrease access to the DOM (e.g. getSeatName() function)</li>
 <li>[ ] Replace current seat indexing with a simple one: an object { row: 10, col: 10 }</li>
@@ -151,7 +163,7 @@ If you want to help in the development of this library please open a PR on githu
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Jul 22 2019 16:56:00 GMT+0200 (GMT+02:00) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Jul 27 2019 12:02:19 GMT+0200 (GMT+02:00) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
