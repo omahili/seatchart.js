@@ -82,7 +82,7 @@
  * @param {string} options.types.type - Name of seat type.
  * @param {string} options.types.backgroundColor - Background color of the defined seat type.
  * @param {number} options.types.price - Price of the defined seat type.
- * @param {string} [options.types.color = 'white'] - Text color of the defined seat type.
+ * @param {string} [options.types.textColor = 'white'] - Text color of the defined seat type.
  * @param {Array.<number>} [options.types.selected] - Selected seats of the defined seat type.
  *
  *
@@ -543,7 +543,7 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
 
         var ticket = document.createElement('div');
         ticket.className = 'sc-ticket';
-        ticket.style.color = seatConfig.color;
+        ticket.style.color = seatConfig.textColor;
         ticket.style.backgroundColor = seatConfig.backgroundColor;
 
         var stripes = document.createElement('div');
@@ -670,7 +670,7 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
 
                 var ticket = itemContent[0].getElementsByClassName('sc-ticket')[0];
                 ticket.style.backgroundColor = seatConfig.backgroundColor;
-                ticket.style.color = seatConfig.color;
+                ticket.style.color = seatConfig.textColor;
 
                 var ticketType = ticket.getElementsByClassName('sc-cart-seat-type')[0];
                 ticketType.textContent = current.type.capitalizeFirstLetter();
@@ -773,7 +773,7 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
 
                         this.classList.add('clicked');
                         this.style.backgroundColor = options.types[index].backgroundColor;
-                        this.style.color = options.types[index].color;
+                        this.style.color = options.types[index].textColor;
                     } else {
                         // otherwise remove the class 'clicked'
                         // since available has it's own style
@@ -1148,7 +1148,7 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
             if ({}.hasOwnProperty.call(seatType, 'selected') && seatType.selected) {
                 var type = seatType.type;
                 var backgroundColor = seatType.backgroundColor;
-                var color = seatType.color;
+                var color = seatType.textColor;
 
                 for (var l = 0; l < seatType.selected.length; l += 1) {
                     var index = seatType.selected[l];
@@ -1459,7 +1459,7 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
                 if (removeFromCartDict(seat.id, seat.type) && addToCartDict(seat.id, type)) {
                     element.classList.add('clicked');
                     element.style.setProperty('background-color', seatType.backgroundColor);
-                    element.style.setProperty('color', seatType.color);
+                    element.style.setProperty('color', seatType.textColor);
                     updateCart('update', seat.id, type, seat.type, emit);
                 }
             } else if (removeFromCartDict(seat.id, seat.type)) {
@@ -1471,7 +1471,7 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
             if (addToCartDict(seat.id, type)) {
                 element.classList.add('clicked');
                 element.style.setProperty('background-color', seatType.backgroundColor);
-                element.style.setProperty('color', seatType.color);
+                element.style.setProperty('color', seatType.textColor);
                 updateCart('add', seat.id, type, seat.type, emit);
             }
         }
