@@ -16,11 +16,11 @@ First of all link the library along with the stylesheet and the script that gene
         // from left to right by starting from 0.
         // Given the seatmap as a 2D array and an index [R, C]
         // the following values can obtained as follow:
-        // I = cols * R + C
+        // I = columns * R + C
         map: {
             id: 'map-container',
             rows: 9,
-            cols: 9,
+            columns: 9,
             // e.g. Reserved Seat [Row: 1, Col: 2] = 7 * 1 + 2 = 9
             reserved: {
                 seats: [1, 2, 3, 5, 6, 7, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20, 21],
@@ -28,7 +28,7 @@ First of all link the library along with the stylesheet and the script that gene
             disabled: {
                 seats: [0, 8],
                 rows: [4],
-                cols: [4]
+                columns: [4]
             }
         },
         types: [
