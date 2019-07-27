@@ -93,6 +93,7 @@ If you want to help in the development of this library please open a PR on githu
 - [x] Add visible and position options to indexes
 - [x] Add visible and position options to front header
 - [x] Add choice for different indexes
+- [ ] Irregular seat sections
 - [ ] Create svg icons
 - [ ] Decrease access to the DOM (e.g. getSeatName() function)
 - [ ] Replace current seat indexing with a simple one: an object { row: 10, col: 10 }
