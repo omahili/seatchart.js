@@ -1,0 +1,16 @@
+# Table of content
+
+* [Getting Started](start.md)
+* [Demo](demo.md)
+* [API Reference](api.md)
+  * [Seatchart](api.md#Seatchart)
+    * [getCart](api.md#Seatchart-getCart)
+    * [getPrice](api.md#Seatchart-getPrice)
+    * [getTotal](api.md#Seatchart-getTotal)
+    * [isGap](api.md#Seatchart-isGap)
+    * [makesGap](api.md#Seatchart-makesGap)
+    * [getGaps](api.md#Seatchart-getGaps)
+    * [get](api.md#Seatchart-get)
+    * [set](api.md#Seatchart-set)
+    * [onChange](api.md#Seatchart-event-onChange)
+    * [onClear](api.md#Seatchart-event-onClear)
