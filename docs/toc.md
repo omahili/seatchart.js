@@ -1,7 +1,7 @@
 # Table of content
 
 * [Getting Started](start.md)
-* [Demo](demo.md)
+* [Demo](https://seatchart.js.org/demo.html)
 * [API Reference](api.md)
   * [Seatchart](api.md#Seatchart)
     * [getCart](api.md#Seatchart-getCart)
