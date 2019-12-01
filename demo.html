@@ -1,9 +1,8 @@
-<!DOCTYPE html>
 <html lang="en">
     <head>
         <title>Demo</title>
         <meta charset="utf-8">
-        <link rel="stylesheet" href="./styles/seatchart.css">
+        <link rel="stylesheet" href="./seatchart/css/seatchart.css">
 
         <style>
             .content {
@@ -39,7 +38,7 @@
             </div>
         </div>
 
-        <script type="text/javascript" src="./scripts/seatchart.js"></script>
+        <script type="text/javascript" src="./seatchart/js/seatchart.js"></script>
         <script>
             var options = {
                 // Reserved and disabled seats are indexed
@@ -75,7 +74,7 @@
                     id: 'legend-container',
                 },
                 assets: {
-                    path: "./assets",
+                    path: "./seatchart/assets",
                 }
             };
 
