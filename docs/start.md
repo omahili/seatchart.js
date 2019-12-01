@@ -57,4 +57,4 @@ Then in your web page body create three containers that are going to contain the
 <div id="shoppingCart-container"></div>
 ```
 
-Enjoy the [result](demo.md).
+Enjoy the [result](https://seatchart.js.org/demo.html).
