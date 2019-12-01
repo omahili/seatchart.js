@@ -11,10 +11,10 @@
     "docs:api": "jsdoc2md --global-index-format none --helper docs/tools/helpers.js --partial docs/tools/header.hbs --partial docs/tools/member-index.hbs --partial docs/tools/body.hbs --files src/js/*.js > docs/api.md",
     "docs:prepare": "gitbook install",
     "docs:examples": "mkdir _book\\seatchart && cp -r src/. _book/seatchart && cp docs/demo.html _book",
-    "docs:build": "npm run docs:prepare && npm run docs:api && gitbook build && npm run docs:examples",
+    "docs:build": "npm run docs:prepare && npm run docs:api && gitbook build && npm run docs:examples && cp docs/CNAME _book",
     "docs:serve": "npm run docs:prepare && npm run docs:api && gitbook serve",
     "docs:clean": "rimraf _book",
-    "docs:deploy": "gh-pages --dist _book"
+    "docs:deploy": "npm run docs:clean && npm run docs:build && gh-pages --dist _book"
   },
   "repository": {
     "type": "git",
