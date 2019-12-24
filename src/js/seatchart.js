@@ -100,7 +100,14 @@
  * @param {Array.<Object>} [options.assets] - Assets options.
  * @param {string} [options.assets.path] - Path to assets.
  */
-function Seatchart(options) { // eslint-disable-line no-unused-vars
+
+(function (global, factory) {
+    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+        typeof define === 'function' && define.amd ? define(factory) :
+            (global = global || self, global.Seatchart = factory());
+}(this, (function () {
+    'use strict';
+    return function(options) { // eslint-disable-line no-unused-vars
     /**
      * .NET equivalent of string.Format() method
      * @returns {string} The formatted string.
@@ -1860,3 +1867,5 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
         createLegend();
     }
 }
+
+})));
