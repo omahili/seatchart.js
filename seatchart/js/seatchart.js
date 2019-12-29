@@ -218,7 +218,7 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
 
     /**
      * @typedef {Object} ChangeEvent
-     * @property {('add' | 'remove' | 'update')} action - Action on seat.
+     * @property {string} action - Action on seat ('add', 'remove' or 'update').
      * @property {Seat} current - Current seat info.
      * @property {Seat} previous - Seat info previous to the event.
      */
@@ -599,7 +599,7 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
 
     /**
      * Updates the shopping cart by adding, removing or updating a seat.
-     * @param {('remove' | 'add' | 'update')} action - Action on the shopping cart.
+     * @param {string} action - Action on the shopping cart ('remove' | 'add' | 'update').
      * @param {string} id - Id of the seat in the dom.
      * @param {string} type - New seat type.
      * @param {string} previousType - Previous seat type.
@@ -1029,8 +1029,8 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
      * Creates a container.
      * @returns {HTMLDivElement} - The container.
      * @param {string} - Container name
-     * @param {( 'column' | 'row' )} direction - Flex direction.
-     * @param {( 'left' | 'right' | 'top' | 'bottom' )} contentPosition - Content position.
+     * @param {string} direction - Flex direction ('column' or 'row').
+     * @param {string} contentPosition - Content position ('left', 'right', 'top' or 'bottom').
      * @private
      */
     var createContainer = function createContainer(name, direction, contentPosition) {
@@ -1074,7 +1074,7 @@ function Seatchart(options) { // eslint-disable-line no-unused-vars
 
     /**
      * Sets all disabled seats as blank or reserved seats as unavailable.
-     * @param {( 'reserved' | 'disabled' )} type - The type of seats to set.
+     * @param {string} type - The type of seats to set ('reserved' or 'disabled').
      * @private
      */
     var setSeat = function setSeat(type) {
