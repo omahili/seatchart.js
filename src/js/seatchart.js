@@ -866,6 +866,7 @@
          * @param {boolean} disabled - True if current column is disabled.
          * @param {number} disabledCount - Number of disabled columns till that one (including current one if disabled).
          * @returns {string} Column name. Return null or undefined if empty.
+         * @private
          */
         var columnName = function columnName(index, disabled, disabledCount) {
             if (!disabled) {
