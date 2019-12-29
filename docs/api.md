@@ -173,7 +173,7 @@
 
 | Name | Type | Description |
 | --- | --- | --- |
-| action | <code>&#x27;add&#x27;</code> \| <code>&#x27;remove&#x27;</code> \| <code>&#x27;update&#x27;</code> | Action on seat. |
+| action | <code>string</code> | Action on seat ('add', 'remove' or 'update'). |
 | current | [<code>Seat</code>](#Seat) | Current seat info. |
 | previous | [<code>Seat</code>](#Seat) | Seat info previous to the event. |
 
