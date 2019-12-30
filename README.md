@@ -93,6 +93,8 @@ If you want to help in the development of this library please open a PR on githu
 - [x] Add visible and position options to indexes
 - [x] Add visible and position options to front header
 - [x] Add choice for different indexes
+- [ ] Add clear function to empty map
+- [ ] Move code to typescript
 - [ ] Irregular seat sections
 - [ ] Create svg icons
 - [ ] Decrease access to the DOM (e.g. getSeatName() function)
