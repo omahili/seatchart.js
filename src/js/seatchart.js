@@ -75,7 +75,7 @@
         /**
          * Callback to generate a seat name.
          *
-         * @callback seatNameCallback
+         * @function seatNameCallback
          *
          * @param {object} row
          * @param {number} row.index - Row index (starts from 0).
@@ -93,7 +93,7 @@
         /**
          * Callback to generate a row name.
          *
-         * @callback rowNameCallback
+         * @function rowNameCallback
          *
          * @param {number} index - Row index (starts from 0).
          * @param {boolean} disabled - True if current row is disabled.
@@ -105,7 +105,7 @@
         /**
          * Callback to generate a column name.
          *
-         * @callback columnNameCallback
+         * @function columnNameCallback
          *
          * @param {number} index - Column index (starts from 0).
          * @param {boolean} disabled - True if current column is disabled.
