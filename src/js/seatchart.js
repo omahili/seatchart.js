@@ -234,19 +234,6 @@
          * @property {number} price - Seat price.
          */
 
-        /**
-         * @typedef {Object} ChangeEvent
-         * @property {string} action - Action on seat ('add', 'remove' or 'update').
-         * @property {Seat} current - Current seat info.
-         * @property {Seat} previous - Seat info previous to the event.
-         */
-
-        /**
-         * @typedef {Array.<Object>} ClearEvent
-         * @property {Seat} current - Current seat info.
-         * @property {Seat} previous - Seat info previous to the event.
-         */
-
 
         /**
          * This object.
@@ -1512,16 +1499,33 @@
         };
 
         /**
+         * @typedef {Object} ChangeEvent
+         * @property {string} action - Action on seat ('add', 'remove' or 'update').
+         * @property {Seat} current - Current seat info.
+         * @property {Seat} previous - Seat info previous to the event.
+         */
+
+         /**
          * Triggered when a seat is selected or unselected.
-         * @event Seatchart#onChange
-         * @type {ChangeEvent}
+         *
+         * @method
+         * @param {ChangeEvent} e - A change event.
+         * @listens ChangeEvent
          */
         this.onChange = null;
 
         /**
+         * @typedef {Array.<Object>} ClearEvent
+         * @property {Seat} current - Current seat info.
+         * @property {Seat} previous - Seat info previous to the event.         
+         */
+
+        /**
          * Triggered when all seats are removed with the 'delete all' button in the shopping cart.
-         * @event Seatchart#onClear
-         * @type {ClearEvent}
+         *
+         * @method
+         * @param {ClearEvent} e - A clear event.
+         * @listens ClearEvent
          */
         this.onClear = null;
 
