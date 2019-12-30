@@ -1,106 +1,3 @@
-/**
- * Callback to generate a seat name.
- *
- * @callback seatNameCallback
- *
- * @param {object} row
- * @param {number} row.index - Row index (starts from 0).
- * @param {boolean} row.disabled - True if current row is disabled.
- * @param {number} row.disabledCount - Number of disabled rows till that one (including current one if disabled).
- *
- * @param {object} column
- * @param {number} column.index - Column index (starts from 0).
- * @param {boolean} column.disabled - True if current column is disabled.
- * @param {number} column.disabledCount - Number of disabled columns till that one (including current one if disabled).
- *
- * @returns {string} Seat name. Return null or undefined if empty.
- */
-
-/**
- * Callback to generate a row name.
- *
- * @callback rowNameCallback
- *
- * @param {number} index - Row index (starts from 0).
- * @param {boolean} disabled - True if current row is disabled.
- * @param {number} disabledCount - Number of disabled rows till that one (including current one if disabled).
- *
- * @returns {string} Row name. Return null or undefined if empty.
- */
-
-/**
- * Callback to generate a column name.
- *
- * @callback columnNameCallback
- *
- * @param {number} index - Column index (starts from 0).
- * @param {boolean} disabled - True if current column is disabled.
- * @param {number} disabledCount - Number of disabled columns till that one (including current one if disabled).
- *
- * @returns {string} Column name. Return null or undefined if empty.
- *
- */
-
-/**
- * Creates a seatchart.
- * @constructor
- * @param {Object} options - Seatmap options.
- *
- *
- * @param {Object} options.map - Map options.
- * @param {number} options.map.id - Container id.
- * @param {number} options.map.rows - Number of rows.
- * @param {number} options.map.columns - Number of columns.
- * @param {seatNameCallback} [options.map.seatName] - Seat name generator.
- *
- * @param {Array.<number>} [options.map.reserved] - Array of reserved seats.
- * @param {Array.<number>} [options.map.reserved.seats] - Array of the reserved seats.
- *
- * @param {Object} [options.map.disabled] - Disabled seats options.
- * @param {Array.<number>} [options.map.disabled.seats] - Array of the disabled seats.
- * @param {Array.<number>} [options.map.disabled.rows] - Array of the disabled rows of seats.
- *
- * @param {Array.<number>} [options.map.disabled.columns] - Array of the disabled columns of seats.
- *
- * @param {Object} [options.map.indexes] - Indexes options.
- *
- * @param {Object} [options.map.indexes.rows] - Rows index options.
- * @param {boolean} [options.map.indexes.rows.visible = true] - Row index visibility.
- * @param {( 'left' | 'right' )} [options.map.indexes.rows.position = 'left'] - Row index position.
- * @param {rowNameCallback} [options.map.indexes.rows.name] - Row name generator.
- *
- * @param {Object} [options.map.indexes.columns] - Columns index options.
- * @param {boolean} [options.map.indexes.columns.visible = true] - Column index visibility.
- * @param {( 'top' | 'bottom' )} [options.map.indexes.columns.position = 'top'] - Column index position.
- * @param {columnNameCallback} [options.map.indexes.columns.name] - Column name generator.
- *
- * @param {Object} [options.map.front] - Front header options.
- * @param {boolean} [options.map.front.visible = true] - Front header visibility.
- *
- *
- * @param {Array.<Object>} options.types - Seat types options.
- * @param {string} options.types.type - Name of seat type.
- * @param {string} options.types.backgroundColor - Background color of the defined seat type.
- * @param {number} options.types.price - Price of the defined seat type.
- * @param {string} [options.types.textColor = 'white'] - Text color of the defined seat type.
- * @param {Array.<number>} [options.types.selected] - Selected seats of the defined seat type.
- *
- *
- * @param {Array.<Object>} [options.cart] - Cart options.
- * @param {string} [options.cart.id] - Container id.
- * @param {string} [options.cart.height] - Cart height.
- * @param {string} [options.cart.width] - Cart width.
- * @param {string} [options.cart.currency] - Current currency.
- *
- *
- * @param {string} [options.legend] - Legend options.
- * @param {string} [options.legend.id] - Container id.
- *
- *
- * @param {Array.<Object>} [options.assets] - Assets options.
- * @param {string} [options.assets.path] - Path to assets.
- */
-
 (function umd(root, factory) {
     /* eslint-disable no-undef, no-param-reassign */
     if (typeof define === 'function' && define.amd) {
@@ -112,7 +9,113 @@
     }
     /* eslint-enable no-undef, no-param-reassign */
 }(typeof self !== 'undefined' ? self : this, (function factory() {
-    return function Seatchart(options) {
+    /**
+     * Creates a seatchart.
+     * @constructor
+     *
+     * @param {Object} options - Seatmap options.
+     *
+     *
+     * @param {Object} options.map - Map options.
+     * @param {number} options.map.id - Container id.
+     * @param {number} options.map.rows - Number of rows.
+     * @param {number} options.map.columns - Number of columns.
+     * @param {seatNameCallback} [options.map.seatName] - Seat name generator.
+     *
+     * @param {Array.<number>} [options.map.reserved] - Array of reserved seats.
+     * @param {Array.<number>} [options.map.reserved.seats] - Array of the reserved seats.
+     *
+     * @param {Object} [options.map.disabled] - Disabled seats options.
+     * @param {Array.<number>} [options.map.disabled.seats] - Array of the disabled seats.
+     * @param {Array.<number>} [options.map.disabled.rows] - Array of the disabled rows of seats.
+     *
+     * @param {Array.<number>} [options.map.disabled.columns] - Array of the disabled columns of seats.
+     *
+     * @param {Object} [options.map.indexes] - Indexes options.
+     *
+     * @param {Object} [options.map.indexes.rows] - Rows index options.
+     * @param {boolean} [options.map.indexes.rows.visible = true] - Row index visibility.
+     * @param {string} [options.map.indexes.rows.position = left] - Row index position.
+     * @param {rowNameCallback} [options.map.indexes.rows.name] - Row name generator.
+     *
+     * @param {Object} [options.map.indexes.columns] - Columns index options.
+     * @param {boolean} [options.map.indexes.columns.visible = true] - Column index visibility.
+     * @param {string} [options.map.indexes.columns.position = top] - Column index position.
+     * @param {columnNameCallback} [options.map.indexes.columns.name] - Column name generator.
+     *
+     * @param {Object} [options.map.front] - Front header options.
+     * @param {boolean} [options.map.front.visible = true] - Front header visibility.
+     *
+     *
+     * @param {Array.<Object>} options.types - Seat types options.
+     * @param {string} options.types.type - Name of seat type.
+     * @param {string} options.types.backgroundColor - Background color of the defined seat type.
+     * @param {number} options.types.price - Price of the defined seat type.
+     * @param {string} [options.types.textColor = white] - Text color of the defined seat type.
+     * @param {Array.<number>} [options.types.selected] - Selected seats of the defined seat type.
+     *
+     *
+     * @param {Array.<Object>} [options.cart] - Cart options.
+     * @param {string} [options.cart.id] - Container id.
+     * @param {string} [options.cart.height] - Cart height.
+     * @param {string} [options.cart.width] - Cart width.
+     * @param {string} [options.cart.currency] - Current currency.
+     *
+     *
+     * @param {string} [options.legend] - Legend options.
+     * @param {string} [options.legend.id] - Container id.
+     *
+     *
+     * @param {Array.<Object>} [options.assets] - Assets options.
+     * @param {string} [options.assets.path] - Path to assets.
+     *
+     * @alias Seatchart
+     */
+    function Seatchart(options) {
+        /**
+         * Callback to generate a seat name.
+         *
+         * @function seatNameCallback
+         *
+         * @param {object} row
+         * @param {number} row.index - Row index (starts from 0).
+         * @param {boolean} row.disabled - True if current row is disabled.
+         * @param {number} row.disabledCount - Number of disabled rows till that one (including current one if disabled).
+         *
+         * @param {object} column
+         * @param {number} column.index - Column index (starts from 0).
+         * @param {boolean} column.disabled - True if current column is disabled.
+         * @param {number} column.disabledCount - Number of disabled columns till that one (including current one if disabled).
+         *
+         * @returns {string} Seat name. Return null or undefined if empty.
+         */
+
+        /**
+         * Callback to generate a row name.
+         *
+         * @function rowNameCallback
+         *
+         * @param {number} index - Row index (starts from 0).
+         * @param {boolean} disabled - True if current row is disabled.
+         * @param {number} disabledCount - Number of disabled rows till that one (including current one if disabled).
+         *
+         * @returns {string} Row name. Return null or undefined if empty.
+         */
+
+        /**
+         * Callback to generate a column name.
+         *
+         * @function columnNameCallback
+         *
+         * @param {number} index - Column index (starts from 0).
+         * @param {boolean} disabled - True if current column is disabled.
+         * @param {number} disabledCount - Number of disabled columns till that one (including current one if disabled).
+         *
+         * @returns {string} Column name. Return null or undefined if empty.
+         *
+         */
+
+
         /**
          * .NET equivalent of string.Format() method
          * @returns {string} The formatted string.
@@ -160,25 +163,25 @@
             throw new Error("Invalid parameter 'options.map' supplied to Seatchart. Must be an object.");
         } else if (!{}.hasOwnProperty.call(options.map, 'id')) {
             throw new Error("Invalid parameter 'options.map' supplied to Seatchart. " +
-                            "'id' property cannot be undefined.");
+                "'id' property cannot be undefined.");
         } else if (!{}.hasOwnProperty.call(options.map, 'rows') || !{}.hasOwnProperty.call(options.map, 'columns')) {
             throw new Error("Invalid parameter 'options.map' supplied to Seatchart. " +
-                            "'row' and 'columns' properties cannot be undefined.");
+                "'row' and 'columns' properties cannot be undefined.");
         } else if (options.map.rows > 25 || options.map.columns > 25) {
             throw new Error("Invalid parameter 'options.map' supplied to Seatchart. " +
-                            "'row' and 'columns' properties cannot be integers greater than 25.");
+                "'row' and 'columns' properties cannot be integers greater than 25.");
         } else if (options.map.rows < 2 || options.map.columns < 2) {
             throw new Error("Invalid parameter 'options.map' supplied to Seatchart. " +
-                            "'row' and 'columns' properties cannot be integers smaller than 2.");
+                "'row' and 'columns' properties cannot be integers smaller than 2.");
         }
 
         // check options.types parameter
         if (options.types === undefined) {
             throw new Error("Invalid parameter 'options.types' supplied to Seatchart. Cannot be undefined.");
-        // check if options.types is an array and contains at least one element
+            // check if options.types is an array and contains at least one element
         } else if (!Array.isArray(options.types) || options.types.length < 1 || typeof options.types[0] !== 'object') {
             throw new Error("Invalid parameter 'options.types' supplied to Seatchart. " +
-                            'Must be an array of objects containing at least one element.');
+                'Must be an array of objects containing at least one element.');
         } else {
             // check if all elements have the needed attribute and contain the right type of value
             for (var i = 0; i < options.types.length; i += 1) {
@@ -186,18 +189,18 @@
                     !{}.hasOwnProperty.call(options.types[i], 'backgroundColor') ||
                     !{}.hasOwnProperty.call(options.types[i], 'price')) {
                     throw new Error(("Invalid parameter 'options.types' supplied to Seatchart. " +
-                                    "Element at index {0} must contain a 'type', " +
-                                    "a 'backgroundColor' and a 'price' property.").format(i));
+                        "Element at index {0} must contain a 'type', " +
+                        "a 'backgroundColor' and a 'price' property.").format(i));
                 } else if (!(typeof options.types[i].type === 'string' || options.types[i].type instanceof String)) {
                     throw new Error(("Invalid parameter 'options.types' supplied to Seatchart. " +
-                                    "'type' property at index {0} must be a string.").format(i));
+                        "'type' property at index {0} must be a string.").format(i));
                 } else if (!(typeof options.types[i].backgroundColor === 'string' ||
-                            options.types[i].backgroundColor instanceof String)) {
+                    options.types[i].backgroundColor instanceof String)) {
                     throw new Error(("Invalid parameter 'options.types' supplied to Seatchart. " +
-                                    "'backgroundColor' property at index {0} must be a string.").format(i));
+                        "'backgroundColor' property at index {0} must be a string.").format(i));
                 } else if (typeof options.types[i].price !== 'number') {
                     throw new Error(("Invalid parameter 'options.types' supplied to Seatchart. " +
-                                    "'price' property at index {0} must be a number.").format(i));
+                        "'price' property at index {0} must be a number.").format(i));
                 }
             }
         }
@@ -218,7 +221,6 @@
             }
         }
 
-
         /*
         * TYPE DEFINITIONS
         */
@@ -230,19 +232,6 @@
          * @property {number} index - Seat index.
          * @property {string} name - Seat name.
          * @property {number} price - Seat price.
-         */
-
-        /**
-         * @typedef {Object} ChangeEvent
-         * @property {('add' | 'remove' | 'update')} action - Action on seat.
-         * @property {Seat} current - Current seat info.
-         * @property {Seat} previous - Seat info previous to the event.
-         */
-
-        /**
-         * @typedef {Array.<Object>} ClearEvent
-         * @property {Seat} current - Current seat info.
-         * @property {Seat} previous - Seat info previous to the event.
          */
 
 
@@ -615,7 +604,7 @@
 
         /**
          * Updates the shopping cart by adding, removing or updating a seat.
-         * @param {('remove' | 'add' | 'update')} action - Action on the shopping cart.
+         * @param {string} action - Action on the shopping cart ('remove' | 'add' | 'update').
          * @param {string} id - Id of the seat in the dom.
          * @param {string} type - New seat type.
          * @param {string} previousType - Previous seat type.
@@ -807,7 +796,7 @@
                                 updateCart('remove', this.id, newClass, currentClass, true);
                             }
                         } else if (addToCartDict(this.id, newClass) &&
-                                    removeFromCartDict(this.id, currentClass)) {
+                            removeFromCartDict(this.id, currentClass)) {
                             updateCart('update', this.id, newClass, currentClass, true);
                         }
                     }
@@ -864,6 +853,7 @@
          * @param {boolean} disabled - True if current column is disabled.
          * @param {number} disabledCount - Number of disabled columns till that one (including current one if disabled).
          * @returns {string} Column name. Return null or undefined if empty.
+         * @private
          */
         var columnName = function columnName(index, disabled, disabledCount) {
             if (!disabled) {
@@ -1045,14 +1035,14 @@
          * Creates a container.
          * @returns {HTMLDivElement} - The container.
          * @param {string} - Container name
-         * @param {( 'column' | 'row' )} direction - Flex direction.
-         * @param {( 'left' | 'right' | 'top' | 'bottom' )} contentPosition - Content position.
+         * @param {string} direction - Flex direction ('column' or 'row').
+         * @param {string} contentPosition - Content position ('left', 'right', 'top' or 'bottom').
          * @private
          */
         var createContainer = function createContainer(name, direction, contentPosition) {
             if (['column', 'row', 'column-reverse', 'row-reverse'].indexOf(direction) < 0) {
                 throw new Error("'direction' must have one of the following values: " +
-                                "'column', 'row', 'column-reverse', 'row-reverse'");
+                    "'column', 'row', 'column-reverse', 'row-reverse'");
             }
 
             if (contentPosition && ['left', 'right', 'top', 'bottom'].indexOf(contentPosition) < 0) {
@@ -1090,7 +1080,7 @@
 
         /**
          * Sets all disabled seats as blank or reserved seats as unavailable.
-         * @param {( 'reserved' | 'disabled' )} type - The type of seats to set.
+         * @param {string} type - The type of seats to set ('reserved' or 'disabled').
          * @private
          */
         var setSeat = function setSeat(type) {
@@ -1509,16 +1499,33 @@
         };
 
         /**
-         * Triggered when a seat is selected or unselected.
-         * @event Seatchart#onChange
-         * @type {ChangeEvent}
+         * @typedef {Object} ChangeEvent
+         * @property {string} action - Action on seat ('add', 'remove' or 'update').
+         * @property {Seat} current - Current seat info.
+         * @property {Seat} previous - Seat info previous to the event.
          */
+
+        /**
+        * Triggered when a seat is selected or unselected.
+        *
+        * @method
+        * @param {ChangeEvent} e - A change event.
+        * @listens ChangeEvent
+        */
         this.onChange = null;
 
         /**
+         * @typedef {Array.<Object>} ClearEvent
+         * @property {Seat} current - Current seat info.
+         * @property {Seat} previous - Seat info previous to the event.
+         */
+
+        /**
          * Triggered when all seats are removed with the 'delete all' button in the shopping cart.
-         * @event Seatchart#onClear
-         * @type {ClearEvent}
+         *
+         * @method
+         * @param {ClearEvent} e - A clear event.
+         * @listens ClearEvent
          */
         this.onClear = null;
 
@@ -1838,7 +1845,7 @@
 
             var computedStyle = getStyle(seat);
             var margins = parseInt(computedStyle.marginLeft, 10) +
-                        parseInt(computedStyle.marginRight, 10);
+                parseInt(computedStyle.marginRight, 10);
 
             // set front header and map width
             map.style.width = '{0}px'.format((width + margins) * options.map.columns);
@@ -1881,5 +1888,7 @@
         if (options.legend && options.legend.id) {
             createLegend();
         }
-    };
+    }
+
+    return Seatchart;
 })));

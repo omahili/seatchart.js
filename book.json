@@ -1,0 +1,20 @@
+{
+  "gitbook": "3.2.3",
+  "root": "./docs",
+  "structure": {
+    "readme": "start.md",
+    "summary": "toc.md"
+  },
+  "plugins": [ "-sharing", "-livereload", "toolbar"],
+  "pluginsConfig": {
+    "toolbar": {
+      "buttons": [
+        {
+          "label": "GitHub",
+          "icon": "fa fa-github",
+          "url": "https://github.com/omarmahili/seatchart.js"
+        }
+      ]
+    }
+  }
+}
