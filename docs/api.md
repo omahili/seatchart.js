@@ -102,25 +102,24 @@
 | type | <code>string</code> |  | New seat type ('disabled', 'reserved' and 'available' are supported too). |
 | [emit] | <code>boolean</code> | <code>false</code> | True to trigger onChange event. |
 
-<h3 id="Seatchartevent-onChange">
-  "onChange"</h3>Triggered when a seat is selected or unselected.
+<h3 id="SeatchartonChange">
+  seatchart.onChange(e)</h3>Triggered when a seat is selected or unselected.
 
-<h3 id="Seatchartevent-onClear">
-  "onClear"</h3>Triggered when all seats are removed with the 'delete all' button in the shopping cart.
-
-<h3 id="Seatchart~columnName">
-  Seatchart~columnName(column, disabled, disabledCount) ⇒ <code>string</code></h3>Generates a column name.
-
-**Returns**: <code>string</code> - Column name. Return null or undefined if empty.  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| column | <code>number</code> | Column index (starts from 0). |
-| disabled | <code>boolean</code> | True if current column is disabled. |
-| disabledCount | <code>number</code> | Number of disabled columns till that one (including current one if disabled). |
+| e | [<code>ChangeEvent</code>](#ChangeEvent) | A change event. |
+
+<h3 id="SeatchartonClear">
+  seatchart.onClear(e)</h3>Triggered when all seats are removed with the 'delete all' button in the shopping cart.
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| e | [<code>ClearEvent</code>](#ClearEvent) | A clear event. |
 
 <h3 id="seatNameCallback">
-  seatNameCallback ⇒ <code>string</code></h3>Callback to generate a seat name.
+  seatNameCallback(row, column) ⇒ <code>string</code></h3>Callback to generate a seat name.
 
 **Returns**: <code>string</code> - Seat name. Return null or undefined if empty.  
 
@@ -136,7 +135,7 @@
 | column.disabledCount | <code>number</code> | Number of disabled columns till that one (including current one if disabled). |
 
 <h3 id="rowNameCallback">
-  rowNameCallback ⇒ <code>string</code></h3>Callback to generate a row name.
+  rowNameCallback(index, disabled, disabledCount) ⇒ <code>string</code></h3>Callback to generate a row name.
 
 **Returns**: <code>string</code> - Row name. Return null or undefined if empty.  
 
@@ -147,7 +146,7 @@
 | disabledCount | <code>number</code> | Number of disabled rows till that one (including current one if disabled). |
 
 <h3 id="columnNameCallback">
-  columnNameCallback ⇒ <code>string</code></h3>Callback to generate a column name.
+  columnNameCallback(index, disabled, disabledCount) ⇒ <code>string</code></h3>Callback to generate a column name.
 
 **Returns**: <code>string</code> - Column name. Return null or undefined if empty.  
 
