@@ -12,7 +12,7 @@
     /**
      * Creates a seatchart.
      * @constructor
-     * 
+     *
      * @param {Object} options - Seatmap options.
      *
      *
@@ -68,14 +68,14 @@
      *
      * @param {Array.<Object>} [options.assets] - Assets options.
      * @param {string} [options.assets.path] - Path to assets.
-     * 
+     *
      * @alias Seatchart
      */
     function Seatchart(options) {
         /**
          * Callback to generate a seat name.
          *
-         * @callback seatNameCallback
+         * @function seatNameCallback
          *
          * @param {object} row
          * @param {number} row.index - Row index (starts from 0).
@@ -93,7 +93,7 @@
         /**
          * Callback to generate a row name.
          *
-         * @callback rowNameCallback
+         * @function rowNameCallback
          *
          * @param {number} index - Row index (starts from 0).
          * @param {boolean} disabled - True if current row is disabled.
@@ -105,7 +105,7 @@
         /**
          * Callback to generate a column name.
          *
-         * @callback columnNameCallback
+         * @function columnNameCallback
          *
          * @param {number} index - Column index (starts from 0).
          * @param {boolean} disabled - True if current column is disabled.
@@ -163,25 +163,25 @@
             throw new Error("Invalid parameter 'options.map' supplied to Seatchart. Must be an object.");
         } else if (!{}.hasOwnProperty.call(options.map, 'id')) {
             throw new Error("Invalid parameter 'options.map' supplied to Seatchart. " +
-                            "'id' property cannot be undefined.");
+                "'id' property cannot be undefined.");
         } else if (!{}.hasOwnProperty.call(options.map, 'rows') || !{}.hasOwnProperty.call(options.map, 'columns')) {
             throw new Error("Invalid parameter 'options.map' supplied to Seatchart. " +
-                            "'row' and 'columns' properties cannot be undefined.");
+                "'row' and 'columns' properties cannot be undefined.");
         } else if (options.map.rows > 25 || options.map.columns > 25) {
             throw new Error("Invalid parameter 'options.map' supplied to Seatchart. " +
-                            "'row' and 'columns' properties cannot be integers greater than 25.");
+                "'row' and 'columns' properties cannot be integers greater than 25.");
         } else if (options.map.rows < 2 || options.map.columns < 2) {
             throw new Error("Invalid parameter 'options.map' supplied to Seatchart. " +
-                            "'row' and 'columns' properties cannot be integers smaller than 2.");
+                "'row' and 'columns' properties cannot be integers smaller than 2.");
         }
 
         // check options.types parameter
         if (options.types === undefined) {
             throw new Error("Invalid parameter 'options.types' supplied to Seatchart. Cannot be undefined.");
-        // check if options.types is an array and contains at least one element
+            // check if options.types is an array and contains at least one element
         } else if (!Array.isArray(options.types) || options.types.length < 1 || typeof options.types[0] !== 'object') {
             throw new Error("Invalid parameter 'options.types' supplied to Seatchart. " +
-                            'Must be an array of objects containing at least one element.');
+                'Must be an array of objects containing at least one element.');
         } else {
             // check if all elements have the needed attribute and contain the right type of value
             for (var i = 0; i < options.types.length; i += 1) {
@@ -189,18 +189,18 @@
                     !{}.hasOwnProperty.call(options.types[i], 'backgroundColor') ||
                     !{}.hasOwnProperty.call(options.types[i], 'price')) {
                     throw new Error(("Invalid parameter 'options.types' supplied to Seatchart. " +
-                                    "Element at index {0} must contain a 'type', " +
-                                    "a 'backgroundColor' and a 'price' property.").format(i));
+                        "Element at index {0} must contain a 'type', " +
+                        "a 'backgroundColor' and a 'price' property.").format(i));
                 } else if (!(typeof options.types[i].type === 'string' || options.types[i].type instanceof String)) {
                     throw new Error(("Invalid parameter 'options.types' supplied to Seatchart. " +
-                                    "'type' property at index {0} must be a string.").format(i));
+                        "'type' property at index {0} must be a string.").format(i));
                 } else if (!(typeof options.types[i].backgroundColor === 'string' ||
-                            options.types[i].backgroundColor instanceof String)) {
+                    options.types[i].backgroundColor instanceof String)) {
                     throw new Error(("Invalid parameter 'options.types' supplied to Seatchart. " +
-                                    "'backgroundColor' property at index {0} must be a string.").format(i));
+                        "'backgroundColor' property at index {0} must be a string.").format(i));
                 } else if (typeof options.types[i].price !== 'number') {
                     throw new Error(("Invalid parameter 'options.types' supplied to Seatchart. " +
-                                    "'price' property at index {0} must be a number.").format(i));
+                        "'price' property at index {0} must be a number.").format(i));
                 }
             }
         }
@@ -232,19 +232,6 @@
          * @property {number} index - Seat index.
          * @property {string} name - Seat name.
          * @property {number} price - Seat price.
-         */
-
-        /**
-         * @typedef {Object} ChangeEvent
-         * @property {string} action - Action on seat ('add', 'remove' or 'update').
-         * @property {Seat} current - Current seat info.
-         * @property {Seat} previous - Seat info previous to the event.
-         */
-
-        /**
-         * @typedef {Array.<Object>} ClearEvent
-         * @property {Seat} current - Current seat info.
-         * @property {Seat} previous - Seat info previous to the event.
          */
 
 
@@ -809,7 +796,7 @@
                                 updateCart('remove', this.id, newClass, currentClass, true);
                             }
                         } else if (addToCartDict(this.id, newClass) &&
-                                    removeFromCartDict(this.id, currentClass)) {
+                            removeFromCartDict(this.id, currentClass)) {
                             updateCart('update', this.id, newClass, currentClass, true);
                         }
                     }
@@ -1055,7 +1042,7 @@
         var createContainer = function createContainer(name, direction, contentPosition) {
             if (['column', 'row', 'column-reverse', 'row-reverse'].indexOf(direction) < 0) {
                 throw new Error("'direction' must have one of the following values: " +
-                                "'column', 'row', 'column-reverse', 'row-reverse'");
+                    "'column', 'row', 'column-reverse', 'row-reverse'");
             }
 
             if (contentPosition && ['left', 'right', 'top', 'bottom'].indexOf(contentPosition) < 0) {
@@ -1512,16 +1499,33 @@
         };
 
         /**
-         * Triggered when a seat is selected or unselected.
-         * @event Seatchart#onChange
-         * @type {ChangeEvent}
+         * @typedef {Object} ChangeEvent
+         * @property {string} action - Action on seat ('add', 'remove' or 'update').
+         * @property {Seat} current - Current seat info.
+         * @property {Seat} previous - Seat info previous to the event.
          */
+
+        /**
+        * Triggered when a seat is selected or unselected.
+        *
+        * @method
+        * @param {ChangeEvent} e - A change event.
+        * @listens ChangeEvent
+        */
         this.onChange = null;
 
         /**
+         * @typedef {Array.<Object>} ClearEvent
+         * @property {Seat} current - Current seat info.
+         * @property {Seat} previous - Seat info previous to the event.
+         */
+
+        /**
          * Triggered when all seats are removed with the 'delete all' button in the shopping cart.
-         * @event Seatchart#onClear
-         * @type {ClearEvent}
+         *
+         * @method
+         * @param {ClearEvent} e - A clear event.
+         * @listens ClearEvent
          */
         this.onClear = null;
 
@@ -1841,7 +1845,7 @@
 
             var computedStyle = getStyle(seat);
             var margins = parseInt(computedStyle.marginLeft, 10) +
-                        parseInt(computedStyle.marginRight, 10);
+                parseInt(computedStyle.marginRight, 10);
 
             // set front header and map width
             map.style.width = '{0}px'.format((width + margins) * options.map.columns);
@@ -1884,7 +1888,7 @@
         if (options.legend && options.legend.id) {
             createLegend();
         }
-    };
+    }
 
     return Seatchart;
 })));
