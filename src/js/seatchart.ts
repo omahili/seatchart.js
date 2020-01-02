@@ -208,6 +208,15 @@ class Seatchart {
     }
 
     /**
+     * Capitalizes the first letter and lowers all the others.
+     * @param {string} value - The formatted string.
+     * @private
+     */
+    private capitalizeFirstLetter(value: string): string {
+        return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+    };
+
+    /**
      * Computes the style of an element, it works even on ie :P.
      * @param {Element} el - The element for which we're getting the computed style.
      * @returns {CSSStyleDeclaration} The css of the element.
@@ -543,7 +552,7 @@ class Seatchart {
         seatName.className = 'sc-cart-seat-name';
 
         var seatType = document.createElement('div');
-        seatType.textContent = seat.type.capitalizeFirstLetter();
+        seatType.textContent = this.capitalizeFirstLetter(seat.type);
         seatType.className = 'sc-cart-seat-type';
 
         ticket.appendChild(stripes);
@@ -662,7 +671,7 @@ class Seatchart {
                 ticket.style.color = seatConfig.textColor;
 
                 var ticketType = ticket.getElementsByClassName('sc-cart-seat-type')[0];
-                ticketType.textContent = current.type.capitalizeFirstLetter();
+                ticketType.textContent = this.capitalizeFirstLetter(current.type);
 
                 var ticketPrice = itemContent[1];
                 ticketPrice.textContent = `${this.options.cart.currency}${current.price.toFixed(2)}`;
@@ -1672,7 +1681,7 @@ class Seatchart {
         var seatsList = this.createLegendList();
 
         for (var i = 0; i < this.options.types.length; i += 1) {
-            var description = `${this.options.types[i].type.capitalizeFirstLetter()} ` +
+            var description = `${this.capitalizeFirstLetter(this.options.types[i].type)} ` +
                 this.options.cart.currency +
                 this.options.types[i].price.toFixed(2);
             var item = this.createLegendItem(description, '', this.options.types[i].backgroundColor);
