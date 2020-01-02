@@ -166,19 +166,18 @@ class Seatchart {
                 if (!{}.hasOwnProperty.call(options.types[i], 'type') ||
                     !{}.hasOwnProperty.call(options.types[i], 'backgroundColor') ||
                     !{}.hasOwnProperty.call(options.types[i], 'price')) {
-                    throw new Error(("Invalid parameter 'options.types' supplied to Seatchart. " +
-                        "Element at index {0} must contain a 'type', " +
-                        "a 'backgroundColor' and a 'price' property.").format(i));
-                } else if (!(typeof options.types[i].type === 'string' || options.types[i].type instanceof String)) {
-                    throw new Error(("Invalid parameter 'options.types' supplied to Seatchart. " +
-                        "'type' property at index {0} must be a string.").format(i));
-                } else if (!(typeof options.types[i].backgroundColor === 'string' ||
-                    options.types[i].backgroundColor instanceof String)) {
-                    throw new Error(("Invalid parameter 'options.types' supplied to Seatchart. " +
-                        "'backgroundColor' property at index {0} must be a string.").format(i));
+                    throw new Error("Invalid parameter 'options.types' supplied to Seatchart. " +
+                        `Element at index ${i} must contain a 'type', ` +
+                        "a 'backgroundColor' and a 'price' property.");
+                } else if (typeof options.types[i].type !== 'string') {
+                    throw new Error("Invalid parameter 'options.types' supplied to Seatchart. " +
+                        `'type' property at index ${i} must be a string.`);
+                } else if (typeof options.types[i].backgroundColor !== 'string') {
+                    throw new Error("Invalid parameter 'options.types' supplied to Seatchart. " +
+                        `'backgroundColor' property at index ${i} must be a string.`);
                 } else if (typeof options.types[i].price !== 'number') {
-                    throw new Error(("Invalid parameter 'options.types' supplied to Seatchart. " +
-                        "'price' property at index {0} must be a number.").format(i));
+                    throw new Error("Invalid parameter 'options.types' supplied to Seatchart. " +
+                        `'price' property at index ${i} must be a number.`);
                 }
             }
         }
@@ -186,14 +185,11 @@ class Seatchart {
         // check the given input
         for (var x = 0; x < options.types.length; x += 1) {
             for (var y = x + 1; y < options.types.length; y += 1) {
-                if (options.types[x].type.capitalizeFirstLetter() ===
-                    options.types[y].type.capitalizeFirstLetter()) {
+                if (options.types[x].type.toLowerCase() === options.types[y].type.toLowerCase()) {
                     throw new Error(
-                        (
-                            "Invalid parameter 'options.types' supplied to Seatchart. " +
-                            "'{0}' and '{1}' types are equal and must be different. " +
-                            'Types are case insensitive.'
-                        ).format(options.types[x].type, options.types[y].type)
+                        "Invalid parameter 'options.types' supplied to Seatchart. " +
+                        `'${options.types[x].type}' and '${options.types[y].type}' types are equal and must be different. ` +
+                        'Types are case insensitive.'
                     );
                 }
             }
@@ -370,7 +366,7 @@ class Seatchart {
 
                 for (var l = 0; l < seatType.selected.length; l += 1) {
                     var index = seatType.selected[l];
-                    var id = '{0}_{1}'.format(Math.floor(index / this.options.map.columns), index % this.options.map.columns);
+                    var id = `${Math.floor(index / this.options.map.columns)}_${index % this.options.map.columns}`;
                     // add to shopping cart
                     this.addToCartDict(id, type);
                 }
@@ -387,7 +383,7 @@ class Seatchart {
      */
     private createScDeleteButton(): HTMLDivElement {
         var binImg = document.createElement('img');
-        binImg.src = '{0}/icons/bin.svg'.format(options.assets.path);
+        binImg.src = `${this.options.assets.path}/icons/bin.svg`;
 
         var deleteBtn = document.createElement('div');
         deleteBtn.className = 'sc-cart-delete';
@@ -470,11 +466,11 @@ class Seatchart {
      */
     private updateTotal(): void {
         if (this.cartTotal !== undefined) {
-            this.cartTotal.textContent = 'Total: {0}{1}'.format(this.options.cart.currency, this.getTotal().toFixed(2));
+            this.cartTotal.textContent = `Total: ${this.options.cart.currency}${this.getTotal().toFixed(2)}`;
         }
 
         if (this.cartItemsCounter !== undefined) {
-            this.cartItemsCounter.textContent = '({0})'.format(this.cartTable.childNodes.length);
+            this.cartItemsCounter.textContent = `(${this.cartTable.childNodes.length})`;
         }
     };
 
@@ -574,7 +570,7 @@ class Seatchart {
         ticketTd.appendChild(ticket);
 
         var seatPrice = document.createElement('td');
-        seatPrice.textContent = '{0}{1}'.format(this.options.cart.currency, seat.price.toFixed(2));
+        seatPrice.textContent = `${this.options.cart.currency}${seat.price.toFixed(2)}`;
 
         var deleteTd = document.createElement('td');
         var deleteBtn = this.createScDeleteButton();
@@ -582,7 +578,7 @@ class Seatchart {
 
         deleteTd.appendChild(deleteBtn);
 
-        item.setAttribute('id', 'item-{0}'.format(seat.id));
+        item.setAttribute('id', `item-${seat.id}`);
         item.appendChild(ticketTd);
         item.appendChild(seatPrice);
         item.appendChild(deleteTd);
@@ -629,7 +625,7 @@ class Seatchart {
 
         if (action === 'remove') {
             if (this.cartTable) {
-                document.getElementById('item-{0}'.format(id)).outerHTML = '';
+                document.getElementById(`item-${id}`).outerHTML = '';
             }
 
             if (emit && this.onChange !== null) {
@@ -654,7 +650,7 @@ class Seatchart {
             }
         } else if (action === 'update') {
             if (this.cartTable) {
-                cartItem = document.getElementById('item-{0}'.format(id));
+                cartItem = document.getElementById(`item-${id}`);
                 var itemContent = cartItem.getElementsByTagName('td');
 
                 var seatConfig = this.options.types.find(function findSeatType(x) {
@@ -669,7 +665,7 @@ class Seatchart {
                 ticketType.textContent = current.type.capitalizeFirstLetter();
 
                 var ticketPrice = itemContent[1];
-                ticketPrice.textContent = '{0}{1}'.format(this.options.cart.currency, current.price.toFixed(2));
+                ticketPrice.textContent = `${this.options.cart.currency}${current.price.toFixed(2)}`;
             }
 
             if (emit && this.onChange !== null) {
@@ -871,7 +867,7 @@ class Seatchart {
             var rowIndex = this.rowName(row.index, row.disabled, row.disabledCount);
             var columnIndex = this.columnName(column.index, column.disabled, column.disabledCount);
 
-            return '{0}{1}'.format(rowIndex, columnIndex);
+            return `${rowIndex}${columnIndex}`;
         }
 
         return null;
@@ -1042,13 +1038,13 @@ class Seatchart {
         var container = document.createElement('div');
 
         if (name) {
-            container.className = 'sc-{0}-container'.format(name);
+            container.className = `sc-${name}-container`;
         }
 
-        container.classList.add('sc-container-{0}'.format(direction));
+        container.classList.add(`sc-container-${direction}`);
 
         if (contentPosition) {
-            container.classList.add('sc-{0}'.format(contentPosition));
+            container.classList.add(`sc-${contentPosition}`);
         }
 
         return container;
@@ -1076,7 +1072,7 @@ class Seatchart {
 
             for (var i = 0; i < this.options.map[type].seats.length; i += 1) {
                 var index = this.options.map[type].seats[i];
-                var id = '{0}_{1}'.format(Math.floor(index / columns), index % columns);
+                var id = `${Math.floor(index / columns)}_${index % columns}`;
                 var seat = document.getElementById(id) as HTMLDivElement;
 
                 // prevents from null reference exception when json goes out of range
@@ -1114,7 +1110,7 @@ class Seatchart {
                     var index = seatType.selected[j];
                     var row = Math.floor(index / this.options.map.columns);
                     var column = index % this.options.map.columns;
-                    var id = '{0}_{1}'.format(row, column);
+                    var id = `${row}_${column}`;
                     var seatName = this.getSeatName(id);
                     var seat: Seat = {
                         id: id,
@@ -1147,7 +1143,7 @@ class Seatchart {
 
                 for (var l = 0; l < seatType.selected.length; l += 1) {
                     var index = seatType.selected[l];
-                    var id = '{0}_{1}'.format(Math.floor(index / this.options.map.columns), index % this.options.map.columns);
+                    var id = `${Math.floor(index / this.options.map.columns)}_${index % this.options.map.columns}`;
 
                     var element = document.getElementById(id);
                     if (element) {
@@ -1208,7 +1204,7 @@ class Seatchart {
         var row = Math.floor(seatIndex / this.options.map.columns);
         var col = seatIndex % this.options.map.columns;
 
-        var seatId = '{0}_{1}'.format(row, col);
+        var seatId = `${row}_${col}`;
 
         // if current seat is disabled or reserved do not continue
         if (this.options.map.disabled.seats.indexOf(seatIndex) >= 0 ||
@@ -1255,8 +1251,8 @@ class Seatchart {
             return false;
         }
 
-        var seatBeforeId = '{0}_{1}'.format(row, colBefore);
-        var seatAfterId = '{0}_{1}'.format(row, colAfter);
+        var seatBeforeId = `${row}_${colBefore}`;
+        var seatAfterId = `${row}_${colAfter}`;
 
         var isSeatBeforeSelected = false;
         var isSeatAfterSelected = false;
@@ -1355,7 +1351,7 @@ class Seatchart {
         if (index < this.options.map.rows * this.options.map.columns) {
             var row = Math.floor(index / this.options.map.columns);
             var col = index % this.options.map.columns;
-            var seatId = '{0}_{1}'.format(row, col);
+            var seatId = `${row}_${col}`;
             var seatName = this.getSeatName(seatId);
 
             // check if seat is reserved
@@ -1517,13 +1513,13 @@ class Seatchart {
         var item = document.createElement('li');
         item.className = 'sc-legend-item';
         var itemStyle = document.createElement('div');
-        itemStyle.className = 'sc-seat legend-style {0}'.format(type);
+        itemStyle.className = `sc-seat legend-style ${type}`;
         var description = document.createElement('p');
         description.className = 'sc-legend-description';
         description.textContent = content;
 
         if (backgroundColor !== undefined) {
-            itemStyle.className = '{0} clicked'.format(itemStyle.className);
+            itemStyle.className = `${itemStyle.className} clicked`;
             itemStyle.style.backgroundColor = backgroundColor;
         }
 
@@ -1634,7 +1630,7 @@ class Seatchart {
      */
     private createCartItemsCounter(count: number): HTMLDivElement {
         var cartItemsCount = document.createElement('h3');
-        cartItemsCount.textContent = '({0})'.format(count);
+        cartItemsCount.textContent = `(${count})`;
 
         return cartItemsCount;
     };
@@ -1647,7 +1643,7 @@ class Seatchart {
     private createCartTotal(): HTMLDivElement {
         var container = document.createElement('div');
 
-        this.cartTotal = this.createSmallTitle('Total: {0}{1}'.format(this.options.cart.currency, this.getTotal()));
+        this.cartTotal = this.createSmallTitle(`Total: ${this.options.cart.currency}${this.getTotal()}`);
         this.cartTotal.className += ' sc-cart-total';
 
         var deleteBtn = this.createScDeleteButton();
@@ -1676,11 +1672,9 @@ class Seatchart {
         var seatsList = this.createLegendList();
 
         for (var i = 0; i < this.options.types.length; i += 1) {
-            var description = '{0} {1}{2}'.format(
-                this.options.types[i].type.capitalizeFirstLetter(),
-                this.options.cart.currency,
-                this.options.types[i].price.toFixed(2)
-            );
+            var description = `${this.options.types[i].type.capitalizeFirstLetter()} ` +
+                this.options.cart.currency +
+                this.options.types[i].price.toFixed(2);
             var item = this.createLegendItem(description, '', this.options.types[i].backgroundColor);
             seatsList.appendChild(item);
         }
@@ -1701,14 +1695,14 @@ class Seatchart {
         var cartContainer = this.createContainer('cart', 'column');
         var cartTitle = this.createIconedTitle(
             'Your Cart',
-            '{0}/icons/shoppingcart.svg'.format(this.options.assets.path),
+            `${this.options.assets.path}/icons/shoppingcart.svg`,
             'Shopping cart icon.'
         );
 
         var cartTableContainer = document.createElement('div');
         cartTableContainer.classList.add('sc-cart');
-        cartTableContainer.style.width = '{0}px'.format(this.options.cart.width);
-        cartTableContainer.style.height = '{0}px'.format(this.options.cart.height);
+        cartTableContainer.style.width = `${this.options.cart.width}px`;
+        cartTableContainer.style.height = `${this.options.cart.height}px`;
 
         this.cartTable = this.createCartTable();
         cartTableContainer.appendChild(this.cartTable);
@@ -1760,7 +1754,7 @@ class Seatchart {
                 // draw empty row if row is disabled,
                 // while draw blank seat if column is disabled
                 if (!isRowDisabled) {
-                    row.appendChild(this.createSeat('available', seatTextContent, '{0}_{1}'.format(i, j)));
+                    row.appendChild(this.createSeat('available', seatTextContent, `${i}_${j}`));
                 }
             }
 
@@ -1824,11 +1818,13 @@ class Seatchart {
         var margins = parseInt(computedStyle.marginLeft, 10) +
             parseInt(computedStyle.marginRight, 10);
 
+        var mapWidth = (width + margins) * this.options.map.columns;
+
         // set front header and map width
-        map.style.width = '{0}px'.format((width + margins) * this.options.map.columns);
+        map.style.width = `${mapWidth}px`;
 
         if (!front || front.visible === undefined || this.options.map.front.visible) {
-            frontHeader.style.width = '{0}px'.format((width + margins) * this.options.map.columns);
+            frontHeader.style.width = `${mapWidth}px`;
         }
 
         // add disabled columns to disabled array
