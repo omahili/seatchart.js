@@ -73,7 +73,7 @@ type Seat = {
     id: string,
     index: number,
     name: string,
-    price: number,
+    price: number | null,
 }
 
 type ChangeEvent = {
