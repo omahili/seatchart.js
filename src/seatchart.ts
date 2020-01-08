@@ -946,10 +946,12 @@ class Seatchart {
      * @returns {HTMLDivElement} The seat.
      * @private
      */
-    private createSeat(type: string, content: string, seatId: string): HTMLDivElement {
+    private createSeat(type: string, content: string | undefined, seatId: string): HTMLDivElement {
         var seat = document.createElement('div');
-        seat.textContent = content;
         seat.className = 'sc-seat ' + type;
+        if (content) {
+            seat.textContent = content;
+        }
 
         // if seatId wasn't passed as argument then don't set it
         if (seatId !== undefined) {
@@ -1143,7 +1145,6 @@ class Seatchart {
                 var id = `${Math.floor(index / columns)}_${index % columns}`;
                 var seat = document.getElementById(id) as HTMLDivElement;
 
-                // prevents from null reference exception when json goes out of range
                 if (seat != null) {
                     this.removeAllTypesApplied(seat);
 
@@ -1831,9 +1832,7 @@ class Seatchart {
 
                 // draw empty row if row is disabled,
                 // while draw blank seat if column is disabled
-                if (seatTextContent) {
-                    row.appendChild(this.createSeat('available', seatTextContent, `${i}_${j}`));
-                }
+                row.appendChild(this.createSeat('available', seatTextContent, `${i}_${j}`));
             }
 
             map.appendChild(row);
