@@ -532,11 +532,11 @@ class Seatchart {
         }
 
         var id = parentId.split('-')[1];
-        var type = this.getSeatType(id);
+        var type = sc.getSeatType(id);
 
-        this.releaseSeat(id);
-        this.removeFromCartDict(id);
-        this.updateTotal();
+        sc.releaseSeat(id);
+        sc.removeFromCartDict(id, type);
+        sc.updateTotal();
 
         // fire event
         if (sc.onChange != null) {
