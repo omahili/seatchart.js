@@ -1,9 +1,0 @@
-extends: "airbnb-base/legacy"
-rules:
-    indent: [2, 4]
-    no-extend-native: 0
-    vars-on-top: 0
-    block-scoped-var: 0
-    no-restricted-syntax: 0
-    no-shadow: 0
-    max-len: [2, 120, 4, {"ignoreComments": true}]

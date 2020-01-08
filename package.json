@@ -35,6 +35,7 @@
     "stylelint": "^9.10.1",
     "stylelint-config-standard": "^18.2.0",
     "tslint": "^5.20.1",
+    "tslint-microsoft-contrib": "^6.2.0",
     "typescript": "^3.7.4"
   }
 }
