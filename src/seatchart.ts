@@ -280,6 +280,11 @@ class Seatchart {
             }
         }
 
+        this.deleteAllClick = this.deleteAllClick.bind(this);
+        this.rowName = this.rowName.bind(this);
+        this.columnName = this.columnName.bind(this);
+        this.seatName = this.seatName.bind(this);
+
         this.loadCart();
 
         this.createMap();
@@ -371,7 +376,7 @@ class Seatchart {
     private updateCartObject(): void {
         for (var s in this.cartDict) {
             if ({}.hasOwnProperty.call(this.cartDict, s)) {
-                this.cart[s] = this.cartDict[s].map(this.getIndexFromId);
+                this.cart[s] = this.cartDict[s].map(x => this.getIndexFromId(x));
             }
         }
     };
