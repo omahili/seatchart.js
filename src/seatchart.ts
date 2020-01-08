@@ -1,3 +1,7 @@
+import { ChangeEvent, ClearEvent } from "./components/events";
+import Options from "./components/options";
+import Seat from "./components/seat";
+
 /**
  * Callback to generate a seat name.
  *

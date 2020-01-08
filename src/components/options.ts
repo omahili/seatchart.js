@@ -1,4 +1,4 @@
-type Options = {
+interface Options {
     map: {
         id: string,
         rows: number,
@@ -66,23 +66,6 @@ type Options = {
     assets?: {
         path?: string,
     },
-}
+};
 
-type Seat = {
-    type: string,
-    id: string,
-    index: number,
-    name: string,
-    price: number | null,
-}
-
-type ChangeEvent = {
-    action: string,
-    current: Seat,
-    previous: Seat,
-}
-
-type ClearEvent = Array<{
-    current: Seat,
-    previous: Seat,
-}>
+export default Options;
