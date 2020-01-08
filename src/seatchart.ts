@@ -416,7 +416,7 @@ class Seatchart {
     private createScDeleteButton(): HTMLDivElement {
         var binImg = document.createElement('img');
         binImg.src = this.options.assets?.path ?
-            `${this.options.assets.path}/icons/bin.svg` :
+            `${this.options.assets.path}/bin.svg` :
             '../assets/bin.svg';
 
         var deleteBtn = document.createElement('div');
@@ -435,7 +435,7 @@ class Seatchart {
     private getSeatName(id: string): string {
         const element = document.getElementById(id);
         if (element?.textContent) {
-            element.textContent;
+            return element.textContent;
         }
 
         throw new Error('Seat name not found.');
