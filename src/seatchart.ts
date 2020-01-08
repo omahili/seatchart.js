@@ -467,7 +467,7 @@ class Seatchart {
     private releaseSeat(id: string): void {
         var seat = document.getElementById(id);
 
-        if(seat) {
+        if (seat) {
             seat.style.cssText = '';
             seat.className = 'sc-seat available';
         }
@@ -891,7 +891,7 @@ class Seatchart {
      * @returns {string} Row name. Return null or undefined if empty.
      * @private
      */
-    private rowName(index: number, disabled: boolean, disabledCount: number): string | undefined{
+    private rowName(index: number, disabled: boolean, disabledCount: number): string | undefined {
         if (!disabled) {
             return this.alphabet[index - disabledCount];
         }
@@ -1934,3 +1934,5 @@ class Seatchart {
         this.selectSeats();
     };
 }
+
+export default Seatchart;
