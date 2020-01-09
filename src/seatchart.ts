@@ -1,6 +1,7 @@
 import { ChangeEvent, ClearEvent } from "components/events";
 import { Options } from "components/options";
 import { Seat } from "components/seat";
+import { NotFoundError } from 'components/errors';
 
 /**
  * Callback to generate a seat name.
@@ -367,9 +368,7 @@ class Seatchart {
     private updateCartObject(): void {
         const keys = Object.keys(this.cartDict);
         for (let s of keys) {
-            if ({}.hasOwnProperty.call(this.cartDict, s)) {
-                this.cart[s] = this.cartDict[s].map(x => this.getIndexFromId(x));
-            }
+            this.cart[s] = this.cartDict[s].map(x => this.getIndexFromId(x));
         }
     };
 
@@ -430,7 +429,7 @@ class Seatchart {
             return element.textContent;
         }
 
-        throw new Error('Seat name not found.');
+        throw new NotFoundError('Seat name not found.');
     };
 
     /**
@@ -447,7 +446,7 @@ class Seatchart {
             }
         }
 
-        throw new Error('Seat type not found.');
+        throw new NotFoundError('Seat type not found.');
     };
 
     /**
@@ -566,7 +565,7 @@ class Seatchart {
         let seatConfig = this.options.types.find((x) => x.type === seat.type);
 
         if (!seatConfig) {
-            throw new Error(`Options for seat type '${seat.type}' not found.`);
+            throw new NotFoundError(`Options for seat type '${seat.type}' not found.`);
         }
 
         let ticket = document.createElement('div');
@@ -862,22 +861,30 @@ class Seatchart {
     private rightClickDelete = (sc: Seatchart) => function rightClickDelete(this: any, e: Event): boolean {
         e.preventDefault();
 
-        let type = sc.getSeatType(this.id);
+        try {
+            let type = sc.getSeatType(this.id);
 
-        // it means it has no type and it's available, then there's nothing to delete
-        if (type !== undefined) {
-            sc.releaseSeat(this.id);
-            // remove from virtual sc
-            sc.removeFromCartDict(this.id, type);
+            // it means it has no type and it's available, then there's nothing to delete
+            if (type !== undefined) {
+                sc.releaseSeat(this.id);
+                // remove from virtual sc
+                sc.removeFromCartDict(this.id, type);
 
-            // there's no need to fire onChange event since this function fires
-            // the event after removing the seat from shopping cart
-            sc.updateCart('remove', this.id, 'available', type, true);
-            sc.updateTotal();
+                // there's no need to fire onChange event since this function fires
+                // the event after removing the seat from shopping cart
+                sc.updateCart('remove', this.id, 'available', type, true);
+                sc.updateTotal();
+            }
+
+            // so the default context menu isn't showed
+            return false;
+        } catch (e) {
+            if (e instanceof NotFoundError) {
+                return false;
+            }
+
+            throw e;
         }
-
-        // so the default context menu isn't showed
-        return false;
     };
 
     /**
@@ -1280,7 +1287,7 @@ class Seatchart {
             }
         }
 
-        throw new Error('Seat price not found.');
+        throw new NotFoundError('Seat price not found.');
     };
 
     /**
