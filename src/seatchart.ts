@@ -518,7 +518,7 @@ class Seatchart {
 
         let parentElement = document.getElementById(parentId);
         if (parentElement) {
-            parentElement.outerHTML = '';
+            this.emptyElement(parentElement);
         }
 
         let id = parentId.split('-')[1];
@@ -631,6 +631,17 @@ class Seatchart {
     };
 
     /**
+     * Empties an html element if it has any child.
+     * @param {HTMLElement} el - Element.
+     * @private
+     */
+    private emptyElement(el: HTMLElement): void {
+        while (el.firstChild) {
+            el.removeChild(el.firstChild);
+        }
+    }
+
+    /**
      * Updates the shopping cart by adding, removing or updating a seat.
      * @param {string} action - Action on the shopping cart ('remove' | 'add' | 'update').
      * @param {string} id - Id of the seat in the dom.
@@ -671,7 +682,7 @@ class Seatchart {
             if (this.cartTable) {
                 const itemElement = document.getElementById(`item-${id}`);
                 if (itemElement) {
-                    itemElement.outerHTML = '';
+                    this.emptyElement(itemElement);
                 }
             }
 
@@ -1693,7 +1704,7 @@ class Seatchart {
 
         // empty shopping cart, fastest way instead of removing each item
         if (this.cartTable) {
-            this.cartTable.innerHTML = '';
+            this.emptyElement(this.cartTable);
         }
 
         this.updateTotal();
