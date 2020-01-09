@@ -517,7 +517,7 @@ class Seatchart {
 
         let parentElement = document.getElementById(parentId);
         if (parentElement) {
-            this.emptyElement(parentElement);
+            parentElement.remove();
         }
 
         let id = parentId.split('-')[1];
@@ -681,7 +681,7 @@ class Seatchart {
             if (this.cartTable) {
                 const itemElement = document.getElementById(`item-${id}`);
                 if (itemElement) {
-                    this.emptyElement(itemElement);
+                    itemElement.remove();
                 }
             }
 
