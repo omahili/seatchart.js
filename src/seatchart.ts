@@ -240,7 +240,7 @@ class Seatchart {
                 'Must be an array of objects containing at least one element.');
         } else {
             // check if all elements have the needed attribute and contain the right type of value
-            for (var i = 0; i < options.types.length; i += 1) {
+            for (let i = 0; i < options.types.length; i += 1) {
                 if (!{}.hasOwnProperty.call(options.types[i], 'type') ||
                     !{}.hasOwnProperty.call(options.types[i], 'backgroundColor') ||
                     !{}.hasOwnProperty.call(options.types[i], 'price')) {
@@ -261,8 +261,8 @@ class Seatchart {
         }
 
         // check the given input
-        for (var x = 0; x < options.types.length; x += 1) {
-            for (var y = x + 1; y < options.types.length; y += 1) {
+        for (let x = 0; x < options.types.length; x += 1) {
+            for (let y = x + 1; y < options.types.length; y += 1) {
                 if (options.types[x].type.toLowerCase() === options.types[y].type.toLowerCase()) {
                     throw new Error(
                         "Invalid parameter 'options.types' supplied to Seatchart. " +
@@ -341,7 +341,7 @@ class Seatchart {
         this.types = ['available'];
         this.cartDict = {};
 
-        for (var i = 0; i < this.options.types.length; i += 1) {
+        for (let i = 0; i < this.options.types.length; i += 1) {
             this.types.push(this.options.types[i].type);
             this.cartDict[this.options.types[i].type] = [];
         }
@@ -354,7 +354,7 @@ class Seatchart {
      * @private
      */
     private getIndexFromId(id: string): number {
-        var values = id.split('_').map((id) => parseInt(id, 10));
+        let values = id.split('_').map((id) => parseInt(id, 10));
 
         return (this.options.map.columns * values[0]) + values[1];
     };
@@ -366,7 +366,7 @@ class Seatchart {
      */
     private updateCartObject(): void {
         const keys = Object.keys(this.cartDict);
-        for (var s of keys) {
+        for (let s of keys) {
             if ({}.hasOwnProperty.call(this.cartDict, s)) {
                 this.cart[s] = this.cartDict[s].map(x => this.getIndexFromId(x));
             }
@@ -382,15 +382,15 @@ class Seatchart {
         this.initializeSeatTypes();
 
         // Add selected seats to shopping cart
-        for (var n = 0; n < this.options.types.length; n += 1) {
-            var seatType = this.options.types[n];
+        for (let n = 0; n < this.options.types.length; n += 1) {
+            let seatType = this.options.types[n];
 
             if (seatType.selected) {
-                var type = seatType.type;
+                let type = seatType.type;
 
-                for (var l = 0; l < seatType.selected.length; l += 1) {
-                    var index = seatType.selected[l];
-                    var id = `${Math.floor(index / this.options.map.columns)}_${index % this.options.map.columns}`;
+                for (let l = 0; l < seatType.selected.length; l += 1) {
+                    let index = seatType.selected[l];
+                    let id = `${Math.floor(index / this.options.map.columns)}_${index % this.options.map.columns}`;
                     // add to shopping cart
                     this.addToCartDict(id, type);
                 }
@@ -406,12 +406,12 @@ class Seatchart {
      * @private
      */
     private createScDeleteButton(): HTMLDivElement {
-        var binImg = document.createElement('img');
+        let binImg = document.createElement('img');
         binImg.src = this.options.assets?.path ?
             `${this.options.assets.path}/bin.svg` :
             '../assets/bin.svg';
 
-        var deleteBtn = document.createElement('div');
+        let deleteBtn = document.createElement('div');
         deleteBtn.className = 'sc-cart-delete';
         deleteBtn.appendChild(binImg);
 
@@ -441,7 +441,7 @@ class Seatchart {
      */
     private getSeatType(id: string): string {
         const keys = Object.keys(this.cartDict);
-        for (var key of keys) {
+        for (let key of keys) {
             if (this.cartDict[key].indexOf(id) >= 0) {
                 return key;
             }
@@ -456,7 +456,7 @@ class Seatchart {
      * @private
      */
     private releaseSeat(id: string): void {
-        var seat = document.getElementById(id);
+        let seat = document.getElementById(id);
 
         if (seat) {
             seat.style.cssText = '';
@@ -474,7 +474,7 @@ class Seatchart {
     private removeFromCartDict(id: string, type: string): boolean {
         if (type !== undefined) {
             if (type in this.cartDict) {
-                var index = this.cartDict[type].indexOf(id);
+                let index = this.cartDict[type].indexOf(id);
                 if (index > -1) {
                     this.cartDict[type].splice(index, 1);
                     return true;
@@ -482,7 +482,7 @@ class Seatchart {
             }
         } else {
             const keys = Object.keys(this.cartDict);
-            for (var key of keys) {
+            for (let key of keys) {
                 if (this.removeFromCartDict(id, key)) {
                     return true;
                 }
@@ -498,7 +498,7 @@ class Seatchart {
      */
     private updateTotal(): void {
         if (this.cartTotal) {
-            var currency = this.options.cart?.currency || this.defaultCurrency;
+            let currency = this.options.cart?.currency || this.defaultCurrency;
             this.cartTotal.textContent = `Total: ${currency}${this.getTotal().toFixed(2)}`;
         }
 
@@ -512,17 +512,17 @@ class Seatchart {
      * @private
      */
     private deleteClick = (sc: Seatchart) => function deleteClick(this: any): void {
-        var column = this.parentNode;
-        var item = column.parentNode;
-        var parentId = item.getAttribute('id');
+        let column = this.parentNode;
+        let item = column.parentNode;
+        let parentId = item.getAttribute('id');
 
-        var parentElement = document.getElementById(parentId);
+        let parentElement = document.getElementById(parentId);
         if (parentElement) {
             parentElement.outerHTML = '';
         }
 
-        var id = parentId.split('-')[1];
-        var type = sc.getSeatType(id);
+        let id = parentId.split('-')[1];
+        let type = sc.getSeatType(id);
 
         sc.releaseSeat(id);
         sc.removeFromCartDict(id, type);
@@ -530,17 +530,17 @@ class Seatchart {
 
         // fire event
         if (sc.onChange != null) {
-            var index = sc.getIndexFromId(id);
-            var seatName = sc.getSeatName(id);
+            let index = sc.getIndexFromId(id);
+            let seatName = sc.getSeatName(id);
 
-            var current: Seat = {
+            let current: Seat = {
                 type: 'available',
                 id: id,
                 index: index,
                 name: seatName,
                 price: null
             };
-            var previous: Seat = {
+            let previous: Seat = {
                 type: type,
                 id: id,
                 index: index,
@@ -563,25 +563,25 @@ class Seatchart {
      * @private
      */
     private createTicket(seat: Seat): HTMLDivElement {
-        var seatConfig = this.options.types.find((x) => x.type === seat.type);
+        let seatConfig = this.options.types.find((x) => x.type === seat.type);
 
         if (!seatConfig) {
             throw new Error(`Options for seat type '${seat.type}' not found.`);
         }
 
-        var ticket = document.createElement('div');
+        let ticket = document.createElement('div');
         ticket.className = 'sc-ticket';
         ticket.style.color = seatConfig.textColor || this.defaultTextColor;
         ticket.style.backgroundColor = seatConfig.backgroundColor;
 
-        var stripes = document.createElement('div');
+        let stripes = document.createElement('div');
         stripes.className = 'sc-ticket-stripes';
 
-        var seatName = document.createElement('div');
+        let seatName = document.createElement('div');
         seatName.textContent = seat.name;
         seatName.className = 'sc-cart-seat-name';
 
-        var seatType = document.createElement('div');
+        let seatType = document.createElement('div');
         seatType.textContent = this.capitalizeFirstLetter(seat.type);
         seatType.className = 'sc-cart-seat-type';
 
@@ -604,20 +604,20 @@ class Seatchart {
             throw new Error('Seat price cannot be null or undefined.');
         }
 
-        var item = document.createElement('tr');
+        let item = document.createElement('tr');
 
-        var ticketTd = document.createElement('td');
+        let ticketTd = document.createElement('td');
         ticketTd.className = 'sc-ticket-container';
 
-        var ticket = this.createTicket(seat);
+        let ticket = this.createTicket(seat);
         ticketTd.appendChild(ticket);
 
-        var seatPrice = document.createElement('td');
-        var currency = this.options.cart?.currency || this.defaultCurrency;
+        let seatPrice = document.createElement('td');
+        let currency = this.options.cart?.currency || this.defaultCurrency;
         seatPrice.textContent = `${currency}${seat.price.toFixed(2)}`;
 
-        var deleteTd = document.createElement('td');
-        var deleteBtn = this.createScDeleteButton();
+        let deleteTd = document.createElement('td');
+        let deleteBtn = this.createScDeleteButton();
         deleteBtn.onclick = this.deleteClick(this);
 
         deleteTd.appendChild(deleteBtn);
@@ -640,20 +640,20 @@ class Seatchart {
      * @private
      */
     private updateCart(action: string, id: string, type: string, previousType: string, emit: boolean): void {
-        var name = this.getSeatName(id);
-        var index = this.getIndexFromId(id);
-        var price = type && ['available', 'disabled', 'reserved'].indexOf(type) < 0 ?
+        let name = this.getSeatName(id);
+        let index = this.getIndexFromId(id);
+        let price = type && ['available', 'disabled', 'reserved'].indexOf(type) < 0 ?
             this.getPrice(type) :
             null;
 
-        var current: Seat = {
+        let current: Seat = {
             type,
             id: id,
             index: index,
             name,
             price
         };
-        var previous: Seat = {
+        let previous: Seat = {
             type: previousType,
             id: id,
             index: index,
@@ -663,7 +663,7 @@ class Seatchart {
                 null
         };
 
-        var cartItem;
+        let cartItem;
 
         this.updateCartObject();
 
@@ -700,22 +700,22 @@ class Seatchart {
                 cartItem = document.getElementById(`item-${id}`);
 
                 if (cartItem) {
-                    var itemContent = cartItem.getElementsByTagName('td');
+                    let itemContent = cartItem.getElementsByTagName('td');
 
-                    var seatConfig = this.options.types.find((x) => x.type === current.type);
+                    let seatConfig = this.options.types.find((x) => x.type === current.type);
 
                     if (seatConfig) {
-                        var ticket = <HTMLElement> itemContent[0].getElementsByClassName('sc-ticket')[0];
+                        let ticket = <HTMLElement> itemContent[0].getElementsByClassName('sc-ticket')[0];
                         ticket.style.backgroundColor = seatConfig.backgroundColor;
                         ticket.style.color = seatConfig.textColor || this.defaultTextColor;
 
-                        var ticketType = ticket.getElementsByClassName('sc-cart-seat-type')[0];
+                        let ticketType = ticket.getElementsByClassName('sc-cart-seat-type')[0];
                         ticketType.textContent = this.capitalizeFirstLetter(current.type);
 
-                        var ticketPrice = itemContent[1];
+                        let ticketPrice = itemContent[1];
 
                         if (current.price) {
-                            var currency = this.options.cart?.currency || '€';
+                            let currency = this.options.cart?.currency || '€';
                             ticketPrice.textContent = `${currency}${current.price.toFixed(2)}`;
                         }
                     }
@@ -739,7 +739,7 @@ class Seatchart {
      * @private
      */
     private createTitle(content: string): HTMLHeadingElement {
-        var title = document.createElement('h3');
+        let title = document.createElement('h3');
         title.textContent = content;
         title.className = 'sc-title';
 
@@ -755,12 +755,12 @@ class Seatchart {
      * @private
      */
     private createIconedTitle(content: string, src: string, alt: string): HTMLDivElement {
-        var container = document.createElement('div');
-        var icon = document.createElement('img');
+        let container = document.createElement('div');
+        let icon = document.createElement('img');
         icon.src = src;
         icon.alt = alt;
 
-        var title = this.createTitle(content);
+        let title = this.createTitle(content);
         container.className = title.className;
         title.className = '';
 
@@ -776,18 +776,18 @@ class Seatchart {
      */
     private seatClick = (sc: Seatchart) => function seatClick(this: HTMLElement): void {
         // clone array because it's modified by adding and removing classes
-        var currentClassList = [];
-        for (var j = 0; j < this.classList.length; j += 1) {
+        let currentClassList = [];
+        for (let j = 0; j < this.classList.length; j += 1) {
             currentClassList.push(this.classList[j]);
         }
 
-        for (var i = 0; i < currentClassList.length; i += 1) {
-            var currentClass = currentClassList[i];
-            var newClass;
+        for (let i = 0; i < currentClassList.length; i += 1) {
+            let currentClass = currentClassList[i];
+            let newClass;
 
             if (currentClass !== 'sc-seat' && currentClass !== 'clicked') {
                 // find index of current
-                var index = sc.types.indexOf(currentClass);
+                let index = sc.types.indexOf(currentClass);
 
                 // if the current class matches a type
                 // then select the new one
@@ -851,7 +851,7 @@ class Seatchart {
     private rightClickDelete = (sc: Seatchart) => function rightClickDelete(this: any, e: Event): boolean {
         e.preventDefault();
 
-        var type = sc.getSeatType(this.id);
+        let type = sc.getSeatType(this.id);
 
         // it means it has no type and it's available, then there's nothing to delete
         if (type !== undefined) {
@@ -917,8 +917,8 @@ class Seatchart {
         column: { index: number, disabled: boolean, disabledCount: number }
     ): string | undefined {
         if (!row.disabled && !column.disabled) {
-            var rowIndex = this.rowName(row.index, row.disabled, row.disabledCount);
-            var columnIndex = this.columnName(column.index, column.disabled, column.disabledCount);
+            let rowIndex = this.rowName(row.index, row.disabled, row.disabledCount);
+            let columnIndex = this.columnName(column.index, column.disabled, column.disabledCount);
 
             return `${rowIndex}${columnIndex}`;
         }
@@ -933,7 +933,7 @@ class Seatchart {
      * @private
      */
     private createSeat(type: string, content: string | undefined, seatId: string): HTMLDivElement {
-        var seat = document.createElement('div');
+        let seat = document.createElement('div');
         seat.className = 'sc-seat ' + type;
         if (content) {
             seat.textContent = content;
@@ -957,7 +957,7 @@ class Seatchart {
      * @private
      */
     private createRow(): HTMLDivElement {
-        var row = document.createElement('div');
+        let row = document.createElement('div');
         row.className = 'sc-map-row';
 
         return row;
@@ -970,7 +970,7 @@ class Seatchart {
      */
     private createFrontHeader(): HTMLDivElement {
         // set the perfect width of the front indicator
-        var front = document.createElement('div');
+        let front = document.createElement('div');
         front.textContent = 'Front';
         front.className = 'sc-front';
 
@@ -984,7 +984,7 @@ class Seatchart {
      * @private
      */
     private createIndex(content: string): HTMLDivElement {
-        var index = document.createElement('div');
+        let index = document.createElement('div');
         index.textContent = content;
         index.className = 'sc-index';
 
@@ -997,7 +997,7 @@ class Seatchart {
      * @private
      */
     private createBlank(): HTMLDivElement {
-        var blank = document.createElement('div');
+        let blank = document.createElement('div');
         blank.className = 'sc-seat blank';
 
         return blank;
@@ -1009,22 +1009,22 @@ class Seatchart {
      * @private
      */
     private createRowIndex(): HTMLDivElement {
-        var rowIndex = document.createElement('div');
+        let rowIndex = document.createElement('div');
         rowIndex.className = 'sc-row-index';
 
-        var disabled = this.options.map.disabled;
-        var disabledCount = 0;
+        let disabled = this.options.map.disabled;
+        let disabledCount = 0;
 
-        var generateName = this.rowName;
+        let generateName = this.rowName;
         if (this.options.map.indexes?.rows?.name) {
             generateName = this.options.map.indexes.rows.name;
         }
 
-        for (var i = 0; i < this.options.map.rows; i += 1) {
-            var isRowDisabled = disabled && disabled.rows ? disabled.rows.indexOf(i) >= 0 : false;
+        for (let i = 0; i < this.options.map.rows; i += 1) {
+            let isRowDisabled = disabled && disabled.rows ? disabled.rows.indexOf(i) >= 0 : false;
             disabledCount = isRowDisabled ? disabledCount + 1 : disabledCount;
 
-            var index = generateName(i, isRowDisabled, disabledCount);
+            let index = generateName(i, isRowDisabled, disabledCount);
 
 
             if (index) {
@@ -1043,22 +1043,22 @@ class Seatchart {
      * @private
      */
     private createColumnIndex(): HTMLDivElement {
-        var columnIndex = document.createElement('div');
+        let columnIndex = document.createElement('div');
         columnIndex.className = 'sc-column-index';
 
-        var disabled = this.options.map.disabled;
-        var disabledCount = 0;
+        let disabled = this.options.map.disabled;
+        let disabledCount = 0;
 
-        var generateName = this.columnName;
+        let generateName = this.columnName;
         if (this.options.map.indexes?.columns?.name) {
             generateName = this.options.map.indexes.columns.name;
         }
 
-        for (var i = 0; i < this.options.map.columns; i += 1) {
-            var isColumnDisabled = (disabled?.columns && disabled.columns.indexOf(i) >= 0) || false;
+        for (let i = 0; i < this.options.map.columns; i += 1) {
+            let isColumnDisabled = (disabled?.columns && disabled.columns.indexOf(i) >= 0) || false;
             disabledCount = isColumnDisabled ? disabledCount + 1 : disabledCount;
 
-            var index = generateName(i, isColumnDisabled, disabledCount);
+            let index = generateName(i, isColumnDisabled, disabledCount);
             if (index) {
                 columnIndex.appendChild(this.createIndex(index));
             } else {
@@ -1090,7 +1090,7 @@ class Seatchart {
             );
         }
 
-        var container = document.createElement('div');
+        let container = document.createElement('div');
 
         if (name) {
             container.className = `sc-${name}-container`;
@@ -1111,7 +1111,7 @@ class Seatchart {
      * @private
      */
     private removeAllTypesApplied(seat: HTMLDivElement) {
-        for (var i = 0; i < this.types.length; i += 1) {
+        for (let i = 0; i < this.types.length; i += 1) {
             seat.classList.remove(this.types[i]);
         }
     };
@@ -1130,22 +1130,22 @@ class Seatchart {
         }
 
         // add disabled columns to disabled array
-        var disabledColumns = this.options.map.disabled?.columns;
+        let disabledColumns = this.options.map.disabled?.columns;
         if (disabledColumns) {
-            for (var k = 0; k < disabledColumns.length; k += 1) {
-                var disabledColumn = disabledColumns[k];
-                for (var r = 0; r < this.options.map.rows; r += 1) {
+            for (let k = 0; k < disabledColumns.length; k += 1) {
+                let disabledColumn = disabledColumns[k];
+                for (let r = 0; r < this.options.map.rows; r += 1) {
                     this.options.map.disabled.seats.push((this.options.map.columns * r) + disabledColumn);
                 }
             }
         }
 
         // add disabled rows to disabled array
-        var disabledRows = this.options.map.disabled?.rows;
+        let disabledRows = this.options.map.disabled?.rows;
         if (disabledRows) {
-            for (var m = 0; m < disabledRows.length; m += 1) {
-                var disabledRow = disabledRows[m];
-                for (var c = 0; c < this.options.map.columns; c += 1) {
+            for (let m = 0; m < disabledRows.length; m += 1) {
+                let disabledRow = disabledRows[m];
+                for (let c = 0; c < this.options.map.columns; c += 1) {
                     this.options.map.disabled.seats.push((this.options.map.columns * disabledRow) + c);
                 }
             }
@@ -1160,14 +1160,14 @@ class Seatchart {
         const types: ('reserved' | 'disabled')[] = ['reserved', 'disabled'];
 
         for (let type of types) {
-            var seats = this.options.map[type]?.seats;
+            let seats = this.options.map[type]?.seats;
             if (seats) {
-                var columns = this.options.map.columns;
+                let columns = this.options.map.columns;
 
-                for (var i = 0; i < seats.length; i += 1) {
-                    var index = seats[i];
-                    var id = `${Math.floor(index / columns)}_${index % columns}`;
-                    var seat = <HTMLDivElement> document.getElementById(id);
+                for (let i = 0; i < seats.length; i += 1) {
+                    let index = seats[i];
+                    let id = `${Math.floor(index / columns)}_${index % columns}`;
+                    let seat = <HTMLDivElement> document.getElementById(id);
 
                     if (seat != null) {
                         this.removeAllTypesApplied(seat);
@@ -1189,32 +1189,32 @@ class Seatchart {
      * @private
      */
     private loadCartItems(): number {
-        var count = 0;
+        let count = 0;
 
-        for (var i = 0; i < this.options.types.length; i += 1) {
-            var seatType = this.options.types[i];
+        for (let i = 0; i < this.options.types.length; i += 1) {
+            let seatType = this.options.types[i];
 
             if (seatType.selected) {
-                var type = seatType.type;
-                var price = seatType.price;
+                let type = seatType.type;
+                let price = seatType.price;
 
                 count += seatType.selected.length;
 
-                for (var j = 0; j < seatType.selected.length; j += 1) {
-                    var index = seatType.selected[j];
-                    var row = Math.floor(index / this.options.map.columns);
-                    var column = index % this.options.map.columns;
-                    var id = `${row}_${column}`;
-                    var name = this.getSeatName(id);
+                for (let j = 0; j < seatType.selected.length; j += 1) {
+                    let index = seatType.selected[j];
+                    let row = Math.floor(index / this.options.map.columns);
+                    let column = index % this.options.map.columns;
+                    let id = `${row}_${column}`;
+                    let name = this.getSeatName(id);
 
-                    var seat: Seat = {
+                    let seat: Seat = {
                         id,
                         name,
                         type,
                         price,
                         index,
                     };
-                    var cartItem = this.createCartItem(seat);
+                    let cartItem = this.createCartItem(seat);
 
                     if (this.cartTable) {
                         this.cartTable.appendChild(cartItem);
@@ -1231,19 +1231,19 @@ class Seatchart {
      * @private
      */
     private selectSeats(): void {
-        for (var n = 0; n < this.options.types.length; n += 1) {
-            var seatType = this.options.types[n];
+        for (let n = 0; n < this.options.types.length; n += 1) {
+            let seatType = this.options.types[n];
 
             if (seatType.selected) {
-                var type = seatType.type;
-                var backgroundColor = seatType.backgroundColor;
-                var color = seatType.textColor || this.defaultTextColor;
+                let type = seatType.type;
+                let backgroundColor = seatType.backgroundColor;
+                let color = seatType.textColor || this.defaultTextColor;
 
-                for (var l = 0; l < seatType.selected.length; l += 1) {
-                    var index = seatType.selected[l];
-                    var id = `${Math.floor(index / this.options.map.columns)}_${index % this.options.map.columns}`;
+                for (let l = 0; l < seatType.selected.length; l += 1) {
+                    let index = seatType.selected[l];
+                    let id = `${Math.floor(index / this.options.map.columns)}_${index % this.options.map.columns}`;
 
-                    var element = document.getElementById(id);
+                    let element = document.getElementById(id);
                     if (element) {
                         // set background
                         element.classList.remove('available');
@@ -1263,7 +1263,7 @@ class Seatchart {
      * @returns {number} Price.
      */
     public getPrice(type: string): number {
-        for (var i = 0; i < this.options.types.length; i += 1) {
+        for (let i = 0; i < this.options.types.length; i += 1) {
             if (this.options.types[i].type === type) {
                 return this.options.types[i].price;
             }
@@ -1277,9 +1277,9 @@ class Seatchart {
      * @returns {number} - The total price.
      */
     public getTotal(): number {
-        var total = 0;
+        let total = 0;
         const keys = Object.keys(this.cartDict);
-        for (var key of keys) {
+        for (let key of keys) {
             total += this.getPrice(key) * this.cartDict[key].length;
         }
 
@@ -1298,10 +1298,10 @@ class Seatchart {
             throw new Error("Invalid parameter 'seatIndex' supplied to Seatchart.isGap(). Index is out of range.");
         }
 
-        var row = Math.floor(seatIndex / this.options.map.columns);
-        var col = seatIndex % this.options.map.columns;
+        let row = Math.floor(seatIndex / this.options.map.columns);
+        let col = seatIndex % this.options.map.columns;
 
-        var seatId = `${row}_${col}`;
+        let seatId = `${row}_${col}`;
 
         // if current seat is disabled or reserved do not continue
         if ((this.options.map.disabled?.seats && this.options.map.disabled.seats.indexOf(seatIndex) >= 0) ||
@@ -1315,23 +1315,23 @@ class Seatchart {
         const keys = Object.keys(this.cartDict);
 
         // if current seat is selected do not continue
-        for (var key of keys) {
+        for (let key of keys) {
             if (this.cartDict[key].indexOf(seatId) >= 0) {
                 return false;
             }
         }
 
-        var colBefore = col - 1;
-        var colAfter = col + 1;
+        let colBefore = col - 1;
+        let colAfter = col + 1;
 
-        var seatBefore = seatIndex - 1;
-        var seatAfter = seatIndex + 1;
+        let seatBefore = seatIndex - 1;
+        let seatAfter = seatIndex + 1;
 
-        var isSeatBeforeDisabled = this.options.map.disabled?.seats ? this.options.map.disabled.seats.indexOf(seatBefore) >= 0 : false;
-        var isSeatAfterDisabled = this.options.map.disabled?.seats ? this.options.map.disabled.seats.indexOf(seatAfter) >= 0 : false;
+        let isSeatBeforeDisabled = this.options.map.disabled?.seats ? this.options.map.disabled.seats.indexOf(seatBefore) >= 0 : false;
+        let isSeatAfterDisabled = this.options.map.disabled?.seats ? this.options.map.disabled.seats.indexOf(seatAfter) >= 0 : false;
 
-        var isSeatBeforeReserved = this.options.map.reserved?.seats ? this.options.map.reserved.seats.indexOf(seatBefore) >= 0 : false;
-        var isSeatAfterReserved = this.options.map.reserved?.seats ? this.options.map.reserved.seats.indexOf(seatAfter) >= 0 : false;
+        let isSeatBeforeReserved = this.options.map.reserved?.seats ? this.options.map.reserved.seats.indexOf(seatBefore) >= 0 : false;
+        let isSeatAfterReserved = this.options.map.reserved?.seats ? this.options.map.reserved.seats.indexOf(seatAfter) >= 0 : false;
 
         // if there's a disabled/reserved block before and after do not consider it a gap
         if ((isSeatBeforeDisabled && isSeatAfterDisabled) ||
@@ -1348,14 +1348,14 @@ class Seatchart {
             return false;
         }
 
-        var seatBeforeId = `${row}_${colBefore}`;
-        var seatAfterId = `${row}_${colAfter}`;
+        let seatBeforeId = `${row}_${colBefore}`;
+        let seatAfterId = `${row}_${colAfter}`;
 
-        var isSeatBeforeSelected = false;
-        var isSeatAfterSelected = false;
+        let isSeatBeforeSelected = false;
+        let isSeatAfterSelected = false;
 
         // check if seat before and after are selected
-        for (var type of keys) {
+        for (let type of keys) {
             if (!isSeatBeforeSelected) {
                 isSeatBeforeSelected = this.cartDict[type].indexOf(seatBeforeId) >= 0;
             }
@@ -1369,12 +1369,12 @@ class Seatchart {
             }
         }
 
-        var isSeatBeforeUnavailable = colBefore < 0 ||
+        let isSeatBeforeUnavailable = colBefore < 0 ||
             (this.options.map.reserved?.seats && this.options.map.reserved.seats.indexOf(seatBefore) >= 0) ||
             isSeatBeforeDisabled ||
             isSeatBeforeSelected;
 
-        var isSeatAfterUnavailable = colAfter >= this.options.map.columns ||
+        let isSeatAfterUnavailable = colAfter >= this.options.map.columns ||
             (this.options.map.reserved?.seats && this.options.map.reserved.seats.indexOf(seatAfter) >= 0) ||
             isSeatAfterDisabled ||
             isSeatAfterSelected;
@@ -1400,14 +1400,14 @@ class Seatchart {
             );
         }
 
-        var col = seatIndex % this.options.map.columns;
+        let col = seatIndex % this.options.map.columns;
 
-        var isSeatBeforeGap = false;
+        let isSeatBeforeGap = false;
         if (seatIndex - 1 >= 0 && col > 0) {
             isSeatBeforeGap = this.isGap(seatIndex - 1);
         }
 
-        var isSeatAfterGap = false;
+        let isSeatAfterGap = false;
         if ((seatIndex + 1 < this.options.map.columns * this.options.map.rows) && (col + 1 < this.options.map.columns)) {
             isSeatAfterGap = this.isGap(seatIndex + 1);
         }
@@ -1420,9 +1420,9 @@ class Seatchart {
      * @returns {Array.<number>} Array of indexes.
      */
     public getGaps(): number[] {
-        var gaps = [];
-        var count = this.options.map.columns * this.options.map.rows;
-        for (var i = 0; i < count; i += 1) {
+        let gaps = [];
+        let count = this.options.map.columns * this.options.map.rows;
+        for (let i = 0; i < count; i += 1) {
             if (this.isGap(i)) {
                 gaps.push(i);
             }
@@ -1444,10 +1444,10 @@ class Seatchart {
         }
 
         if (index < this.options.map.rows * this.options.map.columns) {
-            var row = Math.floor(index / this.options.map.columns);
-            var col = index % this.options.map.columns;
-            var seatId = `${row}_${col}`;
-            var name = this.getSeatName(seatId);
+            let row = Math.floor(index / this.options.map.columns);
+            let col = index % this.options.map.columns;
+            let seatId = `${row}_${col}`;
+            let name = this.getSeatName(seatId);
 
             // check if seat is reserved
             if (this.options.map.reserved?.seats && this.options.map.reserved.seats.indexOf(index) >= 0) {
@@ -1474,8 +1474,8 @@ class Seatchart {
             const keys = Object.keys(this.cartDict);
 
             // check if seat is already selected
-            for (var type of keys) {
-                var price = this.getPrice(type);
+            for (let type of keys) {
+                let price = this.getPrice(type);
                 if (this.cartDict[type].indexOf(seatId) >= 0) {
                     return {
                         type,
@@ -1506,7 +1506,7 @@ class Seatchart {
      * @param {boolean} [emit = false] - True to trigger onChange event.
      */
     public set(index: number, type: string, emit: boolean) {
-        var seatType;
+        let seatType;
         if (typeof index !== 'number' && Math.floor(index) === index) {
             throw new Error("Invalid parameter 'index' supplied to Seatchart.set(). It must be an integer.");
         } else if (index >= this.options.map.rows * this.options.map.columns) {
@@ -1524,21 +1524,21 @@ class Seatchart {
             }
         }
 
-        var seat = this.get(index);
+        let seat = this.get(index);
         if (!seat || seat.type === type) {
             return;
         }
 
-        var classes: { [key: string]: string } = {
+        let classes: { [key: string]: string } = {
             disabled: 'sc-blank',
             reserved: 'sc-unavailable'
         };
 
-        var element = document.getElementById(seat.id);
+        let element = document.getElementById(seat.id);
         if (element) {
             if (seat.type === 'disabled' || seat.type === 'reserved') {
-                var seats = this.options.map[seat.type]?.seats;
-                var arrayIndex = seats && seats.indexOf(index);
+                let seats = this.options.map[seat.type]?.seats;
+                let arrayIndex = seats && seats.indexOf(index);
                 if (seats && arrayIndex && arrayIndex >= 0) {
                     seats.splice(arrayIndex, 1);
                 }
@@ -1589,11 +1589,11 @@ class Seatchart {
      * @private
      */
     private createLegendItem(content: string, type: string, backgroundColor?: string): HTMLLIElement {
-        var item = document.createElement('li');
+        let item = document.createElement('li');
         item.className = 'sc-legend-item';
-        var itemStyle = document.createElement('div');
+        let itemStyle = document.createElement('div');
         itemStyle.className = `sc-seat legend-style ${type}`;
-        var description = document.createElement('p');
+        let description = document.createElement('p');
         description.className = 'sc-legend-description';
         description.textContent = content;
 
@@ -1614,7 +1614,7 @@ class Seatchart {
      * @private
      */
     private createLegendList(): HTMLUListElement {
-        var list = document.createElement('ul');
+        let list = document.createElement('ul');
         list.className = 'sc-legend';
 
         return list;
@@ -1627,7 +1627,7 @@ class Seatchart {
      * @private
      */
     private createSmallTitle(content: string): HTMLHeadingElement {
-        var smallTitle = document.createElement('h5');
+        let smallTitle = document.createElement('h5');
         smallTitle.textContent = content;
         smallTitle.className = 'sc-small-title';
 
@@ -1640,7 +1640,7 @@ class Seatchart {
      * @private
      */
     private createCartTable(): HTMLDivElement {
-        var container = document.createElement('table');
+        let container = document.createElement('table');
         container.className = 'sc-cart-items';
 
         return container;
@@ -1651,31 +1651,31 @@ class Seatchart {
      * @private
      */
     private deleteAllClick(): void {
-        var removedSeats: ClearEvent = [];
+        let removedSeats: ClearEvent = [];
 
         const keys = Object.keys(this.cartDict);
 
         // release all selected seats and remove them from dictionary
-        for (var key of keys) {
-            for (var i = 0; i < this.cartDict[key].length; i += 1) {
-                var id = this.cartDict[key][i];
+        for (let key of keys) {
+            for (let i = 0; i < this.cartDict[key].length; i += 1) {
+                let id = this.cartDict[key][i];
 
                 this.releaseSeat(id);
 
                 // fire event
                 if (this.onChange != null) {
-                    var index = this.getIndexFromId(id);
-                    var seatName = this.getSeatName(id);
-                    var type = this.getSeatType(id);
+                    let index = this.getIndexFromId(id);
+                    let seatName = this.getSeatName(id);
+                    let type = this.getSeatType(id);
 
-                    var current: Seat = {
+                    let current: Seat = {
                         type: 'available',
                         id: id,
                         index: index,
                         name: seatName,
                         price: null
                     };
-                    var previous: Seat = {
+                    let previous: Seat = {
                         type: type,
                         id: id,
                         index: index,
@@ -1710,7 +1710,7 @@ class Seatchart {
      * @private
      */
     private createCartItemsCounter(count: number): HTMLDivElement {
-        var cartItemsCount = document.createElement('h3');
+        let cartItemsCount = document.createElement('h3');
         cartItemsCount.textContent = `(${count})`;
 
         return cartItemsCount;
@@ -1722,16 +1722,16 @@ class Seatchart {
      * @private
      */
     private createCartTotal(): HTMLDivElement {
-        var container = document.createElement('div');
-        var currency = this.options.cart?.currency || this.defaultTextColor;
+        let container = document.createElement('div');
+        let currency = this.options.cart?.currency || this.defaultTextColor;
         this.cartTotal = this.createSmallTitle(`Total: ${currency}${this.getTotal()}`);
         this.cartTotal.className += ' sc-cart-total';
 
-        var deleteBtn = this.createScDeleteButton();
+        let deleteBtn = this.createScDeleteButton();
         deleteBtn.onclick = this.deleteAllClick;
         deleteBtn.className += ' all';
 
-        var label = document.createElement('p');
+        let label = document.createElement('p');
         label.textContent = 'All';
         deleteBtn.appendChild(label);
 
@@ -1748,17 +1748,17 @@ class Seatchart {
     private createLegend(): void {
         if (this.options.legend) {
             // create legend container
-            var legendContainer = this.createContainer('legend', 'column');
-            var legendTitle = this.createTitle('Legend');
+            let legendContainer = this.createContainer('legend', 'column');
+            let legendTitle = this.createTitle('Legend');
 
-            var seatsList = this.createLegendList();
-            var currency = this.options.cart?.currency || this.defaultCurrency;
+            let seatsList = this.createLegendList();
+            let currency = this.options.cart?.currency || this.defaultCurrency;
 
-            for (var i = 0; i < this.options.types.length; i += 1) {
-                var description = `${this.capitalizeFirstLetter(this.options.types[i].type)} ` +
+            for (let i = 0; i < this.options.types.length; i += 1) {
+                let description = `${this.capitalizeFirstLetter(this.options.types[i].type)} ` +
                     currency +
                     this.options.types[i].price.toFixed(2);
-                var item = this.createLegendItem(description, '', this.options.types[i].backgroundColor);
+                let item = this.createLegendItem(description, '', this.options.types[i].backgroundColor);
                 seatsList.appendChild(item);
             }
             seatsList.appendChild(this.createLegendItem('Already booked', 'unavailable'));
@@ -1767,7 +1767,7 @@ class Seatchart {
             legendContainer.appendChild(seatsList);
             legendContainer.appendChild(seatsList);
 
-            var legend = document.getElementById(this.options.legend.id);
+            let legend = document.getElementById(this.options.legend.id);
 
             if (legend) {
                 legend.appendChild(legendContainer);
@@ -1781,18 +1781,18 @@ class Seatchart {
      */
     private createCart(): void {
         if (this.options.cart) {
-            var cartContainer = this.createContainer('cart', 'column');
-            var assetPath = this.options.assets && this.options.assets.path ?
+            let cartContainer = this.createContainer('cart', 'column');
+            let assetPath = this.options.assets && this.options.assets.path ?
                 `${this.options.assets.path}/shoppingcart.svg` :
                 '../assets/bin.svg';
 
-            var cartTitle = this.createIconedTitle(
+            let cartTitle = this.createIconedTitle(
                 'Your Cart',
                 assetPath,
                 'Shopping cart icon.'
             );
 
-            var cartTableContainer = document.createElement('div');
+            let cartTableContainer = document.createElement('div');
             cartTableContainer.classList.add('sc-cart');
             cartTableContainer.style.width = `${this.options.cart.width}px`;
             cartTableContainer.style.height = `${this.options.cart.height}px`;
@@ -1800,8 +1800,8 @@ class Seatchart {
             this.cartTable = this.createCartTable();
             cartTableContainer.appendChild(this.cartTable);
 
-            var itemsCount = this.loadCartItems();
-            var cartTotal = this.createCartTotal();
+            let itemsCount = this.loadCartItems();
+            let cartTotal = this.createCartTotal();
 
             this.cartItemsCounter = this.createCartItemsCounter(itemsCount);
             cartTitle.appendChild(this.cartItemsCounter);
@@ -1810,7 +1810,7 @@ class Seatchart {
             cartContainer.appendChild(cartTableContainer);
             cartContainer.appendChild(cartTotal);
 
-            var cart = document.getElementById(this.options.cart.id);
+            let cart = document.getElementById(this.options.cart.id);
             if (cart) {
                 cart.appendChild(cartContainer);
             }
@@ -1822,28 +1822,28 @@ class Seatchart {
      * @private
      */
     private createMap(): void {
-        var map = document.createElement('div');
+        let map = document.createElement('div');
         map.classList.add('sc-map');
 
-        var disabled = this.options.map.disabled;
-        var disabledRowsCounter = 0;
+        let disabled = this.options.map.disabled;
+        let disabledRowsCounter = 0;
 
-        var generateName = this.options.map.seatName || this.seatName;
+        let generateName = this.options.map.seatName || this.seatName;
 
         // add rows containing seats
-        for (var i = 0; i < this.options.map.rows; i += 1) {
-            var row = this.createRow();
+        for (let i = 0; i < this.options.map.rows; i += 1) {
+            let row = this.createRow();
 
-            var isRowDisabled = disabled?.rows ? disabled.rows.indexOf(i) >= 0 : false;
+            let isRowDisabled = disabled?.rows ? disabled.rows.indexOf(i) >= 0 : false;
             disabledRowsCounter = isRowDisabled ? disabledRowsCounter + 1 : disabledRowsCounter;
 
-            var disabledColumnsCounter = 0;
+            let disabledColumnsCounter = 0;
 
-            for (var j = 0; j < this.options.map.columns; j += 1) {
-                var isColumnDisabled = disabled?.columns ? disabled.columns.indexOf(j) >= 0 : false;
+            for (let j = 0; j < this.options.map.columns; j += 1) {
+                let isColumnDisabled = disabled?.columns ? disabled.columns.indexOf(j) >= 0 : false;
                 disabledColumnsCounter = isColumnDisabled ? disabledColumnsCounter + 1 : disabledColumnsCounter;
 
-                var seatTextContent = generateName(
+                let seatTextContent = generateName(
                     { index: i, disabled: isRowDisabled, disabledCount: disabledRowsCounter },
                     { index: j, disabled: isColumnDisabled, disabledCount: disabledColumnsCounter }
                 );
@@ -1856,29 +1856,29 @@ class Seatchart {
             map.appendChild(row);
         }
 
-        var indexes = this.options.map.indexes;
-        var front = this.options.map.front;
+        let indexes = this.options.map.indexes;
+        let front = this.options.map.front;
 
-        var columnContainerDirection = 'column';
+        let columnContainerDirection = 'column';
         if (indexes?.columns?.position === 'bottom') {
             columnContainerDirection = 'column-reverse';
         }
 
-        var itemsPosition = 'right';
-        var rowContainerDirection = 'row';
+        let itemsPosition = 'right';
+        let rowContainerDirection = 'row';
         if (indexes?.rows?.position === 'right') {
             rowContainerDirection = 'row-reverse';
             itemsPosition = 'left';
         }
 
-        var rowIndexContainer = this.createContainer(null, rowContainerDirection);
-        var columnIndexContainer = this.createContainer(null, columnContainerDirection, itemsPosition);
+        let rowIndexContainer = this.createContainer(null, rowContainerDirection);
+        let columnIndexContainer = this.createContainer(null, columnContainerDirection, itemsPosition);
         columnIndexContainer.append(rowIndexContainer);
 
         // create map container which will contain everything
-        var mapContainer = this.createContainer('map', 'column', itemsPosition);
+        let mapContainer = this.createContainer('map', 'column', itemsPosition);
 
-        var frontHeader = this.createFrontHeader();
+        let frontHeader = this.createFrontHeader();
         if (!front || front.visible === undefined || front.visible) {
             frontHeader.classList.add('sc-margin-bottom');
             mapContainer.appendChild(frontHeader);
@@ -1896,19 +1896,19 @@ class Seatchart {
         columnIndexContainer.append(rowIndexContainer);
         mapContainer.append(columnIndexContainer);
 
-        var seatmap = document.getElementById(this.options.map.id);
+        let seatmap = document.getElementById(this.options.map.id);
         if (seatmap) {
             seatmap.appendChild(mapContainer);
         }
 
-        var seat = <HTMLElement> document.getElementsByClassName('sc-seat')[0];
-        var width = seat.offsetWidth;
+        let seat = <HTMLElement> document.getElementsByClassName('sc-seat')[0];
+        let width = seat.offsetWidth;
 
-        var computedStyle = this.getStyle(seat);
-        var margins = parseInt(computedStyle.marginLeft, 10) +
+        let computedStyle = this.getStyle(seat);
+        let margins = parseInt(computedStyle.marginLeft, 10) +
             parseInt(computedStyle.marginRight, 10);
 
-        var mapWidth = (width + margins) * this.options.map.columns;
+        let mapWidth = (width + margins) * this.options.map.columns;
 
         // set front header and map width
         map.style.width = `${mapWidth}px`;
