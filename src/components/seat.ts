@@ -4,6 +4,8 @@ interface Seat {
     index: number;
     name: string;
     price: number | null;
-};
+}
 
-export default Seat;
+export {
+    Seat,
+};

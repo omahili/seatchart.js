@@ -1,15 +1,15 @@
-import Seat from "./seat";
+import { Seat } from "seat";
 
-type ChangeEvent = {
-    action: string,
-    current: Seat,
-    previous: Seat,
+interface ChangeEvent {
+    action: string;
+    current: Seat;
+    previous: Seat;
 }
 
-type ClearEvent = Array<{
+type ClearEvent = {
     current: Seat,
     previous: Seat,
-}>
+}[];
 
 export {
     ChangeEvent,

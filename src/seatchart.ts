@@ -1,6 +1,6 @@
-import { ChangeEvent, ClearEvent } from "./components/events";
-import Options from "./components/options";
-import Seat from "./components/seat";
+import { ChangeEvent, ClearEvent } from "components/events";
+import { Options } from "components/options";
+import { Seat } from "components/seat";
 
 /**
  * Callback to generate a seat name.
@@ -97,7 +97,7 @@ class Seatchart {
      * @type {Object<string, Array.<number>>}
      * @private
      */
-    private cart: { [key: string]: Array<number> } = {};
+    private cart: { [key: string]: number[] } = {};
 
     /**
      * A string containing all the letters of the english alphabet.
@@ -111,7 +111,7 @@ class Seatchart {
      * @type {Array.<string>}
      * @private
      */
-    private types: Array<string> = [];
+    private types: string[] = [];
 
     /**
      * The main div container containing all the shopping cart elements.
@@ -143,20 +143,9 @@ class Seatchart {
      * @property {Array.<number>} - Ids of the seats added to the cart.
      * @private
      */
-    private cartDict: { [key: string]: Array<string> } = {};
+    private cartDict: { [key: string]: string[] } = {};
 
-    /**
-     * Default text color.
-     * @type {string}
-     * @private
-     */
     private defaultTextColor = 'white';
-
-    /**
-     * Default currency.
-     * @type {string}
-     * @private
-     */
     private defaultCurrency = '€';
 
     /**
@@ -300,7 +289,7 @@ class Seatchart {
     * Gets a reference to the shopping cart object.
     * @returns {Object<string, Array.<number>>} An object containing all seats added to the shopping cart, mapped by seat type.
     */
-    public getCart(): { [key: string]: Array<number> } {
+    public getCart(): { [key: string]: number[] } {
         return this.cart;
     };
 
@@ -365,9 +354,7 @@ class Seatchart {
      * @private
      */
     private getIndexFromId(id: string): number {
-        var values = id.split('_').map(function parseValues(id) {
-            return parseInt(id, 10);
-        });
+        var values = id.split('_').map((id) => parseInt(id, 10));
 
         return (this.options.map.columns * values[0]) + values[1];
     };
@@ -378,7 +365,8 @@ class Seatchart {
      * @private
      */
     private updateCartObject(): void {
-        for (var s in this.cartDict) {
+        const keys = Object.keys(this.cartDict);
+        for (var s of keys) {
             if ({}.hasOwnProperty.call(this.cartDict, s)) {
                 this.cart[s] = this.cartDict[s].map(x => this.getIndexFromId(x));
             }
@@ -452,11 +440,10 @@ class Seatchart {
      * @private
      */
     private getSeatType(id: string): string {
-        for (var key in this.cartDict) {
-            if ({}.hasOwnProperty.call(this.cartDict, key)) {
-                if (this.cartDict[key].indexOf(id) >= 0) {
-                    return key;
-                }
+        const keys = Object.keys(this.cartDict);
+        for (var key of keys) {
+            if (this.cartDict[key].indexOf(id) >= 0) {
+                return key;
             }
         }
 
@@ -494,11 +481,10 @@ class Seatchart {
                 }
             }
         } else {
-            for (var key in this.cartDict) {
-                if ({}.hasOwnProperty.call(this.cartDict, key)) {
-                    if (this.removeFromCartDict(id, key)) {
-                        return true;
-                    }
+            const keys = Object.keys(this.cartDict);
+            for (var key of keys) {
+                if (this.removeFromCartDict(id, key)) {
+                    return true;
                 }
             }
         }
@@ -577,9 +563,7 @@ class Seatchart {
      * @private
      */
     private createTicket(seat: Seat): HTMLDivElement {
-        var seatConfig = this.options.types.find(function findSeatType(x) {
-            return x.type === seat.type;
-        });
+        var seatConfig = this.options.types.find((x) => x.type === seat.type);
 
         if (!seatConfig) {
             throw new Error(`Options for seat type '${seat.type}' not found.`);
@@ -718,12 +702,10 @@ class Seatchart {
                 if (cartItem) {
                     var itemContent = cartItem.getElementsByTagName('td');
 
-                    var seatConfig = this.options.types.find(function findSeatType(x) {
-                        return x.type === current.type;
-                    });
+                    var seatConfig = this.options.types.find((x) => x.type === current.type);
 
                     if (seatConfig) {
-                        var ticket = itemContent[0].getElementsByClassName('sc-ticket')[0] as HTMLElement;
+                        var ticket = <HTMLElement> itemContent[0].getElementsByClassName('sc-ticket')[0];
                         ticket.style.backgroundColor = seatConfig.backgroundColor;
                         ticket.style.color = seatConfig.textColor || this.defaultTextColor;
 
@@ -1135,27 +1117,66 @@ class Seatchart {
     };
 
     /**
-     * Sets all disabled seats as blank or reserved seats as unavailable.
-     * @param {string} type - The type of seats to set ('reserved' or 'disabled').
+     * Add to options each seat from disabled columns and rows.
      * @private
      */
-    private setSeat(type: 'reserved' | 'disabled'): void {
-        var seats = this.options.map[type]?.seats;
-        if (seats) {
-            var columns = this.options.map.columns;
+    private addDisabledSeatsToOptions(): void {
+        if (!this.options.map.disabled) {
+            this.options.map.disabled = {};
+        }
 
-            for (var i = 0; i < seats.length; i += 1) {
-                var index = seats[i];
-                var id = `${Math.floor(index / columns)}_${index % columns}`;
-                var seat = document.getElementById(id) as HTMLDivElement;
+        if (!this.options.map.disabled?.seats) {
+            this.options.map.disabled.seats = [];
+        }
 
-                if (seat != null) {
-                    this.removeAllTypesApplied(seat);
+        // add disabled columns to disabled array
+        var disabledColumns = this.options.map.disabled?.columns;
+        if (disabledColumns) {
+            for (var k = 0; k < disabledColumns.length; k += 1) {
+                var disabledColumn = disabledColumns[k];
+                for (var r = 0; r < this.options.map.rows; r += 1) {
+                    this.options.map.disabled.seats.push((this.options.map.columns * r) + disabledColumn);
+                }
+            }
+        }
 
-                    if (type === 'disabled') {
-                        seat.classList.add('blank');
-                    } else if (type === 'reserved') {
-                        seat.classList.add('unavailable');
+        // add disabled rows to disabled array
+        var disabledRows = this.options.map.disabled?.rows;
+        if (disabledRows) {
+            for (var m = 0; m < disabledRows.length; m += 1) {
+                var disabledRow = disabledRows[m];
+                for (var c = 0; c < this.options.map.columns; c += 1) {
+                    this.options.map.disabled.seats.push((this.options.map.columns * disabledRow) + c);
+                }
+            }
+        }
+    };
+
+    /**
+     * Disables and reserves all seats given in the options.
+     * @private
+     */
+    private disableAndReserveSeats(): void {
+        const types: ('reserved' | 'disabled')[] = ['reserved', 'disabled'];
+
+        for (let type of types) {
+            var seats = this.options.map[type]?.seats;
+            if (seats) {
+                var columns = this.options.map.columns;
+
+                for (var i = 0; i < seats.length; i += 1) {
+                    var index = seats[i];
+                    var id = `${Math.floor(index / columns)}_${index % columns}`;
+                    var seat = <HTMLDivElement> document.getElementById(id);
+
+                    if (seat != null) {
+                        this.removeAllTypesApplied(seat);
+
+                        if (type === 'disabled') {
+                            seat.classList.add('blank');
+                        } else if (type === 'reserved') {
+                            seat.classList.add('unavailable');
+                        }
                     }
                 }
             }
@@ -1257,10 +1278,9 @@ class Seatchart {
      */
     public getTotal(): number {
         var total = 0;
-        for (var key in this.cartDict) {
-            if ({}.hasOwnProperty.call(this.cartDict, key)) {
-                total += this.getPrice(key) * this.cartDict[key].length;
-            }
+        const keys = Object.keys(this.cartDict);
+        for (var key of keys) {
+            total += this.getPrice(key) * this.cartDict[key].length;
         }
 
         return total;
@@ -1292,12 +1312,12 @@ class Seatchart {
             return false;
         }
 
+        const keys = Object.keys(this.cartDict);
+
         // if current seat is selected do not continue
-        for (var key in this.cartDict) {
-            if ({}.hasOwnProperty.call(this.cartDict, key)) {
-                if (this.cartDict[key].indexOf(seatId) >= 0) {
-                    return false;
-                }
+        for (var key of keys) {
+            if (this.cartDict[key].indexOf(seatId) >= 0) {
+                return false;
             }
         }
 
@@ -1335,19 +1355,17 @@ class Seatchart {
         var isSeatAfterSelected = false;
 
         // check if seat before and after are selected
-        for (var type in this.cartDict) {
-            if ({}.hasOwnProperty.call(this.cartDict, type)) {
-                if (!isSeatBeforeSelected) {
-                    isSeatBeforeSelected = this.cartDict[type].indexOf(seatBeforeId) >= 0;
-                }
+        for (var type of keys) {
+            if (!isSeatBeforeSelected) {
+                isSeatBeforeSelected = this.cartDict[type].indexOf(seatBeforeId) >= 0;
+            }
 
-                if (!isSeatAfterSelected) {
-                    isSeatAfterSelected = this.cartDict[type].indexOf(seatAfterId) >= 0;
-                }
+            if (!isSeatAfterSelected) {
+                isSeatAfterSelected = this.cartDict[type].indexOf(seatAfterId) >= 0;
+            }
 
-                if (isSeatAfterSelected && isSeatBeforeSelected) {
-                    break;
-                }
+            if (isSeatAfterSelected && isSeatBeforeSelected) {
+                break;
             }
         }
 
@@ -1401,7 +1419,7 @@ class Seatchart {
      * Gets all seats which represent a gap of the seat map.
      * @returns {Array.<number>} Array of indexes.
      */
-    public getGaps(): Array<number> {
+    public getGaps(): number[] {
         var gaps = [];
         var count = this.options.map.columns * this.options.map.rows;
         for (var i = 0; i < count; i += 1) {
@@ -1453,19 +1471,19 @@ class Seatchart {
                 };
             }
 
+            const keys = Object.keys(this.cartDict);
+
             // check if seat is already selected
-            for (var type in this.cartDict) {
-                if ({}.hasOwnProperty.call(this.cartDict, type)) {
-                    var price = this.getPrice(type);
-                    if (this.cartDict[type].indexOf(seatId) >= 0) {
-                        return {
-                            type,
-                            id: seatId,
-                            index,
-                            name,
-                            price
-                        };
-                    }
+            for (var type of keys) {
+                var price = this.getPrice(type);
+                if (this.cartDict[type].indexOf(seatId) >= 0) {
+                    return {
+                        type,
+                        id: seatId,
+                        index,
+                        name,
+                        price
+                    };
                 }
             }
 
@@ -1496,9 +1514,7 @@ class Seatchart {
         } else if (typeof type !== 'string') {
             throw new Error("Invalid parameter 'type' supplied to Seatchart.set(). It must be a string.");
         } else {
-            seatType = this.options.types.find(function findSeatType(x) {
-                return x.type === type;
-            });
+            seatType = this.options.types.find((x) => x.type === type);
 
             // check if type is valid
             if (!seatType || ['available', 'reserved', 'disabled'].indexOf(type) < 0) {
@@ -1554,9 +1570,7 @@ class Seatchart {
                 }
             }
 
-            this.types.forEach(function mapClassNames(x) {
-                classes[x] = x;
-            });
+            this.types.forEach((x) => classes[x] = x);
 
             element.classList.add(classes[type]);
             element.classList.remove(classes[seat.type]);
@@ -1639,42 +1653,42 @@ class Seatchart {
     private deleteAllClick(): void {
         var removedSeats: ClearEvent = [];
 
+        const keys = Object.keys(this.cartDict);
+
         // release all selected seats and remove them from dictionary
-        for (var key in this.cartDict) {
-            if ({}.hasOwnProperty.call(this.cartDict, key)) {
-                for (var i = 0; i < this.cartDict[key].length; i += 1) {
-                    var id = this.cartDict[key][i];
+        for (var key of keys) {
+            for (var i = 0; i < this.cartDict[key].length; i += 1) {
+                var id = this.cartDict[key][i];
 
-                    this.releaseSeat(id);
+                this.releaseSeat(id);
 
-                    // fire event
-                    if (this.onChange != null) {
-                        var index = this.getIndexFromId(id);
-                        var seatName = this.getSeatName(id);
-                        var type = this.getSeatType(id);
+                // fire event
+                if (this.onChange != null) {
+                    var index = this.getIndexFromId(id);
+                    var seatName = this.getSeatName(id);
+                    var type = this.getSeatType(id);
 
-                        var current: Seat = {
-                            type: 'available',
-                            id: id,
-                            index: index,
-                            name: seatName,
-                            price: null
-                        };
-                        var previous: Seat = {
-                            type: type,
-                            id: id,
-                            index: index,
-                            name: seatName,
-                            price: this.getPrice(type)
-                        };
+                    var current: Seat = {
+                        type: 'available',
+                        id: id,
+                        index: index,
+                        name: seatName,
+                        price: null
+                    };
+                    var previous: Seat = {
+                        type: type,
+                        id: id,
+                        index: index,
+                        name: seatName,
+                        price: this.getPrice(type)
+                    };
 
-                        removedSeats.push({ current, previous });
-                    }
+                    removedSeats.push({ current, previous });
                 }
-
-                // empty array, fastest way instead of removing each seat
-                this.cartDict[key] = [];
             }
+
+            // empty array, fastest way instead of removing each seat
+            this.cartDict[key] = [];
         }
 
         // empty shopping cart, fastest way instead of removing each item
@@ -1887,7 +1901,7 @@ class Seatchart {
             seatmap.appendChild(mapContainer);
         }
 
-        var seat = document.getElementsByClassName('sc-seat')[0] as HTMLElement;
+        var seat = <HTMLElement> document.getElementsByClassName('sc-seat')[0];
         var width = seat.offsetWidth;
 
         var computedStyle = this.getStyle(seat);
@@ -1903,38 +1917,8 @@ class Seatchart {
             frontHeader.style.width = `${mapWidth}px`;
         }
 
-        if (!this.options.map.disabled) {
-            this.options.map.disabled = {};
-        }
-
-        if (!this.options.map.disabled?.seats) {
-            this.options.map.disabled.seats = [];
-        }
-
-        // add disabled columns to disabled array
-        var disabledColumns = this.options.map.disabled?.columns;
-        if (disabledColumns) {
-            for (var k = 0; k < disabledColumns.length; k += 1) {
-                var disabledColumn = disabledColumns[k];
-                for (var r = 0; r < this.options.map.rows; r += 1) {
-                    this.options.map.disabled.seats.push((this.options.map.columns * r) + disabledColumn);
-                }
-            }
-        }
-
-        // add disabled rows to disabled array
-        var disabledRows = this.options.map.disabled?.rows;
-        if (disabledRows) {
-            for (var m = 0; m < disabledRows.length; m += 1) {
-                var disabledRow = disabledRows[m];
-                for (var c = 0; c < this.options.map.columns; c += 1) {
-                    this.options.map.disabled.seats.push((this.options.map.columns * disabledRow) + c);
-                }
-            }
-        }
-
-        this.setSeat('reserved');
-        this.setSeat('disabled');
+        this.addDisabledSeatsToOptions();
+        this.disableAndReserveSeats();
         this.selectSeats();
     };
 }

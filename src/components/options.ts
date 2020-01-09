@@ -16,17 +16,17 @@ interface Options {
             },
         ) => string,
         reserved?: {
-            seats?: Array<number>,
+            seats?: number[],
         },
         disabled?: {
-            seats?: Array<number>,
-            rows?: Array<number>,
-            columns?: Array<number>,
+            seats?: number[],
+            rows?: number[],
+            columns?: number[],
         },
         indexes?: {
             rows?: {
                 visible?: boolean,
-                position?: 'left' | 'right',
+                position?: "left" | "right",
                 name?: (
                     index: number,
                     disabled: boolean,
@@ -35,7 +35,7 @@ interface Options {
             },
             columns?: {
                 visible?: boolean,
-                position?: 'top' | 'bottom',
+                position?: "top" | "bottom",
                 name?: (
                     index: number,
                     disabled: boolean,
@@ -46,26 +46,28 @@ interface Options {
         front?: {
             visible?: boolean,
         },
-    },
-    types: Array<{
+    };
+    types: {
         type: string,
         backgroundColor: string,
         price: number,
         textColor?: string,
-        selected?: Array<number>,
-    }>,
+        selected?: number[],
+    }[];
     cart?: {
         id: string,
         height?: string,
         width?: string,
         currency?: string,
-    },
+    };
     legend?: {
         id: string,
-    },
+    };
     assets?: {
         path?: string,
-    },
-};
+    };
+}
 
-export default Options;
+export {
+    Options,
+};
