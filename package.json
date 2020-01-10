@@ -8,6 +8,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "stylelint src/css/seatchart.css && eslint src/js/seatchart.js",
+    "build": "npx rollup --config && cp src/style/seatchart.css dist/style/seatchart.css",
     "docs:api": "jsdoc2md --global-index-format none --helper docs/tools/helpers.js --partial docs/tools/header.hbs --partial docs/tools/member-index.hbs --partial docs/tools/body.hbs --files src/js/*.js > docs/api.md",
     "docs:prepare": "gitbook install",
     "docs:examples": "mkdir _book\\seatchart && cp -r src/. _book/seatchart && cp docs/demo.html _book",
@@ -27,11 +28,13 @@
   },
   "homepage": "http://omarmahili.github.io/SeatchartJS/",
   "devDependencies": {
+    "@rollup/plugin-typescript": "^2.1.0",
     "docdash": "^1.1.0",
     "gh-pages": "^2.1.1",
     "gitbook-cli": "^2.3.2",
     "gitbook-plugin-toolbar": "^0.6.0",
     "jsdoc-to-markdown": "^5.0.3",
+    "rollup": "^1.29.0",
     "stylelint": "^9.10.1",
     "stylelint-config-standard": "^18.2.0",
     "tslint": "^5.20.1",
