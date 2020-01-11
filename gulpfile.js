@@ -1,6 +1,8 @@
 const gulp = require('gulp');
 const rollup = require('rollup');
 const rollupTypescript = require('rollup-plugin-typescript2');
+const uglify = require('gulp-uglify');
+const rename = require('gulp-rename');
 
 const output = {
   file: 'dist/seatchart.js',
@@ -47,11 +49,15 @@ gulp.task('default', async function () {
     });
 
     await bundle.write(output);
+
+    gulp.src('dist/seatchart.js')
+      .pipe(uglify())
+      .pipe(rename({ suffix: '.min' }))
+      .pipe(gulp.dest('dist'));
+
+    console.log('\x1b[32m' + 'Built successfully!' + '\x1b[0m', '\n');
   } catch (e) {
     console.log('\x1b[31m' + 'WARNING! An error occurred...' + '\x1b[0m');
     console.log(e.message, '\n');
-    return;
   }
-
-  console.log('\x1b[32m' + 'Built successfully!' + '\x1b[0m', '\n');
 });
