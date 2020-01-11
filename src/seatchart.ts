@@ -175,12 +175,12 @@ class Seatchart {
      *
      * @param {Object} [options.map.indexes.rows] - Rows index options.
      * @param {boolean} [options.map.indexes.rows.visible = true] - Row index visibility.
-     * @param {string} [options.map.indexes.rows.position = 'left'] - Row index position.
+     * @param {string} [options.map.indexes.rows.position = left] - Row index position.
      * @param {rowNameCallback} [options.map.indexes.rows.name] - Row name generator.
      *
      * @param {Object} [options.map.indexes.columns] - Columns index options.
      * @param {boolean} [options.map.indexes.columns.visible = true] - Column index visibility.
-     * @param {string} [options.map.indexes.columns.position = 'top'] - Column index position.
+     * @param {string} [options.map.indexes.columns.position = top] - Column index position.
      * @param {columnNameCallback} [options.map.indexes.columns.name] - Column name generator.
      *
      * @param {Object} [options.map.front] - Front header options.
@@ -191,7 +191,7 @@ class Seatchart {
      * @param {string} options.types.type - Name of seat type.
      * @param {string} options.types.backgroundColor - Background color of the defined seat type.
      * @param {number} options.types.price - Price of the defined seat type.
-     * @param {string} [options.types.textColor = 'white'] - Text color of the defined seat type.
+     * @param {string} [options.types.textColor = white] - Text color of the defined seat type.
      * @param {Array.<number>} [options.types.selected] - Selected seats of the defined seat type.
      *
      *
@@ -199,7 +199,7 @@ class Seatchart {
      * @param {string} options.cart.id - Container id.
      * @param {string} [options.cart.height] - Cart height.
      * @param {string} [options.cart.width] - Cart width.
-     * @param {string} [options.cart.currency = '€'] - Current currency.
+     * @param {string} [options.cart.currency = €] - Current currency.
      *
      *
      * @param {string} [options.legend] - Legend options.
@@ -314,7 +314,7 @@ class Seatchart {
 
     /**
      * Gets the total price of the selected seats.
-     * @returns {number} - The total price.
+     * @returns {number} The total price.
      */
     public getTotal(): number {
         let total = 0;
