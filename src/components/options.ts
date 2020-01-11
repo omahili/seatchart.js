@@ -26,7 +26,7 @@ interface Options {
         indexes?: {
             rows?: {
                 visible?: boolean,
-                position?: "left" | "right",
+                position?: 'left' | 'right',
                 name?: (
                     index: number,
                     disabled: boolean,
@@ -35,7 +35,7 @@ interface Options {
             },
             columns?: {
                 visible?: boolean,
-                position?: "top" | "bottom",
+                position?: 'top' | 'bottom',
                 name?: (
                     index: number,
                     disabled: boolean,

@@ -1,4 +1,4 @@
-import { Seat } from "seat";
+import { Seat } from 'components/seat';
 
 interface ChangeEvent {
     action: string;
