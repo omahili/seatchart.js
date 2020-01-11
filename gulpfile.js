@@ -29,6 +29,8 @@ gulp.task('watch', function () {
       console.log('\x1b[36m' + 'Project bundled' + '\x1b[0m', 'in', event.duration, 'ms to', '\x1b[35m' + 'dist/seatchart.js' + '\x1b[0m' + '\n');
     } else if (event.code === 'ERROR') {
       console.log(event.error + '\n');
+    } else if (event.code === 'FATAL') {
+      console.log(event.error + '\n');
     }
   });
 
