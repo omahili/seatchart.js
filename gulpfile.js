@@ -1,6 +1,6 @@
 const gulp = require('gulp');
 const rollup = require('rollup');
-const rollupTypescript = require('@rollup/plugin-typescript');
+const rollupTypescript = require('rollup-plugin-typescript2');
 
 const output = {
   file: 'dist/seatchart.js',
@@ -40,12 +40,18 @@ gulp.task('watch', function () {
 gulp.task('default', async function () {
   console.log('\n' + '\x1b[32m' + 'Build project...' + '\x1b[0m');
 
-  const bundle = await rollup.rollup({
-    input,
-    plugins,
-  });
+  try {
+    const bundle = await rollup.rollup({
+      input,
+      plugins,
+    });
 
-  await bundle.write(output);
+    await bundle.write(output);
+  } catch (e) {
+    console.log('\x1b[31m' + 'WARNING! An error occurred...' + '\x1b[0m');
+    console.log(e.message, '\n');
+    return;
+  }
 
   console.log('\x1b[32m' + 'Built successfully!' + '\x1b[0m', '\n');
 });
