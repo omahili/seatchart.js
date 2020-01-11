@@ -209,6 +209,8 @@ class Seatchart {
      * @param {Array.<Object>} [options.assets] - Assets options.
      * @param {string} [options.assets.path] - Path to assets.
      *
+     * @alias Seatchart
+     *
      */
     constructor(options: Options) {
         this.options = options;
