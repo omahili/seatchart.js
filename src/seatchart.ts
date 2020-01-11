@@ -1,5 +1,5 @@
-import { NotFoundError } from 'components/errors';
 import { ChangeEvent, ClearEvent } from 'components/events';
+import { NotFoundError } from 'components/not-found-error';
 import { Options } from 'components/options';
 import { Seat } from 'components/seat';
 
