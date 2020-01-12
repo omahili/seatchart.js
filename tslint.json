@@ -4,11 +4,14 @@
         "tslint-microsoft-contrib/recommended"
     ],
     "rules": {
-        "array-type": [true, "array"],
         "indent": [true, "spaces", 4],
         "no-angle-bracket-type-assertion": false,
         "no-var-keyword": true,
         "quotemark": [true, "single"],
-        "interface-name": false
+        "interface-name": false,
+        "import-name": false,
+        "export-name": false,
+        "function-name": false,
+        "prefer-array-literal": false
     }
 }
