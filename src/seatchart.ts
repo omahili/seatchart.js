@@ -9,71 +9,6 @@ import Seat from 'utils/seat';
 import utils from 'utils/utils';
 import Validator from 'utils/validator';
 
-/**
- * Callback to generate a seat name.
- *
- * @function seatNameCallback
- *
- * @param {object} row
- * @param {number} row.index - Row index (starts from 0).
- * @param {boolean} row.disabled - True if current row is disabled.
- * @param {number} row.disabledCount - Number of disabled rows till that one (including current one if disabled).
- *
- * @param {object} column
- * @param {number} column.index - Column index (starts from 0).
- * @param {boolean} column.disabled - True if current column is disabled.
- * @param {number} column.disabledCount - Number of disabled columns till that one (including current one if disabled).
- *
- * @returns {string} Seat name. Return null or undefined if empty.
- */
-
-/**
- * Callback to generate a row name.
- *
- * @function rowNameCallback
- *
- * @param {number} index - Row index (starts from 0).
- * @param {boolean} disabled - True if current row is disabled.
- * @param {number} disabledCount - Number of disabled rows till that one (including current one if disabled).
- *
- * @returns {string} Row name. Return null or undefined if empty.
- */
-
-/**
- * Callback to generate a column name.
- *
- * @function columnNameCallback
- *
- * @param {number} index - Column index (starts from 0).
- * @param {boolean} disabled - True if current column is disabled.
- * @param {number} disabledCount - Number of disabled columns till that one (including current one if disabled).
- *
- * @returns {string} Column name. Return null or undefined if empty.
- *
- */
-
-/**
- * @typedef {Object} Seat
- * @property {string} type - Seat type.
- * @property {number} id - Seat id.
- * @property {number} index - Seat index.
- * @property {string} name - Seat name.
- * @property {number} price - Seat price.
- */
-
-/**
- * @typedef {Array.<Object>} ClearEvent
- * @property {Seat} current - Current seat info.
- * @property {Seat} previous - Seat info previous to the event.
- */
-
-/**
- * @typedef {Object} ChangeEvent
- * @property {string} action - Action on seat ('add', 'remove' or 'update').
- * @property {Seat} current - Current seat info.
- * @property {Seat} previous - Seat info previous to the event.
- */
-
 class Seatchart {
     public readonly options: Options;
 
@@ -116,61 +51,7 @@ class Seatchart {
      * Creates a seatchart.
      * @constructor
      *
-     * @param {Object} options - Seatmap options.
-     *
-     *
-     * @param {Object} options.map - Map options.
-     * @param {string} options.map.id - Container id.
-     * @param {number} options.map.rows - Number of rows.
-     * @param {number} options.map.columns - Number of columns.
-     * @param {seatNameCallback} [options.map.seatName] - Seat name generator.
-     *
-     * @param {Object} [options.map.reserved] - Array of reserved seats.
-     * @param {Array.<number>} [options.map.reserved.seats] - Array of the reserved seats.
-     *
-     * @param {Object} [options.map.disabled] - Disabled seats options.
-     * @param {Array.<number>} [options.map.disabled.seats] - Array of the disabled seats.
-     * @param {Array.<number>} [options.map.disabled.rows] - Array of the disabled rows of seats.
-     *
-     * @param {Array.<number>} [options.map.disabled.columns] - Array of the disabled columns of seats.
-     *
-     * @param {Object} [options.map.indexes] - Indexes options.
-     *
-     * @param {Object} [options.map.indexes.rows] - Rows index options.
-     * @param {boolean} [options.map.indexes.rows.visible = true] - Row index visibility.
-     * @param {string} [options.map.indexes.rows.position = left] - Row index position.
-     * @param {rowNameCallback} [options.map.indexes.rows.name] - Row name generator.
-     *
-     * @param {Object} [options.map.indexes.columns] - Columns index options.
-     * @param {boolean} [options.map.indexes.columns.visible = true] - Column index visibility.
-     * @param {string} [options.map.indexes.columns.position = top] - Column index position.
-     * @param {columnNameCallback} [options.map.indexes.columns.name] - Column name generator.
-     *
-     * @param {Object} [options.map.front] - Front header options.
-     * @param {boolean} [options.map.front.visible = true] - Front header visibility.
-     *
-     *
-     * @param {Array.<Object>} options.types - Seat types options.
-     * @param {string} options.types.type - Name of seat type.
-     * @param {string} options.types.backgroundColor - Background color of the defined seat type.
-     * @param {number} options.types.price - Price of the defined seat type.
-     * @param {string} [options.types.textColor = white] - Text color of the defined seat type.
-     * @param {Array.<number>} [options.types.selected] - Selected seats of the defined seat type.
-     *
-     *
-     * @param {Array.<Object>} [options.cart] - Cart options.
-     * @param {string} options.cart.id - Container id.
-     * @param {string} [options.cart.height] - Cart height.
-     * @param {string} [options.cart.width] - Cart width.
-     * @param {string} [options.cart.currency = €] - Current currency.
-     *
-     *
-     * @param {string} [options.legend] - Legend options.
-     * @param {string} options.legend.id - Container id.
-     *
-     *
-     * @param {Array.<Object>} [options.assets] - Assets options.
-     * @param {string} [options.assets.path] - Path to assets.
+     * @param {Options} options - Seatmap options.
      *
      * @alias Seatchart
      *
@@ -902,7 +783,7 @@ class Seatchart {
      * @private
      */
     private disableAndReserveSeats(): void {
-        const types: ('reserved' | 'disabled')[] = ['reserved', 'disabled'];
+        const types: Array<('reserved' | 'disabled')> = ['reserved', 'disabled'];
 
         for (const type of types) {
             const seats = this.options.map[type]?.seats;
