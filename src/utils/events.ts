@@ -1,24 +1,34 @@
 import Seat from 'utils/seat';
 
 /**
- * @typedef {Object} ChangeEvent
- * @property {string} action - Action on seat ('add', 'remove' or 'update').
- * @property {Seat} current - Current seat info.
- * @property {Seat} previous - Seat info previous to the event.
+ * @internal
  */
 interface ChangeEvent {
+    /**
+     * Action on seat ('add', 'remove' or 'update').
+     */
     action: string;
+    /**
+     * Current seat info.
+     */
     current: Seat;
+    /**
+     * Seat info previous to the event.
+     */
     previous: Seat;
 }
 
 /**
- * @typedef {Array.<Object>} ClearEvent
- * @property {Seat} current - Current seat info.
- * @property {Seat} previous - Seat info previous to the event.
+ * @internal
  */
 type ClearEvent = Array<{
+    /**
+     * Current seat info.
+     */
     current: Seat;
+    /**
+     * Seat info previous to the event.
+     */
     previous: Seat;
 }>;
 

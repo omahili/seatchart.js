@@ -3,24 +3,26 @@ import { DEFAULT_CURRENCY } from 'utils/consts';
 import Options from 'utils/options';
 import utils from 'utils/utils';
 
+/**
+ * @internal
+ */
 class Legend {
     private sc: Seatchart;
     private options: Options;
 
-    public constructor(map: Seatchart) {
-        this.sc = map;
-        this.options = map.options;
+    public constructor(sc: Seatchart) {
+        this.sc = sc;
+        this.options = sc.options;
 
         this.createLegend();
     }
 
     /**
      * Creates a legend item and applies a type and a backgroundColor if needed.
-     * @param {string} content - The text in the legend that explains the type of seat.
-     * @param {string} type - The type of seat.
-     * @param {string} [backgroundColor] - The background color of the item in the legend.
-     * @returns {HTMLLIElement} The legend item.
-     * @private
+     * @param content - The text in the legend that explains the type of seat.
+     * @param type - The type of seat.
+     * @param backgroundColor - The background color of the item in the legend.
+     * @returns The legend item.
      */
     private createLegendItem(content: string, type: string, backgroundColor?: string): HTMLLIElement {
         const item = document.createElement('li');
@@ -44,8 +46,7 @@ class Legend {
 
     /**
      * Creates a legend list.
-     * @returns {HTMLUnorderedListElement} The legend list.
-     * @private
+     * @returns The legend list.
      */
     private createLegendList(): HTMLUListElement {
         const list = document.createElement('ul');
@@ -56,7 +57,6 @@ class Legend {
 
     /**
      * Creates the legend of the seatmap.
-     * @private
      */
     private createLegend(): void {
         if (this.options.legend) {

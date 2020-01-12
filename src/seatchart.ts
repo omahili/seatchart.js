@@ -15,32 +15,24 @@ class Seatchart {
     /**
      * Triggered when a seat is selected or unselected.
      *
-     * @method
-     * @param {ChangeEvent} e - A change event.
-     * @listens ChangeEvent
+     * @param e - A change event.
      */
     public onChange: ((e: ChangeEvent) => void) | undefined;
 
     /**
      * Triggered when all seats are removed with the 'delete all' button in the shopping cart.
      *
-     * @method
-     * @param {ClearEvent} e - A clear event.
-     * @listens ClearEvent
+     * @param e - A clear event.
      */
     public onClear: ((e: ClearEvent) => void) | undefined;
 
     /**
      * A string containing all the letters of the english alphabet.
-     * @type {string}
-     * @private
      */
     private alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
     /**
      * An array of strings containing all the pickable seat types, "available" included.
-     * @type {Array.<string>}
-     * @private
      */
     private types: string[] = [];
 
@@ -49,12 +41,7 @@ class Seatchart {
 
     /**
      * Creates a seatchart.
-     * @constructor
-     *
-     * @param {Options} options - Seatmap options.
-     *
-     * @alias Seatchart
-     *
+     * @param options - Seatmap options.
      */
     public constructor(options: Options) {
         this.options = options;
@@ -70,8 +57,8 @@ class Seatchart {
 
     /**
      * Checks whether a seat is a gap or not.
-     * @param {number} seatIndex - Seat index.
-     * @returns {boolean} True if it is, false otherwise.
+     * @param seatIndex - Seat index.
+     * @returns True if it is, false otherwise.
      */
     public isGap(seatIndex: number): boolean {
         if (typeof seatIndex !== 'number' && Math.floor(seatIndex) === seatIndex) {
@@ -178,8 +165,8 @@ class Seatchart {
 
     /**
      * Checks whether a seat creates a gap or not.
-     * @param {number} seatIndex - Seat index.
-     * @returns {boolean} True if it does, false otherwise.
+     * @param seatIndex - Seat index.
+     * @returns True if it does, false otherwise.
      */
     public makesGap(seatIndex: number): boolean {
         if (typeof seatIndex !== 'number' && Math.floor(seatIndex) === seatIndex) {
@@ -210,7 +197,7 @@ class Seatchart {
 
     /**
      * Gets all seats which represent a gap of the seat map.
-     * @returns {Array.<number>} Array of indexes.
+     * @returns Array of indexes.
      */
     public getGaps(): number[] {
         const gaps = [];
@@ -226,8 +213,8 @@ class Seatchart {
 
     /**
      * Gets seat info.
-     * @param {number} index - Seat index.
-     * @returns {Seat} Seat info.
+     * @param index - Seat index.
+     * @returns Seat info.
      */
     public get(index: number): Seat {
         if (typeof index !== 'number' && Math.floor(index) === index) {
@@ -300,9 +287,9 @@ class Seatchart {
 
     /**
      * Set seat type.
-     * @param {number} index - Index of the seat to update.
-     * @param {string} type - New seat type ('disabled', 'reserved' and 'available' are supported too).
-     * @param {boolean} [emit = false] - True to trigger onChange event.
+     * @param index - Index of the seat to update.
+     * @param type - New seat type ('disabled', 'reserved' and 'available' are supported too).
+     * @param emit - True to trigger onChange event (dafualt false).
      */
     public set(index: number, type: string, emit: boolean): void {
         let seatType;
@@ -388,8 +375,8 @@ class Seatchart {
 
     /**
      * Gets the name of a seat.
-     * @param {string} id - The dom id of the seat in the seatmap.
-     * @returns {string} The name.
+     * @param id - The dom id of the seat in the seatmap.
+     * @returns The name.
      */
     public getSeatName(id: string): string {
         const element = document.getElementById(id);
@@ -402,8 +389,8 @@ class Seatchart {
 
     /**
      * Gets the type of a seat.
-     * @param {string} id - The dom id of the seat in the seatmap.
-     * @returns {string} The type.
+     * @param id - The dom id of the seat in the seatmap.
+     * @returns The type.
      */
     public getSeatType(id: string): string {
         const keys = Object.keys(this.cart.dict);
@@ -418,7 +405,7 @@ class Seatchart {
 
     /**
      * Makes a seat available,
-     * @param {string} id - The dom id of the seat in the seatmap.
+     * @param id - The dom id of the seat in the seatmap.
      */
     public releaseSeat(id: string): void {
         const seat = document.getElementById(id);
@@ -431,9 +418,8 @@ class Seatchart {
 
     /**
      * Computes the style of an element, it works even on ie :P.
-     * @param {Element} el - The element for which we're getting the computed style.
-     * @returns {CSSStyleDeclaration} The css of the element.
-     * @private
+     * @param el - The element for which we're getting the computed style.
+     * @returns The css of the element.
      */
     private getStyle(el: Element): CSSStyleDeclaration {
         return window.getComputedStyle(el);
@@ -441,7 +427,6 @@ class Seatchart {
 
     /**
      * This function is fired when a seat is clicked in the seatmap.
-     * @private
      */
     private seatClick(seat: HTMLElement): () => void {
         return (): void => {
@@ -514,7 +499,6 @@ class Seatchart {
 
     /**
      * This function is fired when a seat is right clicked to be released.
-     * @private
      */
     private rightClickDelete(seat: HTMLElement): (e: Event) => void {
         return (e: Event): boolean => {
@@ -549,11 +533,10 @@ class Seatchart {
 
     /**
      * Generates a row name.
-     * @param {number} row - Row index (starts from 0).
-     * @param {boolean} disabled - True if current row is disabled.
-     * @param {number} disabledCount - Number of disabled rows till that one (including current one if disabled).
-     * @returns {string} Row name. Return null or undefined if empty.
-     * @private
+     * @param row - Row index (starts from 0).
+     * @param disabled - True if current row is disabled.
+     * @param disabledCount - Number of disabled rows till that one (including current one if disabled).
+     * @returns Row name. Return null or undefined if empty.
      */
     private rowName(index: number, disabled: boolean, disabledCount: number): string | undefined {
         if (!disabled) {
@@ -563,11 +546,10 @@ class Seatchart {
 
     /**
      * Generates a column name.
-     * @param {number} column - Column index (starts from 0).
-     * @param {boolean} disabled - True if current column is disabled.
-     * @param {number} disabledCount - Number of disabled columns till that one (including current one if disabled).
-     * @returns {string} Column name. Return null or undefined if empty.
-     * @private
+     * @param column - Column index (starts from 0).
+     * @param disabled - True if current column is disabled.
+     * @param disabledCount - Number of disabled columns till that one (including current one if disabled).
+     * @returns Column name. Return null or undefined if empty.
      */
     private columnName(index: number, disabled: boolean, disabledCount: number): string | undefined {
         if (!disabled) {
@@ -575,25 +557,45 @@ class Seatchart {
         }
     }
 
+    // @param row.index - Row index (starts from 0).
+    // @param row.disabled - True if current row is disabled.
+    // @param row.disabledCount - Number of disabled rows till that one (including current one if disabled).
+
     /**
      * Generates a seat name.
-     * @param {object} row
-     * @param {number} row.index - Row index (starts from 0).
-     * @param {boolean} row.disabled - True if current row is disabled.
-     * @param {number} row.disabledCount - Number of disabled rows till that one (including current one if disabled).
-     *
-     * @param {object} column
-     * @param {number} column.index - Column index (starts from 0).
-     * @param {boolean} column.disabled - True if current column is disabled.
-     * @param {number} column.disabledCount - Number of disabled columns till that one
-     * (including current one if disabled).
-     *
-     * @returns {string} Seat name. Return null if empty.
-     * @private
+     * @param row - Row object.
+     * @param column - Column object.
+     * @returns Seat name. Return null if empty.
      */
     private seatName(
-        row: { index: number; disabled: boolean; disabledCount: number },
-        column: { index: number; disabled: boolean; disabledCount: number },
+        row: {
+            /**
+             * Row index (starts from 0).
+             */
+            index: number;
+            /**
+             * True if current row is disabled.
+             */
+            disabled: boolean;
+            /**
+             * Number of disabled rows till this one.
+             */
+            disabledCount: number;
+        },
+        column: {
+            /**
+             * Column index (starts from 0).
+             */
+            index: number;
+            /**
+             * True if current column is disabled.
+             */
+            disabled: boolean;
+            /**
+             * Number of disabled columns till this one.
+             */
+            disabledCount: number;
+        },
     ): string | undefined {
         if (!row.disabled && !column.disabled) {
             const rowIndex = this.rowName(row.index, row.disabled, row.disabledCount);
@@ -605,11 +607,10 @@ class Seatchart {
 
     /**
      * Creates a new seat.
-     * @param {string} type - The type of the seat.
-     * @param {string} content - The name representing the seat.
-     * @param {string} seatId - The dom id of the seat in the seatmap.
-     * @returns {HTMLDivElement} The seat.
-     * @private
+     * @param type - The type of the seat.
+     * @param content - The name representing the seat.
+     * @param seatId - The dom id of the seat in the seatmap.
+     * @returns The seat.
      */
     private createSeat(type: string, content: string | undefined, seatId: string): HTMLDivElement {
         const seat = document.createElement('div');
@@ -632,8 +633,7 @@ class Seatchart {
 
     /**
      * Creates a seat map row.
-     * @returns {HTMLDivElement} The row.
-     * @private
+     * @returns The row.
      */
     private createRow(): HTMLDivElement {
         const row = document.createElement('div');
@@ -644,8 +644,7 @@ class Seatchart {
 
     /**
      * Creates the header of the seatmap containing the front indicator.
-     * @returns {HTMLDivElement} The seatmap header.
-     * @private
+     * @returns The seatmap header.
      */
     private createFrontHeader(): HTMLDivElement {
         // set the perfect width of the front indicator
@@ -658,9 +657,8 @@ class Seatchart {
 
     /**
      * Creates a seatmap index.
-     * @param {string} content - Index text content.
-     * @returns {HTMLDivElement} The seatmap index.
-     * @private
+     * @param content - Index text content.
+     * @returns The seatmap index.
      */
     private createIndex(content: string): HTMLDivElement {
         const index = document.createElement('div');
@@ -672,8 +670,7 @@ class Seatchart {
 
     /**
      * Creates a seatmap blank spot.
-     * @returns {HTMLDivElement} The seatmap blank spot.
-     * @private
+     * @returns The seatmap blank spot.
      */
     private createBlank(): HTMLDivElement {
         const blank = document.createElement('div');
@@ -684,8 +681,7 @@ class Seatchart {
 
     /**
      * Creates a row containing all the row indexes.
-     * @returns {HTMLDivElement} Row indexes.
-     * @private
+     * @returns Row indexes.
      */
     private createRowIndex(): HTMLDivElement {
         const rowIndex = document.createElement('div');
@@ -717,8 +713,7 @@ class Seatchart {
 
     /**
      * Creates a row containing all the column indexes.
-     * @returns {HTMLDivElement} Column indexes.
-     * @private
+     * @returns Column indexes.
      */
     private createColumnIndex(): HTMLDivElement {
         const columnIndex = document.createElement('div');
@@ -749,8 +744,7 @@ class Seatchart {
 
     /**
      * Removes all classes regarding the type applied to the seat.
-     * @param {HTMLDivElement} seat - Seat element.
-     * @private
+     * @param seat - Seat element.
      */
     private removeAllTypesApplied(seat: HTMLDivElement): void {
         for (const type of this.types) {
@@ -760,7 +754,6 @@ class Seatchart {
 
     /**
      * Add to options each seat from disabled columns and rows.
-     * @private
      */
     private addDisabledSeatsToOptions(): void {
         if (!this.options.map.disabled) {
@@ -794,7 +787,6 @@ class Seatchart {
 
     /**
      * Disables and reserves all seats given in the options.
-     * @private
      */
     private disableAndReserveSeats(): void {
         const types: Array<('reserved' | 'disabled')> = ['reserved', 'disabled'];
@@ -824,7 +816,6 @@ class Seatchart {
 
     /**
      * Selects seats given with seat types.
-     * @private
      */
     private selectSeats(): void {
         for (const seatType of this.options.types) {
@@ -852,7 +843,6 @@ class Seatchart {
 
     /**
      * Creates the seatmap.
-     * @private
      */
     private createMap(): void {
         const map = document.createElement('div');

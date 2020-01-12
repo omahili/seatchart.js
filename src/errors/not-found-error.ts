@@ -1,5 +1,8 @@
+/**
+ * @internal
+ */
 class NotFoundError extends Error {
-    constructor(m: string) {
+    public constructor(m: string) {
         super(m);
 
         // Set the prototype explicitly.

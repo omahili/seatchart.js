@@ -1,16 +1,23 @@
-/**
- * @typedef {Object} Seat
- * @property {string} type - Seat type.
- * @property {number} id - Seat id.
- * @property {number} index - Seat index.
- * @property {string} name - Seat name.
- * @property {number} price - Seat price.
- */
 interface Seat {
+    /**
+     * Seat type.
+     */
     type: string;
+    /**
+     * Seat id.
+     */
     id: string;
+    /**
+     * Seat index.
+     */
     index: number;
+    /**
+     * Seat name.
+     */
     name: string;
+    /**
+     * Seat price.
+     */
     price: number | null;
 }
 

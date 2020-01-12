@@ -1,17 +1,18 @@
 /**
  * Capitalizes the first letter and lowers all the others.
- * @param {string} value - The formatted string.
+ * @param value - The formatted string.
+ * @internal
  */
 const capitalizeFirstLetter = (value: string): string =>
     value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
 
 /**
  * Creates a container.
- * @param {string} name - Container name
- * @param {string} direction - Flex direction ('column', 'row', 'row-reverse' or 'column-reverse').
- * @param {string} [contentPosition] - Content position ('left', 'right', 'top' or 'bottom').
- * @returns {HTMLDivElement} The container.
- * @private
+ * @param name - Container name
+ * @param direction - Flex direction ('column', 'row', 'row-reverse' or 'column-reverse').
+ * @param contentPosition - Content position ('left', 'right', 'top' or 'bottom').
+ * @returns The container.
+ * @internal
  */
 const createContainer = (name: string | null, direction: string, contentPosition?: string): HTMLDivElement => {
     if (!['column', 'row', 'column-reverse', 'row-reverse'].includes(direction)) {
@@ -43,11 +44,11 @@ const createContainer = (name: string | null, direction: string, contentPosition
 
 /**
  * Creates a title with an icon.
- * @param {string} content - The title.
- * @param {string} src - The source path of the icon.
- * @param {string} alt - The text to be displed when the image isn't loaded properly.
- * @returns {HTMLDivElement} The iconed title.
- * @private
+ * @param content - The title.
+ * @param src - The source path of the icon.
+ * @param alt - The text to be displed when the image isn't loaded properly.
+ * @returns The iconed title.
+ * @internal
  */
 const createIconedTitle = (content: string, src: string, alt: string): HTMLDivElement => {
     const container = document.createElement('div');
@@ -67,9 +68,9 @@ const createIconedTitle = (content: string, src: string, alt: string): HTMLDivEl
 
 /**
  * Creates a title.
- * @param {string} content - The content of the title.
- * @returns {HTMLHeadingElement} The title.
- * @private
+ * @param content - The content of the title.
+ * @returns The title.
+ * @internal
  */
 const createTitle = (content: string): HTMLHeadingElement => {
     const title = document.createElement('h3');

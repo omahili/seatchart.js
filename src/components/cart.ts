@@ -6,58 +6,48 @@ import Options from 'utils/options';
 import Seat from 'utils/seat';
 import utils from 'utils/utils';
 
+/**
+ * @internal
+ */
 class Cart {
     /**
      * A dictionary containing all seats added to the shopping cart, mapped by seat type.
      * Each string is composed by row (r) and column (c) indexed in the following format: "r_c",
      * which is the id of the seat in the document.
-     * @type {Object<string, Array.<number>>}
-     * @property {string} - Seat type.
-     * @property {Array.<number>} - Ids of the seats added to the cart.
      */
     public dict: { [key: string]: string[] } = {};
 
     /**
      * The main div container containing all the shopping cart elements.
-     * @type {HTMLDivElement}
-     * @private
      */
     private cartTable: HTMLDivElement | undefined;
 
     /**
      * The text that shows the total cost of the items in the shopping cart.
-     * @type {HTMLHeadingElement}
-     * @private
      */
     private cartTotal: HTMLHeadingElement | undefined;
 
     /**
      * Text that show total number of items in the shopping cart.
-     * @type {HTMLHeadingElement}
-     * @private
      */
     private cartItemsCounter: HTMLHeadingElement | undefined;
 
     /**
      * An object containing all seats added to the shopping cart, mapped by seat type.
-     * @type {Object<string, Array.<number>>}
-     * @private
      */
     private cart: { [key: string]: number[] } = {};
 
     /**
      * An array of strings containing all the pickable seat types, "available" included.
-     * @type {Array.<string>}
-     * @private
      */
     private types: string[] = [];
 
     private options: Options;
-    private map: Seatchart;
+    private sc: Seatchart;
 
-    public constructor(map: Seatchart) {
-        this.options = map.options;
-        this.map = map;
+    public constructor(sc: Seatchart) {
+        this.sc = sc;
+        this.options = sc.options;
 
         this.loadCart();
         this.createCart();
@@ -65,7 +55,7 @@ class Cart {
 
     /**
      * Gets a reference to the shopping cart object.
-     * @returns {Object<string, Array.<number>>} An object containing all seats added to the shopping cart,
+     * @returns An object containing all seats added to the shopping cart,
      * mapped by seat type.
      */
     public getCart(): { [key: string]: number[] } {
@@ -74,7 +64,7 @@ class Cart {
 
     /**
      * Gets the total price of the selected seats.
-     * @returns {number} The total price.
+     * @returns The total price.
      */
     public getTotal(): number {
         let total = 0;
@@ -88,8 +78,8 @@ class Cart {
 
     /**
      * Gets the price for a specific type of seat.
-     * @param {string} type - The type of the seat.
-     * @returns {number} Price.
+     * @param type - The type of the seat.
+     * @returns Price.
      */
     public getPrice(type: string): number {
         for (const seatType of this.options.types) {
@@ -103,14 +93,14 @@ class Cart {
 
     /**
      * Updates the shopping cart by adding, removing or updating a seat.
-     * @param {string} action - Action on the shopping cart ('remove' | 'add' | 'update').
-     * @param {string} id - Id of the seat in the dom.
-     * @param {string} type - New seat type.
-     * @param {string} previousType - Previous seat type.
-     * @param {boolean} emit - True to trigger onChange events.
+     * @param action - Action on the shopping cart ('remove' | 'add' | 'update').
+     * @param id - Id of the seat in the dom.
+     * @param type - New seat type.
+     * @param previousType - Previous seat type.
+     * @param emit - True to trigger onChange events.
      */
     public updateCart(action: string, id: string, type: string, previousType: string, emit: boolean): void {
-        const name = this.map.getSeatName(id);
+        const name = this.sc.getSeatName(id);
         const index = this.getIndexFromId(id);
         const price = type && !['available', 'disabled', 'reserved'].includes(type) ?
             this.getPrice(type) :
@@ -145,8 +135,8 @@ class Cart {
                 }
             }
 
-            if (emit && this.map.onChange) {
-                this.map.onChange({
+            if (emit && this.sc.onChange) {
+                this.sc.onChange({
                     action,
                     current,
                     previous,
@@ -158,8 +148,8 @@ class Cart {
                 this.cartTable.appendChild(cartItem);
             }
 
-            if (emit && this.map.onChange) {
-                this.map.onChange({
+            if (emit && this.sc.onChange) {
+                this.sc.onChange({
                     action,
                     current,
                     previous,
@@ -192,8 +182,8 @@ class Cart {
                 }
             }
 
-            if (emit && this.map.onChange) {
-                this.map.onChange({
+            if (emit && this.sc.onChange) {
+                this.sc.onChange({
                     action,
                     current,
                     previous,
@@ -204,9 +194,9 @@ class Cart {
 
     /**
      * Adds a seat to the shopping cart dictionary.
-     * @param {string} id - The dom id of the seat in the seatmap.
-     * @param {string} type - The type of the seat.
-     * @returns {boolean} True if the seat is added correctly otherwise false.
+     * @param id - The dom id of the seat in the seatmap.
+     * @param type - The type of the seat.
+     * @returns True if the seat is added correctly otherwise false.
      */
     public addTodict(id: string, type: string): boolean {
         if (type in this.dict) {
@@ -221,9 +211,9 @@ class Cart {
 
     /**
      * Removes a seat from the shopping cart dictionary containing it.
-     * @param {string} id - The dom id of the seat in the seatmap.
-     * @param {string} type - The type of the seat.
-     * @returns {boolean} True if the seat is removed correctly otherwise false.
+     * @param id - The dom id of the seat in the seatmap.
+     * @param type - The type of the seat.
+     * @returns True if the seat is removed correctly otherwise false.
      */
     public removeFromdict(id: string, type: string): boolean {
         if (type !== undefined) {
@@ -262,7 +252,6 @@ class Cart {
 
     /**
      * Creates the shopping cart.
-     * @private
      */
     private createCart(): void {
         if (this.options.cart) {
@@ -304,8 +293,7 @@ class Cart {
 
     /**
      * Creates the total of the shopping cart and a "delete all" button.
-     * @returns {HTMLDivElement} The total and "delete all" button.
-     * @private
+     * @returns The total and "delete all" button.
      */
     private createCartTotal(): HTMLDivElement {
         const container = document.createElement('div');
@@ -329,9 +317,8 @@ class Cart {
 
     /**
      * Creates a ticket to place into the shopping cart.
-     * @param {Seat} seat - Seat info.
-     * @returns {HTMLDivElement} The ticket.
-     * @private
+     * @param seat - Seat info.
+     * @returns The ticket.
      */
     private createTicket(seat: Seat): HTMLDivElement {
         const seatConfig = this.options.types.find(x => x.type === seat.type);
@@ -367,7 +354,6 @@ class Cart {
     /**
      * Updates shopping cart object: values stored into dict are mapped to fit
      * cart type and format. (See private variables dict and cart.)
-     * @private
      */
     private updateCartObject(): void {
         const keys = Object.keys(this.dict);
@@ -378,8 +364,7 @@ class Cart {
 
     /**
      * Create a delete button for a shopping cart item.
-     * @returns {HTMLDivElement} The delete button.
-     * @private
+     * @returns The delete button.
      */
     private createScDeleteButton(): HTMLDivElement {
         const binImg = document.createElement('img');
@@ -396,7 +381,6 @@ class Cart {
 
     /**
      * This function is fired when the "delete all" button is clicked in the shopping cart.
-     * @private
      */
     private deleteAllClick(): void {
         const removedSeats: ClearEvent = [];
@@ -406,13 +390,13 @@ class Cart {
         // release all selected seats and remove them from dictionary
         for (const key of keys) {
             for (const id of this.dict[key]) {
-                this.map.releaseSeat(id);
+                this.sc.releaseSeat(id);
 
                 // fire event
-                if (this.map.onChange != null) {
+                if (this.sc.onChange != null) {
                     const index = this.getIndexFromId(id);
-                    const seatName = this.map.getSeatName(id);
-                    const type = this.map.getSeatType(id);
+                    const seatName = this.sc.getSeatName(id);
+                    const type = this.sc.getSeatType(id);
 
                     const current: Seat = {
                         id,
@@ -444,16 +428,15 @@ class Cart {
 
         this.updateTotal();
 
-        if (this.map.onClear) {
-            this.map.onClear(removedSeats);
+        if (this.sc.onClear) {
+            this.sc.onClear(removedSeats);
         }
     }
 
     /**
      * Creates a small title.
-     * @param {string} content - The content of the title.
-     * @returns {HTMLHeadingElement} The small title.
-     * @private
+     * @param content - The content of the title.
+     * @returns The small title.
      */
     private createSmallTitle(content: string): HTMLHeadingElement {
         const smallTitle = document.createElement('h5');
@@ -465,8 +448,7 @@ class Cart {
 
     /**
      * Creates the container of the items in the shopping cart.
-     * @returns {HTMLDivElement} The container of the items.
-     * @private
+     * @returns The container of the items.
      */
     private createCartTable(): HTMLDivElement {
         const container = document.createElement('table');
@@ -477,9 +459,8 @@ class Cart {
 
     /**
      * Creates text that contains total number of items in the shopping cart.
-     * @param {number} count - Number of item in the shopping cart.
-     * @returns {HTMLDivElement} The total and "delete all" button.
-     * @private
+     * @param count - Number of item in the shopping cart.
+     * @returns The total and "delete all" button.
      */
     private createCartItemsCounter(count: number): HTMLDivElement {
         const cartItemsCount = document.createElement('h3');
@@ -490,8 +471,7 @@ class Cart {
 
     /**
      * Loads seats, given with seat types, into the shopping cart.
-     * @returns {number} Number of loaded items.
-     * @private
+     * @returns Number of loaded items.
      */
     private loadCartItems(): number {
         let count = 0;
@@ -507,7 +487,7 @@ class Cart {
                     const row = Math.floor(index / this.options.map.columns);
                     const column = index % this.options.map.columns;
                     const id = `${row}_${column}`;
-                    const name = this.map.getSeatName(id);
+                    const name = this.sc.getSeatName(id);
 
                     const seat: Seat = {
                         id,
@@ -530,7 +510,6 @@ class Cart {
 
     /**
      * This function is fired when a delete button is clicked in the shopping cart.
-     * @private
      */
     private deleteClick(item: Element): () => void {
         return (): void => {
@@ -543,16 +522,16 @@ class Cart {
                 }
 
                 const id = elementId.split('-')[1];
-                const type = this.map.getSeatType(id);
+                const type = this.sc.getSeatType(id);
 
-                this.map.releaseSeat(id);
+                this.sc.releaseSeat(id);
                 this.removeFromdict(id, type);
                 this.updateTotal();
 
                 // fire event
-                if (this.map.onChange != null) {
+                if (this.sc.onChange != null) {
                     const index = this.getIndexFromId(id);
-                    const seatName = this.map.getSeatName(id);
+                    const seatName = this.sc.getSeatName(id);
 
                     const current: Seat = {
                         id,
@@ -569,7 +548,7 @@ class Cart {
                         type,
                     };
 
-                    this.map.onChange({
+                    this.sc.onChange({
                         action: 'remove',
                         current,
                         previous,
@@ -581,7 +560,6 @@ class Cart {
 
     /**
      * Loads seats into dict.
-     * @private
      */
     private loadCart(): void {
         // create array of seat types
@@ -607,7 +585,6 @@ class Cart {
      * Initializes the type of seats that can be clicked and
      * the types of seat that can be added to the shopping cart
      * from the options object.
-     * @private
      */
     private initializeSeatTypes(): void {
         // update types of seat
@@ -622,9 +599,8 @@ class Cart {
 
     /**
      * Converts a seat id to an index.
-     * @param {string} id - Seat id to map.
-     * @returns {number} Seat index.
-     * @private
+     * @param id - Seat id to map.
+     * @returns Seat index.
      */
     private getIndexFromId(id: string): number {
         const values = id.split('_').map(val => parseInt(val, 10));
@@ -634,9 +610,8 @@ class Cart {
 
     /**
      * Creates a shopping cart item.
-     * @param {Seat} seat - Seat info.
-     * @returns {HTMLDivElement} The shopping cart item.
-     * @private
+     * @param seat - Seat info.
+     * @returns The shopping cart item.
      */
     private createCartItem(seat: Seat): HTMLDivElement {
         if (!seat.price) {
@@ -671,8 +646,7 @@ class Cart {
 
     /**
      * Empties an html element if it has any child.
-     * @param {HTMLElement} el - Element.
-     * @private
+     * @param el - Element.
      */
     private emptyElement(el: HTMLElement): void {
         while (el.firstChild) {

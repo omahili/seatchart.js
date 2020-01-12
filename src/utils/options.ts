@@ -1,169 +1,221 @@
 /**
  * Callback to generate a seat name.
- *
- * @function seatNameCallback
- *
- * @param {object} row
- * @param {number} row.index - Row index (starts from 0).
- * @param {boolean} row.disabled - True if current row is disabled.
- * @param {number} row.disabledCount - Number of disabled rows till that one (including current one if disabled).
- *
- * @param {object} column
- * @param {number} column.index - Column index (starts from 0).
- * @param {boolean} column.disabled - True if current column is disabled.
- * @param {number} column.disabledCount - Number of disabled columns till that one (including current one if disabled).
- *
- * @returns {string} Seat name. Return null or undefined if empty.
+ * @returns Seat name. Return null or undefined if empty.
  */
+type seatNameCallback = (
+    /**
+     * Row object.
+     */
+    row: {
+        /**
+         * Row index (starts from 0).
+         */
+        index: number;
+        /**
+         * True if current row is disabled.
+         */
+        disabled: boolean;
+        /**
+         * Number of disabled rows till current one (including current one if disabled).
+         */
+        disabledCount: number;
+    },
+    /**
+     * Column object
+     */
+    column: {
+        /**
+         * Row index (starts from 0).
+         */
+        index: number;
+        /**
+         * True if current row is disabled.
+         */
+        disabled: boolean;
+        /**
+         * Number of disabled rows till current one (including current one if disabled).
+         */
+        disabledCount: number;
+    },
+) => string;
 
 /**
- * Callback to generate a row name.
- *
- * @function rowNameCallback
- *
- * @param {number} index - Row index (starts from 0).
- * @param {boolean} disabled - True if current row is disabled.
- * @param {number} disabledCount - Number of disabled rows till that one (including current one if disabled).
- *
- * @returns {string} Row name. Return null or undefined if empty.
+ * Callback to generate a row or column name.
+ * @returns Row or column name. Return null or undefined if empty.
  */
-
-/**
- * Callback to generate a column name.
- *
- * @function columnNameCallback
- *
- * @param {number} index - Column index (starts from 0).
- * @param {boolean} disabled - True if current column is disabled.
- * @param {number} disabledCount - Number of disabled columns till that one (including current one if disabled).
- *
- * @returns {string} Column name. Return null or undefined if empty.
- *
- */
-
-/**
- * @typedef {Object} Options
- *
- * @property {Object} options.map - Map options.
- * @property {string} options.map.id - Container id.
- * @property {number} options.map.rows - Number of rows.
- * @property {number} options.map.columns - Number of columns.
- * @property {seatNameCallback} [options.map.seatName] - Seat name generator.
- *
- * @property {Object} [options.map.reserved] - Array of reserved seats.
- * @property {Array.<number>} [options.map.reserved.seats] - Array of the reserved seats.
- *
- * @property {Object} [options.map.disabled] - Disabled seats options.
- * @property {Array.<number>} [options.map.disabled.seats] - Array of the disabled seats.
- * @property {Array.<number>} [options.map.disabled.rows] - Array of the disabled rows of seats.
- *
- * @property {Array.<number>} [options.map.disabled.columns] - Array of the disabled columns of seats.
- *
- * @property {Object} [options.map.indexes] - Indexes options.
- *
- * @property {Object} [options.map.indexes.rows] - Rows index options.
- * @property {boolean} [options.map.indexes.rows.visible = true] - Row index visibility.
- * @property {string} [options.map.indexes.rows.position = left] - Row index position.
- * @property {rowNameCallback} [options.map.indexes.rows.name] - Row name generator.
- *
- * @property {Object} [options.map.indexes.columns] - Columns index options.
- * @property {boolean} [options.map.indexes.columns.visible = true] - Column index visibility.
- * @property {string} [options.map.indexes.columns.position = top] - Column index position.
- * @property {columnNameCallback} [options.map.indexes.columns.name] - Column name generator.
- *
- * @property {Object} [options.map.front] - Front header options.
- * @property {boolean} [options.map.front.visible = true] - Front header visibility.
- *
- *
- * @property {Array.<Object>} options.types - Seat types options.
- * @property {string} options.types.type - Name of seat type.
- * @property {string} options.types.backgroundColor - Background color of the defined seat type.
- * @property {number} options.types.price - Price of the defined seat type.
- * @property {string} [options.types.textColor = white] - Text color of the defined seat type.
- * @property {Array.<number>} [options.types.selected] - Selected seats of the defined seat type.
- *
- *
- * @property {Array.<Object>} [options.cart] - Cart options.
- * @property {string} options.cart.id - Container id.
- * @property {string} [options.cart.height] - Cart height.
- * @property {string} [options.cart.width] - Cart width.
- * @property {string} [options.cart.currency = €] - Current currency.
- *
- *
- * @property {string} [options.legend] - Legend options.
- * @property {string} options.legend.id - Container id.
- *
- *
- * @property {Array.<Object>} [options.assets] - Assets options.
- * @property {string} [options.assets.path] - Path to assets.
- */
+type indexNameCallback = (
+    /**
+     * Row or column index (starts from 0).
+     */
+    index: number,
+    /**
+     * True if current row or column is disabled.
+     */
+    disabled: boolean,
+    /**
+     * Number of disabled rows or columns till current one (including current one if disabled)
+     */
+    disabledCount: number,
+) => string;
 
 interface Options {
+    /**
+     * Map options.
+     */
     map: {
+        /**
+         * Container id.
+         */
         id: string;
+        /**
+         * Number of rows.
+         */
         rows: number;
+        /**
+         * Number of columns.
+         */
         columns: number;
-        seatName?: (
-            row: {
-                index: number;
-                disabled: boolean;
-                disabledCount: number;
-            },
-            column: {
-                index: number;
-                disabled: boolean;
-                disabledCount: number;
-            },
-        ) => string;
+        /**
+         * Seat name generator.
+         */
+        seatName?: seatNameCallback;
+        /**
+         *  Array of reserved seats.
+         */
         reserved?: {
+            /**
+             * Array of the reserved seats.
+             */
             seats?: number[];
         };
+        /**
+         * Disabled seats options.
+         */
         disabled?: {
+            /**
+             * Array of the disabled seats.
+             */
             seats?: number[];
+            /**
+             * Array of the disabled rows of seats.
+             */
             rows?: number[];
+            /**
+             * Array of the disabled columns of seats.
+             */
             columns?: number[];
         };
+        /**
+         * Indexes options.
+         */
         indexes?: {
+            /**
+             * Rows index options.
+             */
             rows?: {
+                /**
+                 * Row index visibility.
+                 */
                 visible?: boolean;
+                /**
+                 * Row index position.
+                 */
                 position?: 'left' | 'right';
-                name?: (
-                    index: number,
-                    disabled: boolean,
-                    disabledCount: number,
-                ) => string;
+                /**
+                 * Row name generator.
+                 */
+                name?: indexNameCallback;
             };
+            /**
+             * Columns index options.
+             */
             columns?: {
+                /**
+                 * Columns index visibility.
+                 */
                 visible?: boolean;
+                /**
+                 * Column index posiion.
+                 */
                 position?: 'top' | 'bottom';
-                name?: (
-                    index: number,
-                    disabled: boolean,
-                    disabledCount: number,
-                ) => string;
+                /**
+                 * Column name generator.
+                 */
+                name?: indexNameCallback;
             };
         };
+        /**
+         * Front header options.
+         */
         front?: {
+            /*
+             * Front header visibility.
+             */
             visible?: boolean;
         };
     };
+    /**
+     * Seat types options.
+     */
     types: Array<{
+        /**
+         * Name of seat type.
+         */
         type: string;
+        /**
+         * Background color of the defined seat type.
+         */
         backgroundColor: string;
+        /**
+         * Price of the defined seat type.
+         */
         price: number;
+        /**
+         * Text color of the defined seat type.
+         */
         textColor?: string;
+        /**
+         * Selected seats of the defined seat type.
+         */
         selected?: number[];
     }>;
+    /**
+     * Cart options.
+     */
     cart?: {
+        /**
+         * Container id.
+         */
         id: string;
+        /**
+         * Cart height.
+         */
         height?: string;
+        /**
+         * Cart width.
+         */
         width?: string;
+        /**
+         * Current currency.
+         */
         currency?: string;
     };
+    /**
+     * Legend options.
+     */
     legend?: {
+        /**
+         * Container id.
+         */
         id: string;
     };
+    /**
+     *  Assets options.
+     */
     assets?: {
+        /**
+         * Path to assets.
+         */
         path?: string;
     };
 }

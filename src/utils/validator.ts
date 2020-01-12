@@ -1,6 +1,9 @@
 import InvalidParameterError from 'errors/invalid-parameter-error';
 import Options from 'utils/options';
 
+/**
+ * @internal
+ */
 class Validator {
     public static validate(options: Options): void {
         // check options.map parameter
