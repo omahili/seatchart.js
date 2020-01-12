@@ -6,6 +6,4 @@ interface Seat {
     price: number | null;
 }
 
-export {
-    Seat,
-};
+export default Seat;
