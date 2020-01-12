@@ -15,9 +15,11 @@
         "@typescript-eslint",
         "@typescript-eslint/tslint",
         "eslint-plugin-import",
-        "eslint-plugin-prefer-arrow"
+        "eslint-plugin-prefer-arrow",
+        "eslint-plugin-tsdoc"
     ],
     "rules": {
+        "tsdoc/syntax": "warn",
         "@typescript-eslint/array-type": "off",
         "@typescript-eslint/consistent-type-assertions": "off",
         "@typescript-eslint/consistent-type-definitions": "error",
