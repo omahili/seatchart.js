@@ -1,0 +1,10 @@
+{
+    "name": "Seatchart",
+    "inputFiles": [
+        "./src/seatchart.ts"
+    ],
+    "mode": "file",
+    "out": "docs",
+    "excludePrivate": true,
+    "stripInternal": true
+}
