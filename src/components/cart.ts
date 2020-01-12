@@ -55,11 +55,9 @@ class Cart {
     private options: Options;
     private map: Seatchart;
 
-    constructor(map: Seatchart) {
+    public constructor(map: Seatchart) {
         this.options = map.options;
         this.map = map;
-
-        this.deleteAllClick = this.deleteAllClick.bind(this);
 
         this.loadCart();
         this.createCart();
@@ -114,7 +112,7 @@ class Cart {
     public updateCart(action: string, id: string, type: string, previousType: string, emit: boolean): void {
         const name = this.map.getSeatName(id);
         const index = this.getIndexFromId(id);
-        const price = type && ['available', 'disabled', 'reserved'].indexOf(type) < 0 ?
+        const price = type && !['available', 'disabled', 'reserved'].includes(type) ?
             this.getPrice(type) :
             null;
 
@@ -129,7 +127,7 @@ class Cart {
             id,
             index,
             name,
-            price: previousType && ['available', 'disabled', 'reserved'].indexOf(previousType) < 0 ?
+            price: previousType && !['available', 'disabled', 'reserved'].includes(previousType) ?
                 this.getPrice(previousType) :
                 null,
             type: previousType,
@@ -174,7 +172,7 @@ class Cart {
                 if (cartItem) {
                     const itemContent = cartItem.getElementsByTagName('td');
 
-                    const seatConfig = this.options.types.find((x) => x.type === current.type);
+                    const seatConfig = this.options.types.find(x => x.type === current.type);
 
                     if (seatConfig) {
                         const ticket = <HTMLElement> itemContent[0].getElementsByClassName('sc-ticket')[0];
@@ -316,7 +314,7 @@ class Cart {
         this.cartTotal.className += ' sc-cart-total';
 
         const deleteBtn = this.createScDeleteButton();
-        deleteBtn.onclick = this.deleteAllClick;
+        deleteBtn.onclick = this.deleteAllClick.bind(this);
         deleteBtn.className += ' all';
 
         const label = document.createElement('p');
@@ -336,7 +334,7 @@ class Cart {
      * @private
      */
     private createTicket(seat: Seat): HTMLDivElement {
-        const seatConfig = this.options.types.find((x) => x.type === seat.type);
+        const seatConfig = this.options.types.find(x => x.type === seat.type);
 
         if (!seatConfig) {
             throw new NotFoundError(`Options for seat type '${seat.type}' not found.`);
@@ -374,7 +372,7 @@ class Cart {
     private updateCartObject(): void {
         const keys = Object.keys(this.dict);
         for (const s of keys) {
-            this.cart[s] = this.dict[s].map((x) => this.getIndexFromId(x));
+            this.cart[s] = this.dict[s].map(x => this.getIndexFromId(x));
         }
     }
 
@@ -535,7 +533,7 @@ class Cart {
      * @private
      */
     private deleteClick(item: Element): () => void {
-        return () => {
+        return (): void => {
             const elementId = item.getAttribute('id');
 
             if (elementId) {
@@ -629,7 +627,7 @@ class Cart {
      * @private
      */
     private getIndexFromId(id: string): number {
-        const values = id.split('_').map((val) => parseInt(val, 10));
+        const values = id.split('_').map(val => parseInt(val, 10));
 
         return (this.options.map.columns * values[0]) + values[1];
     }

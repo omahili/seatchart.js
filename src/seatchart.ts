@@ -56,16 +56,12 @@ class Seatchart {
      * @alias Seatchart
      *
      */
-    constructor(options: Options) {
+    public constructor(options: Options) {
         this.options = options;
 
         Validator.validate(options);
 
-        this.rowName = this.rowName.bind(this);
-        this.columnName = this.columnName.bind(this);
-        this.seatName = this.seatName.bind(this);
-        this.types = ['available', ...this.options.types.map((x) => x.type)];
-
+        this.types = ['available', ...this.options.types.map(x => x.type)];
         this.createMap();
 
         this.cart = new Cart(this);
@@ -79,9 +75,13 @@ class Seatchart {
      */
     public isGap(seatIndex: number): boolean {
         if (typeof seatIndex !== 'number' && Math.floor(seatIndex) === seatIndex) {
-            throw new InvalidParameterError('Invalid parameter \'seatIndex\' supplied to Seatchart.isGap(). It must be an integer.');
+            throw new InvalidParameterError(
+                'Invalid parameter \'seatIndex\' supplied to Seatchart.isGap(). It must be an integer.'
+            );
         } else if (seatIndex >= this.options.map.rows * this.options.map.columns) {
-            throw new InvalidParameterError('Invalid parameter \'seatIndex\' supplied to Seatchart.isGap(). Index is out of range.');
+            throw new InvalidParameterError(
+                'Invalid parameter \'seatIndex\' supplied to Seatchart.isGap(). Index is out of range.'
+            );
         }
 
         const row = Math.floor(seatIndex / this.options.map.columns);
@@ -90,10 +90,10 @@ class Seatchart {
         const seatId = `${row}_${col}`;
 
         // if current seat is disabled or reserved do not continue
-        if ((this.options.map.disabled?.seats && this.options.map.disabled.seats.indexOf(seatIndex) >= 0) ||
-            (this.options.map.disabled?.columns && this.options.map.disabled.columns.indexOf(col) >= 0) ||
-            (this.options.map.disabled?.rows && this.options.map.disabled.rows.indexOf(row) >= 0) ||
-            (this.options.map.reserved?.seats && this.options.map.reserved.seats.indexOf(seatIndex) >= 0)
+        if ((this.options.map.disabled?.seats && this.options.map.disabled.seats.includes(seatIndex)) ||
+            (this.options.map.disabled?.columns && this.options.map.disabled.columns.includes(col)) ||
+            (this.options.map.disabled?.rows && this.options.map.disabled.rows.includes(row)) ||
+            (this.options.map.reserved?.seats && this.options.map.reserved.seats.includes(seatIndex))
         ) {
             return false;
         }
@@ -102,7 +102,7 @@ class Seatchart {
 
         // if current seat is selected do not continue
         for (const key of keys) {
-            if (this.cart.dict[key].indexOf(seatId) >= 0) {
+            if (this.cart.dict[key].includes(seatId)) {
                 return false;
             }
         }
@@ -114,17 +114,17 @@ class Seatchart {
         const seatAfter = seatIndex + 1;
 
         const isSeatBeforeDisabled = this.options.map.disabled?.seats ?
-            this.options.map.disabled.seats.indexOf(seatBefore) >= 0 :
+            this.options.map.disabled.seats.includes(seatBefore) :
             false;
         const isSeatAfterDisabled = this.options.map.disabled?.seats ?
-            this.options.map.disabled.seats.indexOf(seatAfter) >= 0 :
+            this.options.map.disabled.seats.includes(seatAfter) :
             false;
 
         const isSeatBeforeReserved = this.options.map.reserved?.seats ?
-            this.options.map.reserved.seats.indexOf(seatBefore) >= 0 :
+            this.options.map.reserved.seats.includes(seatBefore) :
             false;
         const isSeatAfterReserved = this.options.map.reserved?.seats ?
-            this.options.map.reserved.seats.indexOf(seatAfter) >= 0 :
+            this.options.map.reserved.seats.includes(seatAfter) :
             false;
 
         // if there's a disabled/reserved block before and after do not consider it a gap
@@ -151,11 +151,11 @@ class Seatchart {
         // check if seat before and after are selected
         for (const type of keys) {
             if (!isSeatBeforeSelected) {
-                isSeatBeforeSelected = this.cart.dict[type].indexOf(seatBeforeId) >= 0;
+                isSeatBeforeSelected = this.cart.dict[type].includes(seatBeforeId);
             }
 
             if (!isSeatAfterSelected) {
-                isSeatAfterSelected = this.cart.dict[type].indexOf(seatAfterId) >= 0;
+                isSeatAfterSelected = this.cart.dict[type].includes(seatAfterId);
             }
 
             if (isSeatAfterSelected && isSeatBeforeSelected) {
@@ -164,12 +164,12 @@ class Seatchart {
         }
 
         const isSeatBeforeUnavailable = colBefore < 0 ||
-            (this.options.map.reserved?.seats && this.options.map.reserved.seats.indexOf(seatBefore) >= 0) ||
+            (this.options.map.reserved?.seats && this.options.map.reserved.seats.includes(seatBefore)) ||
             isSeatBeforeDisabled ||
             isSeatBeforeSelected;
 
         const isSeatAfterUnavailable = colAfter >= this.options.map.columns ||
-            (this.options.map.reserved?.seats && this.options.map.reserved.seats.indexOf(seatAfter) >= 0) ||
+            (this.options.map.reserved?.seats && this.options.map.reserved.seats.includes(seatAfter)) ||
             isSeatAfterDisabled ||
             isSeatAfterSelected;
 
@@ -231,9 +231,13 @@ class Seatchart {
      */
     public get(index: number): Seat {
         if (typeof index !== 'number' && Math.floor(index) === index) {
-            throw new InvalidParameterError('Invalid parameter \'index\' supplied to Seatchart.get(). It must be an integer.');
+            throw new InvalidParameterError(
+                'Invalid parameter \'index\' supplied to Seatchart.get(). It must be an integer.'
+            );
         } else if (index >= this.options.map.rows * this.options.map.columns) {
-            throw new InvalidParameterError('Invalid parameter \'index\' supplied to Seatchart.get(). Index is out of range.');
+            throw new InvalidParameterError(
+                'Invalid parameter \'index\' supplied to Seatchart.get(). Index is out of range.'
+            );
         }
 
         if (index < this.options.map.rows * this.options.map.columns) {
@@ -243,7 +247,7 @@ class Seatchart {
             const name = this.getSeatName(seatId);
 
             // check if seat is reserved
-            if (this.options.map.reserved?.seats && this.options.map.reserved.seats.indexOf(index) >= 0) {
+            if (this.options.map.reserved?.seats && this.options.map.reserved.seats.includes(index)) {
                 return {
                     id: seatId,
                     index,
@@ -254,7 +258,7 @@ class Seatchart {
             }
 
             // check if seat is reserved
-            if (this.options.map.disabled?.seats && this.options.map.disabled.seats.indexOf(index) >= 0) {
+            if (this.options.map.disabled?.seats && this.options.map.disabled.seats.includes(index)) {
                 return {
                     id: seatId,
                     index,
@@ -269,7 +273,7 @@ class Seatchart {
             // check if seat is already selected
             for (const type of keys) {
                 const price = this.cart.getPrice(type);
-                if (this.cart.dict[type].indexOf(seatId) >= 0) {
+                if (this.cart.dict[type].includes(seatId)) {
                     return {
                         id: seatId,
                         index,
@@ -289,7 +293,9 @@ class Seatchart {
             };
         }
 
-        throw new InvalidParameterError('Invalid parameter \'index\' supplied to Seatchart.get(). Index is out of range.');
+        throw new InvalidParameterError(
+            'Invalid parameter \'index\' supplied to Seatchart.get(). Index is out of range.'
+        );
     }
 
     /**
@@ -298,22 +304,30 @@ class Seatchart {
      * @param {string} type - New seat type ('disabled', 'reserved' and 'available' are supported too).
      * @param {boolean} [emit = false] - True to trigger onChange event.
      */
-    public set(index: number, type: string, emit: boolean) {
+    public set(index: number, type: string, emit: boolean): void {
         let seatType;
         if (typeof index !== 'number' && Math.floor(index) === index) {
-            throw new InvalidParameterError('Invalid parameter \'index\' supplied to Seatchart.set(). It must be an integer.');
+            throw new InvalidParameterError(
+                'Invalid parameter \'index\' supplied to Seatchart.set(). It must be an integer.'
+            );
         } else if (index >= this.options.map.rows * this.options.map.columns) {
-            throw new InvalidParameterError('Invalid parameter \'index\' supplied to Seatchart.set(). Index is out of range.');
+            throw new InvalidParameterError(
+                'Invalid parameter \'index\' supplied to Seatchart.set(). Index is out of range.'
+            );
         } else if (typeof type !== 'string') {
-            throw new InvalidParameterError('Invalid parameter \'type\' supplied to Seatchart.set(). It must be a string.');
+            throw new InvalidParameterError(
+                'Invalid parameter \'type\' supplied to Seatchart.set(). It must be a string.'
+            );
         } else {
-            seatType = this.options.types.find((x) => x.type === type);
+            seatType = this.options.types.find(x => x.type === type);
 
             // check if type is valid
-            if (!seatType || ['available', 'reserved', 'disabled'].indexOf(type) < 0) {
+            if (!seatType || !['available', 'reserved', 'disabled'].includes(type)) {
                 throw new InvalidParameterError('Invalid parameter \'type\' supplied to Seatchart.set().');
             } else if (emit && typeof emit !== 'boolean') {
-                throw new InvalidParameterError('Invalid parameter \'emit\' supplied to Seatchart.set(). It must be a boolean.');
+                throw new InvalidParameterError(
+                    'Invalid parameter \'emit\' supplied to Seatchart.set(). It must be a boolean.'
+                );
             }
         }
 
@@ -363,7 +377,7 @@ class Seatchart {
                 }
             }
 
-            this.types.forEach((x) => classes[x] = x);
+            this.types.forEach(x => classes[x] = x);
 
             element.classList.add(classes[type]);
             element.classList.remove(classes[seat.type]);
@@ -394,7 +408,7 @@ class Seatchart {
     public getSeatType(id: string): string {
         const keys = Object.keys(this.cart.dict);
         for (const key of keys) {
-            if (this.cart.dict[key].indexOf(id) >= 0) {
+            if (this.cart.dict[key].includes(id)) {
                 return key;
             }
         }
@@ -430,10 +444,10 @@ class Seatchart {
      * @private
      */
     private seatClick(seat: HTMLElement): () => void {
-        return () => {
+        return (): void => {
             // clone array because it's modified by adding and removing classes
             const currentClassList: string[] = [];
-            seat.classList.forEach((x) => currentClassList.push(x));
+            seat.classList.forEach(x => currentClassList.push(x));
 
             for (const currentClass of currentClassList) {
                 let newClass;
@@ -503,7 +517,7 @@ class Seatchart {
      * @private
      */
     private rightClickDelete(seat: HTMLElement): (e: Event) => void {
-        return (e: Event) => {
+        return (e: Event): boolean => {
             e.preventDefault();
 
             try {
@@ -523,8 +537,8 @@ class Seatchart {
 
                 // so the default context menu isn't showed
                 return false;
-            } catch (e) {
-                if (e instanceof NotFoundError) {
+            } catch (error) {
+                if (error instanceof NotFoundError) {
                     return false;
                 }
 
@@ -578,8 +592,8 @@ class Seatchart {
      * @private
      */
     private seatName(
-        row: { index: number, disabled: boolean, disabledCount: number },
-        column: { index: number, disabled: boolean, disabledCount: number },
+        row: { index: number; disabled: boolean; disabledCount: number },
+        column: { index: number; disabled: boolean; disabledCount: number },
     ): string | undefined {
         if (!row.disabled && !column.disabled) {
             const rowIndex = this.rowName(row.index, row.disabled, row.disabledCount);
@@ -680,13 +694,13 @@ class Seatchart {
         const disabled = this.options.map.disabled;
         let disabledCount = 0;
 
-        let generateName = this.rowName;
+        let generateName = this.rowName.bind(this);
         if (this.options.map.indexes?.rows?.name) {
             generateName = this.options.map.indexes.rows.name;
         }
 
         for (let i = 0; i < this.options.map.rows; i += 1) {
-            const isRowDisabled = disabled && disabled.rows ? disabled.rows.indexOf(i) >= 0 : false;
+            const isRowDisabled = disabled && disabled.rows ? disabled.rows.includes(i) : false;
             disabledCount = isRowDisabled ? disabledCount + 1 : disabledCount;
 
             const index = generateName(i, isRowDisabled, disabledCount);
@@ -713,13 +727,13 @@ class Seatchart {
         const disabled = this.options.map.disabled;
         let disabledCount = 0;
 
-        let generateName = this.columnName;
+        let generateName = this.columnName.bind(this);
         if (this.options.map.indexes?.columns?.name) {
             generateName = this.options.map.indexes.columns.name;
         }
 
         for (let i = 0; i < this.options.map.columns; i += 1) {
-            const isColumnDisabled = (disabled?.columns && disabled.columns.indexOf(i) >= 0) || false;
+            const isColumnDisabled = (disabled?.columns && disabled.columns.includes(i)) || false;
             disabledCount = isColumnDisabled ? disabledCount + 1 : disabledCount;
 
             const index = generateName(i, isColumnDisabled, disabledCount);
@@ -738,7 +752,7 @@ class Seatchart {
      * @param {HTMLDivElement} seat - Seat element.
      * @private
      */
-    private removeAllTypesApplied(seat: HTMLDivElement) {
+    private removeAllTypesApplied(seat: HTMLDivElement): void {
         for (const type of this.types) {
             seat.classList.remove(type);
         }
@@ -847,19 +861,19 @@ class Seatchart {
         const disabled = this.options.map.disabled;
         let disabledRowsCounter = 0;
 
-        const generateName = this.options.map.seatName || this.seatName;
+        const generateName = this.options.map.seatName || this.seatName.bind(this);
 
         // add rows containing seats
         for (let i = 0; i < this.options.map.rows; i += 1) {
             const row = this.createRow();
 
-            const isRowDisabled = disabled?.rows ? disabled.rows.indexOf(i) >= 0 : false;
+            const isRowDisabled = disabled?.rows ? disabled.rows.includes(i) : false;
             disabledRowsCounter = isRowDisabled ? disabledRowsCounter + 1 : disabledRowsCounter;
 
             let disabledColumnsCounter = 0;
 
             for (let j = 0; j < this.options.map.columns; j += 1) {
-                const isColumnDisabled = disabled?.columns ? disabled.columns.indexOf(j) >= 0 : false;
+                const isColumnDisabled = disabled?.columns ? disabled.columns.includes(j) : false;
                 disabledColumnsCounter = isColumnDisabled ? disabledColumnsCounter + 1 : disabledColumnsCounter;
 
                 const seatTextContent = generateName(

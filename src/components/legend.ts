@@ -7,7 +7,7 @@ class Legend {
     private sc: Seatchart;
     private options: Options;
 
-    constructor(map: Seatchart) {
+    public constructor(map: Seatchart) {
         this.sc = map;
         this.options = map.options;
 

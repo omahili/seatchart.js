@@ -18,8 +18,8 @@ interface ChangeEvent {
  * @property {Seat} previous - Seat info previous to the event.
  */
 type ClearEvent = Array<{
-    current: Seat,
-    previous: Seat,
+    current: Seat;
+    previous: Seat;
 }>;
 
 export {

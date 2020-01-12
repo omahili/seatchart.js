@@ -2,9 +2,8 @@
  * Capitalizes the first letter and lowers all the others.
  * @param {string} value - The formatted string.
  */
-const capitalizeFirstLetter = (value: string): string => {
-    return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
-};
+const capitalizeFirstLetter = (value: string): string =>
+    value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
 
 /**
  * Creates a container.
@@ -15,12 +14,12 @@ const capitalizeFirstLetter = (value: string): string => {
  * @private
  */
 const createContainer = (name: string | null, direction: string, contentPosition?: string): HTMLDivElement => {
-    if (['column', 'row', 'column-reverse', 'row-reverse'].indexOf(direction) < 0) {
+    if (!['column', 'row', 'column-reverse', 'row-reverse'].includes(direction)) {
         throw new Error('\'direction\' must have one of the following values: ' +
             '\'column\', \'row\', \'column-reverse\', \'row-reverse\'');
     }
 
-    if (contentPosition && ['left', 'right', 'top', 'bottom'].indexOf(contentPosition) < 0) {
+    if (contentPosition && !['left', 'right', 'top', 'bottom'].includes(contentPosition)) {
         throw new Error(
             '\'contentPosition\' must have one of the following values: ' +
             '\'left\', \'right\', \'top\', \'bottom\'',

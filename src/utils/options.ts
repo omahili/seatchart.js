@@ -100,71 +100,71 @@
 
 interface Options {
     map: {
-        id: string,
-        rows: number,
-        columns: number,
+        id: string;
+        rows: number;
+        columns: number;
         seatName?: (
             row: {
-                index: number,
-                disabled: boolean,
-                disabledCount: number,
+                index: number;
+                disabled: boolean;
+                disabledCount: number;
             },
             column: {
-                index: number,
-                disabled: boolean,
-                disabledCount: number,
+                index: number;
+                disabled: boolean;
+                disabledCount: number;
             },
-        ) => string,
+        ) => string;
         reserved?: {
-            seats?: number[],
-        },
+            seats?: number[];
+        };
         disabled?: {
-            seats?: number[],
-            rows?: number[],
-            columns?: number[],
-        },
+            seats?: number[];
+            rows?: number[];
+            columns?: number[];
+        };
         indexes?: {
             rows?: {
-                visible?: boolean,
-                position?: 'left' | 'right',
+                visible?: boolean;
+                position?: 'left' | 'right';
                 name?: (
                     index: number,
                     disabled: boolean,
                     disabledCount: number,
-                ) => string,
-            },
+                ) => string;
+            };
             columns?: {
-                visible?: boolean,
-                position?: 'top' | 'bottom',
+                visible?: boolean;
+                position?: 'top' | 'bottom';
                 name?: (
                     index: number,
                     disabled: boolean,
                     disabledCount: number,
-                ) => string,
-            },
-        },
+                ) => string;
+            };
+        };
         front?: {
-            visible?: boolean,
-        },
+            visible?: boolean;
+        };
     };
     types: Array<{
-        type: string,
-        backgroundColor: string,
-        price: number,
-        textColor?: string,
-        selected?: number[],
+        type: string;
+        backgroundColor: string;
+        price: number;
+        textColor?: string;
+        selected?: number[];
     }>;
     cart?: {
-        id: string,
-        height?: string,
-        width?: string,
-        currency?: string,
+        id: string;
+        height?: string;
+        width?: string;
+        currency?: string;
     };
     legend?: {
-        id: string,
+        id: string;
     };
     assets?: {
-        path?: string,
+        path?: string;
     };
 }
 

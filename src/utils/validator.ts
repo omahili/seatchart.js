@@ -5,9 +5,13 @@ class Validator {
     public static validate(options: Options): void {
         // check options.map parameter
         if (options.map === undefined) {
-            throw new InvalidParameterError('Invalid parameter \'options.map\' supplied to Seatchart. Cannot be undefined.');
+            throw new InvalidParameterError(
+                'Invalid parameter \'options.map\' supplied to Seatchart. Cannot be undefined.'
+            );
         } else if (typeof options.map !== 'object') {
-            throw new InvalidParameterError('Invalid parameter \'options.map\' supplied to Seatchart. Must be an object.');
+            throw new InvalidParameterError(
+                'Invalid parameter \'options.map\' supplied to Seatchart. Must be an object.'
+            );
         } else if (!{}.hasOwnProperty.call(options.map, 'id')) {
             throw new InvalidParameterError('Invalid parameter \'options.map\' supplied to Seatchart. ' +
                 '\'id\' property cannot be undefined.');
@@ -24,7 +28,9 @@ class Validator {
 
         // check options.types parameter
         if (options.types === undefined) {
-            throw new InvalidParameterError('Invalid parameter \'options.types\' supplied to Seatchart. Cannot be undefined.');
+            throw new InvalidParameterError(
+                'Invalid parameter \'options.types\' supplied to Seatchart. Cannot be undefined.'
+            );
             // check if options.types is an array and contains at least one element
         } else if (!Array.isArray(options.types) || options.types.length < 1 || typeof options.types[0] !== 'object') {
             throw new InvalidParameterError('Invalid parameter \'options.types\' supplied to Seatchart. ' +
@@ -57,8 +63,9 @@ class Validator {
                 if (options.types[x].type.toLowerCase() === options.types[y].type.toLowerCase()) {
                     throw new InvalidParameterError(
                         'Invalid parameter \'options.types\' supplied to Seatchart. ' +
-                        `'${options.types[x].type}' and '${options.types[y].type}' types are equal and must be different. ` +
-                        'Types are case insensitive.',
+                        `'${options.types[x].type}' and '${options.types[y].type}' ` +
+                        'types are equal and must be different. ' +
+                        'Types are case insensitive.'
                     );
                 }
             }
