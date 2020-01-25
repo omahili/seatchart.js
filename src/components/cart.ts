@@ -298,7 +298,7 @@ class Cart {
     private createCartTotal(): HTMLDivElement {
         const container = document.createElement('div');
         const currency = this.options.cart?.currency || DEFAULT_TEXT_COLOR;
-        this.cartTotal = this.createSmallTitle(`Total: ${currency}${this.getTotal()}`);
+        this.cartTotal = utils.DOM.createSmallTitle(`Total: ${currency}${this.getTotal()}`);
         this.cartTotal.className += ' sc-cart-total';
 
         const deleteBtn = this.createScDeleteButton();
@@ -423,7 +423,7 @@ class Cart {
 
         // empty shopping cart, fastest way instead of removing each item
         if (this.cartTable) {
-            this.emptyElement(this.cartTable);
+            utils.DOM.emptyElement(this.cartTable);
         }
 
         this.updateTotal();
@@ -431,19 +431,6 @@ class Cart {
         if (this.sc.onClear) {
             this.sc.onClear(removedSeats);
         }
-    }
-
-    /**
-     * Creates a small title.
-     * @param content - The content of the title.
-     * @returns The small title.
-     */
-    private createSmallTitle(content: string): HTMLHeadingElement {
-        const smallTitle = document.createElement('h5');
-        smallTitle.textContent = content;
-        smallTitle.className = 'sc-small-title';
-
-        return smallTitle;
     }
 
     /**
@@ -642,16 +629,6 @@ class Cart {
         item.appendChild(deleteTd);
 
         return item;
-    }
-
-    /**
-     * Empties an html element if it has any child.
-     * @param el - Element.
-     */
-    private emptyElement(el: HTMLElement): void {
-        while (el.firstChild) {
-            el.removeChild(el.firstChild);
-        }
     }
 }
 

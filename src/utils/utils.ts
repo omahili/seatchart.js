@@ -80,11 +80,36 @@ const createTitle = (content: string): HTMLHeadingElement => {
     return title;
 };
 
+/**
+ * Empties an html element if it has any child.
+ * @param el - Element.
+ */
+const emptyElement = (el: HTMLElement): void => {
+    while (el.firstChild) {
+        el.removeChild(el.firstChild);
+    }
+};
+
+/**
+ * Creates a small title.
+ * @param content - The content of the title.
+ * @returns The small title.
+ */
+const createSmallTitle = (content: string): HTMLHeadingElement => {
+    const smallTitle = document.createElement('h5');
+    smallTitle.textContent = content;
+    smallTitle.className = 'sc-small-title';
+
+    return smallTitle;
+};
+
 export default {
     DOM: {
         createContainer,
         createIconedTitle,
+        createSmallTitle,
         createTitle,
+        emptyElement,
     },
     capitalizeFirstLetter,
 };
