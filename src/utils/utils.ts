@@ -83,6 +83,7 @@ const createTitle = (content: string): HTMLHeadingElement => {
 /**
  * Empties an html element if it has any child.
  * @param el - Element.
+ * @internal
  */
 const emptyElement = (el: HTMLElement): void => {
     while (el.firstChild) {
@@ -94,6 +95,7 @@ const emptyElement = (el: HTMLElement): void => {
  * Creates a small title.
  * @param content - The content of the title.
  * @returns The small title.
+ * @internal
  */
 const createSmallTitle = (content: string): HTMLHeadingElement => {
     const smallTitle = document.createElement('h5');
