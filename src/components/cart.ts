@@ -1,10 +1,10 @@
 import NotFoundError from 'errors/not-found-error';
-import Seatchart from 'seatchart';
 import { DEFAULT_CURRENCY, DEFAULT_TEXT_COLOR } from 'utils/consts';
 import { ClearEvent } from 'utils/events';
 import Options from 'utils/options';
 import Seat from 'utils/seat';
 import utils from 'utils/utils';
+import Map from 'components/map';
 
 /**
  * @internal
@@ -43,11 +43,11 @@ class Cart {
     private types: string[] = [];
 
     private options: Options;
-    private sc: Seatchart;
+    private map: Map;
 
-    public constructor(sc: Seatchart) {
-        this.sc = sc;
-        this.options = sc.options;
+    public constructor(map: Map) {
+        this.map = map;
+        this.options = map.options;
 
         this.loadCart();
         this.createCart();
@@ -70,7 +70,7 @@ class Cart {
         let total = 0;
         const keys = Object.keys(this.dict);
         for (const key of keys) {
-            total += this.getPrice(key) * this.dict[key].length;
+            total += this.getSeatPrice(key) * this.dict[key].length;
         }
 
         return total;
@@ -81,7 +81,7 @@ class Cart {
      * @param type - The type of the seat.
      * @returns Price.
      */
-    public getPrice(type: string): number {
+    public getSeatPrice(type: string): number {
         for (const seatType of this.options.types) {
             if (seatType.type === type) {
                 return seatType.price;
@@ -100,10 +100,10 @@ class Cart {
      * @param emit - True to trigger onChange events.
      */
     public updateCart(action: string, id: string, type: string, previousType: string, emit: boolean): void {
-        const name = this.sc.getSeatName(id);
+        const name = this.map.getSeatName(id);
         const index = this.getIndexFromId(id);
         const price = type && !['available', 'disabled', 'reserved'].includes(type) ?
-            this.getPrice(type) :
+            this.getSeatPrice(type) :
             null;
 
         const current: Seat = {
@@ -118,7 +118,7 @@ class Cart {
             index,
             name,
             price: previousType && !['available', 'disabled', 'reserved'].includes(previousType) ?
-                this.getPrice(previousType) :
+                this.getSeatPrice(previousType) :
                 null,
             type: previousType,
         };
@@ -135,8 +135,8 @@ class Cart {
                 }
             }
 
-            if (emit && this.sc.onChange) {
-                this.sc.onChange({
+            if (emit && this.map.onChange) {
+                this.map.onChange({
                     action,
                     current,
                     previous,
@@ -148,8 +148,8 @@ class Cart {
                 this.cartTable.appendChild(cartItem);
             }
 
-            if (emit && this.sc.onChange) {
-                this.sc.onChange({
+            if (emit && this.map.onChange) {
+                this.map.onChange({
                     action,
                     current,
                     previous,
@@ -182,8 +182,8 @@ class Cart {
                 }
             }
 
-            if (emit && this.sc.onChange) {
-                this.sc.onChange({
+            if (emit && this.map.onChange) {
+                this.map.onChange({
                     action,
                     current,
                     previous,
@@ -299,7 +299,7 @@ class Cart {
         const container = document.createElement('div');
         const currency = this.options.cart?.currency || DEFAULT_TEXT_COLOR;
         this.cartTotal = utils.DOM.createSmallTitle(`Total: ${currency}${this.getTotal()}`);
-        this.cartTotal.className += ' sc-cart-total';
+        this.cartTotal.className += ' map-cart-total';
 
         const deleteBtn = this.createScDeleteButton();
         deleteBtn.onclick = this.deleteAllClick.bind(this);
@@ -390,13 +390,13 @@ class Cart {
         // release all selected seats and remove them from dictionary
         for (const key of keys) {
             for (const id of this.dict[key]) {
-                this.sc.releaseSeat(id);
+                this.map.releaseSeat(id);
 
                 // fire event
-                if (this.sc.onChange != null) {
+                if (this.map.onChange != null) {
                     const index = this.getIndexFromId(id);
-                    const seatName = this.sc.getSeatName(id);
-                    const type = this.sc.getSeatType(id);
+                    const seatName = this.map.getSeatName(id);
+                    const type = this.map.getSeatType(id);
 
                     const current: Seat = {
                         id,
@@ -409,7 +409,7 @@ class Cart {
                         id,
                         index,
                         name: seatName,
-                        price: this.getPrice(type),
+                        price: this.getSeatPrice(type),
                         type,
                     };
 
@@ -428,8 +428,8 @@ class Cart {
 
         this.updateTotal();
 
-        if (this.sc.onClear) {
-            this.sc.onClear(removedSeats);
+        if (this.map.onClear) {
+            this.map.onClear(removedSeats);
         }
     }
 
@@ -474,7 +474,7 @@ class Cart {
                     const row = Math.floor(index / this.options.map.columns);
                     const column = index % this.options.map.columns;
                     const id = `${row}_${column}`;
-                    const name = this.sc.getSeatName(id);
+                    const name = this.map.getSeatName(id);
 
                     const seat: Seat = {
                         id,
@@ -509,16 +509,16 @@ class Cart {
                 }
 
                 const id = elementId.split('-')[1];
-                const type = this.sc.getSeatType(id);
+                const type = this.map.getSeatType(id);
 
-                this.sc.releaseSeat(id);
+                this.map.releaseSeat(id);
                 this.removeFromdict(id, type);
                 this.updateTotal();
 
                 // fire event
-                if (this.sc.onChange != null) {
+                if (this.map.onChange != null) {
                     const index = this.getIndexFromId(id);
-                    const seatName = this.sc.getSeatName(id);
+                    const seatName = this.map.getSeatName(id);
 
                     const current: Seat = {
                         id,
@@ -531,11 +531,11 @@ class Cart {
                         id,
                         index,
                         name: seatName,
-                        price: this.getPrice(type),
+                        price: this.getSeatPrice(type),
                         type,
                     };
 
-                    this.sc.onChange({
+                    this.map.onChange({
                         action: 'remove',
                         current,
                         previous,

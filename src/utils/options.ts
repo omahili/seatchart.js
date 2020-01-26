@@ -58,6 +58,9 @@ type indexNameCallback = (
     disabledCount: number,
 ) => string;
 
+/**
+ * Options to configure a Seatchart.
+ */
 interface Options {
     /**
      * Map options.

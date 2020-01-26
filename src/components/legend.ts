@@ -1,4 +1,4 @@
-import Seatchart from 'seatchart';
+import Map from 'components/map';
 import { DEFAULT_CURRENCY } from 'utils/consts';
 import Options from 'utils/options';
 import utils from 'utils/utils';
@@ -7,12 +7,12 @@ import utils from 'utils/utils';
  * @internal
  */
 class Legend {
-    private sc: Seatchart;
+    private map: Map;
     private options: Options;
 
-    public constructor(sc: Seatchart) {
-        this.sc = sc;
-        this.options = sc.options;
+    public constructor(map: Map, options: Options) {
+        this.map = map;
+        this.options = options;
 
         this.createLegend();
     }
@@ -28,10 +28,10 @@ class Legend {
         const item = document.createElement('li');
         item.className = 'sc-legend-item';
         const itemStyle = document.createElement('div');
-        itemStyle.className = `sc-seat legend-style ${type}`;
-        const description = document.createElement('p');
-        description.className = 'sc-legend-description';
-        description.textContent = content;
+        itemStyle.className = `map-seat legend-style ${type}`;
+        const demapription = document.createElement('p');
+        demapription.className = 'sc-legend-demapription';
+        demapription.textContent = content;
 
         if (backgroundColor !== undefined) {
             itemStyle.className = `${itemStyle.className} clicked`;
@@ -39,7 +39,7 @@ class Legend {
         }
 
         item.appendChild(itemStyle);
-        item.appendChild(description);
+        item.appendChild(demapription);
 
         return item;
     }
@@ -68,10 +68,10 @@ class Legend {
             const currency = this.options.cart?.currency || DEFAULT_CURRENCY;
 
             for (const seatType of this.options.types) {
-                const description = `${utils.capitalizeFirstLetter(seatType.type)} ` +
+                const demapription = `${utils.capitalizeFirstLetter(seatType.type)} ` +
                     currency +
                     seatType.price.toFixed(2);
-                const item = this.createLegendItem(description, '', seatType.backgroundColor);
+                const item = this.createLegendItem(demapription, '', seatType.backgroundColor);
                 seatsList.appendChild(item);
             }
             seatsList.appendChild(this.createLegendItem('Already booked', 'unavailable'));
