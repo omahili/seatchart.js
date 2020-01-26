@@ -67,7 +67,7 @@ class Seatchart {
      * @param index - Seat index.
      * @returns Seat info.
      */
-    public get(index: number): Seat {
+    public getSeat(index: number): Seat {
         return this.map.get(index);
     }
 
@@ -77,7 +77,7 @@ class Seatchart {
      * @param type - New seat type ('disabled', 'reserved' and 'available' are supported too).
      * @param emit - True to trigger onChange event (dafualt false).
      */
-    public set(index: number, type: string, emit: boolean): void {
+    public setSeat(index: number, type: string, emit: boolean): void {
         this.map.set(index, type, emit);
     }
 
