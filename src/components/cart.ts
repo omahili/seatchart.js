@@ -429,7 +429,7 @@ class Cart {
 
         this.updateTotal();
 
-        this.map.onClearEventListeners.forEach(el => el(removedSeats));
+        this.map.onClearEventListeners.forEach(el => el(clearEvent));
     }
 
     /**
