@@ -2,11 +2,11 @@ import Cart from 'components/cart';
 import InvalidParameterError from 'errors/invalid-parameter-error';
 import NotFoundError from 'errors/not-found-error';
 import { DEFAULT_TEXT_COLOR } from 'utils/consts';
-import { ChangeEvent, ClearEvent } from 'utils/events';
 import Options from 'utils/options';
 import Seat from 'utils/seat';
 import utils from 'utils/utils';
 import Validator from 'utils/validator';
+import { EventListener } from 'utils/events';
 
 /**
  * @internal
@@ -20,14 +20,14 @@ class Map {
      *
      * @param e - A change event.
      */
-    public onChange: ((e: ChangeEvent) => void) | undefined;
+    public onChangeEventListeners: Array<EventListener> = [];
 
     /**
      * Triggered when all seats are removed with the 'delete all' button in the shopping cart.
      *
      * @param e - A clear event.
      */
-    public onClear: ((e: ClearEvent) => void) | undefined;
+    public onClearEventListeners: Array<EventListener> = [];
     /**
      * A string containing all the letters of the english alphabet.
      */
@@ -52,6 +52,44 @@ class Map {
         this.createMap();
 
         this.cart = new Cart(this);
+    }
+
+    /**
+     * Adds an event listener.
+     * @param type - Event type.
+     * @param listener - Function called when the given event occurs.
+     */
+    public addEventListener(type: 'clear' | 'change', listener: EventListener): void {
+        if (type === 'change') {
+            this.onChangeEventListeners.push(listener);
+        } else if (type === 'clear') {
+            this.onClearEventListeners.push(listener);
+        } else {
+            throw new InvalidParameterError('Invalid parameter \'type\' supplied to Seatchart.addEventListener(). ' +
+                'Type does not exist',
+            );
+        }
+    }
+
+    /**
+     * Removes an event listener.
+     * @param type - Event type.
+     * @param listener - Listener to remove.
+     */
+    public removeEventListener(type: 'clear' | 'change', listener: EventListener): void {
+        if (['change', 'clear'].includes(type)) {
+            let eventListeners = type === 'change' ? this.onChangeEventListeners : this.onClearEventListeners;
+
+            eventListeners.forEach((el: EventListener, i: number) => {
+                if (el === listener) {
+                    eventListeners = eventListeners.splice(i, 1);
+                }
+            });
+        } else {
+            throw new InvalidParameterError('Invalid parameter \'type\' supplied to Seatchart.removeEventListener(). ' +
+                'Type does not exist',
+            );
+        }
     }
 
     /**
@@ -160,14 +198,6 @@ class Map {
             isSeatAfterSelected;
 
         return isSeatBeforeUnavailable && isSeatAfterUnavailable;
-    }
-
-    public setOnChange(onChange: ((e: ChangeEvent) => void) | undefined): void {
-        this.onChange = onChange;
-    }
-
-    public setOnClear(onClear: ((e: ClearEvent) => void) | undefined): void {
-        this.onClear = onClear;
     }
 
     /**
@@ -296,7 +326,7 @@ class Map {
      * Set seat type.
      * @param index - Index of the seat to update.
      * @param type - New seat type ('disabled', 'reserved' and 'available' are supported too).
-     * @param emit - True to trigger onChange event (dafualt false).
+     * @param emit - True to trigger onChangeListeners event (dafualt false).
      */
     public set(index: number, type: string, emit: boolean): void {
         let seatType;
@@ -520,7 +550,7 @@ class Map {
                     // remove from virtual sc
                     this.cart.removeFromdict(seat.id, type);
 
-                    // there's no need to fire onChange event since this function fires
+                    // there's no need to fire onChangeListeners event since this function fires
                     // the event after removing the seat from shopping cart
                     this.cart.updateCart('remove', seat.id, 'available', type, true);
                     this.cart.updateTotal();

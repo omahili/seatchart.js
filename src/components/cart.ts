@@ -135,12 +135,12 @@ class Cart {
                 }
             }
 
-            if (emit && this.map.onChange) {
-                this.map.onChange({
+            if (emit) {
+                this.map.onChangeEventListeners.forEach(el => el({
                     action,
                     current,
                     previous,
-                });
+                }));
             }
         } else if (action === 'add') {
             if (this.cartTable) {
@@ -148,12 +148,12 @@ class Cart {
                 this.cartTable.appendChild(cartItem);
             }
 
-            if (emit && this.map.onChange) {
-                this.map.onChange({
+            if (emit) {
+                this.map.onChangeEventListeners.forEach(el => el({
                     action,
                     current,
                     previous,
-                });
+                }));
             }
         } else if (action === 'update') {
             if (this.cartTable) {
@@ -182,12 +182,12 @@ class Cart {
                 }
             }
 
-            if (emit && this.map.onChange) {
-                this.map.onChange({
+            if (emit) {
+                this.map.onChangeEventListeners.forEach(el => el({
                     action,
                     current,
                     previous,
-                });
+                }));
             }
         }
     }
@@ -383,7 +383,9 @@ class Cart {
      * This function is fired when the "delete all" button is clicked in the shopping cart.
      */
     private deleteAllClick(): void {
-        const removedSeats: ClearEvent = [];
+        const clearEvent: ClearEvent = {
+            seats: [],
+        };
 
         const keys = Object.keys(this.dict);
 
@@ -392,8 +394,7 @@ class Cart {
             for (const id of this.dict[key]) {
                 this.map.releaseSeat(id);
 
-                // fire event
-                if (this.map.onChange != null) {
+                if (this.map.onClearEventListeners.length > 0) {
                     const index = this.getIndexFromId(id);
                     const seatName = this.map.getSeatName(id);
                     const type = this.map.getSeatType(id);
@@ -413,7 +414,7 @@ class Cart {
                         type,
                     };
 
-                    removedSeats.push({ current, previous });
+                    clearEvent.seats.push({ current, previous });
                 }
             }
 
@@ -428,9 +429,7 @@ class Cart {
 
         this.updateTotal();
 
-        if (this.map.onClear) {
-            this.map.onClear(removedSeats);
-        }
+        this.map.onClearEventListeners.forEach(el => el(removedSeats));
     }
 
     /**
@@ -516,7 +515,7 @@ class Cart {
                 this.updateTotal();
 
                 // fire event
-                if (this.map.onChange != null) {
+                if (this.map.onChangeEventListeners.length > 0) {
                     const index = this.getIndexFromId(id);
                     const seatName = this.map.getSeatName(id);
 
@@ -535,11 +534,11 @@ class Cart {
                         type,
                     };
 
-                    this.map.onChange({
+                    this.map.onChangeEventListeners.forEach(el => el({
                         action: 'remove',
                         current,
                         previous,
-                    });
+                    }));
                 }
             }
         };

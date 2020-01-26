@@ -1,24 +1,10 @@
 import Map from 'components/map';
 import Seat from 'utils/seat';
 import Options from 'utils/options';
-import { ChangeEvent, ClearEvent } from 'utils/events';
+import { EventListener } from 'utils/events';
 
 class Seatchart {
     public readonly options: Options;
-
-    /**
-     * Triggered when a seat is selected or unselected.
-     *
-     * @param e - A change event.
-     */
-    public onChange: ((e: ChangeEvent) => void) | undefined;
-
-    /**
-     * Triggered when all seats are removed with the 'delete all' button in the shopping cart.
-     *
-     * @param e - A clear event.
-     */
-    public onClear: ((e: ClearEvent) => void) | undefined;
 
     private map: Map;
 
@@ -30,8 +16,24 @@ class Seatchart {
         this.options = options;
 
         this.map = new Map(options);
-        this.map.setOnChange(this.onChange);
-        this.map.setOnClear(this.onClear);
+    }
+
+    /**
+     * Adds an event listener.
+     * @param type - Event type.
+     * @param listener - Function called when the given event occurs.
+     */
+    public addEventListener(type: 'clear' | 'change', listener: EventListener): void {
+        this.map.addEventListener(type, listener);
+    }
+
+    /**
+     * Removes an event listener.
+     * @param type - Event type.
+     * @param listener - Listener to remove.
+     */
+    public removeEventListener(type: 'clear' | 'change', listener: EventListener): void {
+        this.map.removeEventListener(type, listener);
     }
 
     /**
@@ -118,7 +120,7 @@ class Seatchart {
      * Gets the total price of the selected seats.
      * @returns The total price.
      */
-    public getTotal(): number {
+    public getCartTotal(): number {
         return this.map.cart.getTotal();
     }
 
