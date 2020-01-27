@@ -10,9 +10,9 @@ class Legend {
     private map: Map;
     private options: Options;
 
-    public constructor(map: Map, options: Options) {
+    public constructor(map: Map) {
         this.map = map;
-        this.options = options;
+        this.options = map.options;
 
         this.createLegend();
     }

@@ -7,6 +7,7 @@ import Seat from 'utils/seat';
 import utils from 'utils/utils';
 import Validator from 'utils/validator';
 import { EventListener } from 'utils/events';
+import Legend from './legend';
 
 /**
  * @internal
@@ -14,6 +15,7 @@ import { EventListener } from 'utils/events';
 class Map {
     public readonly options: Options;
     public readonly cart: Cart;
+    public readonly legend: Legend;
 
     /**
      * Triggered when a seat is selected or unselected.
@@ -52,6 +54,7 @@ class Map {
         this.createMap();
 
         this.cart = new Cart(this);
+        this.legend = new Legend(this);
     }
 
     /**
