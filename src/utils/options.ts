@@ -1,3 +1,5 @@
+import SeatType from './seat-type';
+
 /**
  * Callback to generate a seat name.
  * @returns Seat name. Return null or undefined if empty.
@@ -160,28 +162,7 @@ interface Options {
     /**
      * Seat types options.
      */
-    types: Array<{
-        /**
-         * Name of seat type.
-         */
-        type: string;
-        /**
-         * Background color of the defined seat type.
-         */
-        backgroundColor: string;
-        /**
-         * Price of the defined seat type.
-         */
-        price: number;
-        /**
-         * Text color of the defined seat type.
-         */
-        textColor?: string;
-        /**
-         * Selected seats of the defined seat type.
-         */
-        selected?: number[];
-    }>;
+    types: Array<SeatType>;
     /**
      * Cart options.
      */
