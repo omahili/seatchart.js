@@ -1,5 +1,5 @@
 import BaseComponent from 'utils/base-component';
-import utils from 'utils/utils';
+import IconedTitle from 'components/common/iconed-tile';
 
 /**
  * @internal
@@ -20,15 +20,15 @@ class CartHeader extends BaseComponent<HTMLDivElement> {
             `${assetsPath}/shoppingcart.svg` :
             '../assets/bin.svg';
 
-        const cartTitle = utils.DOM.createIconedTitle(
+        const cartTitle = new IconedTitle(
             'Your Cart',
             assetPath,
             'Shopping cart icon.',
         );
 
-        cartTitle.appendChild(counter);
+        cartTitle.element.appendChild(counter);
 
-        super(cartTitle);
+        super(cartTitle.element);
         this.counter = counter;
     }
 

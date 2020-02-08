@@ -4,6 +4,7 @@ import Options from 'utils/options';
 import Seat from 'utils/seat';
 import utils from 'utils/utils';
 import Map from 'components/map';
+import Container from 'components/common/container';
 import CartFooter from './footer';
 import CartHeader from './header';
 import CartTable from './table';
@@ -232,7 +233,7 @@ class Cart {
      */
     private createCart(): void {
         if (this.options.cart) {
-            const cartContainer = utils.DOM.createContainer('cart', 'column');
+            const cartContainer = new Container('cart', 'column');
 
             const cartTableContainer = document.createElement('div');
             cartTableContainer.classList.add('sc-cart');
@@ -258,13 +259,13 @@ class Cart {
 
             this.cartHeader = new CartHeader(itemsCount, this.options.assets?.path);
 
-            cartContainer.appendChild(this.cartHeader.element);
-            cartContainer.appendChild(cartTableContainer);
-            cartContainer.appendChild(this.cartFooter.element);
+            cartContainer.element.appendChild(this.cartHeader.element);
+            cartContainer.element.appendChild(cartTableContainer);
+            cartContainer.element.appendChild(this.cartFooter.element);
 
             const cart = document.getElementById(this.options.cart.id);
             if (cart) {
-                cart.appendChild(cartContainer);
+                cart.appendChild(cartContainer.element);
             }
         }
     }
@@ -325,7 +326,7 @@ class Cart {
 
         // empty shopping cart, fastest way instead of removing each item
         if (this.cartTable) {
-            utils.DOM.emptyElement(this.cartTable.element);
+            utils.emptyElement(this.cartTable.element);
         }
 
         this.cartFooter?.updateTotal(this.getTotal());

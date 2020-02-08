@@ -2,6 +2,8 @@ import Map from 'components/map';
 import { DEFAULT_CURRENCY } from 'utils/consts';
 import Options from 'utils/options';
 import utils from 'utils/utils';
+import Container from 'components/common/container';
+import Title from 'components/common/title';
 
 /**
  * @internal
@@ -61,8 +63,8 @@ class Legend {
     private createLegend(): void {
         if (this.options.legend) {
             // create legend container
-            const legendContainer = utils.DOM.createContainer('legend', 'column');
-            const legendTitle = utils.DOM.createTitle('Legend');
+            const legendContainer = new Container('legend', 'column');
+            const legendTitle = new Title('Legend');
 
             const seatsList = this.createLegendList();
             const currency = this.options.cart?.currency || DEFAULT_CURRENCY;
@@ -76,14 +78,14 @@ class Legend {
             }
             seatsList.appendChild(this.createLegendItem('Already booked', 'unavailable'));
 
-            legendContainer.appendChild(legendTitle);
-            legendContainer.appendChild(seatsList);
-            legendContainer.appendChild(seatsList);
+            legendContainer.element.appendChild(legendTitle.element);
+            legendContainer.element.appendChild(seatsList);
+            legendContainer.element.appendChild(seatsList);
 
             const legend = document.getElementById(this.options.legend.id);
 
             if (legend) {
-                legend.appendChild(legendContainer);
+                legend.appendChild(legendContainer.element);
             }
         }
     }

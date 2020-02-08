@@ -4,10 +4,10 @@ import NotFoundError from 'errors/not-found-error';
 import { DEFAULT_TEXT_COLOR } from 'utils/consts';
 import Options from 'utils/options';
 import Seat from 'utils/seat';
-import utils from 'utils/utils';
 import Validator from 'utils/validator';
 import { EventListener } from 'utils/events';
 import Legend from './legend';
+import Container from './common/container';
 
 /**
  * @internal
@@ -597,10 +597,6 @@ class Map {
         }
     }
 
-    // @param row.index - Row index (starts from 0).
-    // @param row.disabled - True if current row is disabled.
-    // @param row.disabledCount - Number of disabled rows till that one (including current one if disabled).
-
     /**
      * Generates a seat name.
      * @param row - Row object.
@@ -934,34 +930,34 @@ class Map {
             itemsPosition = 'left';
         }
 
-        const rowIndexContainer = utils.DOM.createContainer(null, rowContainerDirection);
-        const columnIndexContainer = utils.DOM.createContainer(null, columnContainerDirection, itemsPosition);
-        columnIndexContainer.append(rowIndexContainer);
+        const rowIndexContainer = new Container(null, rowContainerDirection);
+        const columnIndexContainer = new Container(null, columnContainerDirection, itemsPosition);
+        columnIndexContainer.element.append(rowIndexContainer.element);
 
         // create map container which will contain everything
-        const mapContainer = utils.DOM.createContainer('map', 'column', itemsPosition);
+        const mapContainer = new Container('map', 'column', itemsPosition);
 
         const frontHeader = this.createFrontHeader();
         if (!front || front.visible === undefined || front.visible) {
             frontHeader.classList.add('sc-margin-bottom');
-            mapContainer.appendChild(frontHeader);
+            mapContainer.element.appendChild(frontHeader);
         }
 
         if (!indexes || !indexes.columns || indexes.columns.visible === undefined || indexes.columns.visible) {
-            columnIndexContainer.appendChild(this.createColumnIndex());
+            columnIndexContainer.element.appendChild(this.createColumnIndex());
         }
 
         if (!indexes || !indexes.rows || indexes.rows.visible === undefined || indexes.rows.visible) {
-            rowIndexContainer.appendChild(this.createRowIndex());
+            rowIndexContainer.element.appendChild(this.createRowIndex());
         }
 
-        rowIndexContainer.append(map);
-        columnIndexContainer.append(rowIndexContainer);
-        mapContainer.append(columnIndexContainer);
+        rowIndexContainer.element.append(map);
+        columnIndexContainer.element.append(rowIndexContainer.element);
+        mapContainer.element.append(columnIndexContainer.element);
 
         const seatmap = document.getElementById(this.options.map.id);
         if (seatmap) {
-            seatmap.appendChild(mapContainer);
+            seatmap.appendChild(mapContainer.element);
         }
 
         const seat = <HTMLElement> document.getElementsByClassName('sc-seat')[0];
