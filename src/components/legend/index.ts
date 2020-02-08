@@ -28,9 +28,9 @@ class Legend {
         const item = document.createElement('li');
         item.className = 'sc-legend-item';
         const itemStyle = document.createElement('div');
-        itemStyle.className = `map-seat legend-style ${type}`;
+        itemStyle.className = `sc-seat legend-style ${type}`;
         const demapription = document.createElement('p');
-        demapription.className = 'sc-legend-demapription';
+        demapription.className = 'sc-legend-description';
         demapription.textContent = content;
 
         if (backgroundColor !== undefined) {
