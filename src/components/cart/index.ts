@@ -1,10 +1,12 @@
 import NotFoundError from 'errors/not-found-error';
-import { DEFAULT_CURRENCY, DEFAULT_TEXT_COLOR } from 'utils/consts';
 import { ClearEvent } from 'utils/events';
 import Options from 'utils/options';
 import Seat from 'utils/seat';
 import utils from 'utils/utils';
 import Map from 'components/map';
+import CartFooter from './footer';
+import CartHeader from './header';
+import CartTable from './table';
 
 /**
  * @internal
@@ -20,17 +22,17 @@ class Cart {
     /**
      * The main div container containing all the shopping cart elements.
      */
-    private cartTable: HTMLDivElement | undefined;
-
-    /**
-     * The text that shows the total cost of the items in the shopping cart.
-     */
-    private cartTotal: HTMLHeadingElement | undefined;
+    private cartTable: CartTable | undefined;
 
     /**
      * Text that show total number of items in the shopping cart.
      */
-    private cartItemsCounter: HTMLHeadingElement | undefined;
+    private cartHeader: CartHeader | undefined;
+
+    /**
+     * The text that shows the total cost of the items in the shopping cart.
+     */
+    private cartFooter: CartFooter | undefined;
 
     /**
      * An object containing all seats added to the shopping cart, mapped by seat type.
@@ -123,16 +125,11 @@ class Cart {
             type: previousType,
         };
 
-        let cartItem;
-
         this.updateCartObject();
 
         if (action === 'remove') {
             if (this.cartTable) {
-                const itemElement = document.getElementById(`item-${id}`);
-                if (itemElement) {
-                    itemElement.remove();
-                }
+                this.cartTable.removeItem(id);
             }
 
             if (emit) {
@@ -144,8 +141,13 @@ class Cart {
             }
         } else if (action === 'add') {
             if (this.cartTable) {
-                cartItem = this.createCartItem(current);
-                this.cartTable.appendChild(cartItem);
+                const seatType = this.options.types.find(x => x.type === current.type);
+
+                if (!seatType) {
+                    throw new NotFoundError('Seat type not found.');
+                }
+
+                this.cartTable.addItem(current, seatType, this.deleteClick.bind(this));
             }
 
             if (emit) {
@@ -157,29 +159,13 @@ class Cart {
             }
         } else if (action === 'update') {
             if (this.cartTable) {
-                cartItem = document.getElementById(`item-${id}`);
+                const seatType = this.options.types.find(x => x.type === current.type);
 
-                if (cartItem) {
-                    const itemContent = cartItem.getElementsByTagName('td');
-
-                    const seatConfig = this.options.types.find(x => x.type === current.type);
-
-                    if (seatConfig) {
-                        const ticket = <HTMLElement> itemContent[0].getElementsByClassName('sc-ticket')[0];
-                        ticket.style.backgroundColor = seatConfig.backgroundColor;
-                        ticket.style.color = seatConfig.textColor || DEFAULT_TEXT_COLOR;
-
-                        const ticketType = ticket.getElementsByClassName('sc-cart-seat-type')[0];
-                        ticketType.textContent = utils.capitalizeFirstLetter(current.type);
-
-                        const ticketPrice = itemContent[1];
-
-                        if (current.price) {
-                            const currency = this.options.cart?.currency || '€';
-                            ticketPrice.textContent = `${currency}${current.price.toFixed(2)}`;
-                        }
-                    }
+                if (!seatType) {
+                    throw new NotFoundError('Seat type not found.');
                 }
+
+                this.cartTable.updateItem(current, seatType);
             }
 
             if (emit) {
@@ -236,18 +222,9 @@ class Cart {
         return false;
     }
 
-    /**
-     * Updates the total price and items counter in the shopping cart.
-     */
     public updateTotal(): void {
-        if (this.cartTotal) {
-            const currency = this.options.cart?.currency || DEFAULT_CURRENCY;
-            this.cartTotal.textContent = `Total: ${currency}${this.getTotal().toFixed(2)}`;
-        }
-
-        if (this.cartItemsCounter && this.cartTable) {
-            this.cartItemsCounter.textContent = `(${this.cartTable.childNodes.length})`;
-        }
+        this.cartFooter?.updateTotal(this.getTotal());
+        this.cartHeader?.updateCounter(this.cartTable?.countItems() || 0);
     }
 
     /**
@@ -256,99 +233,40 @@ class Cart {
     private createCart(): void {
         if (this.options.cart) {
             const cartContainer = utils.DOM.createContainer('cart', 'column');
-            const assetPath = this.options.assets && this.options.assets.path ?
-                `${this.options.assets.path}/shoppingcart.svg` :
-                '../assets/bin.svg';
-
-            const cartTitle = utils.DOM.createIconedTitle(
-                'Your Cart',
-                assetPath,
-                'Shopping cart icon.',
-            );
 
             const cartTableContainer = document.createElement('div');
             cartTableContainer.classList.add('sc-cart');
             cartTableContainer.style.width = `${this.options.cart.width}px`;
             cartTableContainer.style.height = `${this.options.cart.height}px`;
 
-            this.cartTable = this.createCartTable();
-            cartTableContainer.appendChild(this.cartTable);
+            this.cartTable = new CartTable(
+                this.options.cart.currency,
+                this.options.assets?.path,
+            );
 
-            const itemsCount = this.loadCartItems();
-            const cartTotal = this.createCartTotal();
+            this.loadCartItems();
 
-            this.cartItemsCounter = this.createCartItemsCounter(itemsCount);
-            cartTitle.appendChild(this.cartItemsCounter);
+            cartTableContainer.appendChild(this.cartTable?.element);
 
-            cartContainer.appendChild(cartTitle);
+            const itemsCount = this.cartTable?.countItems();
+            this.cartFooter = new CartFooter(
+                this.getTotal(),
+                this.options.cart?.currency,
+                this.options.assets?.path,
+                this.deleteAllClick.bind(this),
+            );
+
+            this.cartHeader = new CartHeader(itemsCount, this.options.assets?.path);
+
+            cartContainer.appendChild(this.cartHeader.element);
             cartContainer.appendChild(cartTableContainer);
-            cartContainer.appendChild(cartTotal);
+            cartContainer.appendChild(this.cartFooter.element);
 
             const cart = document.getElementById(this.options.cart.id);
             if (cart) {
                 cart.appendChild(cartContainer);
             }
         }
-    }
-
-    /**
-     * Creates the total of the shopping cart and a "delete all" button.
-     * @returns The total and "delete all" button.
-     */
-    private createCartTotal(): HTMLDivElement {
-        const container = document.createElement('div');
-        const currency = this.options.cart?.currency || DEFAULT_TEXT_COLOR;
-        this.cartTotal = utils.DOM.createSmallTitle(`Total: ${currency}${this.getTotal()}`);
-        this.cartTotal.className += ' map-cart-total';
-
-        const deleteBtn = this.createScDeleteButton();
-        deleteBtn.onclick = this.deleteAllClick.bind(this);
-        deleteBtn.className += ' all';
-
-        const label = document.createElement('p');
-        label.textContent = 'All';
-        deleteBtn.appendChild(label);
-
-        container.appendChild(this.cartTotal);
-        container.appendChild(deleteBtn);
-
-        return container;
-    }
-
-    /**
-     * Creates a ticket to place into the shopping cart.
-     * @param seat - Seat info.
-     * @returns The ticket.
-     */
-    private createTicket(seat: Seat): HTMLDivElement {
-        const seatConfig = this.options.types.find(x => x.type === seat.type);
-
-        if (!seatConfig) {
-            throw new NotFoundError(`Options for seat type '${seat.type}' not found.`);
-        }
-
-        const ticket = document.createElement('div');
-        ticket.className = 'sc-ticket';
-        ticket.style.color = seatConfig.textColor || DEFAULT_TEXT_COLOR;
-        ticket.style.backgroundColor = seatConfig.backgroundColor;
-
-        const stripes = document.createElement('div');
-        stripes.className = 'sc-ticket-stripes';
-
-        const seatName = document.createElement('div');
-        seatName.textContent = seat.name;
-        seatName.className = 'sc-cart-seat-name';
-
-        const seatType = document.createElement('div');
-        seatType.textContent = utils.capitalizeFirstLetter(seat.type);
-        seatType.className = 'sc-cart-seat-type';
-
-        ticket.appendChild(stripes);
-        ticket.appendChild(seatName);
-        ticket.appendChild(seatType);
-        ticket.appendChild(stripes.cloneNode(true));
-
-        return ticket;
     }
 
     /**
@@ -360,23 +278,6 @@ class Cart {
         for (const s of keys) {
             this.cart[s] = this.dict[s].map(x => this.getIndexFromId(x));
         }
-    }
-
-    /**
-     * Create a delete button for a shopping cart item.
-     * @returns The delete button.
-     */
-    private createScDeleteButton(): HTMLDivElement {
-        const binImg = document.createElement('img');
-        binImg.src = this.options.assets?.path ?
-            `${this.options.assets.path}/bin.svg` :
-            '../assets/bin.svg';
-
-        const deleteBtn = document.createElement('div');
-        deleteBtn.className = 'sc-cart-delete';
-        deleteBtn.appendChild(binImg);
-
-        return deleteBtn;
     }
 
     /**
@@ -424,78 +325,18 @@ class Cart {
 
         // empty shopping cart, fastest way instead of removing each item
         if (this.cartTable) {
-            utils.DOM.emptyElement(this.cartTable);
+            utils.DOM.emptyElement(this.cartTable.element);
         }
 
-        this.updateTotal();
+        this.cartFooter?.updateTotal(this.getTotal());
+        this.cartHeader?.updateCounter(this.cartTable?.countItems() || 0);
 
         this.map.onClearEventListeners.forEach(el => el(clearEvent));
     }
 
     /**
-     * Creates the container of the items in the shopping cart.
-     * @returns The container of the items.
-     */
-    private createCartTable(): HTMLDivElement {
-        const container = document.createElement('table');
-        container.className = 'sc-cart-items';
-
-        return container;
-    }
-
-    /**
-     * Creates text that contains total number of items in the shopping cart.
-     * @param count - Number of item in the shopping cart.
-     * @returns The total and "delete all" button.
-     */
-    private createCartItemsCounter(count: number): HTMLDivElement {
-        const cartItemsCount = document.createElement('h3');
-        cartItemsCount.textContent = `(${count})`;
-
-        return cartItemsCount;
-    }
-
-    /**
-     * Loads seats, given with seat types, into the shopping cart.
-     * @returns Number of loaded items.
-     */
-    private loadCartItems(): number {
-        let count = 0;
-
-        for (const seatType of this.options.types) {
-            if (seatType.selected) {
-                const type = seatType.type;
-                const price = seatType.price;
-
-                count += seatType.selected.length;
-
-                for (const index of seatType.selected) {
-                    const row = Math.floor(index / this.options.map.columns);
-                    const column = index % this.options.map.columns;
-                    const id = `${row}_${column}`;
-                    const name = this.map.getSeatName(id);
-
-                    const seat: Seat = {
-                        id,
-                        index,
-                        name,
-                        price,
-                        type,
-                    };
-                    const cartItem = this.createCartItem(seat);
-
-                    if (this.cartTable) {
-                        this.cartTable.appendChild(cartItem);
-                    }
-                }
-            }
-        }
-
-        return count;
-    }
-
-    /**
      * This function is fired when a delete button is clicked in the shopping cart.
+     * @param item - Deleted item.
      */
     private deleteClick(item: Element): () => void {
         return (): void => {
@@ -512,7 +353,9 @@ class Cart {
 
                 this.map.releaseSeat(id);
                 this.removeFromdict(id, type);
-                this.updateTotal();
+
+                this.cartFooter?.updateTotal(this.getTotal());
+                this.cartHeader?.updateCounter(this.cartTable?.countItems() || 0);
 
                 // fire event
                 if (this.map.onChangeEventListeners.length > 0) {
@@ -568,6 +411,36 @@ class Cart {
     }
 
     /**
+     * Loads seats, given with seat types, into the shopping cart.
+     * @returns Number of loaded items.
+     */
+    private loadCartItems(): void {
+        for (const seatType of this.options.types) {
+            if (seatType.selected) {
+                const { columns } = this.options.map;
+                const type = seatType.type;
+                const price = seatType.price;
+
+                for (const index of seatType.selected) {
+                    const row = Math.floor(index / columns);
+                    const column = index % columns;
+                    const id = `${row}_${column}`;
+                    const name = this.map.getSeatName(id);
+
+                    const seat: Seat = {
+                        id,
+                        index,
+                        name,
+                        price,
+                        type,
+                    };
+                    this.cartTable?.addItem(seat, seatType, this.deleteClick.bind(this));
+                }
+            }
+        }
+    }
+
+    /**
      * Initializes the type of seats that can be clicked and
      * the types of seat that can be added to the shopping cart
      * from the options object.
@@ -592,42 +465,6 @@ class Cart {
         const values = id.split('_').map(val => parseInt(val, 10));
 
         return (this.options.map.columns * values[0]) + values[1];
-    }
-
-    /**
-     * Creates a shopping cart item.
-     * @param seat - Seat info.
-     * @returns The shopping cart item.
-     */
-    private createCartItem(seat: Seat): HTMLDivElement {
-        if (!seat.price) {
-            throw new Error('Seat price cannot be null or undefined.');
-        }
-
-        const item = document.createElement('tr');
-
-        const ticketTd = document.createElement('td');
-        ticketTd.className = 'sc-ticket-container';
-
-        const ticket = this.createTicket(seat);
-        ticketTd.appendChild(ticket);
-
-        const seatPrice = document.createElement('td');
-        const currency = this.options.cart?.currency || DEFAULT_CURRENCY;
-        seatPrice.textContent = `${currency}${seat.price.toFixed(2)}`;
-
-        const deleteTd = document.createElement('td');
-        const deleteBtn = this.createScDeleteButton();
-        deleteBtn.onclick = this.deleteClick(item);
-
-        deleteTd.appendChild(deleteBtn);
-
-        item.setAttribute('id', `item-${seat.id}`);
-        item.appendChild(ticketTd);
-        item.appendChild(seatPrice);
-        item.appendChild(deleteTd);
-
-        return item;
     }
 }
 
