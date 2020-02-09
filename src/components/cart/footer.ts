@@ -25,7 +25,7 @@ class CartFooter extends BaseComponent<HTMLDivElement> {
     ) {
         const currentCurrency = currency || DEFAULT_TEXT_COLOR;
         const container = document.createElement('div');
-        const total = new SmallTitle(`Total: ${currentCurrency}${totalValue}`);
+        const total = new SmallTitle(`Total: ${currentCurrency}${totalValue.toFixed(2)}`);
         total.element.className += ' sc-cart-total';
 
         const deleteBtn = new DeleteButton(assetsPath, deleteAllClick);
