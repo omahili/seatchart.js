@@ -1,3 +1,6 @@
+/**
+ * Describes a seat.
+ */
 interface Seat {
     /**
      * Seat type.

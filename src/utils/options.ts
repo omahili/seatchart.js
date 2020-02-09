@@ -4,7 +4,7 @@ import SeatType from './seat-type';
  * Callback to generate a seat name.
  * @returns Seat name. Return null or undefined if empty.
  */
-type seatNameCallback = (
+export type SeatNameCallback = (
     /**
      * Row object.
      */
@@ -45,7 +45,7 @@ type seatNameCallback = (
  * Callback to generate a row or column name.
  * @returns Row or column name. Return null or undefined if empty.
  */
-type indexNameCallback = (
+export type IndexNameCallback = (
     /**
      * Row or column index (starts from 0).
      */
@@ -58,7 +58,7 @@ type indexNameCallback = (
      * Number of disabled rows or columns till current one (including current one if disabled)
      */
     disabledCount: number,
-) => string;
+) => string | undefined;
 
 /**
  * Options to configure a Seatchart.
@@ -83,7 +83,7 @@ interface Options {
         /**
          * Seat name generator.
          */
-        seatName?: seatNameCallback;
+        seatName?: SeatNameCallback;
         /**
          *  Array of reserved seats.
          */
@@ -129,7 +129,7 @@ interface Options {
                 /**
                  * Row name generator.
                  */
-                name?: indexNameCallback;
+                name?: IndexNameCallback;
             };
             /**
              * Columns index options.
@@ -146,7 +146,7 @@ interface Options {
                 /**
                  * Column name generator.
                  */
-                name?: indexNameCallback;
+                name?: IndexNameCallback;
             };
         };
         /**

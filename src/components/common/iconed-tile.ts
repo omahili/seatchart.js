@@ -1,6 +1,9 @@
 import BaseComponent from 'utils/base-component';
 import Title from './title';
 
+/**
+ * @internal
+ */
 class IconedTitle extends BaseComponent<HTMLDivElement> {
     /**
      * Creates a title with an icon.

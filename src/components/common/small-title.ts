@@ -1,5 +1,8 @@
 import BaseComponent from 'utils/base-component';
 
+/**
+ * @internal
+ */
 class SmallTitle extends BaseComponent<HTMLHeadingElement> {
     /**
      * Creates a small title.

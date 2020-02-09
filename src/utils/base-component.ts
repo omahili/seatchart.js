@@ -1,3 +1,6 @@
+/**
+ * @internal
+ */
 class BaseComponent<T extends Element> {
     public readonly element: T;
 

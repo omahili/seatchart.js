@@ -6,8 +6,12 @@ import Options from 'utils/options';
 import Seat from 'utils/seat';
 import Validator from 'utils/validator';
 import { EventListener } from 'utils/events';
-import Legend from './legend';
-import Container from './common/container';
+import Legend from '../legend';
+import Container from '../common/container';
+import * as SeatComponent from './seat';
+import Row from './row';
+import FrontHeader from './front-header';
+import MapIndex from './map-index';
 
 /**
  * @internal
@@ -642,143 +646,6 @@ class Map {
     }
 
     /**
-     * Creates a new seat.
-     * @param type - The type of the seat.
-     * @param content - The name representing the seat.
-     * @param seatId - The dom id of the seat in the seatmap.
-     * @returns The seat.
-     */
-    private createSeat(type: string, content: string | undefined, seatId: string): HTMLDivElement {
-        const seat = document.createElement('div');
-        seat.className = 'sc-seat ' + type;
-        if (content) {
-            seat.textContent = content;
-        }
-
-        // if seatId wasn't passed as argument then don't set it
-        if (seatId !== undefined) {
-            seat.setAttribute('id', seatId);
-
-            // add click event just if it's a real seats (when it has and id)
-            seat.addEventListener('click', this.seatClick(seat));
-            seat.addEventListener('contextmenu', this.rightClickDelete(seat), false);
-        }
-
-        return seat;
-    }
-
-    /**
-     * Creates a seat map row.
-     * @returns The row.
-     */
-    private createRow(): HTMLDivElement {
-        const row = document.createElement('div');
-        row.className = 'sc-map-row';
-
-        return row;
-    }
-
-    /**
-     * Creates the header of the seatmap containing the front indicator.
-     * @returns The seatmap header.
-     */
-    private createFrontHeader(): HTMLDivElement {
-        // set the perfect width of the front indicator
-        const front = document.createElement('div');
-        front.textContent = 'Front';
-        front.className = 'sc-front';
-
-        return front;
-    }
-
-    /**
-     * Creates a seatmap index.
-     * @param content - Index text content.
-     * @returns The seatmap index.
-     */
-    private createIndex(content: string): HTMLDivElement {
-        const index = document.createElement('div');
-        index.textContent = content;
-        index.className = 'sc-index';
-
-        return index;
-    }
-
-    /**
-     * Creates a seatmap blank spot.
-     * @returns The seatmap blank spot.
-     */
-    private createBlank(): HTMLDivElement {
-        const blank = document.createElement('div');
-        blank.className = 'sc-seat blank';
-
-        return blank;
-    }
-
-    /**
-     * Creates a row containing all the row indexes.
-     * @returns Row indexes.
-     */
-    private createRowIndex(): HTMLDivElement {
-        const rowIndex = document.createElement('div');
-        rowIndex.className = 'sc-row-index';
-
-        const disabled = this.options.map.disabled;
-        let disabledCount = 0;
-
-        let generateName = this.rowName.bind(this);
-        if (this.options.map.indexes?.rows?.name) {
-            generateName = this.options.map.indexes.rows.name;
-        }
-
-        for (let i = 0; i < this.options.map.rows; i += 1) {
-            const isRowDisabled = disabled && disabled.rows ? disabled.rows.includes(i) : false;
-            disabledCount = isRowDisabled ? disabledCount + 1 : disabledCount;
-
-            const index = generateName(i, isRowDisabled, disabledCount);
-
-            if (index) {
-                rowIndex.appendChild(this.createIndex(index));
-            } else {
-                rowIndex.appendChild(this.createBlank());
-            }
-        }
-
-        return rowIndex;
-    }
-
-    /**
-     * Creates a row containing all the column indexes.
-     * @returns Column indexes.
-     */
-    private createColumnIndex(): HTMLDivElement {
-        const columnIndex = document.createElement('div');
-        columnIndex.className = 'sc-column-index';
-
-        const disabled = this.options.map.disabled;
-        let disabledCount = 0;
-
-        let generateName = this.columnName.bind(this);
-        if (this.options.map.indexes?.columns?.name) {
-            generateName = this.options.map.indexes.columns.name;
-        }
-
-        for (let i = 0; i < this.options.map.columns; i += 1) {
-            const isColumnDisabled = (disabled?.columns && disabled.columns.includes(i)) || false;
-            disabledCount = isColumnDisabled ? disabledCount + 1 : disabledCount;
-
-            const index = generateName(i, isColumnDisabled, disabledCount);
-            if (index) {
-                columnIndex.appendChild(this.createIndex(index));
-            } else {
-                columnIndex.appendChild(this.createBlank());
-            }
-        }
-
-        return columnIndex;
-    }
-
-    /**
      * Removes all classes regarding the type applied to the seat.
      * @param seat - Seat element.
      */
@@ -891,7 +758,7 @@ class Map {
 
         // add rows containing seats
         for (let i = 0; i < this.options.map.rows; i += 1) {
-            const row = this.createRow();
+            const row = new Row();
 
             const isRowDisabled = disabled?.rows ? disabled.rows.includes(i) : false;
             disabledRowsCounter = isRowDisabled ? disabledRowsCounter + 1 : disabledRowsCounter;
@@ -906,13 +773,18 @@ class Map {
                     { index: i, disabled: isRowDisabled, disabledCount: disabledRowsCounter },
                     { index: j, disabled: isColumnDisabled, disabledCount: disabledColumnsCounter },
                 );
+                const seatComponent = new SeatComponent.default(
+                    'available',
+                    seatTextContent,
+                    `${i}_${j}`,
+                    this.seatClick.bind(this),
+                    this.rightClickDelete.bind(this)
+                );
 
-                // draw empty row if row is disabled,
-                // while draw blank seat if column is disabled
-                row.appendChild(this.createSeat('available', seatTextContent, `${i}_${j}`));
+                row.element.appendChild(seatComponent.element);
             }
 
-            map.appendChild(row);
+            map.appendChild(row.element);
         }
 
         const indexes = this.options.map.indexes;
@@ -937,18 +809,30 @@ class Map {
         // create map container which will contain everything
         const mapContainer = new Container('map', 'column', itemsPosition);
 
-        const frontHeader = this.createFrontHeader();
+        const frontHeader = new FrontHeader();
         if (!front || front.visible === undefined || front.visible) {
-            frontHeader.classList.add('sc-margin-bottom');
-            mapContainer.element.appendChild(frontHeader);
+            frontHeader.element.classList.add('sc-margin-bottom');
+            mapContainer.element.appendChild(frontHeader.element);
         }
 
         if (!indexes || !indexes.columns || indexes.columns.visible === undefined || indexes.columns.visible) {
-            columnIndexContainer.element.appendChild(this.createColumnIndex());
+            const columnIndex = new MapIndex(
+                'column',
+                this.options.map.columns,
+                this.options.map.disabled?.columns,
+                this.columnName.bind(this) || this.options.map.indexes?.columns?.name
+            );
+            columnIndexContainer.element.appendChild(columnIndex.element);
         }
 
         if (!indexes || !indexes.rows || indexes.rows.visible === undefined || indexes.rows.visible) {
-            rowIndexContainer.element.appendChild(this.createRowIndex());
+            const rowIndex = new MapIndex(
+                'row',
+                this.options.map.rows,
+                this.options.map.disabled?.rows,
+                this.columnName.bind(this) || this.options.map.indexes?.rows?.name
+            );
+            rowIndexContainer.element.appendChild(rowIndex.element);
         }
 
         rowIndexContainer.element.append(map);
@@ -973,7 +857,7 @@ class Map {
         map.style.width = `${mapWidth}px`;
 
         if (!front || front.visible === undefined || front.visible) {
-            frontHeader.style.width = `${mapWidth}px`;
+            frontHeader.element.style.width = `${mapWidth}px`;
         }
 
         this.addDisabledSeatsToOptions();
