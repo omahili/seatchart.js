@@ -62,7 +62,7 @@ class Map {
         this.createMap();
 
         this.cart = new Cart(this);
-        this.legend = new Legend(this);
+        this.legend = new Legend(options);
 
         this.gapDetection = new GapDetection(
             this.cart,

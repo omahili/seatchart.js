@@ -1,4 +1,3 @@
-import Map from 'components/map';
 import { DEFAULT_CURRENCY } from 'utils/consts';
 import Options from 'types/options';
 import utils from 'utils';
@@ -9,12 +8,10 @@ import Title from 'components/common/title';
  * @internal
  */
 class Legend {
-    private map: Map;
     private options: Options;
 
-    public constructor(map: Map) {
-        this.map = map;
-        this.options = map.options;
+    public constructor(options: Options) {
+        this.options = options;
 
         this.createLegend();
     }
