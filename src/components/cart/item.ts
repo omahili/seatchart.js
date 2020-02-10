@@ -1,7 +1,7 @@
-import Seat from 'utils/seat';
+import Seat from 'types/seat';
 import { DEFAULT_CURRENCY } from 'utils/consts';
-import BaseComponent from 'utils/base-component';
-import SeatType from 'utils/seat-type';
+import BaseComponent from 'components/base';
+import SeatType from 'types/seat-type';
 import DeleteButton from './delete-button';
 import CartTicket from './ticket';
 

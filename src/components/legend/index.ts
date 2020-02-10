@@ -1,7 +1,7 @@
 import Map from 'components/map';
 import { DEFAULT_CURRENCY } from 'utils/consts';
-import Options from 'utils/options';
-import utils from 'utils/utils';
+import Options from 'types/options';
+import utils from 'utils';
 import Container from 'components/common/container';
 import Title from 'components/common/title';
 

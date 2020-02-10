@@ -1,8 +1,8 @@
 import NotFoundError from 'errors/not-found-error';
-import { ClearEvent } from 'utils/events';
-import Options from 'utils/options';
-import Seat from 'utils/seat';
-import utils from 'utils/utils';
+import { ClearEvent } from 'types/events';
+import Options from 'types/options';
+import Seat from 'types/seat';
+import utils from 'utils';
 import Map from 'components/map';
 import Container from 'components/common/container';
 import CartFooter from './footer';

@@ -1,5 +1,5 @@
 import { DEFAULT_TEXT_COLOR } from 'utils/consts';
-import BaseComponent from 'utils/base-component';
+import BaseComponent from 'components/base';
 import SmallTitle from 'components/common/small-title';
 import DeleteButton from './delete-button';
 

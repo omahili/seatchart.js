@@ -1,7 +1,7 @@
 import Map from 'components/map';
-import Seat from 'utils/seat';
-import Options from 'utils/options';
-import { EventListener } from 'utils/events';
+import Seat from 'types/seat';
+import Options from 'types/options';
+import { EventListener } from 'types/events';
 
 class Seatchart {
     public readonly options: Options;

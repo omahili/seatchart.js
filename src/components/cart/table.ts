@@ -1,8 +1,8 @@
-import BaseComponent from 'utils/base-component';
-import utils from 'utils/utils';
+import BaseComponent from 'components/base';
+import utils from 'utils';
 import { DEFAULT_TEXT_COLOR, DEFAULT_CURRENCY } from 'utils/consts';
-import SeatType from 'utils/seat-type';
-import Seat from 'utils/seat';
+import SeatType from 'types/seat-type';
+import Seat from 'types/seat';
 import CartItem from 'components/cart/item';
 
 /**

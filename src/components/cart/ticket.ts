@@ -1,8 +1,8 @@
 import { DEFAULT_TEXT_COLOR } from 'utils/consts';
-import Seat from 'utils/seat';
-import utils from 'utils/utils';
-import SeatType from 'utils/seat-type';
-import BaseComponent from 'utils/base-component';
+import Seat from 'types/seat';
+import utils from 'utils';
+import SeatType from 'types/seat-type';
+import BaseComponent from 'components/base';
 
 /**
  * @internal
