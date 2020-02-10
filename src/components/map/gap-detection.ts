@@ -1,6 +1,9 @@
 import InvalidParameterError from 'errors/invalid-parameter-error';
 import Cart from 'components/cart';
 
+/**
+ * @internal
+ */
 class GapDetection {
     private cart: Cart;
     private rows: number;
@@ -10,6 +13,17 @@ class GapDetection {
     private disabledColumns: number[] | undefined;
     private reservedSeats: number[] | undefined;
 
+    /**
+     * Create a service to detect gaps in the map.
+     *
+     * @param cart - Cart component.
+     * @param rows - Number of rows in the map.
+     * @param columns - Number of columns in the map.
+     * @param disabledSeats - Array of disabled seats.
+     * @param disabledRows - Array of disabled rows.
+     * @param disabledColumns - Array of disabled columns.
+     * @param reservedSeats - Array of reserved seats.
+     */
     public constructor(
         cart: Cart,
         rows: number,
