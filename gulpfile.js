@@ -9,7 +9,7 @@ const output = {
   format: 'umd',
   name: "Seatchart"
 };
-const input = 'src/seatchart.ts';
+const input = 'src/index.ts';
 const plugins = [rollupTypescript()];
 
 gulp.task('watch', function () {
