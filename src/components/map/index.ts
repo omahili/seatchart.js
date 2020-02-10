@@ -2,7 +2,7 @@ import Cart from 'components/cart';
 import InvalidParameterError from 'errors/invalid-parameter-error';
 import NotFoundError from 'errors/not-found-error';
 import { DEFAULT_TEXT_COLOR } from 'utils/consts';
-import Options from 'utils/options';
+import Options from 'types/options';
 import Seat from 'types/seat';
 import Validator from 'utils/validator';
 import { EventListener } from 'types/events';
