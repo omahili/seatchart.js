@@ -3,15 +3,16 @@ import InvalidParameterError from 'errors/invalid-parameter-error';
 import NotFoundError from 'errors/not-found-error';
 import { DEFAULT_TEXT_COLOR } from 'utils/consts';
 import Options from 'utils/options';
-import Seat from 'utils/seat';
+import Seat from 'types/seat';
 import Validator from 'utils/validator';
-import { EventListener } from 'utils/events';
+import { EventListener } from 'types/events';
 import Legend from '../legend';
 import Container from '../common/container';
 import * as SeatComponent from './seat';
 import Row from './row';
 import FrontHeader from './front-header';
 import MapIndex from './map-index';
+import GapDetection from './gap-detection';
 
 /**
  * @internal
@@ -34,6 +35,9 @@ class Map {
      * @param e - A clear event.
      */
     public onClearEventListeners: Array<EventListener> = [];
+
+    private gapDetection: GapDetection;
+
     /**
      * A string containing all the letters of the english alphabet.
      */
@@ -59,6 +63,16 @@ class Map {
 
         this.cart = new Cart(this);
         this.legend = new Legend(this);
+
+        this.gapDetection = new GapDetection(
+            this.cart,
+            this.options.map.rows,
+            this.options.map.columns,
+            this.options.map.disabled?.seats,
+            this.options.map.disabled?.rows,
+            this.options.map.disabled?.columns,
+            this.options.map.reserved?.seats,
+        );
     }
 
     /**
@@ -105,106 +119,7 @@ class Map {
      * @returns True if it is, false otherwise.
      */
     public isGap(seatIndex: number): boolean {
-        if (typeof seatIndex !== 'number' && Math.floor(seatIndex) === seatIndex) {
-            throw new InvalidParameterError(
-                'Invalid parameter \'seatIndex\' supplied to Seatchart.isGap(). It must be an integer.'
-            );
-        } else if (seatIndex >= this.options.map.rows * this.options.map.columns) {
-            throw new InvalidParameterError(
-                'Invalid parameter \'seatIndex\' supplied to Seatchart.isGap(). Index is out of range.'
-            );
-        }
-
-        const row = Math.floor(seatIndex / this.options.map.columns);
-        const col = seatIndex % this.options.map.columns;
-
-        const seatId = `${row}_${col}`;
-
-        // if current seat is disabled or reserved do not continue
-        if ((this.options.map.disabled?.seats && this.options.map.disabled.seats.includes(seatIndex)) ||
-            (this.options.map.disabled?.columns && this.options.map.disabled.columns.includes(col)) ||
-            (this.options.map.disabled?.rows && this.options.map.disabled.rows.includes(row)) ||
-            (this.options.map.reserved?.seats && this.options.map.reserved.seats.includes(seatIndex))
-        ) {
-            return false;
-        }
-
-        const keys = Object.keys(this.cart.dict);
-
-        // if current seat is selected do not continue
-        for (const key of keys) {
-            if (this.cart.dict[key].includes(seatId)) {
-                return false;
-            }
-        }
-
-        const colBefore = col - 1;
-        const colAfter = col + 1;
-
-        const seatBefore = seatIndex - 1;
-        const seatAfter = seatIndex + 1;
-
-        const isSeatBeforeDisabled = this.options.map.disabled?.seats ?
-            this.options.map.disabled.seats.includes(seatBefore) :
-            false;
-        const isSeatAfterDisabled = this.options.map.disabled?.seats ?
-            this.options.map.disabled.seats.includes(seatAfter) :
-            false;
-
-        const isSeatBeforeReserved = this.options.map.reserved?.seats ?
-            this.options.map.reserved.seats.includes(seatBefore) :
-            false;
-        const isSeatAfterReserved = this.options.map.reserved?.seats ?
-            this.options.map.reserved.seats.includes(seatAfter) :
-            false;
-
-        // if there's a disabled/reserved block before and after do not consider it a gap
-        if ((isSeatBeforeDisabled && isSeatAfterDisabled) ||
-            (isSeatBeforeReserved && isSeatAfterReserved) ||
-            (isSeatBeforeReserved && isSeatAfterDisabled) ||
-            (isSeatBeforeDisabled && isSeatAfterReserved)) {
-            return false;
-        }
-
-        // if there's a disabled/reserved block before and no seats after because the seatchart ends or,
-        // a disabled/reserved block after and no seats before, then do not consider it a gap
-        if (((isSeatBeforeDisabled || isSeatBeforeReserved) && colAfter >= this.options.map.columns) ||
-            (colBefore < 0 && (isSeatAfterDisabled || isSeatAfterReserved))) {
-            return false;
-        }
-
-        const seatBeforeId = `${row}_${colBefore}`;
-        const seatAfterId = `${row}_${colAfter}`;
-
-        let isSeatBeforeSelected = false;
-        let isSeatAfterSelected = false;
-
-        // check if seat before and after are selected
-        for (const type of keys) {
-            if (!isSeatBeforeSelected) {
-                isSeatBeforeSelected = this.cart.dict[type].includes(seatBeforeId);
-            }
-
-            if (!isSeatAfterSelected) {
-                isSeatAfterSelected = this.cart.dict[type].includes(seatAfterId);
-            }
-
-            if (isSeatAfterSelected && isSeatBeforeSelected) {
-                break;
-            }
-        }
-
-        const isSeatBeforeUnavailable = colBefore < 0 ||
-            (this.options.map.reserved?.seats && this.options.map.reserved.seats.includes(seatBefore)) ||
-            isSeatBeforeDisabled ||
-            isSeatBeforeSelected;
-
-        const isSeatAfterUnavailable = colAfter >= this.options.map.columns ||
-            (this.options.map.reserved?.seats && this.options.map.reserved.seats.includes(seatAfter)) ||
-            isSeatAfterDisabled ||
-            isSeatAfterSelected;
-
-        return isSeatBeforeUnavailable && isSeatAfterUnavailable;
+        return this.gapDetection.isGap(seatIndex);
     }
 
     /**
@@ -213,30 +128,7 @@ class Map {
      * @returns True if it does, false otherwise.
      */
     public makesGap(seatIndex: number): boolean {
-        if (typeof seatIndex !== 'number' && Math.floor(seatIndex) === seatIndex) {
-            throw new InvalidParameterError('Invalid parameter \'seatIndex\' supplied to Seatchart.makesGap(). ' +
-                'It must be an integer.',
-            );
-        } else if (seatIndex >= this.options.map.rows * this.options.map.columns) {
-            throw new InvalidParameterError('Invalid parameter \'seatIndex\' supplied to Seatchart.makesGap(). ' +
-                'Index is out of range.',
-            );
-        }
-
-        const col = seatIndex % this.options.map.columns;
-
-        let isSeatBeforeGap = false;
-        if (seatIndex - 1 >= 0 && col > 0) {
-            isSeatBeforeGap = this.isGap(seatIndex - 1);
-        }
-
-        let isSeatAfterGap = false;
-        if ((seatIndex + 1 < this.options.map.columns * this.options.map.rows) &&
-            (col + 1 < this.options.map.columns)) {
-            isSeatAfterGap = this.isGap(seatIndex + 1);
-        }
-
-        return isSeatBeforeGap || isSeatAfterGap;
+        return this.gapDetection.makesGap(seatIndex);
     }
 
     /**
@@ -244,15 +136,7 @@ class Map {
      * @returns Array of indexes.
      */
     public getGaps(): number[] {
-        const gaps = [];
-        const count = this.options.map.columns * this.options.map.rows;
-        for (let i = 0; i < count; i += 1) {
-            if (this.isGap(i)) {
-                gaps.push(i);
-            }
-        }
-
-        return gaps;
+        return this.gapDetection.getGaps();
     }
 
     /**
