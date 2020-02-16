@@ -6,7 +6,7 @@
     "example": "examples"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npx jest",
     "lint": "npx tslint --project . && npx stylelint src/style/seatchart.css",
     "build": "npx gulp",
     "watch": "npx gulp watch",
@@ -24,6 +24,7 @@
   },
   "homepage": "http://omarmahili.github.io/SeatchartJS/",
   "devDependencies": {
+    "@types/jest": "^25.1.2",
     "@typescript-eslint/eslint-plugin": "^2.15.0",
     "@typescript-eslint/eslint-plugin-tslint": "^2.15.0",
     "@typescript-eslint/parser": "^2.15.0",
@@ -36,10 +37,12 @@
     "gulp": "^4.0.2",
     "gulp-rename": "^2.0.0",
     "gulp-uglify": "^3.0.2",
+    "jest": "^25.1.0",
     "rollup": "^1.29.0",
     "rollup-plugin-typescript2": "^0.25.3",
     "stylelint": "^9.10.1",
     "stylelint-config-standard": "^18.2.0",
+    "ts-jest": "^25.2.0",
     "tslint": "^5.20.1",
     "tslint-microsoft-contrib": "^6.2.0",
     "typedoc": "^0.16.0",
