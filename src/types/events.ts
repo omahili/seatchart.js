@@ -1,4 +1,4 @@
-import Seat from 'types/seat';
+import SeatInfo from 'types/seat-info';
 
 interface ChangeEvent {
     /**
@@ -8,11 +8,11 @@ interface ChangeEvent {
     /**
      * Current seat info.
      */
-    current: Seat;
+    current: SeatInfo;
     /**
      * Seat info previous to the event.
      */
-    previous: Seat;
+    previous: SeatInfo;
 }
 
 interface ClearEvent {
@@ -20,11 +20,11 @@ interface ClearEvent {
         /**
          * Current seat info.
          */
-        current: Seat;
+        current: SeatInfo;
         /**
          * Seat info previous to the event.
          */
-        previous: Seat;
+        previous: SeatInfo;
     }>;
 }
 

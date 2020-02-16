@@ -1,4 +1,4 @@
-import Seat from 'types/seat';
+import SeatInfo from 'types/seat-info';
 import { DEFAULT_CURRENCY } from 'utils/consts';
 import BaseComponent from 'components/base';
 import SeatType from 'types/seat-type';
@@ -18,7 +18,7 @@ class CartItem extends BaseComponent<HTMLDivElement> {
      * @param deleteClick - Function called on delete click event.
      */
     public constructor(
-        seat: Seat,
+        seat: SeatInfo,
         currency: string | undefined,
         assetsPath: string | undefined,
         seatType: SeatType,

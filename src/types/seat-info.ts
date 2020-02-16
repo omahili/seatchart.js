@@ -1,7 +1,7 @@
 /**
  * Describes a seat.
  */
-interface Seat {
+interface SeatInfo {
     /**
      * Seat type.
      */
@@ -24,4 +24,4 @@ interface Seat {
     price: number | null;
 }
 
-export default Seat;
+export default SeatInfo;

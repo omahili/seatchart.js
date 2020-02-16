@@ -1,5 +1,5 @@
 import Map from 'components/map';
-import Seat from 'types/seat';
+import SeatInfo from 'types/seat-info';
 import Options from 'types/options';
 import { EventListener } from 'types/events';
 
@@ -67,7 +67,7 @@ class Seatchart {
      * @param index - Seat index.
      * @returns Seat info.
      */
-    public getSeat(index: number): Seat {
+    public getSeat(index: number): SeatInfo {
         return this.map.get(index);
     }
 

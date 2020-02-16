@@ -1,7 +1,7 @@
 import NotFoundError from 'errors/not-found-error';
 import { ClearEvent } from 'types/events';
 import Options from 'types/options';
-import Seat from 'types/seat';
+import SeatInfo from 'types/seat-info';
 import utils from 'utils';
 import Map from 'components/map';
 import Container from 'components/common/container';
@@ -109,14 +109,14 @@ class Cart {
             this.getSeatPrice(type) :
             null;
 
-        const current: Seat = {
+        const current: SeatInfo = {
             id,
             index,
             name,
             price,
             type,
         };
-        const previous: Seat = {
+        const previous: SeatInfo = {
             id,
             index,
             name,
@@ -301,14 +301,14 @@ class Cart {
                     const seatName = this.map.getSeatName(id);
                     const type = this.map.getSeatType(id);
 
-                    const current: Seat = {
+                    const current: SeatInfo = {
                         id,
                         index,
                         name: seatName,
                         price: null,
                         type: 'available',
                     };
-                    const previous: Seat = {
+                    const previous: SeatInfo = {
                         id,
                         index,
                         name: seatName,
@@ -363,14 +363,14 @@ class Cart {
                     const index = this.getIndexFromId(id);
                     const seatName = this.map.getSeatName(id);
 
-                    const current: Seat = {
+                    const current: SeatInfo = {
                         id,
                         index,
                         name: seatName,
                         price: null,
                         type: 'available',
                     };
-                    const previous: Seat = {
+                    const previous: SeatInfo = {
                         id,
                         index,
                         name: seatName,
@@ -428,7 +428,7 @@ class Cart {
                     const id = `${row}_${column}`;
                     const name = this.map.getSeatName(id);
 
-                    const seat: Seat = {
+                    const seat: SeatInfo = {
                         id,
                         index,
                         name,

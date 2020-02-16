@@ -1,5 +1,5 @@
 import BaseComponent from 'components/base';
-import { IndexNameCallback } from 'types/options';
+import IndexNameCallback from 'types/index-name-callback';
 import Seat from './seat';
 import SeatIndex from './seat-index';
 

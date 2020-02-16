@@ -1,5 +1,5 @@
 import { DEFAULT_TEXT_COLOR } from 'utils/consts';
-import Seat from 'types/seat';
+import SeatInfo from 'types/seat-info';
 import utils from 'utils';
 import SeatType from 'types/seat-type';
 import BaseComponent from 'components/base';
@@ -13,7 +13,7 @@ class CartTicket extends BaseComponent<HTMLDivElement> {
      * @param seat - Seat info.
      * @param seatType - Seat type options.
      */
-    public constructor(seat: Seat, seatType: SeatType) {
+    public constructor(seat: SeatInfo, seatType: SeatType) {
         const ticket = document.createElement('div');
         ticket.className = 'sc-ticket';
         ticket.style.color = seatType.textColor || DEFAULT_TEXT_COLOR;

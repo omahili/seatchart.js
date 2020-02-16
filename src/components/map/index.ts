@@ -3,7 +3,7 @@ import InvalidParameterError from 'errors/invalid-parameter-error';
 import NotFoundError from 'errors/not-found-error';
 import { DEFAULT_TEXT_COLOR } from 'utils/consts';
 import Options from 'types/options';
-import Seat from 'types/seat';
+import SeatInfo from 'types/seat-info';
 import Validator from 'utils/validator';
 import { EventListener } from 'types/events';
 import Legend from '../legend';
@@ -23,16 +23,12 @@ class Map {
     public readonly legend: Legend;
 
     /**
-     * Triggered when a seat is selected or unselected.
-     *
-     * @param e - A change event.
+     * Array of listeners triggered when a seat is selected or unselected.
      */
     public onChangeEventListeners: Array<EventListener> = [];
 
     /**
-     * Triggered when all seats are removed with the 'delete all' button in the shopping cart.
-     *
-     * @param e - A clear event.
+     * Array of listeners triggered when all seats are removed with the 'delete all' button in the shopping cart.
      */
     public onClearEventListeners: Array<EventListener> = [];
 
@@ -47,7 +43,6 @@ class Map {
      * An array of strings containing all the pickable seat types, "available" included.
      */
     private types: string[] = [];
-
 
     /**
      * Creates a map.
@@ -144,7 +139,7 @@ class Map {
      * @param index - Seat index.
      * @returns Seat info.
      */
-    public get(index: number): Seat {
+    public get(index: number): SeatInfo {
         if (typeof index !== 'number' && Math.floor(index) === index) {
             throw new InvalidParameterError(
                 'Invalid parameter \'index\' supplied to Seatchart.get(). It must be an integer.'

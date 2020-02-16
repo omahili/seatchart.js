@@ -2,7 +2,7 @@ import BaseComponent from 'components/base';
 import utils from 'utils';
 import { DEFAULT_TEXT_COLOR, DEFAULT_CURRENCY } from 'utils/consts';
 import SeatType from 'types/seat-type';
-import Seat from 'types/seat';
+import SeatInfo from 'types/seat-info';
 import CartItem from 'components/cart/item';
 
 /**
@@ -35,7 +35,7 @@ class CartTable extends BaseComponent<HTMLDivElement> {
      * @param seatType - Seat type options.
      * @param deleteClick - Function called on detele button click.
      */
-    public addItem(seat: Seat, seatType: SeatType, deleteClick: (e: HTMLElement) => any): void {
+    public addItem(seat: SeatInfo, seatType: SeatType, deleteClick: (e: HTMLElement) => any): void {
         const cartItem = new CartItem(
             seat,
             this.currency,
@@ -64,7 +64,7 @@ class CartTable extends BaseComponent<HTMLDivElement> {
      * @param seat - Seat info.
      * @param seatType - Seat type options.
      */
-    public updateItem(seat: Seat, seatType: SeatType): void {
+    public updateItem(seat: SeatInfo, seatType: SeatType): void {
         const cartItem = document.getElementById(`item-${seat.id}`);
 
         if (cartItem) {
