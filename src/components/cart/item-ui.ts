@@ -1,14 +1,14 @@
 import SeatInfo from 'types/seat-info';
 import { DEFAULT_CURRENCY } from 'utils/consts';
-import BaseComponent from 'components/base';
+import BaseUI from 'components/base';
 import SeatType from 'types/seat-type';
-import DeleteButton from './delete-button';
-import CartTicket from './ticket';
+import DeleteButtonUI from 'components/cart/delete-button.ui';
+import CartTicketUI from 'components/cart/ticket.ui';
 
 /**
  * @internal
  */
-class CartItem extends BaseComponent<HTMLDivElement> {
+class CartItemUI extends BaseUI<HTMLDivElement> {
     /**
      * Creates a shopping cart item.
      * @param seat - Seat info.
@@ -33,14 +33,14 @@ class CartItem extends BaseComponent<HTMLDivElement> {
         const ticketTd = document.createElement('td');
         ticketTd.className = 'sc-ticket-container';
 
-        const ticket = new CartTicket(seat, seatType);
+        const ticket = new CartTicketUI(seat, seatType);
         ticketTd.appendChild(ticket.element);
 
         const seatPrice = document.createElement('td');
         seatPrice.textContent = `${currency || DEFAULT_CURRENCY}${seat.price.toFixed(2)}`;
 
         const deleteTd = document.createElement('td');
-        const deleteBtn = new DeleteButton(assetsPath, deleteClick(item));
+        const deleteBtn = new DeleteButtonUI(assetsPath, deleteClick(item));
 
         deleteTd.appendChild(deleteBtn.element);
 
@@ -52,4 +52,4 @@ class CartItem extends BaseComponent<HTMLDivElement> {
         super(item);
     }
 }
-export default CartItem;
+export default CartItemUI;

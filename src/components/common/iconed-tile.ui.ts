@@ -1,10 +1,10 @@
-import BaseComponent from 'components/base';
-import Title from './title';
+import BaseUI from 'components/base';
+import Title from 'components/common/title.ui';
 
 /**
  * @internal
  */
-class IconedTitle extends BaseComponent<HTMLDivElement> {
+class IconedTitle extends BaseUI<HTMLDivElement> {
     /**
      * Creates a title with an icon.
      * @param content - The title.

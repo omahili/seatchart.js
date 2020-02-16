@@ -1,9 +1,9 @@
-import BaseComponent from 'components/base';
+import BaseUI from 'components/base';
 
 /**
  * @internal
  */
-class DeleteButton extends BaseComponent<HTMLDivElement> {
+class DeleteButtonUI extends BaseUI<HTMLDivElement> {
     /**
      * Create a delete button for a shopping cart item.
      * @param path - Path to assets.
@@ -24,4 +24,4 @@ class DeleteButton extends BaseComponent<HTMLDivElement> {
     }
 }
 
-export default DeleteButton;
+export default DeleteButtonUI;

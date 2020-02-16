@@ -2,12 +2,12 @@ import { DEFAULT_TEXT_COLOR } from 'utils/consts';
 import SeatInfo from 'types/seat-info';
 import utils from 'utils';
 import SeatType from 'types/seat-type';
-import BaseComponent from 'components/base';
+import BaseUI from 'components/base';
 
 /**
  * @internal
  */
-class CartTicket extends BaseComponent<HTMLDivElement> {
+class CartTicketUI extends BaseUI<HTMLDivElement> {
     /**
      * Creates a ticket to place into the shopping cart.
      * @param seat - Seat info.
@@ -39,4 +39,4 @@ class CartTicket extends BaseComponent<HTMLDivElement> {
     }
 }
 
-export default CartTicket;
+export default CartTicketUI;

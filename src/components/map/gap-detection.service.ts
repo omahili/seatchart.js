@@ -1,11 +1,11 @@
 import InvalidParameterError from 'errors/invalid-parameter-error';
-import Cart from 'components/cart';
+import CartUI from 'components/cart';
 
 /**
  * @internal
  */
-class GapDetection {
-    private cart: Cart;
+class GapDetectionService {
+    private cart: CartUI;
     private rows: number;
     private columns: number;
     private disabledSeats: number[] | undefined;
@@ -25,7 +25,7 @@ class GapDetection {
      * @param reservedSeats - Array of reserved seats.
      */
     public constructor(
-        cart: Cart,
+        cart: CartUI,
         rows: number,
         columns: number,
         disabledSeats: number[] | undefined,
@@ -191,4 +191,4 @@ class GapDetection {
     }
 }
 
-export default GapDetection;
+export default GapDetectionService;

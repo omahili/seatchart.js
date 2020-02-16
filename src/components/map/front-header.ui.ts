@@ -1,9 +1,9 @@
-import BaseComponent from 'components/base';
+import BaseUI from 'components/base';
 
 /**
  * @internal
  */
-class FrontHeader extends BaseComponent<HTMLDivElement> {
+class MapFrontHeaderUI extends BaseUI<HTMLDivElement> {
     /**
      * Creates the header of the seatmap containing the front indicator.
      */
@@ -17,4 +17,4 @@ class FrontHeader extends BaseComponent<HTMLDivElement> {
     }
 }
 
-export default FrontHeader;
+export default MapFrontHeaderUI;

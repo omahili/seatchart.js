@@ -1,9 +1,9 @@
-import BaseComponent from 'components/base';
+import BaseUI from 'components/base';
 
 /**
  * @internal
  */
-class Row extends BaseComponent<HTMLDivElement> {
+class MapRowUI extends BaseUI<HTMLDivElement> {
     /**
      * Creates a seat map row.
      */
@@ -15,4 +15,4 @@ class Row extends BaseComponent<HTMLDivElement> {
     }
 }
 
-export default Row;
+export default MapRowUI;

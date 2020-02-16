@@ -1,9 +1,9 @@
-import BaseComponent from 'components/base';
+import BaseUI from 'components/base';
 
 /**
  * @internal
  */
-class Container extends BaseComponent<HTMLDivElement> {
+class ContainerUI extends BaseUI<HTMLDivElement> {
     /**
      * Creates a container.
      * @param name - Container name
@@ -39,4 +39,4 @@ class Container extends BaseComponent<HTMLDivElement> {
     }
 }
 
-export default Container;
+export default ContainerUI;

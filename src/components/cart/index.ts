@@ -4,15 +4,15 @@ import Options from 'types/options';
 import SeatInfo from 'types/seat-info';
 import utils from 'utils';
 import Map from 'components/map';
-import Container from 'components/common/container';
-import CartFooter from './footer';
-import CartHeader from './header';
-import CartTable from './table';
+import ContainerUI from 'components/common/container.ui';
+import CartFooterUI from 'components/cart/footer.ui';
+import CartHeaderUI from 'components/cart/header.ui';
+import CartTableUI from 'components/cart/table.ui';
 
 /**
  * @internal
  */
-class Cart {
+class CartUI {
     /**
      * A dictionary containing all seats added to the shopping cart, mapped by seat type.
      * Each string is composed by row (r) and column (c) indexed in the following format: "r_c",
@@ -23,17 +23,17 @@ class Cart {
     /**
      * The main div container containing all the shopping cart elements.
      */
-    private cartTable: CartTable | undefined;
+    private cartTable: CartTableUI | undefined;
 
     /**
      * Text that show total number of items in the shopping cart.
      */
-    private cartHeader: CartHeader | undefined;
+    private cartHeader: CartHeaderUI | undefined;
 
     /**
      * The text that shows the total cost of the items in the shopping cart.
      */
-    private cartFooter: CartFooter | undefined;
+    private cartFooter: CartFooterUI | undefined;
 
     /**
      * An object containing all seats added to the shopping cart, mapped by seat type.
@@ -233,14 +233,14 @@ class Cart {
      */
     private createCart(): void {
         if (this.options.cart) {
-            const cartContainer = new Container('cart', 'column');
+            const cartContainer = new ContainerUI('cart', 'column');
 
             const cartTableContainer = document.createElement('div');
             cartTableContainer.classList.add('sc-cart');
             cartTableContainer.style.width = `${this.options.cart.width}px`;
             cartTableContainer.style.height = `${this.options.cart.height}px`;
 
-            this.cartTable = new CartTable(
+            this.cartTable = new CartTableUI(
                 this.options.cart.currency,
                 this.options.assets?.path,
             );
@@ -250,14 +250,14 @@ class Cart {
             cartTableContainer.appendChild(this.cartTable?.element);
 
             const itemsCount = this.cartTable?.countItems();
-            this.cartFooter = new CartFooter(
+            this.cartFooter = new CartFooterUI(
                 this.getTotal(),
                 this.options.cart?.currency,
                 this.options.assets?.path,
                 this.deleteAllClick.bind(this),
             );
 
-            this.cartHeader = new CartHeader(itemsCount, this.options.assets?.path);
+            this.cartHeader = new CartHeaderUI(itemsCount, this.options.assets?.path);
 
             cartContainer.element.appendChild(this.cartHeader.element);
             cartContainer.element.appendChild(cartTableContainer);
@@ -469,4 +469,4 @@ class Cart {
     }
 }
 
-export default Cart;
+export default CartUI;

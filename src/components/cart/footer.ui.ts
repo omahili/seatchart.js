@@ -1,12 +1,12 @@
 import { DEFAULT_TEXT_COLOR } from 'utils/consts';
-import BaseComponent from 'components/base';
-import SmallTitle from 'components/common/small-title';
-import DeleteButton from './delete-button';
+import BaseUI from 'components/base';
+import SmallTitle from 'components/common/small-title.ui';
+import DeleteButtonUI from 'components/cart/delete-button.ui';
 
 /**
  * @internal
  */
-class CartFooter extends BaseComponent<HTMLDivElement> {
+class CartFooterUI extends BaseUI<HTMLDivElement> {
     private currency: string;
     private total: HTMLDivElement;
 
@@ -28,7 +28,7 @@ class CartFooter extends BaseComponent<HTMLDivElement> {
         const total = new SmallTitle(`Total: ${currentCurrency}${totalValue.toFixed(2)}`);
         total.element.className += ' sc-cart-total';
 
-        const deleteBtn = new DeleteButton(assetsPath, deleteAllClick);
+        const deleteBtn = new DeleteButtonUI(assetsPath, deleteAllClick);
         deleteBtn.element.classList.add('all');
 
         const label = document.createElement('p');
@@ -52,4 +52,4 @@ class CartFooter extends BaseComponent<HTMLDivElement> {
     }
 }
 
-export default CartFooter;
+export default CartFooterUI;

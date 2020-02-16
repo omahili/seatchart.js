@@ -1,12 +1,12 @@
-import BaseComponent from 'components/base';
+import BaseUI from 'components/base';
 import IndexNameCallback from 'types/index-name-callback';
-import Seat from './seat';
-import SeatIndex from './seat-index';
+import SeatUI from 'components/map/seat.ui';
+import MapSeatIndexUI from 'components/map/seat-index.ui';
 
 /**
  * @internal
  */
-class MapIndex extends BaseComponent<HTMLDivElement> {
+class MapIndexUI extends BaseUI<HTMLDivElement> {
     /**
      * Creates a row containing all the column indexes.
      * @param type - Index type.
@@ -31,10 +31,10 @@ class MapIndex extends BaseComponent<HTMLDivElement> {
 
             const indexName = name(i, isColumnDisabled, disabledCount);
             if (indexName) {
-                const index = new SeatIndex(indexName);
+                const index = new MapSeatIndexUI(indexName);
                 mapIndex.appendChild(index.element);
             } else {
-                const blank = new Seat('blank');
+                const blank = new SeatUI('blank');
                 mapIndex.appendChild(blank.element);
             }
         }
@@ -43,4 +43,4 @@ class MapIndex extends BaseComponent<HTMLDivElement> {
     }
 }
 
-export default MapIndex;
+export default MapIndexUI;

@@ -1,13 +1,13 @@
 import { DEFAULT_CURRENCY } from 'utils/consts';
 import Options from 'types/options';
 import utils from 'utils';
-import Container from 'components/common/container';
-import Title from 'components/common/title';
+import ContainerUI from 'components/common/container.ui';
+import Title from 'components/common/title.ui';
 
 /**
  * @internal
  */
-class Legend {
+class LegendUI {
     private options: Options;
 
     public constructor(options: Options) {
@@ -60,7 +60,7 @@ class Legend {
     private createLegend(): void {
         if (this.options.legend) {
             // create legend container
-            const legendContainer = new Container('legend', 'column');
+            const legendContainer = new ContainerUI('legend', 'column');
             const legendTitle = new Title('Legend');
 
             const seatsList = this.createLegendList();
@@ -88,4 +88,4 @@ class Legend {
     }
 }
 
-export default Legend;
+export default LegendUI;

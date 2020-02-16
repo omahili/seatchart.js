@@ -1,9 +1,9 @@
-import BaseComponent from 'components/base';
+import BaseUI from 'components/base';
 
 /**
  * @internal
  */
-class Title extends BaseComponent<HTMLHeadingElement> {
+class Title extends BaseUI<HTMLHeadingElement> {
     /**
      * Creates a title.
      * @param content - The content of the title.

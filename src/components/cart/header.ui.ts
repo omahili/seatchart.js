@@ -1,10 +1,10 @@
-import BaseComponent from 'components/base';
-import IconedTitle from 'components/common/iconed-tile';
+import BaseUI from 'components/base';
+import IconedTitle from 'components/common/iconed-tile.ui';
 
 /**
  * @internal
  */
-class CartHeader extends BaseComponent<HTMLDivElement> {
+class CartHeaderUI extends BaseUI<HTMLDivElement> {
     private counter: HTMLHeadingElement;
 
     /**
@@ -41,4 +41,4 @@ class CartHeader extends BaseComponent<HTMLDivElement> {
     }
 }
 
-export default CartHeader;
+export default CartHeaderUI;

@@ -1,9 +1,9 @@
-import BaseComponent from 'components/base';
+import BaseUI from 'components/base';
 
 /**
  * @internal
  */
-class SeatIndex extends BaseComponent<HTMLDivElement> {
+class SeatUI extends BaseUI<HTMLDivElement> {
     /**
      * Creates a seatmap index.
      * @param content - Text content.
@@ -17,4 +17,4 @@ class SeatIndex extends BaseComponent<HTMLDivElement> {
     }
 }
 
-export default SeatIndex;
+export default SeatUI;

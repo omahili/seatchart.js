@@ -1,9 +1,9 @@
-import BaseComponent from 'components/base';
+import BaseUI from 'components/base';
 
 /**
  * @internal
  */
-class Seat extends BaseComponent<HTMLDivElement> {
+class SeatUI extends BaseUI<HTMLDivElement> {
     /**
      * Creates a new seat.
      * @param type - The type of the seat.
@@ -43,4 +43,4 @@ class Seat extends BaseComponent<HTMLDivElement> {
     }
 }
 
-export default Seat;
+export default SeatUI;

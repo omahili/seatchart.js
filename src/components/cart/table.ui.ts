@@ -1,14 +1,14 @@
-import BaseComponent from 'components/base';
+import BaseUI from 'components/base';
 import utils from 'utils';
 import { DEFAULT_TEXT_COLOR, DEFAULT_CURRENCY } from 'utils/consts';
 import SeatType from 'types/seat-type';
 import SeatInfo from 'types/seat-info';
-import CartItem from 'components/cart/item';
+import CartItemUI from 'components/cart/item-ui';
 
 /**
  * @internal
  */
-class CartTable extends BaseComponent<HTMLDivElement> {
+class CartTableUI extends BaseUI<HTMLDivElement> {
     private currency: string;
     private assetsPath: string | undefined;
 
@@ -36,7 +36,7 @@ class CartTable extends BaseComponent<HTMLDivElement> {
      * @param deleteClick - Function called on detele button click.
      */
     public addItem(seat: SeatInfo, seatType: SeatType, deleteClick: (e: HTMLElement) => any): void {
-        const cartItem = new CartItem(
+        const cartItem = new CartItemUI(
             seat,
             this.currency,
             this.assetsPath,
@@ -92,4 +92,4 @@ class CartTable extends BaseComponent<HTMLDivElement> {
     }
 }
 
-export default CartTable;
+export default CartTableUI;

@@ -1,4 +1,4 @@
-import Cart from 'components/cart';
+import CartUI from 'components/cart';
 import InvalidParameterError from 'errors/invalid-parameter-error';
 import NotFoundError from 'errors/not-found-error';
 import { DEFAULT_TEXT_COLOR } from 'utils/consts';
@@ -6,21 +6,21 @@ import Options from 'types/options';
 import SeatInfo from 'types/seat-info';
 import Validator from 'utils/validator';
 import { EventListener } from 'types/events';
-import Legend from '../legend';
-import Container from '../common/container';
-import * as SeatComponent from './seat';
-import Row from './row';
-import FrontHeader from './front-header';
-import MapIndex from './map-index';
-import GapDetection from './gap-detection';
+import LegendUI from 'components/legend';
+import ContainerUI from 'components/common/container.ui';
+import SeatUI from 'components/map/seat.ui';
+import MapRowUI from 'components/map/row.ui';
+import MapFrontHeaderUI from 'components/map/front-header.ui';
+import MapIndexUI from 'components/map/map-index.ui';
+import GapDetection from 'components/map/gap-detection.service';
 
 /**
  * @internal
  */
 class Map {
     public readonly options: Options;
-    public readonly cart: Cart;
-    public readonly legend: Legend;
+    public readonly cart: CartUI;
+    public readonly legend: LegendUI;
 
     /**
      * Array of listeners triggered when a seat is selected or unselected.
@@ -56,8 +56,8 @@ class Map {
         this.types = ['available', ...this.options.types.map(x => x.type)];
         this.createMap();
 
-        this.cart = new Cart(this);
-        this.legend = new Legend(options);
+        this.cart = new CartUI(this);
+        this.legend = new LegendUI(options);
 
         this.gapDetection = new GapDetection(
             this.cart,
@@ -637,7 +637,7 @@ class Map {
 
         // add rows containing seats
         for (let i = 0; i < this.options.map.rows; i += 1) {
-            const row = new Row();
+            const row = new MapRowUI();
 
             const isRowDisabled = disabled?.rows ? disabled.rows.includes(i) : false;
             disabledRowsCounter = isRowDisabled ? disabledRowsCounter + 1 : disabledRowsCounter;
@@ -652,7 +652,7 @@ class Map {
                     { index: i, disabled: isRowDisabled, disabledCount: disabledRowsCounter },
                     { index: j, disabled: isColumnDisabled, disabledCount: disabledColumnsCounter },
                 );
-                const seatComponent = new SeatComponent.default(
+                const seatComponent = new SeatUI(
                     'available',
                     seatTextContent,
                     `${i}_${j}`,
@@ -681,21 +681,21 @@ class Map {
             itemsPosition = 'left';
         }
 
-        const rowIndexContainer = new Container(null, rowContainerDirection);
-        const columnIndexContainer = new Container(null, columnContainerDirection, itemsPosition);
+        const rowIndexContainer = new ContainerUI(null, rowContainerDirection);
+        const columnIndexContainer = new ContainerUI(null, columnContainerDirection, itemsPosition);
         columnIndexContainer.element.append(rowIndexContainer.element);
 
         // create map container which will contain everything
-        const mapContainer = new Container('map', 'column', itemsPosition);
+        const mapContainer = new ContainerUI('map', 'column', itemsPosition);
 
-        const frontHeader = new FrontHeader();
+        const frontHeader = new MapFrontHeaderUI();
         if (!front || front.visible === undefined || front.visible) {
             frontHeader.element.classList.add('sc-margin-bottom');
             mapContainer.element.appendChild(frontHeader.element);
         }
 
         if (!indexes || !indexes.columns || indexes.columns.visible === undefined || indexes.columns.visible) {
-            const columnIndex = new MapIndex(
+            const columnIndex = new MapIndexUI(
                 'column',
                 this.options.map.columns,
                 this.options.map.disabled?.columns,
@@ -705,7 +705,7 @@ class Map {
         }
 
         if (!indexes || !indexes.rows || indexes.rows.visible === undefined || indexes.rows.visible) {
-            const rowIndex = new MapIndex(
+            const rowIndex = new MapIndexUI(
                 'row',
                 this.options.map.rows,
                 this.options.map.disabled?.rows,
