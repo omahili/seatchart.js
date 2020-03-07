@@ -55,6 +55,9 @@ gulp.task('default', async function () {
       .pipe(rename({ suffix: '.min' }))
       .pipe(gulp.dest('dist'));
 
+    gulp.src('assets/**/*')
+      .pipe(gulp.dest('dist/assets'));
+
     console.log('\x1b[32m' + 'Built successfully!' + '\x1b[0m', '\n');
   } catch (e) {
     console.log('\x1b[31m' + 'WARNING! An error occurred...' + '\x1b[0m');
