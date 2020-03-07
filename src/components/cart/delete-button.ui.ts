@@ -13,7 +13,7 @@ class DeleteButtonUI extends BaseUI<HTMLDivElement> {
         const binImg = document.createElement('img');
         binImg.src = assetsPath ?
             `${assetsPath}/bin.svg` :
-            '../assets/bin.svg';
+            './assets/bin.svg';
 
         const deleteBtn = document.createElement('div');
         deleteBtn.className = 'sc-cart-delete';

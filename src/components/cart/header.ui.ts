@@ -18,7 +18,7 @@ class CartHeaderUI extends BaseUI<HTMLDivElement> {
 
         const assetPath = assetsPath ?
             `${assetsPath}/shoppingcart.svg` :
-            '../assets/bin.svg';
+            './assets/shoppingcart.svg';
 
         const cartTitle = new IconedTitle(
             'Your Cart',
