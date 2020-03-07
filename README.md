@@ -68,43 +68,5 @@ Enjoy the result.
 ## Development
 
 This library is still in development. It can already be used with websockets and it has some nice features like gap detection. <br />
-But things may change a little bit in the future, so give a look to the TODO list below. <br />
+But things may change a little bit in the future, so give a look to the tasks here: [Road to v1](https://github.com/omarmahili/seatchart.js/projects/1). <br />
 If you want to help in the development of this library please open a PR on github, while if you find any problem open an issue. <br />
-
-- [x] Gap detection
-- [x] Get/set of a seat after creation (key feature for websockets support)
-- [x] Update jsdoc and docdash
-- [x] Add search bar to documentation
-- [x] Improve documentation home page
-- [x] Move docs to seatchart.js.org
-- [x] Add description and examples to README
-- [x] Create a development branch and follow [Git Flow](https://nvie.com/posts/a-successful-git-branching-model/)
-- [x] Rename SeatchartJS class into Seatchart: ```var sc = new Seatchart()```
-- [x] Remove long press feature on a seat
-- [x] Remove sound
-- [x] Remove onAddedSeat/onRemovedSeat and add onChange event
-- [x] Add onClear event and trigger it when all seats are removed
-- [x] Add a default font
-- [x] Improve legend: remove 'Available' seat from legend, remove 'Your seats' and 'Seats' subtitles
-- [x] Improve shopping cart design
-- [x] Use flexbox where simpler
-- [x] Remove useless getters/setters and configure seatchart throught a single object 'options'
-- [x] Hide and skip seat indexes where a column or row is completely blank
-- [x] Add visible and position options to indexes
-- [x] Add visible and position options to front header
-- [x] Add choice for different indexes
-- [ ] Add clear function to empty map
-- [ ] Move code to typescript
-- [ ] Irregular seat sections
-- [ ] Create svg icons
-- [ ] Decrease access to the DOM (e.g. getSeatName() function)
-- [ ] Replace current seat indexing with a simple one: an object { row: 10, col: 10 }
-- [ ] Add 'static' mode where seat types are defined by default
-- [ ] Add themes
-- [ ] Show a dropdown menu, on click, to select seat type
-- [ ] Add multi-language support
-- [ ] Use [Semantic Versioning](https://semver.org/) and release an alpha
-- [ ] Use Travis CI and deploy to npm
-- [ ] Backend and frontend example with websockets
-- [ ] Minified source
-- [ ] Roadmap to v1.0.0
