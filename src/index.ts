@@ -1,4 +1,4 @@
-import Map from 'components/map';
+import MapUI from 'components/map';
 import SeatInfo from 'types/seat-info';
 import Options from 'types/options';
 import { EventListener } from 'types/events';
@@ -6,7 +6,7 @@ import { EventListener } from 'types/events';
 class Seatchart {
     public readonly options: Options;
 
-    private map: Map;
+    private map: MapUI;
 
     /**
      * Creates a seatchart.
@@ -15,7 +15,7 @@ class Seatchart {
     public constructor(options: Options) {
         this.options = options;
 
-        this.map = new Map(options);
+        this.map = new MapUI(options);
     }
 
     /**

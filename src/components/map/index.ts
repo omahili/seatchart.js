@@ -12,12 +12,12 @@ import SeatUI from 'components/map/seat.ui';
 import MapRowUI from 'components/map/row.ui';
 import MapFrontHeaderUI from 'components/map/front-header.ui';
 import MapIndexUI from 'components/map/map-index.ui';
-import GapDetection from 'components/map/gap-detection.service';
+import GapDetection from 'components/map/gap-detection';
 
 /**
  * @internal
  */
-class Map {
+class MapUI {
     public readonly options: Options;
     public readonly cart: CartUI;
     public readonly legend: LegendUI;
@@ -60,9 +60,9 @@ class Map {
         this.legend = new LegendUI(options);
 
         this.gapDetection = new GapDetection(
-            this.cart,
             this.options.map.rows,
             this.options.map.columns,
+            this.cart.dict,
             this.options.map.disabled?.seats,
             this.options.map.disabled?.rows,
             this.options.map.disabled?.columns,
@@ -745,4 +745,4 @@ class Map {
     }
 }
 
-export default Map;
+export default MapUI;
