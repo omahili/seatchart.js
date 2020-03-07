@@ -2,13 +2,29 @@
     <img src="https://raw.githubusercontent.com/omarmahili/SeatchartJS/develop/logo.svg?sanitize=true" alt="SeatchartJS Logo" width="500" />
 </p>
 
+# Build project
+
+Clone the repository:
+
+> git clone https://github.com/omarmahili/seatchart.js.git
+
+Install node modules:
+
+> npm i
+
+Build project:
+
+> npm run build
+
+Done! In the dist directory you will find all you need: style, assets, seatchart.min.js and seatchart.js.
+
 # Usage
 
 First of all link the library along with the stylesheet and the script that generates the seatchart.
 
 ``` html
-<link rel="stylesheet" href="/path/to/seatchart.css">
-<script type="text/javascript" src="/path/to/seatchart.js"></script>
+<link rel="stylesheet" href="/path/to/dist/style/seatchart.css">
+<script type="text/javascript" src="/path/to/dist/seatchart.min.js"></script>
 
 <script>
     var options = {
@@ -45,7 +61,7 @@ First of all link the library along with the stylesheet and the script that gene
             id: 'legend-container',
         },
         assets: {
-            path: "./assets",
+            path: "path/to/dist/assets",
         }
     };
 
