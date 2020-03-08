@@ -1,15 +1,15 @@
 const gulp = require('gulp');
 const rollup = require('rollup');
-const rollupTypescript = require('rollup-plugin-typescript2');
+const rollupTypescript = require('@rollup/plugin-typescript');
 const uglify = require('gulp-uglify');
 const rename = require('gulp-rename');
 
 const output = {
-  file: 'dist/seatchart.js',
+  dir: 'dist',
   format: 'umd',
   name: "Seatchart"
 };
-const input = 'src/index.ts';
+const input = 'src/seatchart.ts';
 const plugins = [rollupTypescript()];
 
 gulp.task('watch', function () {
