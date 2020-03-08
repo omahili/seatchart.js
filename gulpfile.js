@@ -58,6 +58,9 @@ gulp.task('default', async function () {
     gulp.src('assets/**/*')
       .pipe(gulp.dest('dist/assets'));
 
+    gulp.src('src/style/**/*')
+      .pipe(gulp.dest('dist/style'));
+
     console.log('\x1b[32m' + 'Built successfully!' + '\x1b[0m', '\n');
   } catch (e) {
     console.log('\x1b[31m' + 'WARNING! An error occurred...' + '\x1b[0m');
