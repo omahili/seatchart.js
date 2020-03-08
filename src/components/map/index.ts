@@ -261,8 +261,8 @@ class MapUI {
                 }
             }
 
-            if ((type === 'reserved' || type === 'disabled') && this.options.map[type]?.seats) {
-                this.options.map[type]?.seats.push(index);
+            if (type === 'reserved' || type === 'disabled') {
+                this.options.map[type]?.seats?.push(index);
             }
 
             if (seat.type !== 'available' && seat.type !== 'disabled' && seat.type !== 'reserved') {
