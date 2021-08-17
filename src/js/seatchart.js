@@ -1451,19 +1451,19 @@
             }
 
             var classes = {
-                disabled: 'sc-blank',
-                reserved: 'sc-unavailable'
+                disabled: 'blank',
+                reserved: 'unavailable'
             };
 
             var element = document.getElementById(seat.id);
 
             if (seat.type === 'disabled' || seat.type === 'reserved') {
-                var arrayIndex = options.map[seat.type].indexOf(index);
-                options.map[seat.type].splice(arrayIndex, 1);
+                var arrayIndex = options.map[seat.type].seats.indexOf(index);
+                options.map[seat.type].seats.splice(arrayIndex, 1);
             }
 
             if (type === 'reserved' || type === 'disabled') {
-                options.map[type].push(index);
+                options.map[type].seats.push(index);
             }
 
             if (seat.type !== 'available' && seat.type !== 'disabled' && seat.type !== 'reserved') {
