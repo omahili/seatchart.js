@@ -39,7 +39,7 @@
             </div>
         </div>
 
-        <script type="text/javascript" src="../dist/seatchart.js"></script>
+        <script type="text/javascript" src="../dist/index.js"></script>
         <script>
             var options = {
                 // Reserved and disabled seats are indexed
@@ -73,7 +73,10 @@
                 },
                 legend: {
                     id: 'legend-container',
-                }
+                },
+                assets: {
+                    path: '../dist/assets'
+                },
             };
 
             var sc = new Seatchart(options);
