@@ -17,4 +17,4 @@ interface CartOptions {
     currency?: string;
 }
 
-export default CartOptions;
+export { CartOptions };

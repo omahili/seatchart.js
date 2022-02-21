@@ -1,5 +1,5 @@
 import BaseUI from 'components/base';
-import IndexNameCallback from 'types/index-name-callback';
+import { IndexNameCallback } from 'types/index-name-callback';
 import SeatUI from 'components/map/seat.ui';
 import MapSeatIndexUI from 'components/map/seat-index.ui';
 

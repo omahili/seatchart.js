@@ -24,4 +24,4 @@ interface SeatInfo {
     price: number | null;
 }
 
-export default SeatInfo;
+export { SeatInfo };

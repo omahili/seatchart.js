@@ -1,5 +1,5 @@
 import BaseUI from 'components/base';
-import IconedTitle from 'components/common/iconed-tile.ui';
+import IconedTitle from 'components/common/iconed-title.ui';
 
 /**
  * @internal

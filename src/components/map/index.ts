@@ -2,8 +2,8 @@ import CartUI from 'components/cart';
 import InvalidParameterError from 'errors/invalid-parameter-error';
 import NotFoundError from 'errors/not-found-error';
 import { DEFAULT_TEXT_COLOR } from 'utils/consts';
-import Options from 'types/options';
-import SeatInfo from 'types/seat-info';
+import { Options } from 'types/options';
+import { SeatInfo } from 'types/seat-info';
 import Validator from 'utils/validator';
 import { EventListener } from 'types/events';
 import LegendUI from 'components/legend';
@@ -12,7 +12,7 @@ import SeatUI from 'components/map/seat.ui';
 import MapRowUI from 'components/map/row.ui';
 import MapFrontHeaderUI from 'components/map/front-header.ui';
 import MapIndexUI from 'components/map/map-index.ui';
-import GapDetection from 'components/map/gap-detection';
+import GapDetection from 'components/map/gap-detection.service';
 
 /**
  * @internal
@@ -459,7 +459,7 @@ class MapUI {
      * @param row - Row index (starts from 0).
      * @param disabled - True if current row is disabled.
      * @param disabledCount - Number of disabled rows till that one (including current one if disabled).
-     * @returns Row name. Return null or undefined if empty.
+     * @returns Row name. Returns null or undefined if empty.
      */
     private rowName(index: number, disabled: boolean, disabledCount: number): string | undefined {
         if (!disabled) {
@@ -472,7 +472,7 @@ class MapUI {
      * @param column - Column index (starts from 0).
      * @param disabled - True if current column is disabled.
      * @param disabledCount - Number of disabled columns till that one (including current one if disabled).
-     * @returns Column name. Return null or undefined if empty.
+     * @returns Column name. Returns null or undefined if empty.
      */
     private columnName(index: number, disabled: boolean, disabledCount: number): string | undefined {
         if (!disabled) {
@@ -484,7 +484,7 @@ class MapUI {
      * Generates a seat name.
      * @param row - Row object.
      * @param column - Column object.
-     * @returns Seat name. Return null if empty.
+     * @returns Seat name. Returns null if empty.
      */
     private seatName(
         row: {

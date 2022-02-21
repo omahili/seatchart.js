@@ -1,6 +1,6 @@
 /**
  * Callback to generate a seat name.
- * @returns Seat name. Return null or undefined if empty.
+ * @returns Seat name. Returns null or undefined if empty.
  */
 type SeatNameCallback = (
     /**
@@ -39,4 +39,4 @@ type SeatNameCallback = (
     },
 ) => string;
 
-export default SeatNameCallback;
+export { SeatNameCallback };

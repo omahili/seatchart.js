@@ -1,7 +1,7 @@
 import NotFoundError from 'errors/not-found-error';
 import { ClearEvent } from 'types/events';
-import Options from 'types/options';
-import SeatInfo from 'types/seat-info';
+import { Options } from 'types/options';
+import { SeatInfo } from 'types/seat-info';
 import utils from 'utils';
 import Map from 'components/map';
 import ContainerUI from 'components/common/container.ui';

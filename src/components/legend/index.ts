@@ -1,5 +1,5 @@
 import { DEFAULT_CURRENCY } from 'utils/consts';
-import Options from 'types/options';
+import { Options } from 'types/options';
 import utils from 'utils';
 import ContainerUI from 'components/common/container.ui';
 import Title from 'components/common/title.ui';

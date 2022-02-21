@@ -24,4 +24,4 @@ interface SeatType {
     selected?: number[];
 }
 
-export default SeatType;
+export { SeatType };

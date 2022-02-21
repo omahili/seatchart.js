@@ -1,6 +1,6 @@
 /**
  * Callback to generate a row or column name.
- * @returns Row or column name. Return null or undefined if empty.
+ * @returns Row or column name. Returns null or undefined if empty.
  */
 type IndexNameCallback = (
     /**
@@ -17,4 +17,4 @@ type IndexNameCallback = (
     disabledCount: number,
 ) => string | undefined;
 
-export default IndexNameCallback;
+export { IndexNameCallback };

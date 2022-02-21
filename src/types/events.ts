@@ -1,4 +1,4 @@
-import SeatInfo from 'types/seat-info';
+import { SeatInfo } from 'types/seat-info';
 
 interface ChangeEvent {
     /**

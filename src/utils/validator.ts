@@ -1,5 +1,5 @@
 import InvalidParameterError from 'errors/invalid-parameter-error';
-import Options from 'types/options';
+import { Options } from 'types/options';
 
 /**
  * @internal

@@ -1,7 +1,7 @@
 import { DEFAULT_TEXT_COLOR } from 'utils/consts';
-import SeatInfo from 'types/seat-info';
+import { SeatInfo } from 'types/seat-info';
 import utils from 'utils';
-import SeatType from 'types/seat-type';
+import { SeatType } from 'types/seat-type';
 import BaseUI from 'components/base';
 
 /**

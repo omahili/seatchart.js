@@ -1,5 +1,5 @@
-import SeatNameCallback from 'types/seat-name-callback';
-import IndexNameCallback from 'types/index-name-callback';
+import { SeatNameCallback } from 'types/seat-name-callback';
+import { IndexNameCallback } from 'types/index-name-callback';
 
 interface MapOptions {
     /**
@@ -94,4 +94,4 @@ interface MapOptions {
     };
 }
 
-export default MapOptions;
+export { MapOptions };

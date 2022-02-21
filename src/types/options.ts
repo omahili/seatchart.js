@@ -1,6 +1,6 @@
-import SeatType from 'types/seat-type';
-import MapOptions from 'types/map-options';
-import CartOptions from 'types/cart-options';
+import { SeatType } from 'types/seat-type';
+import { MapOptions } from 'types/map-options';
+import { CartOptions } from 'types/cart-options';
 
 /**
  * Options to configure a Seatchart.
@@ -38,4 +38,4 @@ interface Options {
     };
 }
 
-export default Options;
+export { Options };
