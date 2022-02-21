@@ -157,9 +157,7 @@ class MapUI {
         }
 
         if (index < this.options.map.rows * this.options.map.columns) {
-            const row = Math.floor(index / this.options.map.columns);
-            const col = index % this.options.map.columns;
-            const seatId = `${row}_${col}`;
+            const seatId = SeatUI.idFromIndex(index, this.options.map.columns);
             const name = this.getSeatName(seatId);
 
             // check if seat is reserved
@@ -552,7 +550,7 @@ class MapUI {
                 const columns = this.options.map.columns;
 
                 for (const index of seats) {
-                    const id = `${Math.floor(index / columns)}_${index % columns}`;
+                    const id = SeatUI.idFromIndex(index, columns);
                     const seat = <HTMLDivElement> document.getElementById(id);
 
                     if (seat != null) {
@@ -580,8 +578,7 @@ class MapUI {
                 const color = seatType.textColor || DEFAULT_TEXT_COLOR;
 
                 for (const index of seatType.selected) {
-                    const id = `${Math.floor(index / this.options.map.columns)}_${index % this.options.map.columns}`;
-
+                    const id = SeatUI.idFromIndex(index, this.options.map.columns);
                     const element = document.getElementById(id);
                     if (element) {
                         // set background
@@ -628,7 +625,8 @@ class MapUI {
                 const seatComponent = new SeatUI(
                     'available',
                     seatTextContent,
-                    `${i}_${j}`,
+                    i,
+                    j,
                     this.seatClick,
                     this.seatRightClick
                 );

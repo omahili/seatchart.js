@@ -8,6 +8,8 @@ import ContainerUI from 'ui/common/Container';
 import CartFooterUI from 'ui/cart/Footer';
 import CartHeaderUI from 'ui/cart/Header';
 import CartTableUI from 'ui/cart/Table';
+import CartItemUI from 'ui/cart/Item';
+import SeatUI from 'ui/map/Seat';
 
 /**
  * @internal
@@ -151,7 +153,7 @@ class CartUI {
                     throw new NotFoundError('Seat type not found.');
                 }
 
-                this.cartTable.addItem(current, seatType, this.deleteClick(`item-${current.id}`));
+                this.cartTable.addItem(current, seatType, this.deleteClick(CartItemUI.id(current.id)));
             }
 
             if (emit) {
@@ -400,7 +402,7 @@ class CartUI {
                 const type = seatType.type;
 
                 for (const index of seatType.selected) {
-                    const id = `${Math.floor(index / this.options.map.columns)}_${index % this.options.map.columns}`;
+                    const id = SeatUI.idFromIndex(index, this.options.map.columns);
                     // add to shopping cart
                     this.addTodict(id, type);
                 }
@@ -422,9 +424,7 @@ class CartUI {
                 const price = seatType.price;
 
                 for (const index of seatType.selected) {
-                    const row = Math.floor(index / columns);
-                    const column = index % columns;
-                    const id = `${row}_${column}`;
+                    const id = SeatUI.idFromIndex(index, columns);
                     const name = this.map.getSeatName(id);
 
                     const seat: SeatInfo = {
@@ -434,7 +434,7 @@ class CartUI {
                         price,
                         type,
                     };
-                    this.cartTable?.addItem(seat, seatType, this.deleteClick(`item-${id}`));
+                    this.cartTable?.addItem(seat, seatType, this.deleteClick(CartItemUI.id(id)));
                 }
             }
         }

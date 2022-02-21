@@ -52,7 +52,7 @@ class CartTableUI extends BaseUI<HTMLDivElement> {
      */
     public removeItem(id: string): void {
         if (this.element) {
-            const itemElement = document.getElementById(`item-${id}`);
+            const itemElement = document.getElementById(CartItemUI.id(id));
             if (itemElement) {
                 itemElement.remove();
             }
@@ -65,7 +65,7 @@ class CartTableUI extends BaseUI<HTMLDivElement> {
      * @param seatType - Seat type options.
      */
     public updateItem(seat: SeatInfo, seatType: SeatType): void {
-        const cartItem = document.getElementById(`item-${seat.id}`);
+        const cartItem = document.getElementById(CartItemUI.id(seat.id));
 
         if (cartItem) {
             const itemContent = cartItem.getElementsByTagName('td');

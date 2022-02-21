@@ -44,12 +44,19 @@ class CartItemUI extends BaseUI<HTMLDivElement> {
 
         deleteTd.appendChild(deleteBtn.element);
 
-        item.setAttribute('id', `item-${seat.id}`);
+        item.setAttribute('id', CartItemUI.id(seat.id));
         item.appendChild(ticketTd);
         item.appendChild(seatPrice);
         item.appendChild(deleteTd);
 
         super(item);
+    }
+
+    /**
+     * @internal
+     */
+    static id(seatId: string) {
+        return `item-${seatId}`;
     }
 }
 export default CartItemUI;
