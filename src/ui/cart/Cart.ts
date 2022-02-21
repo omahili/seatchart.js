@@ -151,7 +151,7 @@ class CartUI {
                     throw new NotFoundError('Seat type not found.');
                 }
 
-                this.cartTable.addItem(current, seatType, this.deleteClick);
+                this.cartTable.addItem(current, seatType, this.deleteClick(`item-${current.id}`));
             }
 
             if (emit) {
@@ -340,53 +340,49 @@ class CartUI {
 
     /**
      * This function is fired when a delete button is clicked in the shopping cart.
-     * @param item - Deleted item.
+     * @param id - Deleted item id.
      */
-    private deleteClick(item: Element): () => void {
+    private deleteClick(itemId: string): () => void {
         return (): void => {
-            const elementId = item.getAttribute('id');
+            const parentElement = document.getElementById(itemId);
+            if (parentElement) {
+                parentElement.remove();
+            }
 
-            if (elementId) {
-                const parentElement = document.getElementById(elementId);
-                if (parentElement) {
-                    parentElement.remove();
-                }
+            const id = itemId.split('-')[1];
+            const type = this.map.getSeatType(id);
 
-                const id = elementId.split('-')[1];
-                const type = this.map.getSeatType(id);
+            this.map.releaseSeat(id);
+            this.removeFromdict(id, type);
 
-                this.map.releaseSeat(id);
-                this.removeFromdict(id, type);
+            this.cartFooter?.updateTotal(this.getTotal());
+            this.cartHeader?.updateCounter(this.cartTable?.countItems() || 0);
 
-                this.cartFooter?.updateTotal(this.getTotal());
-                this.cartHeader?.updateCounter(this.cartTable?.countItems() || 0);
+            // fire event
+            if (this.map.onChangeEventListeners.length > 0) {
+                const index = this.getIndexFromId(id);
+                const seatName = this.map.getSeatName(id);
 
-                // fire event
-                if (this.map.onChangeEventListeners.length > 0) {
-                    const index = this.getIndexFromId(id);
-                    const seatName = this.map.getSeatName(id);
+                const current: SeatInfo = {
+                    id,
+                    index,
+                    name: seatName,
+                    price: null,
+                    type: 'available',
+                };
+                const previous: SeatInfo = {
+                    id,
+                    index,
+                    name: seatName,
+                    price: this.getSeatPrice(type),
+                    type,
+                };
 
-                    const current: SeatInfo = {
-                        id,
-                        index,
-                        name: seatName,
-                        price: null,
-                        type: 'available',
-                    };
-                    const previous: SeatInfo = {
-                        id,
-                        index,
-                        name: seatName,
-                        price: this.getSeatPrice(type),
-                        type,
-                    };
-
-                    this.map.onChangeEventListeners.forEach(el => el({
-                        action: 'remove',
-                        current,
-                        previous,
-                    }));
-                }
+                this.map.onChangeEventListeners.forEach(el => el({
+                    action: 'remove',
+                    current,
+                    previous,
+                }));
             }
         };
     }
@@ -438,7 +434,7 @@ class CartUI {
                         price,
                         type,
                     };
-                    this.cartTable?.addItem(seat, seatType, this.deleteClick);
+                    this.cartTable?.addItem(seat, seatType, this.deleteClick(`item-${id}`));
                 }
             }
         }

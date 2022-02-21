@@ -22,7 +22,7 @@ class CartItemUI extends BaseUI<HTMLDivElement> {
         currency: string | undefined,
         assetsPath: string | undefined,
         seatType: SeatType,
-        deleteClick: (item: HTMLElement) => (e: MouseEvent) => void
+        deleteClick: (e: MouseEvent) => void
     ) {
         if (!seat.price) {
             throw new Error('Seat price cannot be null or undefined.');
@@ -40,7 +40,7 @@ class CartItemUI extends BaseUI<HTMLDivElement> {
         seatPrice.textContent = `${currency || DEFAULT_CURRENCY}${seat.price.toFixed(2)}`;
 
         const deleteTd = document.createElement('td');
-        const deleteBtn = new DeleteButtonUI(assetsPath, deleteClick(item));
+        const deleteBtn = new DeleteButtonUI(assetsPath, deleteClick);
 
         deleteTd.appendChild(deleteBtn.element);
 

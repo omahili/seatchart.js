@@ -3,7 +3,7 @@ import BaseUI from 'ui/base/Base';
 /**
  * @internal
  */
-class SeatUI extends BaseUI<HTMLDivElement> {
+class SeatIndexUI extends BaseUI<HTMLDivElement> {
     /**
      * Creates a seatmap index.
      * @param content - Text content.
@@ -17,4 +17,4 @@ class SeatUI extends BaseUI<HTMLDivElement> {
     }
 }
 
-export default SeatUI;
+export default SeatIndexUI;

@@ -53,9 +53,9 @@ class MapUI {
         this.options = options;
         this.seatName = this.seatName.bind(this);
         this.seatClick = this.seatClick.bind(this);
+        this.seatRightClick = this.seatRightClick.bind(this);
         this.columnName = this.columnName.bind(this);
         this.rowName = this.rowName.bind(this);
-        this.rightClickDelete = this.rightClickDelete.bind(this);
 
         Validator.validate(options);
 
@@ -357,107 +357,107 @@ class MapUI {
     /**
      * This function is fired when a seat is clicked in the seatmap.
      */
-    private seatClick(seat: HTMLElement): () => void {
-        return (): void => {
-            // clone array because it's modified by adding and removing classes
-            const currentClassList: string[] = [];
-            seat.classList.forEach(x => currentClassList.push(x));
+    private seatClick(e: MouseEvent): void {
+        const seat = e.target as HTMLElement;
 
-            for (const currentClass of currentClassList) {
-                let newClass;
+        // clone array because it's modified by adding and removing classes
+        const currentClassList: string[] = [];
+        seat.classList.forEach(x => currentClassList.push(x));
 
-                if (currentClass !== 'sc-seat' && currentClass !== 'clicked') {
-                    // find index of current
-                    let index = this.types.indexOf(currentClass);
+        for (const currentClass of currentClassList) {
+            let newClass;
 
-                    // if the current class matches a type
-                    // then select the new one
-                    if (index !== -1) {
-                        seat.classList.remove(this.types[index]);
-                        index += 1;
+            if (currentClass !== 'sc-seat' && currentClass !== 'clicked') {
+                // find index of current
+                let index = this.types.indexOf(currentClass);
 
-                        if (index === this.types.length) {
-                            index = 0;
+                // if the current class matches a type
+                // then select the new one
+                if (index !== -1) {
+                    seat.classList.remove(this.types[index]);
+                    index += 1;
+
+                    if (index === this.types.length) {
+                        index = 0;
+                    }
+
+                    newClass = this.types[index];
+
+                    seat.style.backgroundColor = '';
+                    seat.style.color = '';
+                    seat.classList.add(newClass);
+
+                    // if the class isn't available then apply the background-color in the config
+                    if (newClass !== 'available') {
+                        // decrease it because there's one less element in options.types
+                        // which is 'available', that already exists
+                        index -= 1;
+                        if (index < 0) {
+                            index = this.options.types.length - 1;
                         }
 
-                        newClass = this.types[index];
+                        seat.classList.add('clicked');
+                        seat.style.backgroundColor = this.options.types[index].backgroundColor;
+                        seat.style.color = this.options.types[index].textColor || DEFAULT_TEXT_COLOR;
+                    } else {
+                        // otherwise remove the class 'clicked'
+                        // since available has it's own style
+                        seat.classList.remove('clicked');
+                    }
 
-                        seat.style.backgroundColor = '';
-                        seat.style.color = '';
-                        seat.classList.add(newClass);
-
-                        // if the class isn't available then apply the background-color in the config
-                        if (newClass !== 'available') {
-                            // decrease it because there's one less element in options.types
-                            // which is 'available', that already exists
-                            index -= 1;
-                            if (index < 0) {
-                                index = this.options.types.length - 1;
-                            }
-
-                            seat.classList.add('clicked');
-                            seat.style.backgroundColor = this.options.types[index].backgroundColor;
-                            seat.style.color = this.options.types[index].textColor || DEFAULT_TEXT_COLOR;
-                        } else {
-                            // otherwise remove the class 'clicked'
-                            // since available has it's own style
-                            seat.classList.remove('clicked');
+                    // this has to be done after updating the shopping cart
+                    // so the event is fired just once the seat style is really updated
+                    if (currentClass === 'available') {
+                        if (this.cart.addTodict(seat.id, newClass)) {
+                            this.cart.updateCart('add', seat.id, newClass, currentClass, true);
                         }
-
-                        // this has to be done after updating the shopping cart
-                        // so the event is fired just once the seat style is really updated
-                        if (currentClass === 'available') {
-                            if (this.cart.addTodict(seat.id, newClass)) {
-                                this.cart.updateCart('add', seat.id, newClass, currentClass, true);
-                            }
-                        } else if (newClass === 'available') {
-                            if (this.cart.removeFromdict(seat.id, currentClass)) {
-                                this.cart.updateCart('remove', seat.id, newClass, currentClass, true);
-                            }
-                        } else if (this.cart.addTodict(seat.id, newClass) &&
-                            this.cart.removeFromdict(seat.id, currentClass)) {
-                            this.cart.updateCart('update', seat.id, newClass, currentClass, true);
+                    } else if (newClass === 'available') {
+                        if (this.cart.removeFromdict(seat.id, currentClass)) {
+                            this.cart.updateCart('remove', seat.id, newClass, currentClass, true);
                         }
+                    } else if (this.cart.addTodict(seat.id, newClass) &&
+                        this.cart.removeFromdict(seat.id, currentClass)) {
+                        this.cart.updateCart('update', seat.id, newClass, currentClass, true);
                     }
                 }
             }
+        }
 
-            this.cart.updateTotal();
-        };
+        this.cart.updateTotal();
     }
 
     /**
      * This function is fired when a seat is right clicked to be released.
      */
-    private rightClickDelete(seat: HTMLElement): (e: Event) => void {
-        return (e: Event): boolean => {
-            e.preventDefault();
+    private seatRightClick(e: Event): boolean {
+        e.preventDefault();
 
-            try {
-                const type = this.getSeatType(seat.id);
+        const seat = e.target as HTMLElement;
 
-                // it means it has no type and it's available, then there's nothing to delete
-                if (type !== undefined) {
-                    this.releaseSeat(seat.id);
-                    // remove from virtual sc
-                    this.cart.removeFromdict(seat.id, type);
+        try {
+            const type = this.getSeatType(seat.id);
 
-                    // there's no need to fire onChangeListeners event since this function fires
-                    // the event after removing the seat from shopping cart
-                    this.cart.updateCart('remove', seat.id, 'available', type, true);
-                    this.cart.updateTotal();
-                }
+            // it means it has no type and it's available, then there's nothing to delete
+            if (type !== undefined) {
+                this.releaseSeat(seat.id);
+                // remove from virtual sc
+                this.cart.removeFromdict(seat.id, type);
 
-                // so the default context menu isn't showed
-                return false;
-            } catch (error) {
-                if (error instanceof NotFoundError) {
-                    return false;
-                }
-
-                throw e;
+                // there's no need to fire onChangeListeners event since this function fires
+                // the event after removing the seat from shopping cart
+                this.cart.updateCart('remove', seat.id, 'available', type, true);
+                this.cart.updateTotal();
             }
-        };
+
+            // so the default context menu isn't showed
+            return false;
+        } catch (error) {
+            if (error instanceof NotFoundError) {
+                return false;
+            }
+
+            throw e;
+        }
     }
 
     /**
@@ -630,7 +630,7 @@ class MapUI {
                     seatTextContent,
                     `${i}_${j}`,
                     this.seatClick,
-                    this.rightClickDelete
+                    this.seatRightClick
                 );
 
                 row.element.appendChild(seatComponent.element);
