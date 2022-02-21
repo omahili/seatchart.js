@@ -1,18 +1,19 @@
-import CartUI from 'ui/cart/Cart';
 import InvalidParameterError from 'errors/invalid-parameter';
 import NotFoundError from 'errors/not-found';
-import { DEFAULT_TEXT_COLOR } from 'utils/consts';
 import { Options } from 'types/options';
 import { SeatInfo } from 'types/seat-info';
+import { RowColumnInfo } from 'types/map-options';
+import GapDetection from 'services/gap-detection';
+import { DEFAULT_TEXT_COLOR } from 'utils/consts';
 import Validator from 'utils/validator';
 import { EventListener } from 'types/events';
+import CartUI from 'ui/cart/Cart';
 import LegendUI from 'ui/legend/Legend';
 import ContainerUI from 'ui/common/Container';
 import SeatUI from 'ui/map/Seat';
 import MapRowUI from 'ui/map/Row';
 import MapFrontHeaderUI from 'ui/map/FrontHeader';
 import MapIndexUI from 'ui/map/MapIndex';
-import GapDetection from 'services/gap-detection';
 
 /**
  * @internal
@@ -456,69 +457,36 @@ class MapUI {
 
     /**
      * Generates a row name.
-     * @param row - Row index (starts from 0).
-     * @param disabled - True if current row is disabled.
-     * @param disabledCount - Number of disabled rows till that one (including current one if disabled).
+     * @param info - Row index (starts from 0).
      * @returns Row name. Returns null or undefined if empty.
      */
-    private rowName(index: number, disabled: boolean, disabledCount: number): string | undefined {
-        if (!disabled) {
-            return this.alphabet[index - disabledCount];
+    private rowName(rowInfo: RowColumnInfo): string | undefined {
+        if (!rowInfo.disabled) {
+            return this.alphabet[rowInfo.index - rowInfo.disabledCount];
         }
     }
 
     /**
      * Generates a column name.
-     * @param column - Column index (starts from 0).
-     * @param disabled - True if current column is disabled.
-     * @param disabledCount - Number of disabled columns till that one (including current one if disabled).
+     * @param info - Column info object.
      * @returns Column name. Returns null or undefined if empty.
      */
-    private columnName(index: number, disabled: boolean, disabledCount: number): string | undefined {
-        if (!disabled) {
-            return ((index - disabledCount) + 1).toString();
+    private columnName(columnInfo: RowColumnInfo): string | undefined {
+        if (!columnInfo.disabled) {
+            return ((columnInfo.index - columnInfo.disabledCount) + 1).toString();
         }
     }
 
     /**
      * Generates a seat name.
-     * @param row - Row object.
-     * @param column - Column object.
+     * @param row - Row info object.
+     * @param column - Column info object.
      * @returns Seat name. Returns null if empty.
      */
-    private seatName(
-        row: {
-            /**
-             * Row index (starts from 0).
-             */
-            index: number;
-            /**
-             * True if current row is disabled.
-             */
-            disabled: boolean;
-            /**
-             * Number of disabled rows till this one.
-             */
-            disabledCount: number;
-        },
-        column: {
-            /**
-             * Column index (starts from 0).
-             */
-            index: number;
-            /**
-             * True if current column is disabled.
-             */
-            disabled: boolean;
-            /**
-             * Number of disabled columns till this one.
-             */
-            disabledCount: number;
-        },
-    ): string | undefined {
-        if (!row.disabled && !column.disabled) {
-            const rowIndex = this.rowName(row.index, row.disabled, row.disabledCount);
-            const columnIndex = this.columnName(column.index, column.disabled, column.disabledCount);
+    private seatName(rowInfo: RowColumnInfo, columnInfo: RowColumnInfo): string | undefined {
+        if (!rowInfo.disabled && !columnInfo.disabled) {
+            const rowIndex = this.rowName(rowInfo);
+            const columnIndex = this.columnName(columnInfo);
 
             return `${rowIndex}${columnIndex}`;
         }
@@ -699,7 +667,7 @@ class MapUI {
                 'column',
                 this.options.map.columns,
                 this.options.map.disabled?.columns,
-                this.columnName.bind(this) || this.options.map.indexes?.columns?.name
+                this.options.map.indexes?.columns?.name || this.columnName.bind(this)
             );
             columnIndexContainer.element.appendChild(columnIndex.element);
         }
@@ -709,7 +677,7 @@ class MapUI {
                 'row',
                 this.options.map.rows,
                 this.options.map.disabled?.rows,
-                this.columnName.bind(this) || this.options.map.indexes?.rows?.name
+                this.options.map.indexes?.rows?.name || this.rowName.bind(this)
             );
             rowIndexContainer.element.appendChild(rowIndex.element);
         }

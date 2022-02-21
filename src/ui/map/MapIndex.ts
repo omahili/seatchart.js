@@ -1,5 +1,5 @@
 import BaseUI from 'ui/base/Base';
-import { IndexNameCallback } from 'types/index-name-callback';
+import { RowColumnInfo } from 'types/map-options';
 import SeatUI from 'ui/map/Seat';
 import MapSeatIndexUI from 'ui/map/SeatIndex';
 
@@ -18,7 +18,7 @@ class MapIndexUI extends BaseUI<HTMLDivElement> {
         type: string,
         length: number,
         disabled: number[] | undefined,
-        name: IndexNameCallback,
+        name: (info: RowColumnInfo) => string | undefined,
     ) {
         const mapIndex = document.createElement('div');
         mapIndex.className = `sc-${type}-index`;
@@ -29,7 +29,7 @@ class MapIndexUI extends BaseUI<HTMLDivElement> {
             const isColumnDisabled = disabled?.includes(i) || false;
             disabledCount = isColumnDisabled ? disabledCount + 1 : disabledCount;
 
-            const indexName = name(i, isColumnDisabled, disabledCount);
+            const indexName = name({ index: i, disabled: isColumnDisabled, disabledCount });
             if (indexName) {
                 const index = new MapSeatIndexUI(indexName);
                 mapIndex.appendChild(index.element);

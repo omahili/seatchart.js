@@ -1,7 +1,20 @@
-import { SeatNameCallback } from 'types/seat-name-callback';
-import { IndexNameCallback } from 'types/index-name-callback';
+export interface RowColumnInfo {
+    /**
+     * Row or column index (starts from 0).
+     */
+    index: number;
+    /**
+     * True if current row or column is disabled.
+     */
+    disabled: boolean;
+    /**
+     * Number of disabled rows or columns until the current one (included).
+     */
+    disabledCount: number;
+}
 
-interface MapOptions {
+
+export interface MapOptions {
     /**
      * Container id.
      */
@@ -17,7 +30,16 @@ interface MapOptions {
     /**
      * Seat name generator.
      */
-    seatName?: SeatNameCallback;
+    seatName?: (
+        /**
+         * Row info object.
+         */
+        rowInfo: RowColumnInfo,
+        /**
+         * Column info object
+         */
+        columnInfo: RowColumnInfo,
+    ) => string;
     /**
      *  Array of reserved seats.
      */
@@ -63,7 +85,7 @@ interface MapOptions {
             /**
              * Row name generator.
              */
-            name?: IndexNameCallback;
+            name?: (rowInfo: RowColumnInfo) => string | undefined;
         };
         /**
          * Columns index options.
@@ -80,7 +102,7 @@ interface MapOptions {
             /**
              * Column name generator.
              */
-            name?: IndexNameCallback;
+            name?: (columnInfo: RowColumnInfo) => string | undefined;
         };
     };
     /**
@@ -93,5 +115,3 @@ interface MapOptions {
         visible?: boolean;
     };
 }
-
-export { MapOptions };
