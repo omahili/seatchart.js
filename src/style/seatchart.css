@@ -49,8 +49,6 @@
 .sc-container-row-reverse *,
 .sc-container-column-reverse * {
     box-sizing: content-box;
-    -webkit-box-sizing: content-box;
-    -moz-box-sizing: content-box;
     font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -109,18 +107,11 @@
     width: 40px;
     margin: 3px;
     box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
     position: relative;
     color: white;
     border-top-left-radius: 10px;
-    -webkit-border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    -webkit-border-top-right-radius: 10px;
     user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
 }
 
 .sc-front {
@@ -128,7 +119,6 @@
     justify-content: center;
     color: #b0b0b0;
     border-radius: 3px;
-    -webkit-border-radius: 3px;
     height: 30px;
     line-height: 30px;
     text-align: center;
@@ -145,6 +135,11 @@
     margin: 3px;
     background-color: transparent;
     color: #4b4949;
+}
+
+.sc-cart-delete img {
+    height: 15px;
+    width: 15px;
 }
 
 .sc-seat.blank {
@@ -168,23 +163,23 @@
 .sc-seat.available {
     cursor: pointer;
     background-color: #80c2d1;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    box-shadow: 0 1px 3px rgba(0 0 0 / 12%), 0 1px 2px rgba(0 0 0 / 24%);
 }
 
 .sc-seat.available:hover {
     background-color: #a0d3de;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 1px 3px rgba(0 0 0 / 6%), 0 1px 2px rgba(0 0 0 / 12%);
 }
 
 .sc-seat.unavailable {
-    background-color: rgb(210, 210, 210);
+    background-color: rgb(210 210 210);
     cursor: not-allowed;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 1px 3px rgba(0 0 0 / 3%), 0 1px 2px rgba(0 0 0 / 6%);
 }
 
 .sc-seat.clicked {
     cursor: pointer;
-    box-shadow: 0 1px 3px rgba(160, 106, 106, 0.06), 0 1px 2px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 1px 3px rgba(160 106 106 / 6%), 0 1px 2px rgba(0 0 0 / 12%);
 }
 
 /* Seat legend css */
@@ -214,9 +209,7 @@
     height: 23px;
     margin: 0;
     border-top-right-radius: 5px;
-    -webkit-border-top-right-radius: 5px;
     border-top-left-radius: 5px;
-    -webkit-border-top-left-radius: 5px;
     pointer-events: none;
 }
 
@@ -257,12 +250,6 @@
     height: 25px;
     width: 25px;
     border-radius: 5px;
-    -webkit-border-radius: 5px;
-}
-
-.sc-cart-delete img {
-    height: 15px;
-    width: 15px;
 }
 
 .sc-cart-delete.all {
