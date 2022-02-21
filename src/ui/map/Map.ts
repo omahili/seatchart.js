@@ -6,7 +6,7 @@ import { RowColumnInfo } from 'types/map-options';
 import GapDetection from 'services/gap-detection';
 import { DEFAULT_TEXT_COLOR } from 'utils/consts';
 import Validator from 'utils/validator';
-import { EventListener } from 'types/events';
+import { EventMap, ClearEvent, ChangeEvent } from 'types/events';
 import CartUI from 'ui/cart/Cart';
 import LegendUI from 'ui/legend/Legend';
 import ContainerUI from 'ui/common/Container';
@@ -26,12 +26,12 @@ class MapUI {
     /**
      * Array of listeners triggered when a seat is selected or unselected.
      */
-    public onChangeEventListeners: Array<EventListener> = [];
+    public onChangeEventListeners: Array<(e: ChangeEvent) => void> = [];
 
     /**
      * Array of listeners triggered when all seats are removed with the 'delete all' button in the shopping cart.
      */
-    public onClearEventListeners: Array<EventListener> = [];
+    public onClearEventListeners: Array<(e: ClearEvent) => void> = [];
 
     private gapDetection: GapDetection;
 
@@ -76,11 +76,11 @@ class MapUI {
      * @param type - Event type.
      * @param listener - Function called when the given event occurs.
      */
-    public addEventListener(type: 'clear' | 'change', listener: EventListener): void {
+    public addEventListener<T extends keyof EventMap>(type: T, listener: (e: EventMap[T]) => void): void {
         if (type === 'change') {
-            this.onChangeEventListeners.push(listener);
+            this.onChangeEventListeners.push(listener as (e: ChangeEvent) => void);
         } else if (type === 'clear') {
-            this.onClearEventListeners.push(listener);
+            this.onClearEventListeners.push(listener as (e: ClearEvent) => void);
         } else {
             throw new InvalidParameterError('Invalid parameter \'type\' supplied to Seatchart.addEventListener(). ' +
                 'Type does not exist',
@@ -93,11 +93,11 @@ class MapUI {
      * @param type - Event type.
      * @param listener - Listener to remove.
      */
-    public removeEventListener(type: 'clear' | 'change', listener: EventListener): void {
+    public removeEventListener<T extends keyof EventMap>(type: T, listener: (e: EventMap[T]) => void): void {
         if (['change', 'clear'].includes(type)) {
             let eventListeners = type === 'change' ? this.onChangeEventListeners : this.onClearEventListeners;
 
-            eventListeners.forEach((el: EventListener, i: number) => {
+            eventListeners.forEach((el, i: number) => {
                 if (el === listener) {
                     eventListeners = eventListeners.splice(i, 1);
                 }

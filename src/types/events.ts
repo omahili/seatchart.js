@@ -28,10 +28,13 @@ interface ClearEvent {
     }>;
 }
 
-type EventListener = (e: ClearEvent | ChangeEvent) => void;
+interface EventMap {
+    clear: ClearEvent;
+    change: ChangeEvent;
+};
 
 export {
-    EventListener,
+    EventMap,
     ChangeEvent,
     ClearEvent,
 };
