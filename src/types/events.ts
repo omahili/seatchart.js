@@ -31,7 +31,7 @@ interface ClearEvent {
 interface EventMap {
     clear: ClearEvent;
     change: ChangeEvent;
-};
+}
 
 export {
     EventMap,

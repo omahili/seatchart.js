@@ -22,7 +22,7 @@ class CartItemUI extends BaseUI<HTMLDivElement> {
         currency: string | undefined,
         assetsPath: string | undefined,
         seatType: SeatType,
-        deleteClick: (item: HTMLElement) => any
+        deleteClick: (item: HTMLElement) => void
     ) {
         if (!seat.price) {
             throw new Error('Seat price cannot be null or undefined.');

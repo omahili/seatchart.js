@@ -35,7 +35,7 @@ class CartTableUI extends BaseUI<HTMLDivElement> {
      * @param seatType - Seat type options.
      * @param deleteClick - Function called on detele button click.
      */
-    public addItem(seat: SeatInfo, seatType: SeatType, deleteClick: (e: HTMLElement) => any): void {
+    public addItem(seat: SeatInfo, seatType: SeatType, deleteClick: (e: HTMLElement) => void): void {
         const cartItem = new CartItemUI(
             seat,
             this.currency,

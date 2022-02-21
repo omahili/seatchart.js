@@ -16,8 +16,8 @@ class SeatUI extends BaseUI<HTMLDivElement> {
         type: string,
         content?: string,
         seatId?: string,
-        seatClick?: (seat: HTMLElement) => any,
-        rightClick?: (seat: HTMLElement) => any
+        seatClick?: (seat: HTMLElement) => () => void,
+        rightClick?: (seat: HTMLElement) => (e: Event) => void
     ) {
         const seat = document.createElement('div');
         seat.className = 'sc-seat ' + type;

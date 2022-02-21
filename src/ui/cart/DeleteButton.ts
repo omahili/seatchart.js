@@ -9,7 +9,7 @@ class DeleteButtonUI extends BaseUI<HTMLDivElement> {
      * @param path - Path to assets.
      * @param deleteClick - Function called on click.
      */
-    public constructor(assetsPath: string | undefined, deleteClick: (e: MouseEvent) => any) {
+    public constructor(assetsPath: string | undefined, deleteClick: (e: MouseEvent) => void) {
         const binImg = document.createElement('img');
         binImg.src = assetsPath ?
             `${assetsPath}/bin.svg` :

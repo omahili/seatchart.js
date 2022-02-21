@@ -21,7 +21,7 @@ class CartFooterUI extends BaseUI<HTMLDivElement> {
         totalValue: number,
         currency: string | undefined,
         assetsPath: string | undefined,
-        deleteAllClick: () => any
+        deleteAllClick: () => void
     ) {
         const currentCurrency = currency || DEFAULT_TEXT_COLOR;
         const container = document.createElement('div');
