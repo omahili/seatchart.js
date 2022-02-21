@@ -51,6 +51,11 @@ class MapUI {
      */
     public constructor(options: Options) {
         this.options = options;
+        this.seatName = this.seatName.bind(this);
+        this.seatClick = this.seatClick.bind(this);
+        this.columnName = this.columnName.bind(this);
+        this.rowName = this.rowName.bind(this);
+        this.rightClickDelete = this.rightClickDelete.bind(this);
 
         Validator.validate(options);
 
@@ -601,7 +606,7 @@ class MapUI {
         const disabled = this.options.map.disabled;
         let disabledRowsCounter = 0;
 
-        const generateName = this.options.map.seatName || this.seatName.bind(this);
+        const generateName = this.options.map.seatName || this.seatName;
 
         // add rows containing seats
         for (let i = 0; i < this.options.map.rows; i += 1) {
@@ -624,8 +629,8 @@ class MapUI {
                     'available',
                     seatTextContent,
                     `${i}_${j}`,
-                    this.seatClick.bind(this),
-                    this.rightClickDelete.bind(this)
+                    this.seatClick,
+                    this.rightClickDelete
                 );
 
                 row.element.appendChild(seatComponent.element);
@@ -667,7 +672,7 @@ class MapUI {
                 'column',
                 this.options.map.columns,
                 this.options.map.disabled?.columns,
-                this.options.map.indexes?.columns?.name || this.columnName.bind(this)
+                this.options.map.indexes?.columns?.name || this.columnName
             );
             columnIndexContainer.element.appendChild(columnIndex.element);
         }
@@ -677,7 +682,7 @@ class MapUI {
                 'row',
                 this.options.map.rows,
                 this.options.map.disabled?.rows,
-                this.options.map.indexes?.rows?.name || this.rowName.bind(this)
+                this.options.map.indexes?.rows?.name || this.rowName
             );
             rowIndexContainer.element.appendChild(rowIndex.element);
         }

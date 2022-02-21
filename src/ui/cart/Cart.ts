@@ -52,6 +52,9 @@ class CartUI {
         this.map = map;
         this.options = map.options;
 
+        this.deleteClick = this.deleteClick.bind(this);
+        this.deleteAllClick = this.deleteAllClick.bind(this);
+
         this.loadCart();
         this.createCart();
     }
@@ -148,7 +151,7 @@ class CartUI {
                     throw new NotFoundError('Seat type not found.');
                 }
 
-                this.cartTable.addItem(current, seatType, this.deleteClick.bind(this));
+                this.cartTable.addItem(current, seatType, this.deleteClick);
             }
 
             if (emit) {
@@ -254,7 +257,7 @@ class CartUI {
                 this.getTotal(),
                 this.options.cart?.currency,
                 this.options.assets?.path,
-                this.deleteAllClick.bind(this),
+                this.deleteAllClick,
             );
 
             this.cartHeader = new CartHeaderUI(itemsCount, this.options.assets?.path);
@@ -435,7 +438,7 @@ class CartUI {
                         price,
                         type,
                     };
-                    this.cartTable?.addItem(seat, seatType, this.deleteClick.bind(this));
+                    this.cartTable?.addItem(seat, seatType, this.deleteClick);
                 }
             }
         }
