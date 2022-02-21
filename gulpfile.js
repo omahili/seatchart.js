@@ -9,7 +9,7 @@ const output = {
   format: 'umd',
   name: "Seatchart"
 };
-const input = 'src/seatchart.ts';
+const input = 'src/index.ts';
 const plugins = [rollupTypescript()];
 
 gulp.task('watch', function () {
@@ -50,7 +50,7 @@ gulp.task('default', async function () {
 
     await bundle.write(output);
 
-    gulp.src('dist/seatchart.js')
+    gulp.src('dist/index.js')
       .pipe(uglify())
       .pipe(rename({ suffix: '.min' }))
       .pipe(gulp.dest('dist'));

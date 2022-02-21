@@ -1,7 +1,14 @@
-import MapUI from 'components/map';
-import SeatInfo from 'types/seat-info';
-import Options from 'types/options';
-import { EventListener } from 'types/events';
+import MapUI from 'ui/map/Map';
+import { SeatInfo } from 'types/seat-info';
+import { Options } from 'types/options';
+import { EventMap } from 'types/events';
+
+export * from 'types/cart-options';
+export * from 'types/events';
+export * from 'types/map-options';
+export * from 'types/options';
+export * from 'types/seat-info';
+export * from 'types/seat-type';
 
 class Seatchart {
     public readonly options: Options;
@@ -23,7 +30,7 @@ class Seatchart {
      * @param type - Event type.
      * @param listener - Function called when the given event occurs.
      */
-    public addEventListener(type: 'clear' | 'change', listener: EventListener): void {
+    public addEventListener<T extends keyof EventMap>(type: T, listener: (e: EventMap[T]) => void): void {
         this.map.addEventListener(type, listener);
     }
 
@@ -32,7 +39,7 @@ class Seatchart {
      * @param type - Event type.
      * @param listener - Listener to remove.
      */
-    public removeEventListener(type: 'clear' | 'change', listener: EventListener): void {
+    public removeEventListener<T extends keyof EventMap>(type: T, listener: (e: EventMap[T]) => void): void {
         this.map.removeEventListener(type, listener);
     }
 
@@ -55,7 +62,7 @@ class Seatchart {
     }
 
     /**
-     * Gets all seats which represent a gap of the seat map.
+     * Gets all seats which represent a gap in the seat map.
      * @returns Array of indexes.
      */
     public getGaps(): number[] {
@@ -82,32 +89,6 @@ class Seatchart {
     }
 
     /**
-     * Gets the name of a seat.
-     * @param id - The dom id of the seat in the seatmap.
-     * @returns The name.
-     */
-    public getSeatName(id: string): string {
-        return this.map.getSeatName(id);
-    }
-
-    /**
-     * Gets the type of a seat.
-     * @param id - The dom id of the seat in the seatmap.
-     * @returns The type.
-     */
-    public getSeatType(id: string): string {
-        return this.map.getSeatType(id);
-    }
-
-    /**
-     * Makes a seat available,
-     * @param id - The dom id of the seat in the seatmap.
-     */
-    public releaseSeat(id: string): void {
-        this.map.releaseSeat(id);
-    }
-
-    /**
      * Gets a reference to the shopping cart object.
      * @returns An object containing all seats added to the shopping cart,
      * mapped by seat type.
@@ -122,15 +103,6 @@ class Seatchart {
      */
     public getCartTotal(): number {
         return this.map.cart.getTotal();
-    }
-
-    /**
-     * Gets the price for a specific type of seat.
-     * @param type - The type of the seat.
-     * @returns Price.
-     */
-    public getSeatPrice(type: string): number {
-        return this.map.cart.getSeatPrice(type);
     }
 }
 

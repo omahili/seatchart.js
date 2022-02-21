@@ -128,7 +128,7 @@ class MapUI {
     }
 
     /**
-     * Gets all seats which represent a gap of the seat map.
+     * Gets all seats which represent a gap in the seat map.
      * @returns Array of indexes.
      */
     public getGaps(): number[] {
