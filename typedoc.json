@@ -1,10 +1,8 @@
 {
-    "name": "Seatchart",
-    "inputFiles": [
-        "./src/seatchart.ts"
-    ],
-    "mode": "file",
+    "name": "seatchart.js",
+    "entryPoints": ["./src/index.ts"],
     "out": "docs",
     "excludePrivate": true,
-    "stripInternal": true
+    "excludeInternal": true,
+    "excludeExternals": true
 }

@@ -1,28 +1,29 @@
 {
   "name": "seatchartjs",
   "description": "A framework to create beautiful designed seat maps, legends and shopping carts.",
-  "main": "src/js/seatchart.js",
-  "directories": {
-    "example": "examples"
-  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/*"
+  ],
   "scripts": {
     "test": "npx jest",
     "lint": "eslint ./src --ext .ts,.js && stylelint src/style/seatchart.css",
     "build": "npx gulp",
     "watch": "npx gulp watch",
-    "docs:build": "npx typedoc",
+    "docs:build": "typedoc && npx cp ./CNAME ./docs/CNAME && npx cp -r ./examples ./docs/examples",
     "docs:deploy": "gh-pages --dist docs"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/OmarMahili/SeatchartJS.git"
+    "url": "git+https://github.com/omahili/seatchart.js.git"
   },
   "author": "Omar Mahili",
   "license": "CC BY-SA 4.0",
   "bugs": {
-    "url": "https://github.com/OmarMahili/SeatchartJS/issues"
+    "url": "https://github.com/omahili/seatchart.js/issues"
   },
-  "homepage": "http://omarmahili.github.io/SeatchartJS/",
+  "homepage": "http://omahili.github.io/seatchart.js/",
   "devDependencies": {
     "@rollup/plugin-typescript": "^8.3.0",
     "@types/jest": "^27.4.0",
@@ -42,6 +43,7 @@
     "ts-jest": "^27.1.3",
     "tslib": "^2.3.1",
     "typedoc": "^0.22.12",
+    "typedoc-plugin-merge-modules": "^3.1.0",
     "typescript": "^4.5.5"
   },
   "dependencies": {}

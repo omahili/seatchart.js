@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     /* Basic Options */
+    "stripInternal": true,                    /* Disable emitting declarations that have @internal in their JSDoc comments. */
     // "incremental": true,                   /* Enable incremental compilation */
     "target": "es3",                          /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019' or 'ESNEXT'. */
     "module": "es2015",                       /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */
@@ -40,7 +41,7 @@
 
     /* Module Resolution Options */
     "moduleResolution": "node",               /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */
-    "baseUrl": "./src",                          /* Base directory to resolve non-absolute module names. */
+    "baseUrl": "./src",                       /* Base directory to resolve non-absolute module names. */
     // "paths": {},                           /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */
     // "rootDirs": [],                        /* List of root folders whose combined content represents the structure of the project at runtime. */
     // "typeRoots": [],                       /* List of folders to include type definitions from. */
@@ -64,7 +65,6 @@
     "forceConsistentCasingInFileNames": true  /* Disallow inconsistently-cased references to the same file. */
   },
   "exclude": [
-    "_book",
     "dist"
   ]
 }
