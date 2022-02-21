@@ -1,9 +1,9 @@
-import BaseUI from 'components/base';
-import utils from 'utils';
+import BaseUI from 'ui/base/Base';
+import utils from 'utils/misc';
 import { DEFAULT_TEXT_COLOR, DEFAULT_CURRENCY } from 'utils/consts';
 import { SeatType } from 'types/seat-type';
 import { SeatInfo } from 'types/seat-info';
-import CartItemUI from 'components/cart/item.ui';
+import CartItemUI from 'ui/cart/Item';
 
 /**
  * @internal

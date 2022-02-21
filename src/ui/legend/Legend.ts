@@ -1,8 +1,8 @@
 import { DEFAULT_CURRENCY } from 'utils/consts';
 import { Options } from 'types/options';
-import utils from 'utils';
-import ContainerUI from 'components/common/container.ui';
-import Title from 'components/common/title.ui';
+import utils from 'utils/misc';
+import ContainerUI from 'ui/common/Container';
+import TitleUI from 'ui/common/Title';
 
 /**
  * @internal
@@ -61,7 +61,7 @@ class LegendUI {
         if (this.options.legend) {
             // create legend container
             const legendContainer = new ContainerUI('legend', 'column');
-            const legendTitle = new Title('Legend');
+            const legendTitle = new TitleUI('Legend');
 
             const seatsList = this.createLegendList();
             const currency = this.options.cart?.currency || DEFAULT_CURRENCY;

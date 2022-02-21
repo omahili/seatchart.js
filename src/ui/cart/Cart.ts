@@ -1,13 +1,13 @@
-import NotFoundError from 'errors/not-found-error';
+import NotFoundError from 'errors/not-found';
 import { ClearEvent } from 'types/events';
 import { Options } from 'types/options';
 import { SeatInfo } from 'types/seat-info';
-import utils from 'utils';
-import Map from 'components/map';
-import ContainerUI from 'components/common/container.ui';
-import CartFooterUI from 'components/cart/footer.ui';
-import CartHeaderUI from 'components/cart/header.ui';
-import CartTableUI from 'components/cart/table.ui';
+import utils from 'utils/misc';
+import Map from 'ui/map/Map';
+import ContainerUI from 'ui/common/Container';
+import CartFooterUI from 'ui/cart/Footer';
+import CartHeaderUI from 'ui/cart/Header';
+import CartTableUI from 'ui/cart/Table';
 
 /**
  * @internal

@@ -1,18 +1,18 @@
-import CartUI from 'components/cart';
-import InvalidParameterError from 'errors/invalid-parameter-error';
-import NotFoundError from 'errors/not-found-error';
+import CartUI from 'ui/cart/Cart';
+import InvalidParameterError from 'errors/invalid-parameter';
+import NotFoundError from 'errors/not-found';
 import { DEFAULT_TEXT_COLOR } from 'utils/consts';
 import { Options } from 'types/options';
 import { SeatInfo } from 'types/seat-info';
 import Validator from 'utils/validator';
 import { EventListener } from 'types/events';
-import LegendUI from 'components/legend';
-import ContainerUI from 'components/common/container.ui';
-import SeatUI from 'components/map/seat.ui';
-import MapRowUI from 'components/map/row.ui';
-import MapFrontHeaderUI from 'components/map/front-header.ui';
-import MapIndexUI from 'components/map/map-index.ui';
-import GapDetection from 'components/map/gap-detection.service';
+import LegendUI from 'ui/legend/Legend';
+import ContainerUI from 'ui/common/Container';
+import SeatUI from 'ui/map/Seat';
+import MapRowUI from 'ui/map/Row';
+import MapFrontHeaderUI from 'ui/map/FrontHeader';
+import MapIndexUI from 'ui/map/MapIndex';
+import GapDetection from 'services/gap-detection';
 
 /**
  * @internal

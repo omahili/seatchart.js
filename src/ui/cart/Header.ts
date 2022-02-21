@@ -1,5 +1,5 @@
-import BaseUI from 'components/base';
-import IconedTitle from 'components/common/iconed-title.ui';
+import BaseUI from 'ui/base/Base';
+import IconedTitleUI from 'ui/common/IconedTitle';
 
 /**
  * @internal
@@ -20,7 +20,7 @@ class CartHeaderUI extends BaseUI<HTMLDivElement> {
             `${assetsPath}/shoppingcart.svg` :
             './assets/shoppingcart.svg';
 
-        const cartTitle = new IconedTitle(
+        const cartTitle = new IconedTitleUI(
             'Your Cart',
             assetPath,
             'Shopping cart icon.',

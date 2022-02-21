@@ -1,9 +1,9 @@
-import BaseUI from 'components/base';
+import BaseUI from 'ui/base/Base';
 
 /**
  * @internal
  */
-class Title extends BaseUI<HTMLHeadingElement> {
+class TitleUI extends BaseUI<HTMLHeadingElement> {
     /**
      * Creates a title.
      * @param content - The content of the title.
@@ -19,4 +19,4 @@ class Title extends BaseUI<HTMLHeadingElement> {
     }
 }
 
-export default Title;
+export default TitleUI;

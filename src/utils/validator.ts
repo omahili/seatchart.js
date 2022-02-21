@@ -1,4 +1,4 @@
-import InvalidParameterError from 'errors/invalid-parameter-error';
+import InvalidParameterError from 'errors/invalid-parameter';
 import { Options } from 'types/options';
 
 /**

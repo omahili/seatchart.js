@@ -1,4 +1,4 @@
-import BaseUI from 'components/base';
+import BaseUI from 'ui/base/Base';
 
 /**
  * @internal

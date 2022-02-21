@@ -1,10 +1,10 @@
-import BaseUI from 'components/base';
-import Title from 'components/common/title.ui';
+import BaseUI from 'ui/base/Base';
+import TitleUI from 'ui/common/Title';
 
 /**
  * @internal
  */
-class IconedTitle extends BaseUI<HTMLDivElement> {
+class IconedTitleUI extends BaseUI<HTMLDivElement> {
     /**
      * Creates a title with an icon.
      * @param content - The title.
@@ -17,7 +17,7 @@ class IconedTitle extends BaseUI<HTMLDivElement> {
         icon.src = src;
         icon.alt = alt;
 
-        const title = new Title(content);
+        const title = new TitleUI(content);
         container.className = title.element.className;
         title.element.className = '';
 
@@ -28,4 +28,4 @@ class IconedTitle extends BaseUI<HTMLDivElement> {
     }
 }
 
-export default IconedTitle;
+export default IconedTitleUI;

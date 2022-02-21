@@ -1,9 +1,9 @@
 import { SeatInfo } from 'types/seat-info';
 import { DEFAULT_CURRENCY } from 'utils/consts';
-import BaseUI from 'components/base';
+import BaseUI from 'ui/base/Base';
 import { SeatType } from 'types/seat-type';
-import DeleteButtonUI from 'components/cart/delete-button.ui';
-import CartTicketUI from 'components/cart/ticket.ui';
+import DeleteButtonUI from 'ui/cart/DeleteButton';
+import CartTicketUI from 'ui/cart/Ticket';
 
 /**
  * @internal
