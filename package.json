@@ -7,10 +7,10 @@
     "dist/*"
   ],
   "scripts": {
-    "test": "npx jest",
+    "test": "jest",
     "lint": "eslint ./src --ext .ts,.js && stylelint src/style/seatchart.css",
-    "build": "npx gulp",
-    "watch": "npx gulp watch",
+    "build": "gulp",
+    "watch": "gulp watch",
     "docs:build": "typedoc && npx cp ./CNAME ./docs/CNAME && npx cp -r ./examples ./docs/examples",
     "docs:deploy": "gh-pages --dist docs"
   },

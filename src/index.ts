@@ -45,32 +45,6 @@ class Seatchart {
     }
 
     /**
-     * Checks whether a seat is a gap or not.
-     * @param index - Seat index.
-     * @returns True if it is, false otherwise.
-     */
-    public isGap(index: SeatIndex): boolean {
-        return this.map.isGap(index);
-    }
-
-    /**
-     * Checks whether a seat creates a gap or not.
-     * @param index - Seat index.
-     * @returns True if it does, false otherwise.
-     */
-    public makesGap(index: SeatIndex): boolean {
-        return this.map.makesGap(index);
-    }
-
-    /**
-     * Gets all seats which represent a gap in the seat map.
-     * @returns Array of indexes.
-     */
-    public getGaps(): SeatIndex[] {
-        return this.map.getGaps();
-    }
-
-    /**
      * Gets seat info.
      * @param index - Seat index.
      * @returns Seat info.
