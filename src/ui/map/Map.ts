@@ -13,7 +13,7 @@ import SeatUI from 'ui/map/Seat';
 import MapRowUI from 'ui/map/Row';
 import MapFrontHeaderUI from 'ui/map/FrontHeader';
 import MapIndexUI from 'ui/map/MapIndex';
-import GapDetectionService from 'services/gap-detection';
+import { isSameSeat } from 'utils/misc';
 
 /**
  * @internal
@@ -32,8 +32,6 @@ class MapUI {
      * Array of listeners triggered when all seats are removed with the 'delete all' button in the shopping cart.
      */
     public onClearEventListeners: Array<(e: ClearEvent) => void> = [];
-
-    private gapDetection: GapDetectionService;
 
     /**
      * A string containing all the letters of the english alphabet.
@@ -65,16 +63,6 @@ class MapUI {
 
         this.cart = new CartUI(this);
         this.legend = new LegendUI(options);
-
-        this.gapDetection = new GapDetectionService(
-            this.options.map.rows,
-            this.options.map.columns,
-            this.cart.getCart(),
-            this.options.map.disabled?.seats,
-            this.options.map.disabled?.rows,
-            this.options.map.disabled?.columns,
-            this.options.map.reserved?.seats,
-        );
     }
 
     /**
@@ -112,32 +100,6 @@ class MapUI {
     }
 
     /**
-     * Checks whether a seat is a gap or not.
-     * @param seatIndex - Seat index.
-     * @returns True if it is, false otherwise.
-     */
-    public isGap(seatIndex: SeatIndex): boolean {
-        return this.gapDetection.isGap(seatIndex);
-    }
-
-    /**
-     * Checks whether a seat creates a gap or not.
-     * @param seatIndex - Seat index.
-     * @returns True if it does, false otherwise.
-     */
-    public makesGap(seatIndex: SeatIndex): boolean {
-        return this.gapDetection.makesGap(seatIndex);
-    }
-
-    /**
-     * Gets all seats which represent a gap in the seat map.
-     * @returns Array of indexes.
-     */
-    public getGaps(): SeatIndex[] {
-        return this.gapDetection.getGaps();
-    }
-
-    /**
      * Gets seat info.
      * @param index - Seat index.
      * @returns Seat info.
@@ -145,7 +107,6 @@ class MapUI {
     public get(index: SeatIndex): SeatInfo {
         Validator.validateIndex(index, this.options.map.rows, this.options.map.columns);
 
-        const { row, col } = index;
         const seatId = SeatUI.id(index.row, index.col);
         const name = this.getSeatName(seatId);
 
@@ -153,12 +114,12 @@ class MapUI {
         let price: number | null = null;
 
         // check if seat is reserved
-        if (this.options.map.reserved?.seats && this.options.map.reserved.seats.some(x => x.row === row && x.col === col)) {
+        if (this.options.map.reserved?.seats && this.options.map.reserved.seats.some(isSameSeat(index))) {
             type = 'reserved';
         }
 
         // check if seat is disabled
-        if (this.options.map.disabled?.seats && this.options.map.disabled.seats.some(x => x.row === row && x.col === col)) {
+        if (this.options.map.disabled?.seats && this.options.map.disabled.seats.some(isSameSeat(index))) {
             type = 'disabled';
         }
 
@@ -222,7 +183,7 @@ class MapUI {
         if (element) {
             if (seat.type === 'disabled' || seat.type === 'reserved') {
                 const seats = this.options.map[seat.type]?.seats;
-                const arrayIndex = seats?.findIndex(x => index.col === x.col && index.row === x.row);
+                const arrayIndex = seats?.findIndex(isSameSeat(index));
                 if (seats && arrayIndex && arrayIndex >= 0) {
                     seats.splice(arrayIndex, 1);
                 }
