@@ -100,14 +100,10 @@ class MapUI {
      * @param listener - Listener to remove.
      */
     public removeEventListener<T extends keyof EventMap>(type: T, listener: (e: EventMap[T]) => void): void {
-        if (['change', 'clear'].includes(type)) {
-            let eventListeners = type === 'change' ? this.onChangeEventListeners : this.onClearEventListeners;
-
-            eventListeners.forEach((el, i: number) => {
-                if (el === listener) {
-                    eventListeners = eventListeners.splice(i, 1);
-                }
-            });
+        if (type === 'change') {
+            this.onChangeEventListeners = this.onChangeEventListeners.filter(x => x !== listener);
+        } else if (type === 'clear') {
+            this.onClearEventListeners = this.onClearEventListeners.filter(x => x !== listener);
         } else {
             throw new InvalidParameterError('Invalid parameter \'type\' supplied to Seatchart.removeEventListener(). ' +
                 'Type does not exist',
