@@ -1,3 +1,5 @@
+import { SeatIndex } from "types/map-options";
+
 /**
  * Describes a seat.
  */
@@ -13,7 +15,7 @@ interface SeatInfo {
     /**
      * Seat index.
      */
-    index: number;
+    index: SeatIndex;
     /**
      * Seat name.
      */

@@ -1,3 +1,5 @@
+import { SeatIndex } from "types/map-options";
+
 /**
  * Seat type options.
  */
@@ -21,7 +23,7 @@ interface SeatType {
     /**
      * Selected seats of the defined seat type.
      */
-    selected?: number[];
+    selected?: SeatIndex[];
 }
 
 export { SeatType };

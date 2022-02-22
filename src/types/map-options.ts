@@ -1,3 +1,14 @@
+export interface SeatIndex {
+    /**
+     * Row index of the seat.
+     */
+    row: number;
+    /**
+     * Column index of the seat.
+     */
+    col: number;
+}
+
 export interface RowColumnInfo {
     /**
      * Row or column index (starts from 0).
@@ -41,13 +52,13 @@ export interface MapOptions {
         columnInfo: RowColumnInfo,
     ) => string;
     /**
-     *  Array of reserved seats.
+     *  Reserved seats options.
      */
     reserved?: {
         /**
          * Array of the reserved seats.
          */
-        seats?: number[];
+        seats?: SeatIndex[];
     };
     /**
      * Disabled seats options.
@@ -56,7 +67,7 @@ export interface MapOptions {
         /**
          * Array of the disabled seats.
          */
-        seats?: number[];
+        seats?: SeatIndex[];
         /**
          * Array of the disabled rows of seats.
          */

@@ -1,5 +1,6 @@
 import NotFoundError from 'errors/not-found';
 import { ClearEvent } from 'types/events';
+import { SeatIndex } from 'types/map-options';
 import { Options } from 'types/options';
 import { SeatInfo } from 'types/seat-info';
 import utils from 'utils/misc';
@@ -40,7 +41,7 @@ class CartUI {
     /**
      * An object containing all seats added to the shopping cart, mapped by seat type.
      */
-    private cart: { [key: string]: number[] } = {};
+    private cart: { [key: string]: SeatIndex[] } = {};
 
     /**
      * An array of strings containing all the pickable seat types, "available" included.
@@ -66,7 +67,7 @@ class CartUI {
      * @returns An object containing all seats added to the shopping cart,
      * mapped by seat type.
      */
-    public getCart(): { [key: string]: number[] } {
+    public getCart(): { [key: string]: SeatIndex[] } {
         return this.cart;
     }
 
@@ -190,7 +191,7 @@ class CartUI {
      * @param type - The type of the seat.
      * @returns True if the seat is added correctly otherwise false.
      */
-    public addTodict(id: string, type: string): boolean {
+    public addToDict(id: string, type: string): boolean {
         if (type in this.dict) {
             if ({}.hasOwnProperty.call(this.dict, type)) {
                 this.dict[type].push(id);
@@ -207,7 +208,7 @@ class CartUI {
      * @param type - The type of the seat.
      * @returns True if the seat is removed correctly otherwise false.
      */
-    public removeFromdict(id: string, type: string): boolean {
+    public removeFromDict(id: string, type: string): boolean {
         if (type !== undefined) {
             if (type in this.dict) {
                 const index = this.dict[type].indexOf(id);
@@ -219,7 +220,7 @@ class CartUI {
         } else {
             const keys = Object.keys(this.dict);
             for (const key of keys) {
-                if (this.removeFromdict(id, key)) {
+                if (this.removeFromDict(id, key)) {
                     return true;
                 }
             }
@@ -355,7 +356,7 @@ class CartUI {
             const type = this.map.getSeatType(id);
 
             this.map.releaseSeat(id);
-            this.removeFromdict(id, type);
+            this.removeFromDict(id, type);
 
             this.cartFooter?.updateTotal(this.getTotal());
             this.cartHeader?.updateCounter(this.cartTable?.countItems() || 0);
@@ -402,9 +403,9 @@ class CartUI {
                 const type = seatType.type;
 
                 for (const index of seatType.selected) {
-                    const id = SeatUI.idFromIndex(index, this.options.map.columns);
+                    const id = SeatUI.id(index.row, index.col);
                     // add to shopping cart
-                    this.addTodict(id, type);
+                    this.addToDict(id, type);
                 }
             }
         }
@@ -419,12 +420,11 @@ class CartUI {
     private loadCartItems(): void {
         for (const seatType of this.options.types) {
             if (seatType.selected) {
-                const { columns } = this.options.map;
                 const type = seatType.type;
                 const price = seatType.price;
 
                 for (const index of seatType.selected) {
-                    const id = SeatUI.idFromIndex(index, columns);
+                    const id = SeatUI.id(index.row, index.col);
                     const name = this.map.getSeatName(id);
 
                     const seat: SeatInfo = {
@@ -457,14 +457,14 @@ class CartUI {
     }
 
     /**
-     * Converts a seat id to an index.
+     * Converts a seat id to a seat index.
      * @param id - Seat id to map.
      * @returns Seat index.
      */
-    private getIndexFromId(id: string): number {
+    private getIndexFromId(id: string): SeatIndex {
         const values = id.split('_').map(val => parseInt(val, 10));
 
-        return (this.options.map.columns * values[0]) + values[1];
+        return { row: values[0], col: values[1] };
     }
 }
 

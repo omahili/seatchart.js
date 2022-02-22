@@ -1,11 +1,12 @@
 import InvalidParameterError from 'errors/invalid-parameter';
+import { SeatIndex } from 'types/map-options';
 import { Options } from 'types/options';
 
 /**
  * @internal
  */
 class Validator {
-    public static validate(options: Options): void {
+    public static validateOptions(options: Options): void {
         // check options.map parameter
         if (options.map === undefined) {
             throw new InvalidParameterError(
@@ -21,9 +22,6 @@ class Validator {
         } else if (!{}.hasOwnProperty.call(options.map, 'rows') || !{}.hasOwnProperty.call(options.map, 'columns')) {
             throw new InvalidParameterError('Invalid parameter \'options.map\' supplied to Seatchart. ' +
                 '\'row\' and \'columns\' properties cannot be undefined.');
-        } else if (options.map.rows > 25 || options.map.columns > 25) {
-            throw new InvalidParameterError('Invalid parameter \'options.map\' supplied to Seatchart. ' +
-                '\'row\' and \'columns\' properties cannot be integers greater than 25.');
         } else if (options.map.rows < 2 || options.map.columns < 2) {
             throw new InvalidParameterError('Invalid parameter \'options.map\' supplied to Seatchart. ' +
                 '\'row\' and \'columns\' properties cannot be integers smaller than 2.');
@@ -72,6 +70,27 @@ class Validator {
                     );
                 }
             }
+        }
+    }
+
+    static validateIndex(index: SeatIndex, totalRows: number, totalColumns: number) {
+        const { row, col } = index;
+        if (typeof row !== 'number' && Math.floor(row) === row) {
+            throw new InvalidParameterError(
+                'Invalid parameter \'row\' supplied to Seatchart.get(). It must be an integer.'
+            );
+        } else if (row >= totalRows) {
+            throw new InvalidParameterError(
+                'Invalid parameter \'row\' supplied to Seatchart.get(). Index is out of range.'
+            );
+        } else if (typeof col !== 'number' && Math.floor(col) === col) {
+            throw new InvalidParameterError(
+                'Invalid parameter \'col\' supplied to Seatchart.get(). It must be an integer.'
+            );
+        } else if (col >= totalColumns) {
+            throw new InvalidParameterError(
+                'Invalid parameter \'col\' supplied to Seatchart.get(). Index is out of range.'
+            );
         }
     }
 }

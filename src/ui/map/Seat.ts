@@ -52,39 +52,6 @@ class SeatUI extends BaseUI<HTMLDivElement> {
     static id(row: number, column: number) {
         return `${row}_${column}`;
     }
-
-    /**
-     * Creates seat id from an index.
-     * @param index - Index of the seat.
-     * @param columns - Number of columns of the map.
-     * @returns Seat id.
-     */
-    static idFromIndex(index: number, columns: number) {
-        return SeatUI.id(
-            SeatUI.row(index, columns),
-            SeatUI.column(index, columns),
-        );
-    }
-
-    /**
-     * Gets row of a seat from an index.
-     * @param index - Index of the seat.
-     * @param columns - Number of columns of the map.
-     * @returns Seat id.
-     */
-    static row(index: number, columns: number) {
-       return Math.floor(index / columns);
-    }
-
-    /**
-     * Gets column of a seat from an index.
-     * @param index - Index of the seat.
-     * @param columns - Number of columns of the map.
-     * @returns Seat id.
-     */
-    static column(index: number, columns: number) {
-        return index % columns;
-    }
 }
 
 export default SeatUI;

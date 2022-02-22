@@ -2,8 +2,7 @@ import InvalidParameterError from 'errors/invalid-parameter';
 import NotFoundError from 'errors/not-found';
 import { Options } from 'types/options';
 import { SeatInfo } from 'types/seat-info';
-import { RowColumnInfo } from 'types/map-options';
-import GapDetection from 'services/gap-detection';
+import { SeatIndex, RowColumnInfo } from 'types/map-options';
 import { DEFAULT_TEXT_COLOR } from 'utils/consts';
 import Validator from 'utils/validator';
 import { EventMap, ClearEvent, ChangeEvent } from 'types/events';
@@ -14,6 +13,7 @@ import SeatUI from 'ui/map/Seat';
 import MapRowUI from 'ui/map/Row';
 import MapFrontHeaderUI from 'ui/map/FrontHeader';
 import MapIndexUI from 'ui/map/MapIndex';
+import GapDetectionService from 'services/gap-detection';
 
 /**
  * @internal
@@ -33,7 +33,7 @@ class MapUI {
      */
     public onClearEventListeners: Array<(e: ClearEvent) => void> = [];
 
-    private gapDetection: GapDetection;
+    private gapDetection: GapDetectionService;
 
     /**
      * A string containing all the letters of the english alphabet.
@@ -50,14 +50,15 @@ class MapUI {
      * @param options - Seatmap options.
      */
     public constructor(options: Options) {
+        Validator.validateOptions(options);
+
         this.options = options;
+
         this.seatName = this.seatName.bind(this);
         this.seatClick = this.seatClick.bind(this);
         this.seatRightClick = this.seatRightClick.bind(this);
         this.columnName = this.columnName.bind(this);
         this.rowName = this.rowName.bind(this);
-
-        Validator.validate(options);
 
         this.types = ['available', ...this.options.types.map(x => x.type)];
         this.createMap();
@@ -65,10 +66,10 @@ class MapUI {
         this.cart = new CartUI(this);
         this.legend = new LegendUI(options);
 
-        this.gapDetection = new GapDetection(
+        this.gapDetection = new GapDetectionService(
             this.options.map.rows,
             this.options.map.columns,
-            this.cart.dict,
+            this.cart.getCart(),
             this.options.map.disabled?.seats,
             this.options.map.disabled?.rows,
             this.options.map.disabled?.columns,
@@ -119,7 +120,7 @@ class MapUI {
      * @param seatIndex - Seat index.
      * @returns True if it is, false otherwise.
      */
-    public isGap(seatIndex: number): boolean {
+    public isGap(seatIndex: SeatIndex): boolean {
         return this.gapDetection.isGap(seatIndex);
     }
 
@@ -128,7 +129,7 @@ class MapUI {
      * @param seatIndex - Seat index.
      * @returns True if it does, false otherwise.
      */
-    public makesGap(seatIndex: number): boolean {
+    public makesGap(seatIndex: SeatIndex): boolean {
         return this.gapDetection.makesGap(seatIndex);
     }
 
@@ -136,7 +137,7 @@ class MapUI {
      * Gets all seats which represent a gap in the seat map.
      * @returns Array of indexes.
      */
-    public getGaps(): number[] {
+    public getGaps(): SeatIndex[] {
         return this.gapDetection.getGaps();
     }
 
@@ -145,71 +146,43 @@ class MapUI {
      * @param index - Seat index.
      * @returns Seat info.
      */
-    public get(index: number): SeatInfo {
-        if (typeof index !== 'number' && Math.floor(index) === index) {
-            throw new InvalidParameterError(
-                'Invalid parameter \'index\' supplied to Seatchart.get(). It must be an integer.'
-            );
-        } else if (index >= this.options.map.rows * this.options.map.columns) {
-            throw new InvalidParameterError(
-                'Invalid parameter \'index\' supplied to Seatchart.get(). Index is out of range.'
-            );
+    public get(index: SeatIndex): SeatInfo {
+        Validator.validateIndex(index, this.options.map.rows, this.options.map.columns);
+
+        const { row, col } = index;
+        const seatId = SeatUI.id(index.row, index.col);
+        const name = this.getSeatName(seatId);
+
+        let type = 'available';
+        let price: number | null = null;
+
+        // check if seat is reserved
+        if (this.options.map.reserved?.seats && this.options.map.reserved.seats.some(x => x.row === row && x.col === col)) {
+            type = 'reserved';
         }
 
-        if (index < this.options.map.rows * this.options.map.columns) {
-            const seatId = SeatUI.idFromIndex(index, this.options.map.columns);
-            const name = this.getSeatName(seatId);
-
-            // check if seat is reserved
-            if (this.options.map.reserved?.seats && this.options.map.reserved.seats.includes(index)) {
-                return {
-                    id: seatId,
-                    index,
-                    name,
-                    price: null,
-                    type: 'reserved',
-                };
-            }
-
-            // check if seat is reserved
-            if (this.options.map.disabled?.seats && this.options.map.disabled.seats.includes(index)) {
-                return {
-                    id: seatId,
-                    index,
-                    name,
-                    price: null,
-                    type: 'disabled',
-                };
-            }
-
-            const keys = Object.keys(this.cart.dict);
-
-            // check if seat is already selected
-            for (const type of keys) {
-                const price = this.cart.getSeatPrice(type);
-                if (this.cart.dict[type].includes(seatId)) {
-                    return {
-                        id: seatId,
-                        index,
-                        name,
-                        price,
-                        type,
-                    };
-                }
-            }
-
-            return {
-                id: seatId,
-                index,
-                name,
-                price: null,
-                type: 'available',
-            };
+        // check if seat is disabled
+        if (this.options.map.disabled?.seats && this.options.map.disabled.seats.some(x => x.row === row && x.col === col)) {
+            type = 'disabled';
         }
 
-        throw new InvalidParameterError(
-            'Invalid parameter \'index\' supplied to Seatchart.get(). Index is out of range.'
-        );
+        const keys = Object.keys(this.cart.dict);
+        // check if seat is already selected
+        for (const k of keys) {
+            const typePrice = this.cart.getSeatPrice(k);
+            if (this.cart.dict[k].includes(seatId)) {
+                type = k;
+                price = typePrice;
+            }
+        }
+
+        return {
+            id: seatId,
+            index,
+            name,
+            price,
+            type,
+        };
     }
 
     /**
@@ -218,17 +191,11 @@ class MapUI {
      * @param type - New seat type ('disabled', 'reserved' and 'available' are supported too).
      * @param emit - True to trigger onChangeListeners event (dafualt false).
      */
-    public set(index: number, type: string, emit: boolean): void {
+    public set(index: SeatIndex, type: string, emit: boolean): void {
+        Validator.validateIndex(index, this.options.map.rows, this.options.map.columns);
+
         let seatType;
-        if (typeof index !== 'number' && Math.floor(index) === index) {
-            throw new InvalidParameterError(
-                'Invalid parameter \'index\' supplied to Seatchart.set(). It must be an integer.'
-            );
-        } else if (index >= this.options.map.rows * this.options.map.columns) {
-            throw new InvalidParameterError(
-                'Invalid parameter \'index\' supplied to Seatchart.set(). Index is out of range.'
-            );
-        } else if (typeof type !== 'string') {
+        if (typeof type !== 'string') {
             throw new InvalidParameterError(
                 'Invalid parameter \'type\' supplied to Seatchart.set(). It must be a string.'
             );
@@ -259,7 +226,7 @@ class MapUI {
         if (element) {
             if (seat.type === 'disabled' || seat.type === 'reserved') {
                 const seats = this.options.map[seat.type]?.seats;
-                const arrayIndex = seats && seats.indexOf(index);
+                const arrayIndex = seats?.findIndex(x => index.col === x.col && index.row === x.row);
                 if (seats && arrayIndex && arrayIndex >= 0) {
                     seats.splice(arrayIndex, 1);
                 }
@@ -271,19 +238,19 @@ class MapUI {
 
             if (seat.type !== 'available' && seat.type !== 'disabled' && seat.type !== 'reserved') {
                 if (type !== 'available' && type !== 'disabled' && type !== 'reserved') {
-                    if (this.cart.removeFromdict(seat.id, seat.type) && this.cart.addTodict(seat.id, type)) {
+                    if (this.cart.removeFromDict(seat.id, seat.type) && this.cart.addToDict(seat.id, type)) {
                         element.classList.add('clicked');
                         element.style.setProperty('background-color', seatType.backgroundColor);
                         element.style.setProperty('color', seatType.textColor || DEFAULT_TEXT_COLOR);
                         this.cart.updateCart('update', seat.id, type, seat.type, emit);
                     }
-                } else if (this.cart.removeFromdict(seat.id, seat.type)) {
+                } else if (this.cart.removeFromDict(seat.id, seat.type)) {
                     element.classList.remove('clicked');
                     element.style.removeProperty('background-color');
                     this.cart.updateCart('remove', seat.id, type, seat.type, emit);
                 }
             } else if (type !== 'available' && type !== 'disabled' && type !== 'reserved') {
-                if (this.cart.addTodict(seat.id, type)) {
+                if (this.cart.addToDict(seat.id, type)) {
                     element.classList.add('clicked');
                     element.style.setProperty('background-color', seatType.backgroundColor);
                     element.style.setProperty('color', seatType.textColor || DEFAULT_TEXT_COLOR);
@@ -406,15 +373,15 @@ class MapUI {
                     // this has to be done after updating the shopping cart
                     // so the event is fired just once the seat style is really updated
                     if (currentClass === 'available') {
-                        if (this.cart.addTodict(seat.id, newClass)) {
+                        if (this.cart.addToDict(seat.id, newClass)) {
                             this.cart.updateCart('add', seat.id, newClass, currentClass, true);
                         }
                     } else if (newClass === 'available') {
-                        if (this.cart.removeFromdict(seat.id, currentClass)) {
+                        if (this.cart.removeFromDict(seat.id, currentClass)) {
                             this.cart.updateCart('remove', seat.id, newClass, currentClass, true);
                         }
-                    } else if (this.cart.addTodict(seat.id, newClass) &&
-                        this.cart.removeFromdict(seat.id, currentClass)) {
+                    } else if (this.cart.addToDict(seat.id, newClass) &&
+                        this.cart.removeFromDict(seat.id, currentClass)) {
                         this.cart.updateCart('update', seat.id, newClass, currentClass, true);
                     }
                 }
@@ -439,7 +406,7 @@ class MapUI {
             if (type !== undefined) {
                 this.releaseSeat(seat.id);
                 // remove from virtual sc
-                this.cart.removeFromdict(seat.id, type);
+                this.cart.removeFromDict(seat.id, type);
 
                 // there's no need to fire onChangeListeners event since this function fires
                 // the event after removing the seat from shopping cart
@@ -521,8 +488,8 @@ class MapUI {
         const disabledColumns = this.options.map.disabled?.columns;
         if (disabledColumns) {
             for (const disabledColumn of disabledColumns) {
-                for (let r = 0; r < this.options.map.rows; r += 1) {
-                    this.options.map.disabled.seats.push((this.options.map.columns * r) + disabledColumn);
+                for (let row = 0; row < this.options.map.rows; row += 1) {
+                    this.options.map.disabled.seats.push({ row, col: disabledColumn });
                 }
             }
         }
@@ -531,8 +498,8 @@ class MapUI {
         const disabledRows = this.options.map.disabled?.rows;
         if (disabledRows) {
             for (const disabledRow of disabledRows) {
-                for (let c = 0; c < this.options.map.columns; c += 1) {
-                    this.options.map.disabled.seats.push((this.options.map.columns * disabledRow) + c);
+                for (let col = 0; col < this.options.map.columns; col += 1) {
+                    this.options.map.disabled.seats.push({ row: disabledRow, col });
                 }
             }
         }
@@ -547,10 +514,8 @@ class MapUI {
         for (const type of types) {
             const seats = this.options.map[type]?.seats;
             if (seats) {
-                const columns = this.options.map.columns;
-
                 for (const index of seats) {
-                    const id = SeatUI.idFromIndex(index, columns);
+                    const id = SeatUI.id(index.row, index.col);
                     const seat = <HTMLDivElement> document.getElementById(id);
 
                     if (seat != null) {
@@ -578,7 +543,7 @@ class MapUI {
                 const color = seatType.textColor || DEFAULT_TEXT_COLOR;
 
                 for (const index of seatType.selected) {
-                    const id = SeatUI.idFromIndex(index, this.options.map.columns);
+                    const id = SeatUI.id(index.row, index.col);
                     const element = document.getElementById(id);
                     if (element) {
                         // set background

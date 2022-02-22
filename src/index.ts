@@ -1,4 +1,5 @@
 import MapUI from 'ui/map/Map';
+import { SeatIndex } from 'types/map-options';
 import { SeatInfo } from 'types/seat-info';
 import { Options } from 'types/options';
 import { EventMap } from 'types/events';
@@ -45,27 +46,27 @@ class Seatchart {
 
     /**
      * Checks whether a seat is a gap or not.
-     * @param seatIndex - Seat index.
+     * @param index - Seat index.
      * @returns True if it is, false otherwise.
      */
-    public isGap(seatIndex: number): boolean {
-        return this.map.isGap(seatIndex);
+    public isGap(index: SeatIndex): boolean {
+        return this.map.isGap(index);
     }
 
     /**
      * Checks whether a seat creates a gap or not.
-     * @param seatIndex - Seat index.
+     * @param index - Seat index.
      * @returns True if it does, false otherwise.
      */
-    public makesGap(seatIndex: number): boolean {
-        return this.map.makesGap(seatIndex);
+    public makesGap(index: SeatIndex): boolean {
+        return this.map.makesGap(index);
     }
 
     /**
      * Gets all seats which represent a gap in the seat map.
      * @returns Array of indexes.
      */
-    public getGaps(): number[] {
+    public getGaps(): SeatIndex[] {
         return this.map.getGaps();
     }
 
@@ -74,7 +75,7 @@ class Seatchart {
      * @param index - Seat index.
      * @returns Seat info.
      */
-    public getSeat(index: number): SeatInfo {
+    public getSeat(index: SeatIndex): SeatInfo {
         return this.map.get(index);
     }
 
@@ -84,7 +85,7 @@ class Seatchart {
      * @param type - New seat type ('disabled', 'reserved' and 'available' are supported too).
      * @param emit - True to trigger onChange event (dafualt false).
      */
-    public setSeat(index: number, type: string, emit: boolean): void {
+    public setSeat(index: SeatIndex, type: string, emit: boolean): void {
         this.map.set(index, type, emit);
     }
 
@@ -93,7 +94,7 @@ class Seatchart {
      * @returns An object containing all seats added to the shopping cart,
      * mapped by seat type.
      */
-    public getCart(): { [key: string]: number[] } {
+    public getCart(): { [key: string]: SeatIndex[] } {
         return this.map.cart.getCart();
     }
 

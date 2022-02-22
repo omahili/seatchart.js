@@ -15,7 +15,7 @@ class MapIndexUI extends BaseUI<HTMLDivElement> {
      * @param name - Name generator.
      */
     public constructor(
-        type: string,
+        type: 'row' | 'column',
         length: number,
         disabled: number[] | undefined,
         name: (info: RowColumnInfo) => string | undefined,
