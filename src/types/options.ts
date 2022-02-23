@@ -1,4 +1,3 @@
-import { SeatType } from 'types/seat-type';
 import { MapOptions } from 'types/map-options';
 import { CartOptions } from 'types/cart-options';
 
@@ -11,31 +10,17 @@ interface Options {
      */
     map: MapOptions;
     /**
-     * Seat types options.
-     */
-    types: Array<SeatType>;
-    /**
      * Cart options.
      */
     cart?: CartOptions;
     /**
-     * Legend options.
+     * Legend container id.
      */
-    legend?: {
-        /**
-         * Container id.
-         */
-        id: string;
-    };
+    legendId?: string;
     /**
-     *  Assets options.
+     * Path to assets.
      */
-    assets?: {
-        /**
-         * Path to assets.
-         */
-        path?: string;
-    };
+    assetsSrc?: string;
 }
 
 export { Options };

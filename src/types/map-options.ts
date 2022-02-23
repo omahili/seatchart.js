@@ -1,29 +1,5 @@
-export interface SeatIndex {
-    /**
-     * Row index of the seat.
-     */
-    row: number;
-    /**
-     * Column index of the seat.
-     */
-    col: number;
-}
-
-export interface RowColumnInfo {
-    /**
-     * Row or column index (starts from 0).
-     */
-    index: number;
-    /**
-     * True if current row or column is disabled.
-     */
-    disabled: boolean;
-    /**
-     * Number of disabled rows or columns until the current one (included).
-     */
-    disabledCount: number;
-}
-
+import { SeatTypeDefault, SeatType } from "types/seat-type";
+import { SeatIndex } from "types/seat-index";
 
 export interface MapOptions {
     /**
@@ -39,48 +15,43 @@ export interface MapOptions {
      */
     columns: number;
     /**
-     * Seat name generator.
+     * Seat types options.
      */
-    seatName?: (
+    seatTypes: {
         /**
-         * Row info object.
+         * All seats that do not fall into a type will be marked as `default`.
          */
-        rowInfo: RowColumnInfo,
-        /**
-         * Column info object
-         */
-        columnInfo: RowColumnInfo,
-    ) => string;
+        default: SeatTypeDefault;
+        [seatTypeKey: string]: SeatType;
+    };
+    /**
+     *  Selected seats options.
+     */
+    selectedSeats?: SeatIndex[],
     /**
      *  Reserved seats options.
      */
-    reserved?: {
-        /**
-         * Array of the reserved seats.
-         */
-        seats?: SeatIndex[];
-    };
+    reservedSeats?: SeatIndex[];
     /**
      * Disabled seats options.
      */
-    disabled?: {
-        /**
-         * Array of the disabled seats.
-         */
-        seats?: SeatIndex[];
-        /**
-         * Array of the disabled rows of seats.
-         */
-        rows?: number[];
-        /**
-         * Array of the disabled columns of seats.
-         */
-        columns?: number[];
-    };
+    disabledSeats?: SeatIndex[];
     /**
-     * Indexes options.
+     * Position where to place a space between columns. For example index 4 will place a space between column index 4 and 5.
      */
-    indexes?: {
+    columnSpacers?: number[];
+    /**
+     * Position where to place a space between rows. For example index 4 will place a space between row index 4 and 5.
+     */
+    rowSpacers?: number[];
+    /**
+     * Seat name generator.
+     */
+    seatName?: (index: SeatIndex) => string;
+    /**
+     * Indexers options.
+     */
+    indexers?: {
         /**
          * Rows index options.
          */
@@ -90,13 +61,9 @@ export interface MapOptions {
              */
             visible?: boolean;
             /**
-             * Row index position.
-             */
-            position?: 'left' | 'right';
-            /**
              * Row name generator.
              */
-            name?: (rowInfo: RowColumnInfo) => string | undefined;
+            name?: (row: number) => string;
         };
         /**
          * Columns index options.
@@ -107,13 +74,9 @@ export interface MapOptions {
              */
             visible?: boolean;
             /**
-             * Column index posiion.
-             */
-            position?: 'top' | 'bottom';
-            /**
              * Column name generator.
              */
-            name?: (columnInfo: RowColumnInfo) => string | undefined;
+            name?: (column: number) => string;
         };
     };
     /**

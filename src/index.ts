@@ -1,38 +1,46 @@
-import MapUI from 'ui/map/Map';
-import { SeatIndex } from 'types/map-options';
-import { SeatInfo } from 'types/seat-info';
+import Map from 'components/map/Map';
+import Legend from 'components/legend/Legend';
+import Cart from 'components/cart/Cart';
+import Store from 'store';
+import { SeatIndex } from 'types/seat-index';
 import { Options } from 'types/options';
-import { EventMap } from 'types/events';
+import { SeatchartEvents } from 'types/events';
+import { SeatState } from 'types/seat-state';
+import { SeatInfo } from 'types/seat-info';
 
 export * from 'types/cart-options';
-export * from 'types/events';
 export * from 'types/map-options';
-export * from 'types/options';
 export * from 'types/seat-info';
 export * from 'types/seat-type';
+export * from 'types/seat-state';
+export * from 'types/seat-index';
+export * from 'types/events';
+export * from 'types/options';
 
 class Seatchart {
-    public readonly options: Options;
-
-    private map: MapUI;
+    private store: Store;
 
     /**
      * Creates a seatchart.
-     * @param options - Seatmap options.
+     * @param options - Seatchart options.
      */
     public constructor(options: Options) {
-        this.options = options;
+        this.store = new Store(options);
 
-        this.map = new MapUI(options);
+        new Map(this.store);
+        new Cart(this.store);
+        new Legend(this.store);
+
+        this.store.init();
     }
 
     /**
      * Adds an event listener.
      * @param type - Event type.
-     * @param listener - Function called when the given event occurs.
+     * @param listener - Listener function called when the given event occurs.
      */
-    public addEventListener<T extends keyof EventMap>(type: T, listener: (e: EventMap[T]) => void): void {
-        this.map.addEventListener(type, listener);
+    public addEventListener<T extends keyof SeatchartEvents>(type: T, listener: (e: SeatchartEvents[T]) => void): void {
+        this.store.addEventListener(type, listener);
     }
 
     /**
@@ -40,27 +48,27 @@ class Seatchart {
      * @param type - Event type.
      * @param listener - Listener to remove.
      */
-    public removeEventListener<T extends keyof EventMap>(type: T, listener: (e: EventMap[T]) => void): void {
-        this.map.removeEventListener(type, listener);
+    public removeEventListener<T extends keyof SeatchartEvents>(type: T, listener: (e: SeatchartEvents[T]) => void): void {
+        this.store.removeEventListener(type, listener);
     }
 
     /**
-     * Gets seat info.
+     * Gets information about a seat.
      * @param index - Seat index.
      * @returns Seat info.
      */
     public getSeat(index: SeatIndex): SeatInfo {
-        return this.map.get(index);
+        return this.store.getSeat(index);
     }
 
     /**
-     * Set seat type.
+     * Sets seat type and/or state.
      * @param index - Index of the seat to update.
-     * @param type - New seat type ('disabled', 'reserved' and 'available' are supported too).
-     * @param emit - True to trigger onChange event (dafualt false).
+     * @param seat - An object containing the new seat state and/or type.
+     * @param emit - True to trigger seatchange event (dafualt false).
      */
-    public setSeat(index: SeatIndex, type: string, emit: boolean): void {
-        this.map.set(index, type, emit);
+    public setSeat(index: SeatIndex, seat: Partial<{state: SeatState, type: string}>, emit = false): void {
+        this.store.setSeat(index, seat, emit);
     }
 
     /**
@@ -69,7 +77,7 @@ class Seatchart {
      * mapped by seat type.
      */
     public getCart(): { [key: string]: SeatIndex[] } {
-        return this.map.cart.getCart();
+        return this.store.getCart();
     }
 
     /**
@@ -77,7 +85,7 @@ class Seatchart {
      * @returns The total price.
      */
     public getCartTotal(): number {
-        return this.map.cart.getTotal();
+        return this.store.getCartTotal();
     }
 }
 

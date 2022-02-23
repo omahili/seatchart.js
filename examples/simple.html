@@ -6,11 +6,19 @@
         <link rel="stylesheet" href="../dist/style/seatchart.css">
 
         <style>
+            body {
+                margin: 0;
+            }
+
+            #cart-container {
+                margin-bottom: 50px;
+            }
+
             .content {
                 display: flex;
                 flex-direction: row;
                 justify-content: center;
-                margin-top: 40px;
+                padding: 50px;
             }
 
             .right {
@@ -19,13 +27,20 @@
                 margin-left: 80px;
             }
 
-            #map-container {
-                display: flex;
-                align-items: center;
+            .economy {
+                color: white;
+                background-color: #2a9d8f;
             }
 
-            #legend-container {
-                margin-top: 20px;
+
+            .first-class {
+                color: white;
+                background-color: #264653;
+            }
+
+            .reduced {
+                color: white;
+                background-color: #e2ba53;
             }
         </style>
     </head>
@@ -44,36 +59,45 @@
             var options = {
                 map: {
                     id: 'map-container',
-                    rows: 9,
-                    columns: 9,
-                    reserved: {
-                        seats: [{row: 0, col: 1}, {row: 0, col: 2}, {row: 0, col: 3}],
+                    rows: 10,
+                    columns: 10,
+                    seatTypes: {
+                        default: {
+                            name: 'Economy',
+                            cssClass: 'economy',
+                            price: 15,
+                        },
+                        first: {
+                            name: 'First Class',
+                            cssClass: 'first-class',
+                            price: 25,
+                            seatRows: [0, 1, 2]
+
+                        },
+                        reduced: {
+                            name: 'Reduced',
+                            cssClass: 'reduced',
+                            price: 10,
+                            seatRows: [7, 8, 9]
+                        }
                     },
-                    disabled: {
-                        seats: [{row: 0, col: 0}, {row: 0, col: 8}],
-                        rows: [4],
-                        columns: [4]
-                    }
+                    disabledSeats: [{row: 0, col: 0}, {row: 0, col: 9}],
+                    reservedSeats: [{row: 0, col: 3}, {row: 0, col: 4}],
+                    selectedSeats: [{row: 0, col: 5}],
+                    rowSpacers: [3, 7],
+                    columnSpacers: [5],
                 },
-                types: [
-                    { type: "regular", backgroundColor: "#006c80", price: 10, selected: [{row: 5, col: 7}, {row: 5, col: 8}] },
-                    { type: "reduced", backgroundColor: "#287233", price: 7.5, selected: [{row: 6, col: 7}, {row: 6, col: 8}] }
-                ],
                 cart: {
                     id: 'cart-container',
-                    width: 280,
-                    height: 250,
-                    currency: '£',
+                    currency: '$',
                 },
-                legend: {
-                    id: 'legend-container',
-                },
-                assets: {
-                    path: '../dist/assets'
-                },
+                legendId: 'legend-container',
+                assetsSrc: '../dist/assets',
             };
 
             var sc = new Seatchart(options);
+
+            sc.setSeat({row: 5, col: 1}, {type: 'first'});
         </script>
     </body>
 </html>

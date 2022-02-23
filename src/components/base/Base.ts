@@ -1,7 +1,4 @@
-/**
- * @internal
- */
-class BaseUI<T extends Element> {
+class Base<T extends Element> {
     public readonly element: T;
 
     protected constructor(element: T) {
@@ -9,4 +6,4 @@ class BaseUI<T extends Element> {
     }
 }
 
-export default BaseUI;
+export default Base;

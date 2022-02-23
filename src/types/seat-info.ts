@@ -1,29 +1,15 @@
-import { SeatIndex } from "types/map-options";
+import { SeatState } from "types/seat-state";
+import { SeatIndex } from "types/seat-index";
+import { SeatType } from "types/seat-type";
 
-/**
- * Describes a seat.
- */
 interface SeatInfo {
-    /**
-     * Seat type.
-     */
-    type: string;
-    /**
-     * Seat id.
-     */
-    id: string;
-    /**
-     * Seat index.
-     */
     index: SeatIndex;
-    /**
-     * Seat name.
-     */
     name: string;
-    /**
-     * Seat price.
-     */
-    price: number | null;
+    type: {
+        key: string;
+        options: SeatType;
+    }
+    state: SeatState;
 }
 
 export { SeatInfo };

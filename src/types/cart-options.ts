@@ -4,14 +4,6 @@ interface CartOptions {
      */
     id: string;
     /**
-     * Cart height.
-     */
-    height?: string;
-    /**
-     * Cart width.
-     */
-    width?: string;
-    /**
      * Current currency.
      */
     currency?: string;
