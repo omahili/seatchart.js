@@ -122,6 +122,10 @@ class Store {
       (newType && seat.type !== newType) ||
       (newState && seat.state !== newState)
     ) {
+      if (newType) {
+        seat.type = newType;
+      }
+
       if (newState) {
         if (newState === 'selected') {
           this.addToCart(seat.type, seat.index, emit);
@@ -132,16 +136,14 @@ class Store {
         seat.state = newState;
       }
 
-      if (newType) {
-        seat.type = newType;
+      if (emit) {
+        const listenerKey = this.listenerKey(index);
+        this.singleSeatChangeEventListeners[listenerKey].forEach((el) =>
+          el({ seat })
+        );
+
+        this.eventListeners.seatchange.forEach((el) => el({ seat }));
       }
-
-      const listenerKey = this.listenerKey(index);
-      this.singleSeatChangeEventListeners[listenerKey].forEach((el) =>
-        el({ seat })
-      );
-
-      this.eventListeners.seatchange.forEach((el) => el({ seat }));
     }
   }
 
@@ -280,9 +282,8 @@ class Store {
   private addToCart(type: string, index: SeatIndex, emit: boolean) {
     this.cart[type].push(index);
 
-    const seat = this.getSeat(index);
-
     if (emit) {
+      const seat = this.getSeat(index);
       this.eventListeners.cartchange.forEach((el) =>
         el({ action: 'add', seat })
       );
