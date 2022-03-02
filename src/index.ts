@@ -18,6 +18,8 @@ export * from 'types/events';
 export * from 'types/options';
 
 class Seatchart {
+  public readonly options: Options;
+
   private store: Store;
 
   /**
@@ -25,6 +27,7 @@ class Seatchart {
    * @param options - Seatchart options.
    */
   public constructor(options: Options) {
+    this.options = options;
     this.store = new Store(options);
 
     new Map(this.store);

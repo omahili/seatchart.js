@@ -25,9 +25,11 @@ class Seat extends Base<HTMLDivElement> {
 
   private stateEventListener(e: SeatChangeEvent) {
     const { index, state, name, type } = e.seat;
+    const typeOptions = this.store.getTypeOptions(type);
+
     if (this.index.row === index.row && this.index.col === index.col) {
       this.element.textContent = name;
-      this.element.className = `sc-seat sc-seat-${state} ${type.options.cssClass}`;
+      this.element.className = `sc-seat sc-seat-${state} ${typeOptions.cssClass}`;
     }
   }
 

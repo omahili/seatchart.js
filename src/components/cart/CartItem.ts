@@ -15,7 +15,8 @@ class CartItem extends Base<HTMLDivElement> {
     super(cartItem);
 
     const info = store.getSeat(index);
-    const ticket = new CartTicket(info.name, info.type.options);
+    const typeOptions = store.getTypeOptions(info.type);
+    const ticket = new CartTicket(info.name, typeOptions);
 
     const ticketTd = document.createElement('td');
     ticketTd.appendChild(ticket.element);
@@ -24,9 +25,7 @@ class CartItem extends Base<HTMLDivElement> {
     const currency = cart?.currency || DEFAULT_CURRENCY;
 
     const seatPriceTd = document.createElement('td');
-    seatPriceTd.textContent = `${currency}${info.type.options.price.toFixed(
-      2
-    )}`;
+    seatPriceTd.textContent = `${currency}${typeOptions.price.toFixed(2)}`;
 
     this.deleteClick = this.deleteClick.bind(this);
     const deleteBtn = new DeleteButton(this.deleteClick, assetsSrc);

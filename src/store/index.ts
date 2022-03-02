@@ -101,7 +101,7 @@ class Store {
     if (selectedSeats) {
       for (const seatIndex of selectedSeats) {
         const seat = this.seats[seatIndex.row][seatIndex.col];
-        this.cart[seat.type.key].push(seat.index);
+        this.cart[seat.type].push(seat.index);
 
         this.eventListeners.cartchange.forEach((el) =>
           el({ action: 'add', seat })
@@ -114,6 +114,10 @@ class Store {
     return this.options;
   }
 
+  public getTypeOptions(type: string) {
+    return this.options.map.seatTypes[type];
+  }
+
   public setSeat(
     index: SeatIndex,
     info: Partial<{ state: SeatState; type: string }>,
@@ -124,24 +128,21 @@ class Store {
     const seat = this.seats[row][col];
 
     if (
-      (newType && seat.type.key !== newType) ||
+      (newType && seat.type !== newType) ||
       (newState && seat.state !== newState)
     ) {
       if (newState) {
         if (newState === 'selected') {
-          this.addToCart(seat.type.key, seat.index, emit);
+          this.addToCart(seat.type, seat.index, emit);
         } else if (seat.state === 'selected') {
-          this.removeFromCart(seat.type.key, seat.index, emit);
+          this.removeFromCart(seat.type, seat.index, emit);
         }
 
         seat.state = newState;
       }
 
       if (newType) {
-        seat.type = {
-          key: newType,
-          options: this.options.map.seatTypes[newType],
-        };
+        seat.type = newType;
       }
 
       const listenerKey = this.listenerKey(index);
@@ -308,7 +309,7 @@ class Store {
     }
   }
 
-  private getSeatType(index: SeatIndex): { key: string; options: SeatType } {
+  private getSeatType(index: SeatIndex) {
     const seatTypes = this.options.map.seatTypes;
     const types = Object.keys(seatTypes);
 
@@ -319,11 +320,11 @@ class Store {
         options.seatColumns?.some((col) => col === index.col) ||
         options.seatRows?.some((row) => row === index.row)
       ) {
-        return { key, options };
+        return key;
       }
     }
 
-    return { key: 'default', options: seatTypes.default };
+    return 'default';
   }
 
   private getSeatName(index: SeatIndex) {
