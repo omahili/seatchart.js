@@ -4,7 +4,7 @@ import Cart from 'components/cart/Cart';
 import Store from 'store';
 import { SeatIndex } from 'types/seat-index';
 import { Options } from 'types/options';
-import { SeatchartEvents } from 'types/events';
+import { Events } from 'types/events';
 import { SeatState } from 'types/seat-state';
 import { SeatInfo } from 'types/seat-info';
 
@@ -33,9 +33,9 @@ class Seatchart {
    * @param type - Event type.
    * @param listener - Listener function called when the given event occurs.
    */
-  public addEventListener<T extends keyof SeatchartEvents>(
+  public addEventListener<T extends keyof Events>(
     type: T,
-    listener: (e: SeatchartEvents[T]) => void
+    listener: (e: Events[T]) => void
   ): void {
     this.store.addEventListener(type, listener);
   }
@@ -45,9 +45,9 @@ class Seatchart {
    * @param type - Event type.
    * @param listener - Listener to remove.
    */
-  public removeEventListener<T extends keyof SeatchartEvents>(
+  public removeEventListener<T extends keyof Events>(
     type: T,
-    listener: (e: SeatchartEvents[T]) => void
+    listener: (e: Events[T]) => void
   ): void {
     this.store.removeEventListener(type, listener);
   }

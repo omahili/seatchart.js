@@ -13,10 +13,10 @@ interface CartClearEvent {
   seats: Array<SeatInfo>;
 }
 
-interface SeatchartEvents {
+interface Events {
   cartchange: CartChangeEvent;
   cartclear: CartClearEvent;
   seatchange: SeatChangeEvent;
 }
 
-export { SeatchartEvents, CartChangeEvent, CartClearEvent, SeatChangeEvent };
+export { Events, CartChangeEvent, CartClearEvent, SeatChangeEvent };

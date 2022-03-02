@@ -1,16 +1,7 @@
-import {
-  SeatchartEvents,
-  Options,
-  SeatInfo,
-  SeatState,
-  SeatType,
-  SeatChangeEvent,
-} from 'index';
+import { Events, Options, SeatInfo, SeatState, SeatChangeEvent } from 'index';
 import { SeatIndex } from 'types/seat-index';
 
-type SeatchartEventListener<T extends keyof SeatchartEvents> = (
-  e: SeatchartEvents[T]
-) => void;
+type SeatchartEventListener<T extends keyof Events> = (e: Events[T]) => void;
 
 class Store {
   private readonly options: Options;
@@ -18,7 +9,7 @@ class Store {
   private seats: SeatInfo[][] = [];
 
   private eventListeners: {
-    [K in keyof SeatchartEvents]: ((e: SeatchartEvents[K]) => void)[];
+    [K in keyof Events]: ((e: Events[K]) => void)[];
   };
   private singleSeatChangeEventListeners: {
     [key: string]: ((e: SeatChangeEvent) => void)[];
@@ -225,14 +216,14 @@ class Store {
 
   public addEventListener(
     type: 'seatchange',
-    listener: (e: SeatchartEvents['seatchange']) => void,
+    listener: (e: Events['seatchange']) => void,
     options: { index: SeatIndex }
   ): void;
-  public addEventListener<T extends keyof SeatchartEvents>(
+  public addEventListener<T extends keyof Events>(
     type: T,
     listener: SeatchartEventListener<T>
   ): void;
-  public addEventListener<T extends keyof SeatchartEvents>(
+  public addEventListener<T extends keyof Events>(
     type: T,
     listener: SeatchartEventListener<T>,
     options?: { index: SeatIndex }
@@ -249,14 +240,14 @@ class Store {
 
   public removeEventListener(
     type: 'seatchange',
-    listener: (e: SeatchartEvents['seatchange']) => void,
+    listener: (e: Events['seatchange']) => void,
     options: { index: SeatIndex }
   ): void;
-  public removeEventListener<T extends keyof SeatchartEvents>(
+  public removeEventListener<T extends keyof Events>(
     type: T,
     listener: SeatchartEventListener<T>
   ): void;
-  public removeEventListener<T extends keyof SeatchartEvents>(
+  public removeEventListener<T extends keyof Events>(
     type: T,
     listener: SeatchartEventListener<T>,
     options?: { index: SeatIndex }
