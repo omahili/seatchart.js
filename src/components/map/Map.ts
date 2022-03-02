@@ -14,8 +14,15 @@ class Map {
 
   private render(): void {
     const options = this.store.getOptions();
-    const { id, rows, columns, rowSpacers, columnSpacers, indexers, front } =
-      options.map;
+    const {
+      id,
+      rows,
+      columns,
+      rowSpacers,
+      columnSpacers,
+      indexers,
+      frontVisible,
+    } = options.map;
 
     const map = document.createElement('div');
     map.classList.add('sc-seats-container');
@@ -46,16 +53,12 @@ class Map {
 
     const innerContainer = document.createElement('div');
     innerContainer.className = 'sc-map-inner-container';
-    if (!front || front.visible === undefined || front.visible) {
+    if (frontVisible === undefined || frontVisible) {
       const frontHeader = new FrontIndicator();
       innerContainer.appendChild(frontHeader.element);
     }
 
-    if (
-      indexers === undefined ||
-      indexers.columns?.visible === undefined ||
-      !indexers?.columns?.visible
-    ) {
+    if (!indexers?.columns || indexers.columns.visible) {
       const columnIndexer = new MapIndexer('column', this.store);
       innerContainer.appendChild(columnIndexer.element);
     }
@@ -65,11 +68,7 @@ class Map {
     const mainContainer = document.createElement('div');
     mainContainer.className = 'sc-component sc-map';
 
-    if (
-      indexers === undefined ||
-      indexers.rows?.visible === undefined ||
-      !indexers?.rows?.visible
-    ) {
+    if (!indexers?.rows || indexers.rows.visible) {
       const rowIndexer = new MapIndexer('row', this.store);
       mainContainer.appendChild(rowIndexer.element);
     }
