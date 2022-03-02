@@ -18,75 +18,85 @@ export * from 'types/events';
 export * from 'types/options';
 
 class Seatchart {
-    private store: Store;
+  private store: Store;
 
-    /**
-     * Creates a seatchart.
-     * @param options - Seatchart options.
-     */
-    public constructor(options: Options) {
-        this.store = new Store(options);
+  /**
+   * Creates a seatchart.
+   * @param options - Seatchart options.
+   */
+  public constructor(options: Options) {
+    this.store = new Store(options);
 
-        new Map(this.store);
-        new Cart(this.store);
-        new Legend(this.store);
+    new Map(this.store);
+    new Cart(this.store);
+    new Legend(this.store);
 
-        this.store.init();
-    }
+    this.store.init();
+  }
 
-    /**
-     * Adds an event listener.
-     * @param type - Event type.
-     * @param listener - Listener function called when the given event occurs.
-     */
-    public addEventListener<T extends keyof SeatchartEvents>(type: T, listener: (e: SeatchartEvents[T]) => void): void {
-        this.store.addEventListener(type, listener);
-    }
+  /**
+   * Adds an event listener.
+   * @param type - Event type.
+   * @param listener - Listener function called when the given event occurs.
+   */
+  public addEventListener<T extends keyof SeatchartEvents>(
+    type: T,
+    listener: (e: SeatchartEvents[T]) => void
+  ): void {
+    this.store.addEventListener(type, listener);
+  }
 
-    /**
-     * Removes an event listener.
-     * @param type - Event type.
-     * @param listener - Listener to remove.
-     */
-    public removeEventListener<T extends keyof SeatchartEvents>(type: T, listener: (e: SeatchartEvents[T]) => void): void {
-        this.store.removeEventListener(type, listener);
-    }
+  /**
+   * Removes an event listener.
+   * @param type - Event type.
+   * @param listener - Listener to remove.
+   */
+  public removeEventListener<T extends keyof SeatchartEvents>(
+    type: T,
+    listener: (e: SeatchartEvents[T]) => void
+  ): void {
+    this.store.removeEventListener(type, listener);
+  }
 
-    /**
-     * Gets information about a seat.
-     * @param index - Seat index.
-     * @returns Seat info.
-     */
-    public getSeat(index: SeatIndex): SeatInfo {
-        return this.store.getSeat(index);
-    }
+  /**
+   * Gets information about a seat.
+   * @param index - Seat index.
+   * @returns Seat info.
+   */
+  public getSeat(index: SeatIndex): SeatInfo {
+    return this.store.getSeat(index);
+  }
 
-    /**
-     * Sets seat type and/or state.
-     * @param index - Index of the seat to update.
-     * @param seat - An object containing the new seat state and/or type.
-     * @param emit - True to trigger seatchange event (dafualt false).
-     */
-    public setSeat(index: SeatIndex, seat: Partial<{state: SeatState, type: string}>, emit = false): void {
-        this.store.setSeat(index, seat, emit);
-    }
+  /**
+   * Sets seat type and/or state.
+   * @param index - Index of the seat to update.
+   * @param seat - An object containing the new seat state and/or type.
+   * @param emit - True to trigger seatchange event (dafualt false).
+   */
+  public setSeat(
+    index: SeatIndex,
+    seat: Partial<{ state: SeatState; type: string }>,
+    emit = false
+  ): void {
+    this.store.setSeat(index, seat, emit);
+  }
 
-    /**
-     * Gets a reference to the shopping cart object.
-     * @returns An object containing all seats added to the shopping cart,
-     * mapped by seat type.
-     */
-    public getCart(): { [key: string]: SeatIndex[] } {
-        return this.store.getCart();
-    }
+  /**
+   * Gets a reference to the shopping cart object.
+   * @returns An object containing all seats added to the shopping cart,
+   * mapped by seat type.
+   */
+  public getCart(): { [key: string]: SeatIndex[] } {
+    return this.store.getCart();
+  }
 
-    /**
-     * Gets the total price of the selected seats.
-     * @returns The total price.
-     */
-    public getCartTotal(): number {
-        return this.store.getCartTotal();
-    }
+  /**
+   * Gets the total price of the selected seats.
+   * @returns The total price.
+   */
+  public getCartTotal(): number {
+    return this.store.getCartTotal();
+  }
 }
 
 export default Seatchart;

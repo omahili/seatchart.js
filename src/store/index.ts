@@ -5,10 +5,12 @@ import {
   SeatState,
   SeatType,
   SeatChangeEvent,
-} from "index";
-import { SeatIndex } from "types/seat-index";
+} from 'index';
+import { SeatIndex } from 'types/seat-index';
 
-type SeatchartEventListener<T extends keyof SeatchartEvents> = (e: SeatchartEvents[T]) => void;
+type SeatchartEventListener<T extends keyof SeatchartEvents> = (
+  e: SeatchartEvents[T]
+) => void;
 
 class Store {
   private readonly options: Options;
@@ -18,7 +20,9 @@ class Store {
   private eventListeners: {
     [K in keyof SeatchartEvents]: ((e: SeatchartEvents[K]) => void)[];
   };
-  private singleSeatChangeEventListeners: { [key: string]: ((e: SeatChangeEvent) => void)[] } = {};
+  private singleSeatChangeEventListeners: {
+    [key: string]: ((e: SeatChangeEvent) => void)[];
+  } = {};
 
   constructor(options: Options) {
     this.options = options;
@@ -32,10 +36,10 @@ class Store {
       seatchange: [],
     };
 
-    const {rows, columns} = options.map;
+    const { rows, columns } = options.map;
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < columns; j++) {
-        const listenerKey = this.listenerKey({row: i, col: j});
+        const listenerKey = this.listenerKey({ row: i, col: j });
         this.singleSeatChangeEventListeners[listenerKey] = [];
       }
     }
@@ -58,13 +62,13 @@ class Store {
       for (let col = 0; col < totalColumns; col++) {
         const index = { row, col };
 
-        let state: SeatState = "available";
+        let state: SeatState = 'available';
         if (disabledSeats?.some(this.isSameSeat(index))) {
-          state = "disabled";
+          state = 'disabled';
         } else if (reservedSeats?.some(this.isSameSeat(index))) {
-          state = "reserved";
+          state = 'reserved';
         } else if (selectedSeats?.some(this.isSameSeat(index))) {
-          state = "selected";
+          state = 'selected';
         }
 
         const name = this.getSeatName(index);
@@ -100,7 +104,7 @@ class Store {
         this.cart[seat.type.key].push(seat.index);
 
         this.eventListeners.cartchange.forEach((el) =>
-          el({ action: "add", seat })
+          el({ action: 'add', seat })
         );
       }
     }
@@ -110,16 +114,23 @@ class Store {
     return this.options;
   }
 
-  public setSeat(index: SeatIndex, info: Partial<{state: SeatState, type: string}>, emit: boolean) {
-    const {row, col} = index;
-    const {type: newType, state: newState} = info;
+  public setSeat(
+    index: SeatIndex,
+    info: Partial<{ state: SeatState; type: string }>,
+    emit: boolean
+  ) {
+    const { row, col } = index;
+    const { type: newType, state: newState } = info;
     const seat = this.seats[row][col];
 
-    if ((newType && seat.type.key !== newType) || (newState && seat.state !== newState)) {
+    if (
+      (newType && seat.type.key !== newType) ||
+      (newState && seat.state !== newState)
+    ) {
       if (newState) {
-        if (newState === "selected") {
+        if (newState === 'selected') {
           this.addToCart(seat.type.key, seat.index, emit);
-        } else if (seat.state === "selected") {
+        } else if (seat.state === 'selected') {
           this.removeFromCart(seat.type.key, seat.index, emit);
         }
 
@@ -138,9 +149,7 @@ class Store {
         el({ seat })
       );
 
-      this.eventListeners.seatchange.forEach((el) =>
-        el({ seat })
-      );
+      this.eventListeners.seatchange.forEach((el) => el({ seat }));
     }
   }
 
@@ -160,7 +169,7 @@ class Store {
       this.cart[type] = [];
     }
 
-    seats.forEach(x => this.setSeat(x.index, {state: 'available'}, false));
+    seats.forEach((x) => this.setSeat(x.index, { state: 'available' }, false));
     this.eventListeners.cartclear.forEach((el) => el({ seats }));
   }
 
@@ -197,7 +206,7 @@ class Store {
       return name(row);
     }
 
-    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const times = Math.floor(row / alphabet.length);
     const index = row - alphabet.length * times;
 
@@ -216,16 +225,16 @@ class Store {
   public addEventListener(
     type: 'seatchange',
     listener: (e: SeatchartEvents['seatchange']) => void,
-    options: {index: SeatIndex}
-  ): void
+    options: { index: SeatIndex }
+  ): void;
   public addEventListener<T extends keyof SeatchartEvents>(
     type: T,
     listener: SeatchartEventListener<T>
-  ): void
+  ): void;
   public addEventListener<T extends keyof SeatchartEvents>(
     type: T,
     listener: SeatchartEventListener<T>,
-    options?: {index: SeatIndex}
+    options?: { index: SeatIndex }
   ): void {
     if (options) {
       const listenerKey = this.listenerKey(options.index);
@@ -233,31 +242,34 @@ class Store {
         listener as (e: SeatChangeEvent) => void
       );
     } else {
-      (this.eventListeners[type] as (SeatchartEventListener<T>)[]).push(listener);
+      (this.eventListeners[type] as SeatchartEventListener<T>[]).push(listener);
     }
   }
 
   public removeEventListener(
     type: 'seatchange',
     listener: (e: SeatchartEvents['seatchange']) => void,
-    options: {index: SeatIndex}
-  ): void
+    options: { index: SeatIndex }
+  ): void;
   public removeEventListener<T extends keyof SeatchartEvents>(
     type: T,
     listener: SeatchartEventListener<T>
-  ): void
+  ): void;
   public removeEventListener<T extends keyof SeatchartEvents>(
     type: T,
     listener: SeatchartEventListener<T>,
-    options?: {index: SeatIndex}
+    options?: { index: SeatIndex }
   ): void {
     if (options) {
       const listenerKey = this.listenerKey(options.index);
       this.singleSeatChangeEventListeners[listenerKey] =
-        this.singleSeatChangeEventListeners[listenerKey].filter((x) => x !== listener);
+        this.singleSeatChangeEventListeners[listenerKey].filter(
+          (x) => x !== listener
+        );
     } else {
-      (this.eventListeners[type] as (SeatchartEventListener<T>)[]) =
-        (this.eventListeners[type] as (SeatchartEventListener<T>)[]).filter((x) => x !== listener);
+      (this.eventListeners[type] as SeatchartEventListener<T>[]) = (
+        this.eventListeners[type] as SeatchartEventListener<T>[]
+      ).filter((x) => x !== listener);
     }
   }
 
@@ -266,7 +278,8 @@ class Store {
   }
 
   private isSameSeat(index: SeatIndex) {
-    return (otherIndex: SeatIndex) => index.row === otherIndex.row && index.col === otherIndex.col;
+    return (otherIndex: SeatIndex) =>
+      index.row === otherIndex.row && index.col === otherIndex.col;
   }
 
   private addToCart(type: string, index: SeatIndex, emit: boolean) {
@@ -276,7 +289,7 @@ class Store {
 
     if (emit) {
       this.eventListeners.cartchange.forEach((el) =>
-        el({ action: "add", seat })
+        el({ action: 'add', seat })
       );
     }
   }
@@ -289,7 +302,7 @@ class Store {
       if (emit) {
         const seat = this.getSeat(seatIndex);
         this.eventListeners.cartchange.forEach((el) =>
-          el({ action: "remove", seat })
+          el({ action: 'remove', seat })
         );
       }
     }
@@ -310,7 +323,7 @@ class Store {
       }
     }
 
-    return { key: "default", options: seatTypes.default };
+    return { key: 'default', options: seatTypes.default };
   }
 
   private getSeatName(index: SeatIndex) {

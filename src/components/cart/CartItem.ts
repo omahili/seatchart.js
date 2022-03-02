@@ -6,42 +6,44 @@ import { SeatIndex } from 'types/seat-index';
 import { DEFAULT_CURRENCY } from 'utils/consts';
 
 class CartItem extends Base<HTMLDivElement> {
-    public seatIndex: SeatIndex;
+  public seatIndex: SeatIndex;
 
-    private store: Store;
+  private store: Store;
 
-    public constructor(index: SeatIndex, store: Store) {
-        const cartItem = document.createElement('tr');
-        super(cartItem);
+  public constructor(index: SeatIndex, store: Store) {
+    const cartItem = document.createElement('tr');
+    super(cartItem);
 
-        const info = store.getSeat(index);
-        const ticket = new CartTicket(info.name, info.type.options);
+    const info = store.getSeat(index);
+    const ticket = new CartTicket(info.name, info.type.options);
 
-        const ticketTd = document.createElement('td');
-        ticketTd.appendChild(ticket.element);
+    const ticketTd = document.createElement('td');
+    ticketTd.appendChild(ticket.element);
 
-        const {cart, assetsSrc} = store.getOptions();
-        const currency = cart?.currency || DEFAULT_CURRENCY;
+    const { cart, assetsSrc } = store.getOptions();
+    const currency = cart?.currency || DEFAULT_CURRENCY;
 
-        const seatPriceTd = document.createElement('td');
-        seatPriceTd.textContent = `${currency}${info.type.options.price.toFixed(2)}`;
+    const seatPriceTd = document.createElement('td');
+    seatPriceTd.textContent = `${currency}${info.type.options.price.toFixed(
+      2
+    )}`;
 
-        this.deleteClick = this.deleteClick.bind(this);
-        const deleteBtn = new DeleteButton(this.deleteClick, assetsSrc);
+    this.deleteClick = this.deleteClick.bind(this);
+    const deleteBtn = new DeleteButton(this.deleteClick, assetsSrc);
 
-        const deleteTd = document.createElement('td');
-        deleteTd.appendChild(deleteBtn.element);
+    const deleteTd = document.createElement('td');
+    deleteTd.appendChild(deleteBtn.element);
 
-        cartItem.appendChild(ticketTd);
-        cartItem.appendChild(seatPriceTd);
-        cartItem.appendChild(deleteTd);
+    cartItem.appendChild(ticketTd);
+    cartItem.appendChild(seatPriceTd);
+    cartItem.appendChild(deleteTd);
 
-        this.store = store;
-        this.seatIndex = info.index;
-    }
+    this.store = store;
+    this.seatIndex = info.index;
+  }
 
-    private deleteClick() {
-        this.store.setSeat(this.seatIndex, {state: 'available'}, true);
-    }
+  private deleteClick() {
+    this.store.setSeat(this.seatIndex, { state: 'available' }, true);
+  }
 }
 export default CartItem;
