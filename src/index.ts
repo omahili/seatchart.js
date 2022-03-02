@@ -8,15 +8,6 @@ import { SeatchartEvents } from 'types/events';
 import { SeatState } from 'types/seat-state';
 import { SeatInfo } from 'types/seat-info';
 
-export * from 'types/cart-options';
-export * from 'types/map-options';
-export * from 'types/seat-info';
-export * from 'types/seat-type';
-export * from 'types/seat-state';
-export * from 'types/seat-index';
-export * from 'types/events';
-export * from 'types/options';
-
 class Seatchart {
   public readonly options: Options;
 
@@ -102,4 +93,12 @@ class Seatchart {
   }
 }
 
+export * from 'types/cart-options';
+export * from 'types/map-options';
+export * from 'types/seat-info';
+export * from 'types/seat-type';
+export * from 'types/seat-state';
+export * from 'types/seat-index';
+export * from 'types/events';
+export * from 'types/options';
 export default Seatchart;
