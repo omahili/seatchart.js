@@ -9,6 +9,9 @@ import { SeatState } from 'types/seat-state';
 import { SeatInfo } from 'types/seat-info';
 
 class Seatchart {
+  /**
+   * Options passed to create the Seatchart.
+   */
   public readonly options: Options;
 
   private store: Store;
@@ -53,7 +56,7 @@ class Seatchart {
   }
 
   /**
-   * Gets information about a seat.
+   * Gets a reference to the seat info.
    * @param index - Seat index.
    * @returns Seat info.
    */
@@ -65,7 +68,7 @@ class Seatchart {
    * Sets seat type and/or state.
    * @param index - Index of the seat to update.
    * @param seat - An object containing the new seat state and/or type.
-   * @param emit - True to trigger seatchange event (dafualt false).
+   * @param emit - True to trigger events (dafualt false).
    */
   public setSeat(
     index: SeatIndex,
@@ -90,6 +93,15 @@ class Seatchart {
    */
   public getCartTotal(): number {
     return this.store.getCartTotal();
+  }
+
+  /**
+   * Unselected all seats and removes them from the cart.
+   * @param emit - True to trigger events (dafualt false).
+   * @returns The total price.
+   */
+  public clear(emit = false): void {
+    this.store.clear(emit);
   }
 }
 

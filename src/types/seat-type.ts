@@ -20,11 +20,11 @@ interface SeatTypeDefault {
  */
 interface SeatType {
   /**
-   * Name of seat type.
+   * Display name of the defined seat type.
    */
   name: string;
   /**
-   * Background color of the defined seat type.
+   * Price of the defined seat type.
    */
   price: number;
   /**

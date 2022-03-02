@@ -1,3 +1,6 @@
+/**
+ * An object representing the index of a seat.
+ */
 export interface SeatIndex {
   /**
    * Row index of the seat.

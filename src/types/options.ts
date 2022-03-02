@@ -32,11 +32,11 @@ interface Options {
       [seatTypeKey: string]: SeatType;
     };
     /**
-     *  Selected seats options.
+     * Selected seats.
      */
     selectedSeats?: SeatIndex[];
     /**
-     *  Reserved seats options.
+     * Reserved seats.
      */
     reservedSeats?: SeatIndex[];
     /**
@@ -44,11 +44,11 @@ interface Options {
      */
     disabledSeats?: SeatIndex[];
     /**
-     * Position where to place a space between columns. For example index 4 will place a space between column index 4 and 5.
+     * Position where to place a space between columns. For example index 4 will place a space between columns with index 4 and 5.
      */
     columnSpacers?: number[];
     /**
-     * Position where to place a space between rows. For example index 4 will place a space between row index 4 and 5.
+     * Position where to place a space between rows. For example index 4 will place a space between rows with index 4 and 5.
      */
     rowSpacers?: number[];
     /**
@@ -60,11 +60,11 @@ interface Options {
      */
     indexers?: {
       /**
-       * Rows index options.
+       * Row indexer options.
        */
       rows?: {
         /**
-         * Row index visibility.
+         * Row indexer visibility.
          */
         visible?: boolean;
         /**
@@ -73,11 +73,11 @@ interface Options {
         name?: (row: number) => string;
       };
       /**
-       * Columns index options.
+       * Column indexer options.
        */
       columns?: {
         /**
-         * Columns index visibility.
+         * Column indexer visibility.
          */
         visible?: boolean;
         /**
@@ -87,7 +87,7 @@ interface Options {
       };
     };
     /**
-     * Front header options.
+     * Front header visibility.
      */
     frontVisible?: boolean;
   };
