@@ -52,7 +52,7 @@ describe('Seats', () => {
 
     describe('Clear and get seats', () => {
       beforeAll(() => {
-        store.clearCart();
+        store.clearCart(true);
       });
 
       it('should be available', () => {
@@ -99,6 +99,18 @@ describe('Seats', () => {
       expect(seat.state).toBe('available');
     });
 
+    it('should set label', () => {
+      const index = { row: 5, col: 5 };
+      store.setSeat(index, { label: 'NEW LABEL' }, false);
+      const seat = store.getSeat(index);
+
+      expect(seat.index.row).toBe(5);
+      expect(seat.index.col).toBe(5);
+      expect(seat.label).toBe('NEW LABEL');
+      expect(seat.type).toBe('default');
+      expect(seat.state).toBe('disabled');
+    });
+
     it('should set type', () => {
       const index = { row: 4, col: 8 };
       store.setSeat(index, { type: 'reduced' }, false);
@@ -119,6 +131,22 @@ describe('Seats', () => {
       expect(seat.index.row).toBe(7);
       expect(seat.index.col).toBe(4);
       expect(seat.label).toBe('H5');
+      expect(seat.type).toBe('first');
+      expect(seat.state).toBe('selected');
+    });
+
+    it('should set state, type and label', () => {
+      const index = { row: 7, col: 4 };
+      store.setSeat(
+        index,
+        { state: 'selected', type: 'first', label: 'MY LABEL' },
+        false
+      );
+      const seat = store.getSeat(index);
+
+      expect(seat.index.row).toBe(7);
+      expect(seat.index.col).toBe(4);
+      expect(seat.label).toBe('MY LABEL');
       expect(seat.type).toBe('first');
       expect(seat.state).toBe('selected');
     });

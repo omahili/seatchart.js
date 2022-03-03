@@ -45,13 +45,13 @@ describe('Cart', () => {
     });
 
     it('should clear and get total', () => {
-      store.clearCart();
+      store.clearCart(true);
       const total = store.getCartTotal();
       expect(total).toBe(0);
     });
   });
 
-  describe('Cart object', () => {
+  describe('Cart array', () => {
     let store: Store;
 
     beforeAll(() => {
@@ -59,43 +59,42 @@ describe('Cart', () => {
       store.init();
     });
 
-    it('should get cart object', () => {
+    it('should get cart array', () => {
       const cart = store.getCart();
 
-      expect(cart['first'].length).toBe(1);
-      expect(cart['default'].length).toBe(1);
-      expect(cart['reduced'].length).toBe(1);
+      expect(cart.length).toBe(3);
     });
 
-    it('should select seat and get cart object', () => {
+    it('should select seat and get cart array', () => {
       store.setSeat({ row: 9, col: 3 }, { state: 'selected' }, false);
       const cart = store.getCart();
 
-      expect(cart['first'].length).toBe(1);
-      expect(cart['default'].length).toBe(1);
-      expect(cart['reduced'].length).toBe(2);
+      expect(cart.length).toBe(4);
     });
 
-    it('should unselect seat and get cart object', () => {
+    it('should unselect seat and get cart array', () => {
       store.setSeat({ row: 9, col: 3 }, { state: 'available' }, false);
       const cart = store.getCart();
 
-      expect(cart['first'].length).toBe(1);
-      expect(cart['default'].length).toBe(1);
-      expect(cart['reduced'].length).toBe(1);
+      expect(cart.length).toBe(3);
     });
 
-    it('should select two seats and get cart object', () => {
+    it('should select two seats and get cart array', () => {
       store.setSeat({ row: 0, col: 2 }, { state: 'selected' }, false);
       store.setSeat({ row: 0, col: 3 }, { state: 'selected' }, false);
       const cart = store.getCart();
 
-      expect(cart['first'].length).toBe(3);
-      expect(cart['default'].length).toBe(1);
-      expect(cart['reduced'].length).toBe(1);
+      expect(cart.length).toBe(5);
     });
 
-    it('should update seat type and state and get cart object', () => {
+    it('should update seat type and get cart array', () => {
+      store.setSeat({ row: 0, col: 2 }, { type: 'first' }, false);
+      const cart = store.getCart();
+
+      expect(cart.length).toBe(5);
+    });
+
+    it('should update seat type and state and get cart array', () => {
       store.setSeat(
         { row: 6, col: 6 },
         { type: 'reduced', state: 'selected' },
@@ -103,18 +102,14 @@ describe('Cart', () => {
       );
       const cart = store.getCart();
 
-      expect(cart['first'].length).toBe(3);
-      expect(cart['default'].length).toBe(1);
-      expect(cart['reduced'].length).toBe(2);
+      expect(cart.length).toBe(6);
     });
 
-    it('should clear and get cart object', () => {
-      store.clearCart();
+    it('should clear and get cart array', () => {
+      store.clearCart(true);
       const cart = store.getCart();
 
-      expect(cart['first'].length).toBe(0);
-      expect(cart['default'].length).toBe(0);
-      expect(cart['reduced'].length).toBe(0);
+      expect(cart.length).toBe(0);
     });
   });
 });

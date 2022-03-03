@@ -47,12 +47,12 @@ interface Events {
   cartclear: CartClearEvent;
   /**
    * An event triggered when the cart changes.
-   * More specifically when a seat is selected, unselected, removed from the cart or on clear.
+   * More specifically when a seat is selected, unselected, removed from the cart or on cart clear.
    */
   cartchange: CartChangeEvent;
   /**
    * An event triggered when a seat changes.
-   * More specifically when a seat is selected, unselected, removed from the cart or on clear.
+   * More specifically when a seat is selected, unselected, removed from the cart or on cart clear.
    */
   seatchange: SeatChangeEvent;
   /**
