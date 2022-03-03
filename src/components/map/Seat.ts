@@ -24,7 +24,7 @@ class Seat extends Base<HTMLDivElement> {
   }
 
   private stateEventListener(e: SeatChangeEvent) {
-    const { index, state, label, type } = e.seat;
+    const { index, state, label, type } = e.current;
     const typeOptions = this.store.getTypeOptions(type);
 
     if (this.index.row === index.row && this.index.col === index.col) {

@@ -67,24 +67,22 @@ class Seatchart {
   }
 
   /**
-   * Sets seat type and/or state.
+   * Sets seat data.
    * @param index - Index of the seat to update.
-   * @param seat - An object containing the new seat state and/or type.
-   * @param emit - True to trigger events (dafualt false).
+   * @param seat - An object containing the seat data.
    */
   public setSeat(
     index: SeatIndex,
-    seat: Partial<{ state: SeatState; type: string }>,
-    emit = false
+    seat: Partial<{ label: string; state: SeatState; type: string }>
   ): void {
-    this.store.setSeat(index, seat, emit);
+    this.store.setSeat(index, seat, true);
   }
 
   /**
-   * Gets a reference to the cart object.
-   * @returns An object containing selected seats mapped by type.
+   * Gets a reference to the cart array.
+   * @returns An array containing selected seats.
    */
-  public getCart(): { [seatTypeKey: string]: SeatIndex[] } {
+  public getCart(): SeatInfo[] {
     return this.store.getCart();
   }
 
@@ -98,11 +96,10 @@ class Seatchart {
 
   /**
    * Unselected all seats and removes them from the cart.
-   * @param emit - True to trigger events (dafualt false).
    * @returns The total price.
    */
-  public clearCart(emit = false): void {
-    this.store.clearCart(emit);
+  public clearCart(): void {
+    this.store.clearCart(true);
   }
 }
 

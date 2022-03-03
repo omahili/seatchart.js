@@ -4,11 +4,15 @@ import CartTicket from 'components/cart/CartTicket';
 import Store from 'store';
 import { SeatIndex } from 'types/seat-index';
 import { DEFAULT_CURRENCY } from 'utils/consts';
+import { SeatType } from 'index';
 
 class CartItem extends Base<HTMLDivElement> {
   public seatIndex: SeatIndex;
 
   private store: Store;
+  private ticket: CartTicket;
+  private seatPriceTd: HTMLTableCellElement;
+  private currency: string;
 
   public constructor(index: SeatIndex, store: Store) {
     const cartItem = document.createElement('tr');
@@ -16,16 +20,16 @@ class CartItem extends Base<HTMLDivElement> {
 
     const info = store.getSeat(index);
     const typeOptions = store.getTypeOptions(info.type);
-    const ticket = new CartTicket(info.label, typeOptions);
+    this.ticket = new CartTicket(info.label, typeOptions);
 
     const ticketTd = document.createElement('td');
-    ticketTd.appendChild(ticket.element);
+    ticketTd.appendChild(this.ticket.element);
 
     const { cart } = store.getOptions();
-    const currency = cart?.currency || DEFAULT_CURRENCY;
+    this.currency = cart?.currency || DEFAULT_CURRENCY;
 
-    const seatPriceTd = document.createElement('td');
-    seatPriceTd.textContent = `${currency}${typeOptions.price.toFixed(2)}`;
+    this.seatPriceTd = document.createElement('td');
+    this.seatPriceTd.textContent = this.getPriceLabel(typeOptions.price);
 
     this.deleteClick = this.deleteClick.bind(this);
     const deleteBtn = new DeleteButton(this.deleteClick);
@@ -34,7 +38,7 @@ class CartItem extends Base<HTMLDivElement> {
     deleteTd.appendChild(deleteBtn.element);
 
     cartItem.appendChild(ticketTd);
-    cartItem.appendChild(seatPriceTd);
+    cartItem.appendChild(this.seatPriceTd);
     cartItem.appendChild(deleteTd);
 
     this.store = store;
@@ -43,6 +47,15 @@ class CartItem extends Base<HTMLDivElement> {
 
   private deleteClick() {
     this.store.setSeat(this.seatIndex, { state: 'available' }, true);
+  }
+
+  private getPriceLabel(price: number) {
+    return `${this.currency}${price.toFixed(2)}`;
+  }
+
+  public update(seatLabel: string, seatType: SeatType) {
+    this.ticket.update(seatLabel, seatType);
+    this.seatPriceTd.textContent = this.getPriceLabel(seatType.price);
   }
 }
 export default CartItem;

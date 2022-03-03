@@ -5,7 +5,7 @@ type SeatchartEventListener<T extends keyof Events> = (e: Events[T]) => void;
 
 class Store {
   private readonly options: Options;
-  private cart: { [key: string]: SeatIndex[] } = {};
+  private cart: SeatInfo[] = [];
   private seats: SeatInfo[][] = [];
 
   private eventListeners: {
@@ -41,7 +41,6 @@ class Store {
     const {
       rows: totalRows,
       columns: totalColumns,
-      seatTypes,
       disabledSeats,
       reservedSeats,
       selectedSeats,
@@ -53,6 +52,7 @@ class Store {
 
       for (let col = 0; col < totalColumns; col++) {
         const index = { row, col };
+        const previous = { ...this.seats[row][col] };
 
         let state: SeatState = 'available';
         if (disabledSeats?.some(this.isSameSeat(index))) {
@@ -73,27 +73,24 @@ class Store {
           type,
         };
 
+        const current = this.seats[row][col];
+
         const listenerKey = this.listenerKey(index);
         this.singleSeatChangeEventListeners[listenerKey].forEach((el) =>
-          el({ seat: this.seats[row][col] })
+          el({ previous, current })
         );
 
         this.eventListeners.seatchange.forEach((el) =>
-          el({ seat: this.seats[row][col] })
+          el({ previous, current })
         );
       }
     }
 
     // init cart
-    const types = Object.keys(seatTypes);
-    for (const type of types) {
-      this.cart[type] = [];
-    }
-
     if (selectedSeats) {
       for (const seatIndex of selectedSeats) {
         const seat = this.seats[seatIndex.row][seatIndex.col];
-        this.cart[seat.type].push(seat.index);
+        this.cart.push(seat);
 
         this.eventListeners.cartchange.forEach((el) =>
           el({ action: 'add', seat })
@@ -112,39 +109,45 @@ class Store {
 
   public setSeat(
     index: SeatIndex,
-    info: Partial<{ state: SeatState; type: string }>,
+    info: Partial<{ label: string; state: SeatState; type: string }>,
     emit: boolean
   ) {
     const { row, col } = index;
-    const { type: newType, state: newState } = info;
+    const { type: newType, state: newState, label: newLabel } = info;
     const seat = this.seats[row][col];
+    let hasChanged = false;
+    const previous = { ...seat };
 
-    if (
-      (newType && seat.type !== newType) ||
-      (newState && seat.state !== newState)
-    ) {
-      if (newType) {
-        seat.type = newType;
+    if (newLabel && seat.label !== newLabel) {
+      seat.label = newLabel;
+      hasChanged = true;
+    }
+
+    if (newType && seat.type !== newType) {
+      seat.type = newType;
+      hasChanged = true;
+    }
+
+    if (newState && seat.state !== newState) {
+      if (newState === 'selected') {
+        this.addToCart(seat.type, seat.index, emit);
+      } else if (seat.state === 'selected') {
+        this.removeFromCart(seat.type, seat.index, emit);
       }
 
-      if (newState) {
-        if (newState === 'selected') {
-          this.addToCart(seat.type, seat.index, emit);
-        } else if (seat.state === 'selected') {
-          this.removeFromCart(seat.type, seat.index, emit);
-        }
+      seat.state = newState;
+      hasChanged = true;
+    }
 
-        seat.state = newState;
-      }
+    if (hasChanged && emit) {
+      const listenerKey = this.listenerKey(index);
+      this.singleSeatChangeEventListeners[listenerKey].forEach((el) =>
+        el({ previous, current: seat })
+      );
 
-      if (emit) {
-        const listenerKey = this.listenerKey(index);
-        this.singleSeatChangeEventListeners[listenerKey].forEach((el) =>
-          el({ seat })
-        );
-
-        this.eventListeners.seatchange.forEach((el) => el({ seat }));
-      }
+      this.eventListeners.seatchange.forEach((el) =>
+        el({ previous, current: seat })
+      );
     }
   }
 
@@ -152,18 +155,8 @@ class Store {
     return this.seats[index.row][index.col];
   }
 
-  public clearCart(emit = true) {
-    const seats: SeatInfo[] = [];
-
-    const types = Object.keys(this.cart);
-    for (const type of types) {
-      for (const seatIndex of this.cart[type]) {
-        seats.push(this.getSeat(seatIndex));
-      }
-
-      this.cart[type] = [];
-    }
-
+  public clearCart(emit: boolean) {
+    const seats: SeatInfo[] = [...this.cart];
     seats.forEach((x) => this.setSeat(x.index, { state: 'available' }, emit));
 
     if (emit) {
@@ -181,26 +174,18 @@ class Store {
   }
 
   public getCartTotal(): number {
-    let total = 0;
+    const seatTypes = this.options.map.seatTypes;
 
-    const types = Object.keys(this.cart);
-    for (const type of types) {
-      const price = this.options.map.seatTypes[type].price;
-      total += this.cart[type].length * price;
+    let total = 0;
+    for (const seat of this.cart) {
+      total += seatTypes[seat.type].price;
     }
 
     return total;
   }
 
   public countCartItems(): number {
-    let count = 0;
-
-    const types = Object.keys(this.cart);
-    for (const type of types) {
-      count += this.cart[type].length;
-    }
-
-    return count;
+    return this.cart.length;
   }
 
   public getRowLabel(row: number) {
@@ -286,7 +271,7 @@ class Store {
   }
 
   private addToCart(type: string, index: SeatIndex, emit: boolean) {
-    this.cart[type].push(index);
+    this.cart.push(this.seats[index.row][index.col]);
 
     if (emit) {
       const seat = this.getSeat(index);
@@ -297,9 +282,11 @@ class Store {
   }
 
   private removeFromCart(type: string, seatIndex: SeatIndex, emit: boolean) {
-    const index = this.cart[type].findIndex(this.isSameSeat(seatIndex));
+    const index = this.cart.findIndex(
+      (x) => seatIndex.row === x.index.row && seatIndex.col === x.index.col
+    );
     if (index >= 0) {
-      this.cart[type].splice(index, 1);
+      this.cart.splice(index, 1);
 
       if (emit) {
         const seat = this.getSeat(seatIndex);

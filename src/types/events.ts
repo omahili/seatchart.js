@@ -1,8 +1,14 @@
 import { SeatInfo } from 'types/seat-info';
-import { SeatIndex } from 'types/seat-index';
 
 interface SeatChangeEvent {
-  seat: SeatInfo;
+  /**
+   * Seat info prior to the change.
+   */
+  previous: SeatInfo;
+  /**
+   * Reference to the current seat info.
+   */
+  current: SeatInfo;
 }
 
 interface CartChangeEvent {
@@ -25,9 +31,9 @@ interface CartClearEvent {
 
 interface SubmitEvent {
   /**
-   * Object containing selected seats mapped by type.
+   * Array containing selected seats.
    */
-  cart: { [seatTypeKey: string]: SeatIndex[] };
+  cart: SeatInfo[];
   /**
    * Total price of the selected seats.
    */

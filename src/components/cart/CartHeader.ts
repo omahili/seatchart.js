@@ -30,7 +30,7 @@ class CartHeader extends Base<HTMLDivElement> {
   }
 
   private deleteAllClick() {
-    this.store.clearCart();
+    this.store.clearCart(true);
   }
 
   private eventListener(): void {

@@ -13,14 +13,16 @@ class CartTotal extends Base<HTMLDivElement> {
 
     this.store = store;
     this.eventListener = this.eventListener.bind(this);
+
     this.store.addEventListener('cartchange', this.eventListener);
     this.store.addEventListener('cartclear', this.eventListener);
+    this.store.addEventListener('seatchange', this.eventListener);
   }
 
   private eventListener() {
-    const total = this.store.getCartTotal();
     const { cart } = this.store.getOptions();
     const currency = cart?.currency || DEFAULT_CURRENCY;
+    const total = this.store.getCartTotal();
 
     this.element.textContent = `Total: ${currency}${total.toFixed(2)}`;
   }
