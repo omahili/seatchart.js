@@ -1,7 +1,6 @@
 import Base from 'components/base/Base';
 import DeleteButton from 'components/cart/DeleteButton';
 import Store from 'store';
-import { DEFAULT_ASSETS_SRC } from 'utils/consts';
 
 class CartHeader extends Base<HTMLDivElement> {
   private store: Store;
@@ -13,22 +12,13 @@ class CartHeader extends Base<HTMLDivElement> {
 
     super(container);
 
-    const { assetsSrc } = store.getOptions();
-    const icon = document.createElement('img');
-    icon.className = 'sc-cart-icon';
-    icon.src = `${assetsSrc || DEFAULT_ASSETS_SRC}/shoppingcart.svg`;
-    icon.alt = 'Cart icon';
-
     const title = document.createElement('p');
-    const titleContainer = document.createElement('div');
-    titleContainer.className = 'sc-cart-title';
-    titleContainer.appendChild(icon);
-    titleContainer.appendChild(title);
+    title.className = 'sc-cart-title';
 
     this.deleteAllClick = this.deleteAllClick.bind(this);
-    const clearButton = new DeleteButton(this.deleteAllClick, assetsSrc);
+    const clearButton = new DeleteButton(this.deleteAllClick);
 
-    container.appendChild(titleContainer);
+    container.appendChild(title);
     container.appendChild(clearButton.element);
 
     this.store = store;

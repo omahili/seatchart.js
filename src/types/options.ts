@@ -108,10 +108,6 @@ interface Options {
    * Legend container id.
    */
   legendId?: string;
-  /**
-   * Path to assets.
-   */
-  assetsSrc?: string;
 }
 
 export { Options };

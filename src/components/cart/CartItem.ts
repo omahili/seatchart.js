@@ -21,14 +21,14 @@ class CartItem extends Base<HTMLDivElement> {
     const ticketTd = document.createElement('td');
     ticketTd.appendChild(ticket.element);
 
-    const { cart, assetsSrc } = store.getOptions();
+    const { cart } = store.getOptions();
     const currency = cart?.currency || DEFAULT_CURRENCY;
 
     const seatPriceTd = document.createElement('td');
     seatPriceTd.textContent = `${currency}${typeOptions.price.toFixed(2)}`;
 
     this.deleteClick = this.deleteClick.bind(this);
-    const deleteBtn = new DeleteButton(this.deleteClick, assetsSrc);
+    const deleteBtn = new DeleteButton(this.deleteClick);
 
     const deleteTd = document.createElement('td');
     deleteTd.appendChild(deleteBtn.element);
