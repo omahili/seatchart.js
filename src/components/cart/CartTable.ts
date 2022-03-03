@@ -20,7 +20,7 @@ class CartTable extends Base<HTMLDivElement> {
     this.clearEventListener = this.clearEventListener.bind(this);
 
     this.store.addEventListener('cartchange', this.cartEventListener);
-    this.store.addEventListener('clear', this.clearEventListener);
+    this.store.addEventListener('cartclear', this.clearEventListener);
   }
 
   private cartEventListener(e: CartChangeEvent): void {

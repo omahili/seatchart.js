@@ -52,7 +52,7 @@ describe('Seats', () => {
 
     describe('Clear and get seats', () => {
       beforeAll(() => {
-        store.clear();
+        store.clearCart();
       });
 
       it('should be available', () => {

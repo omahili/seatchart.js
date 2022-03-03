@@ -45,7 +45,7 @@ describe('Cart', () => {
     });
 
     it('should clear and get total', () => {
-      store.clear();
+      store.clearCart();
       const total = store.getCartTotal();
       expect(total).toBe(0);
     });
@@ -109,7 +109,7 @@ describe('Cart', () => {
     });
 
     it('should clear and get cart object', () => {
-      store.clear();
+      store.clearCart();
       const cart = store.getCart();
 
       expect(cart['first'].length).toBe(0);

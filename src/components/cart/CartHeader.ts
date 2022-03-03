@@ -25,12 +25,12 @@ class CartHeader extends Base<HTMLDivElement> {
     this.title = title;
 
     this.eventListener = this.eventListener.bind(this);
-    this.store.addEventListener('clear', this.eventListener);
+    this.store.addEventListener('cartclear', this.eventListener);
     this.store.addEventListener('cartchange', this.eventListener);
   }
 
   private deleteAllClick() {
-    this.store.clear();
+    this.store.clearCart();
   }
 
   private eventListener(): void {

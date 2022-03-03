@@ -33,7 +33,7 @@ describe('Events', () => {
     });
 
     it('should clear and trigger event', () => {
-      store.clear(true);
+      store.clearCart(true);
       expect(seatchangeSpy).toHaveBeenCalledTimes(5);
     });
 
@@ -173,7 +173,7 @@ describe('Events', () => {
     });
 
     it('should clear and not trigger event', () => {
-      store.clear();
+      store.clearCart();
       expect(cartchangeSpy).toHaveBeenCalledTimes(2);
     });
 
@@ -207,22 +207,22 @@ describe('Events', () => {
     beforeAll(() => {
       store = new Store(options);
       store.init();
-      store.addEventListener('clear', clearSpy);
+      store.addEventListener('cartclear', clearSpy);
     });
 
     it('should not trigger event', () => {
-      store.clear(false);
+      store.clearCart(false);
       expect(clearSpy).toHaveBeenCalledTimes(0);
     });
 
     it('should trigger event', () => {
-      store.clear();
+      store.clearCart();
       expect(clearSpy).toHaveBeenCalledTimes(1);
     });
 
     it('should remove event listener', () => {
-      store.removeEventListener('clear', clearSpy);
-      store.clear();
+      store.removeEventListener('cartclear', clearSpy);
+      store.clearCart();
 
       expect(clearSpy).toHaveBeenCalledTimes(1);
     });
@@ -232,11 +232,11 @@ describe('Events', () => {
       const listenerSpy2 = jest.fn();
       const listenerSpy3 = jest.fn();
 
-      store.addEventListener('clear', listenerSpy1);
-      store.addEventListener('clear', listenerSpy2);
-      store.addEventListener('clear', listenerSpy3);
+      store.addEventListener('cartclear', listenerSpy1);
+      store.addEventListener('cartclear', listenerSpy2);
+      store.addEventListener('cartclear', listenerSpy3);
 
-      store.clear();
+      store.clearCart();
       expect(listenerSpy1).toHaveBeenCalledTimes(1);
       expect(listenerSpy2).toHaveBeenCalledTimes(1);
       expect(listenerSpy3).toHaveBeenCalledTimes(1);
@@ -255,11 +255,11 @@ describe('Events', () => {
 
       store.addEventListener('seatchange', seatchangeSpy);
       store.addEventListener('cartchange', cartchangeSpy);
-      store.addEventListener('clear', clearSpy);
+      store.addEventListener('cartclear', clearSpy);
     });
 
     it('should clear and trigger seatchange and clear events', () => {
-      store.clear(true);
+      store.clearCart(true);
       expect(seatchangeSpy).toHaveBeenCalledTimes(3);
       expect(clearSpy).toHaveBeenCalledTimes(1);
       expect(cartchangeSpy).toHaveBeenCalledTimes(0);

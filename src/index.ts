@@ -81,7 +81,7 @@ class Seatchart {
   }
 
   /**
-   * Gets a reference to the shopping cart object.
+   * Gets a reference to the cart object.
    * @returns An object containing selected seats mapped by type.
    */
   public getCart(): { [seatTypeKey: string]: SeatIndex[] } {
@@ -101,8 +101,8 @@ class Seatchart {
    * @param emit - True to trigger events (dafualt false).
    * @returns The total price.
    */
-  public clear(emit = false): void {
-    this.store.clear(emit);
+  public clearCart(emit = false): void {
+    this.store.clearCart(emit);
   }
 }
 

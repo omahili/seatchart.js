@@ -14,7 +14,7 @@ class CartTotal extends Base<HTMLDivElement> {
     this.store = store;
     this.eventListener = this.eventListener.bind(this);
     this.store.addEventListener('cartchange', this.eventListener);
-    this.store.addEventListener('clear', this.eventListener);
+    this.store.addEventListener('cartclear', this.eventListener);
   }
 
   private eventListener() {

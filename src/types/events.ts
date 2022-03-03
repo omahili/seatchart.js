@@ -16,7 +16,7 @@ interface CartChangeEvent {
   seat: SeatInfo;
 }
 
-interface ClearEvent {
+interface CartClearEvent {
   /**
    * Array of cleared seats.
    */
@@ -36,11 +36,11 @@ interface SubmitEvent {
 
 interface Events {
   /**
-   * An event triggered when the shopping cart is cleared from all its items.
+   * An event triggered when the cart is cleared from all its items.
    */
-  clear: ClearEvent;
+  cartclear: CartClearEvent;
   /**
-   * An event triggered when the shopping cart changes.
+   * An event triggered when the cart changes.
    * More specifically when a seat is selected, unselected, removed from the cart or on clear.
    */
   cartchange: CartChangeEvent;
@@ -55,4 +55,10 @@ interface Events {
   submit: SubmitEvent;
 }
 
-export { Events, CartChangeEvent, ClearEvent, SeatChangeEvent, SubmitEvent };
+export {
+  Events,
+  CartChangeEvent,
+  CartClearEvent,
+  SeatChangeEvent,
+  SubmitEvent,
+};

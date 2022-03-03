@@ -23,7 +23,7 @@ class Store {
 
     this.eventListeners = {
       cartchange: [],
-      clear: [],
+      cartclear: [],
       seatchange: [],
       submit: [],
     };
@@ -152,7 +152,7 @@ class Store {
     return this.seats[index.row][index.col];
   }
 
-  public clear(emit = true) {
+  public clearCart(emit = true) {
     const seats: SeatInfo[] = [];
 
     const types = Object.keys(this.cart);
@@ -167,7 +167,7 @@ class Store {
     seats.forEach((x) => this.setSeat(x.index, { state: 'available' }, emit));
 
     if (emit) {
-      this.eventListeners.clear.forEach((el) => el({ seats }));
+      this.eventListeners.cartclear.forEach((el) => el({ seats }));
     }
   }
 
