@@ -10,9 +10,9 @@ interface SeatInfo {
    */
   index: SeatIndex;
   /**
-   * Seat name.
+   * Seat display label.
    */
-  name: string;
+  label: string;
   /**
    * Seat type.
    */

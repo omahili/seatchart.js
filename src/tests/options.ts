@@ -6,18 +6,18 @@ const options: Options = {
     columns: 10,
     seatTypes: {
       default: {
-        name: 'Economy',
+        label: 'Economy',
         cssClass: 'economy',
         price: 15,
       },
       first: {
-        name: 'First Class',
+        label: 'First Class',
         cssClass: 'first-class',
         price: 25,
         seatRows: [0, 1, 2],
       },
       reduced: {
-        name: 'Reduced',
+        label: 'Reduced',
         cssClass: 'reduced',
         price: 10,
         seatRows: [7, 8, 9],

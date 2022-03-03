@@ -17,7 +17,7 @@ class Legend extends Base<HTMLUListElement> {
 
     for (const type of types) {
       const seatType = seatTypesOptions[type];
-      const description = `${seatType.name} (${currency}${seatType.price})`;
+      const description = `${seatType.label} (${currency}${seatType.price})`;
       const item = new LegendItem(description, seatType.cssClass);
       list.appendChild(item.element);
     }

@@ -48,39 +48,34 @@ interface Options {
      */
     rowSpacers?: number[];
     /**
-     * Seat name generator.
+     * Seat label generator.
      */
-    seatName?: (index: SeatIndex) => string;
+    seatLabel?: (index: SeatIndex) => string;
     /**
-     * Indexers options.
+     * Row indexers options.
      */
-    indexers?: {
+    indexerRows?: {
       /**
-       * Row indexer options.
+       * Visibility.
        */
-      rows?: {
-        /**
-         * Row indexer visibility.
-         */
-        visible?: boolean;
-        /**
-         * Row name generator.
-         */
-        name?: (row: number) => string;
-      };
+      visible?: boolean;
       /**
-       * Column indexer options.
+       * Label generator.
        */
-      columns?: {
-        /**
-         * Column indexer visibility.
-         */
-        visible?: boolean;
-        /**
-         * Column name generator.
-         */
-        name?: (column: number) => string;
-      };
+      label?: (row: number) => string;
+    };
+    /**
+     * Column indexers options.
+     */
+    indexerColumns?: {
+      /**
+       * Visibility.
+       */
+      visible?: boolean;
+      /**
+       * Label generator.
+       */
+      label?: (column: number) => string;
     };
     /**
      * Sets front header visibility.

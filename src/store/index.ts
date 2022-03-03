@@ -18,8 +18,8 @@ class Store {
   constructor(options: Options) {
     this.options = options;
 
-    this.getColumnName = this.getColumnName.bind(this);
-    this.getRowName = this.getRowName.bind(this);
+    this.getColumnLabel = this.getColumnLabel.bind(this);
+    this.getRowLabel = this.getRowLabel.bind(this);
 
     this.eventListeners = {
       cartchange: [],
@@ -63,12 +63,12 @@ class Store {
           state = 'selected';
         }
 
-        const name = this.getSeatName(index);
+        const label = this.getSeatLabel(index);
         const type = this.getSeatType(index);
 
         this.seats[row][col] = {
           index,
-          name,
+          label,
           state,
           type,
         };
@@ -203,10 +203,10 @@ class Store {
     return count;
   }
 
-  public getRowName(row: number) {
-    const name = this.options.map.indexers?.rows?.name;
-    if (name) {
-      return name(row);
+  public getRowLabel(row: number) {
+    const label = this.options.map.indexerRows?.label;
+    if (label) {
+      return label(row);
     }
 
     const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -216,10 +216,10 @@ class Store {
     return alphabet[index].repeat(times + 1);
   }
 
-  public getColumnName(column: number) {
-    const name = this.options.map.indexers?.columns?.name;
-    if (name) {
-      return name(column);
+  public getColumnLabel(column: number) {
+    const label = this.options.map.indexerColumns?.label;
+    if (label) {
+      return label(column);
     }
 
     return (column + 1).toString();
@@ -328,14 +328,14 @@ class Store {
     return 'default';
   }
 
-  private getSeatName(index: SeatIndex) {
-    const seatName = this.options.map.seatName;
-    if (seatName) {
-      return seatName(index);
+  private getSeatLabel(index: SeatIndex) {
+    const seatLabel = this.options.map.seatLabel;
+    if (seatLabel) {
+      return seatLabel(index);
     }
 
-    const rowIndex = this.getRowName(index.row);
-    const columnIndex = this.getColumnName(index.col);
+    const rowIndex = this.getRowLabel(index.row);
+    const columnIndex = this.getColumnLabel(index.col);
 
     return `${rowIndex}${columnIndex}`;
   }

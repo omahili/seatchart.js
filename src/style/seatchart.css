@@ -66,11 +66,11 @@
     display: flex;
 }
 
-.sc-indexer-row {
+.sc-indexer-rows {
     flex-direction: column;
 }
 
-.sc-indexer-column {
+.sc-indexer-columns {
     width: 100%;
 }
 
@@ -253,7 +253,7 @@
     align-items: center;
 }
 
-.sc-ticket .sc-ticket-seat-name {
+.sc-ticket .sc-ticket-seat-label {
     border-right: 1px dashed black;
     box-sizing: border-box;
     flex: 1;

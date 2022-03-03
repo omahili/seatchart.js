@@ -8,8 +8,15 @@ import Base from 'components/Base';
 class Map extends Base<HTMLDivElement> {
   public constructor(store: Store) {
     const options = store.getOptions();
-    const { rows, columns, rowSpacers, columnSpacers, indexers, frontVisible } =
-      options.map;
+    const {
+      rows,
+      columns,
+      rowSpacers,
+      columnSpacers,
+      indexerRows,
+      indexerColumns,
+      frontVisible,
+    } = options.map;
 
     const map = document.createElement('div');
     map.classList.add('sc-seats-container');
@@ -45,12 +52,8 @@ class Map extends Base<HTMLDivElement> {
       innerContainer.appendChild(frontHeader.element);
     }
 
-    if (
-      !indexers?.columns ||
-      indexers.columns.visible === undefined ||
-      indexers.columns.visible
-    ) {
-      const columnIndexer = new MapIndexer('column', store);
+    if (indexerColumns?.visible === undefined || indexerColumns.visible) {
+      const columnIndexer = new MapIndexer('columns', store);
       innerContainer.appendChild(columnIndexer.element);
     }
 
@@ -59,12 +62,8 @@ class Map extends Base<HTMLDivElement> {
     const mapContainer = document.createElement('div');
     mapContainer.className = 'sc-map';
 
-    if (
-      !indexers?.rows ||
-      indexers.rows.visible === undefined ||
-      indexers.rows.visible
-    ) {
-      const rowIndexer = new MapIndexer('row', store);
+    if (indexerRows?.visible === undefined || indexerRows.visible) {
+      const rowIndexer = new MapIndexer('rows', store);
       mapContainer.appendChild(rowIndexer.element);
     }
 

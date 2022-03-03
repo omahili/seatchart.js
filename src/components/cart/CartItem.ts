@@ -16,7 +16,7 @@ class CartItem extends Base<HTMLDivElement> {
 
     const info = store.getSeat(index);
     const typeOptions = store.getTypeOptions(info.type);
-    const ticket = new CartTicket(info.name, typeOptions);
+    const ticket = new CartTicket(info.label, typeOptions);
 
     const ticketTd = document.createElement('td');
     ticketTd.appendChild(ticket.element);

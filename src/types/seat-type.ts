@@ -2,9 +2,9 @@ import { SeatIndex } from 'types/seat-index';
 
 interface SeatTypeDefault {
   /**
-   * Name of seat type.
+   * Display label of seat type.
    */
-  name: string;
+  label: string;
   /**
    * Price of the defined seat type.
    */
@@ -20,9 +20,9 @@ interface SeatTypeDefault {
  */
 interface SeatType {
   /**
-   * Display name of the defined seat type.
+   * Display label of the defined seat type.
    */
-  name: string;
+  label: string;
   /**
    * Price of the defined seat type.
    */

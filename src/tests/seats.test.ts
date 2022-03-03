@@ -15,7 +15,7 @@ describe('Seats', () => {
 
       expect(seat.index.row).toBe(0);
       expect(seat.index.col).toBe(1);
-      expect(seat.name).toBe('A2');
+      expect(seat.label).toBe('A2');
       expect(seat.type).toBe('first');
       expect(seat.state).toBe('available');
     });
@@ -25,7 +25,7 @@ describe('Seats', () => {
 
       expect(seat.index.row).toBe(8);
       expect(seat.index.col).toBe(9);
-      expect(seat.name).toBe('I10');
+      expect(seat.label).toBe('I10');
       expect(seat.type).toBe('reduced');
       expect(seat.state).toBe('disabled');
     });
@@ -35,7 +35,7 @@ describe('Seats', () => {
 
       expect(seat.index.row).toBe(4);
       expect(seat.index.col).toBe(5);
-      expect(seat.name).toBe('E6');
+      expect(seat.label).toBe('E6');
       expect(seat.type).toBe('default');
       expect(seat.state).toBe('reserved');
     });
@@ -45,7 +45,7 @@ describe('Seats', () => {
 
       expect(seat.index.row).toBe(8);
       expect(seat.index.col).toBe(4);
-      expect(seat.name).toBe('I5');
+      expect(seat.label).toBe('I5');
       expect(seat.type).toBe('reduced');
       expect(seat.state).toBe('selected');
     });
@@ -94,7 +94,7 @@ describe('Seats', () => {
 
       expect(seat.index.row).toBe(0);
       expect(seat.index.col).toBe(3);
-      expect(seat.name).toBe('A4');
+      expect(seat.label).toBe('A4');
       expect(seat.type).toBe('first');
       expect(seat.state).toBe('available');
     });
@@ -106,7 +106,7 @@ describe('Seats', () => {
 
       expect(seat.index.row).toBe(4);
       expect(seat.index.col).toBe(8);
-      expect(seat.name).toBe('E9');
+      expect(seat.label).toBe('E9');
       expect(seat.type).toBe('reduced');
       expect(seat.state).toBe('available');
     });
@@ -118,7 +118,7 @@ describe('Seats', () => {
 
       expect(seat.index.row).toBe(7);
       expect(seat.index.col).toBe(4);
-      expect(seat.name).toBe('H5');
+      expect(seat.label).toBe('H5');
       expect(seat.type).toBe('first');
       expect(seat.state).toBe('selected');
     });
