@@ -6,7 +6,8 @@ class DeleteButton extends Base<HTMLButtonElement> {
     buttonIcon.className = 'sc-cart-btn-icon';
 
     const deleteBtn = document.createElement('button');
-    deleteBtn.className = 'sc-cart-btn-delete';
+    deleteBtn.className = 'sc-cart-btn sc-cart-btn-delete';
+    deleteBtn.type = 'button';
 
     deleteBtn.appendChild(buttonIcon);
     deleteBtn.onclick = onclick;

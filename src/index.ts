@@ -82,10 +82,9 @@ class Seatchart {
 
   /**
    * Gets a reference to the shopping cart object.
-   * @returns An object containing all seats added to the shopping cart,
-   * mapped by seat type.
+   * @returns An object containing selected seats mapped by type.
    */
-  public getCart(): { [key: string]: SeatIndex[] } {
+  public getCart(): { [seatTypeKey: string]: SeatIndex[] } {
     return this.store.getCart();
   }
 

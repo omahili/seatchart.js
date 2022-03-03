@@ -279,4 +279,41 @@ describe('Events', () => {
       expect(cartchangeSpy).toHaveBeenCalledTimes(2);
     });
   });
+
+  describe('submit event', () => {
+    let store: Store;
+    const submitListener = jest.fn();
+
+    beforeAll(() => {
+      store = new Store(options);
+      store.init();
+
+      store.addEventListener('submit', submitListener);
+    });
+
+    it('should trigger submit event', () => {
+      store.submit();
+      expect(submitListener).toHaveBeenCalledTimes(1);
+    });
+
+    it('should remove event listener', () => {
+      store.removeEventListener('submit', submitListener);
+      expect(submitListener).toHaveBeenCalledTimes(1);
+    });
+
+    it('should trigger multiple listeners', () => {
+      const listenerSpy1 = jest.fn();
+      const listenerSpy2 = jest.fn();
+      const listenerSpy3 = jest.fn();
+
+      store.addEventListener('submit', listenerSpy1);
+      store.addEventListener('submit', listenerSpy2);
+      store.addEventListener('submit', listenerSpy3);
+
+      store.submit();
+      expect(listenerSpy1).toHaveBeenCalledTimes(1);
+      expect(listenerSpy2).toHaveBeenCalledTimes(1);
+      expect(listenerSpy3).toHaveBeenCalledTimes(1);
+    });
+  });
 });

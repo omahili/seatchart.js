@@ -25,6 +25,7 @@ class Store {
       cartchange: [],
       clear: [],
       seatchange: [],
+      submit: [],
     };
 
     const { rows, columns } = options.map;
@@ -168,6 +169,11 @@ class Store {
     if (emit) {
       this.eventListeners.clear.forEach((el) => el({ seats }));
     }
+  }
+
+  public submit() {
+    const total = this.getCartTotal();
+    this.eventListeners.submit.forEach((el) => el({ cart: this.cart, total }));
   }
 
   public getCart() {

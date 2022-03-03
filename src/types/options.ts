@@ -99,6 +99,10 @@ interface Options {
      * Displayed currency.
      */
     currency?: string;
+    /**
+     * Label displayed on the submit button.
+     */
+    submitLabel?: string;
   };
   /**
    * Legend visibility.

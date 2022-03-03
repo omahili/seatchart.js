@@ -2,10 +2,11 @@
     display: flex;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 16px;
+    padding: 25px;
 }
 
 .sc-right-container {
-    margin-left: 50px;
+    margin-left: 75px;
 }
 
 /* Seat map css */
@@ -87,7 +88,6 @@
 .sc-seat.sc-seat-available:hover {
     cursor: pointer;
     opacity: 0.7;
-    transition: opacity 0.1s ease-in-out;
 }
 
 .sc-seat.sc-seat-selected {
@@ -136,12 +136,12 @@
 
 .sc-cart {
     width: 300px;
-    margin-bottom: 25px;
+    margin-bottom: 50px;
 }
 
 .sc-cart-table-container {
     height: 250px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     overflow: auto;
     border: 1px solid #bbb;
     border-radius: 5px;
@@ -162,18 +162,14 @@
     padding: 2px;
 }
 
-.sc-cart-btn-delete {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    background-color: #db4646;
-    height: 22px;
-    width: 22px;
+.sc-cart-btn {
     border-radius: 4px;
     transition: background-color 0.15s ease-in-out;
     user-select: none;
     border: none;
+    cursor: pointer;
+    font-size: 14px;
+    height: 35px;
 }
 
 .sc-cart-btn-icon {
@@ -183,10 +179,21 @@
     background-color: white;
 }
 
+.sc-cart-btn-delete {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e53c4a;
+    height: 22px;
+    width: 22px;
+}
+
 .sc-cart-btn-delete:hover {
-    cursor: pointer;
-    background-color: #e26a6a;
-    transition: background-color 0.15s ease-in-out;
+    background-color: #db3240;
+}
+
+.sc-cart-btn-delete:active {
+    background-color: #cc2331;
 }
 
 .sc-cart td .sc-cart-btn-delete {
@@ -200,16 +207,32 @@
     margin: 0 10px 10px;
 }
 
-.sc-cart-total-container {
+.sc-cart-footer {
     display: flex;
-    justify-content: flex-end;
-    margin: 0 10px;
+    flex-direction: column;
 }
 
 .sc-cart-total {
-    margin: 0;
-    padding: 0;
+    flex: 1;
+    font-size: 14px;
     font-weight: bold;
+    margin: 0 10px 15px;
+    padding: 0;
+    text-align: right;
+}
+
+.sc-cart-btn-submit {
+    width: 100%;
+    background-color: #e53c4a;
+    color: white;
+}
+
+.sc-cart-btn-submit:hover {
+    background-color: #db3240;
+}
+
+.sc-cart-btn-submit:active {
+    background-color: #cc2331;
 }
 
 /* Ticket css */
@@ -221,6 +244,7 @@
     height: 35px;
     border: 2px solid black;
     box-sizing: border-box;
+    border-radius: 4px;
 }
 
 .sc-ticket div {

@@ -1,4 +1,5 @@
 import { SeatInfo } from 'types/seat-info';
+import { SeatIndex } from 'types/seat-index';
 
 interface SeatChangeEvent {
   seat: SeatInfo;
@@ -22,6 +23,17 @@ interface ClearEvent {
   seats: Array<SeatInfo>;
 }
 
+interface SubmitEvent {
+  /**
+   * Object containing selected seats mapped by type.
+   */
+  cart: { [seatTypeKey: string]: SeatIndex[] };
+  /**
+   * Total price of the selected seats.
+   */
+  total: number;
+}
+
 interface Events {
   /**
    * An event triggered when the shopping cart is cleared from all its items.
@@ -37,6 +49,10 @@ interface Events {
    * More specifically when a seat is selected, unselected, removed from the cart or on clear.
    */
   seatchange: SeatChangeEvent;
+  /**
+   * An event triggered when the submit button is pressed.
+   */
+  submit: SubmitEvent;
 }
 
-export { Events, CartChangeEvent, ClearEvent, SeatChangeEvent };
+export { Events, CartChangeEvent, ClearEvent, SeatChangeEvent, SubmitEvent };
