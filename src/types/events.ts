@@ -42,21 +42,21 @@ interface SubmitEvent {
 
 interface Events {
   /**
-   * An event triggered when the cart is cleared from all its items.
+   * An event emitted when the cart is cleared from all its items.
    */
   cartclear: CartClearEvent;
   /**
-   * An event triggered when the cart changes.
+   * An event emitted when the cart changes.
    * More specifically when a seat is selected, unselected, removed from the cart or on cart clear.
    */
   cartchange: CartChangeEvent;
   /**
-   * An event triggered when a seat changes.
+   * An event emitted when a seat changes.
    * More specifically when a seat is selected, unselected, removed from the cart or on cart clear.
    */
   seatchange: SeatChangeEvent;
   /**
-   * An event triggered when the submit button is pressed.
+   * An event emitted when the submit button is pressed.
    */
   submit: SubmitEvent;
 }

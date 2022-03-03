@@ -157,11 +157,12 @@ class Store {
 
   public clearCart(emit: boolean) {
     const seats: SeatInfo[] = [...this.cart];
-    seats.forEach((x) => this.setSeat(x.index, { state: 'available' }, emit));
 
-    if (emit) {
+    if (emit && seats.length > 0) {
       this.eventListeners.cartclear.forEach((el) => el({ seats }));
     }
+
+    seats.forEach((x) => this.setSeat(x.index, { state: 'available' }, emit));
   }
 
   public submit() {
