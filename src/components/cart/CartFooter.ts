@@ -1,4 +1,4 @@
-import Base from 'components/base/Base';
+import Base from 'components/Base';
 import CartTotal from 'components/cart/CartTotal';
 import Store from 'store';
 

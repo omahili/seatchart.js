@@ -1,4 +1,4 @@
-import Base from 'components/base/Base';
+import Base from 'components/Base';
 import { SeatIndex } from 'types/seat-index';
 import Store from 'store';
 import { SeatChangeEvent } from 'index';

@@ -1,4 +1,4 @@
-import Base from 'components/base/Base';
+import Base from 'components/Base';
 import DeleteButton from 'components/cart/DeleteButton';
 import Store from 'store';
 

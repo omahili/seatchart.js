@@ -1,4 +1,4 @@
-import Base from 'components/base/Base';
+import Base from 'components/Base';
 
 class LegendItem extends Base<HTMLLIElement> {
   public constructor(content: string, cssClassBullet: string) {

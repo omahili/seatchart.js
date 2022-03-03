@@ -1,4 +1,4 @@
-import Base from 'components/base/Base';
+import Base from 'components/Base';
 
 class Spacer extends Base<HTMLDivElement> {
   public constructor() {

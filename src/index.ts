@@ -1,6 +1,4 @@
-import Map from 'components/map/Map';
-import Legend from 'components/legend/Legend';
-import Cart from 'components/cart/Cart';
+import SeatchartUI from 'components/Seatchart';
 import Store from 'store';
 import { SeatIndex } from 'types/seat-index';
 import { Options } from 'types/options';
@@ -10,7 +8,11 @@ import { SeatInfo } from 'types/seat-info';
 
 class Seatchart {
   /**
-   * Options passed to create the Seatchart.
+   * Element passed on creation to contain the Seatchart.
+   */
+  public readonly element: HTMLElement;
+  /**
+   * Options passed on creation to configure the Seatchart.
    */
   public readonly options: Options;
 
@@ -18,15 +20,15 @@ class Seatchart {
 
   /**
    * Creates a seatchart.
+   * @param element - Html element that will contain the Seatchart.
    * @param options - Seatchart options.
    */
-  public constructor(options: Options) {
+  public constructor(element: HTMLElement, options: Options) {
+    this.element = element;
     this.options = options;
     this.store = new Store(options);
 
-    new Map(this.store);
-    new Cart(this.store);
-    new Legend(this.store);
+    new SeatchartUI(element, this.store);
 
     this.store.init();
   }

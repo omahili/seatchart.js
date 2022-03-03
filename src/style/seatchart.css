@@ -1,6 +1,11 @@
-.sc-component {
+.sc-main-container {
+    display: flex;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 16px;
+}
+
+.sc-right-container {
+    margin-left: 50px;
 }
 
 /* Seat map css */
@@ -62,7 +67,6 @@
 
 .sc-indexer-row {
     flex-direction: column;
-    height: 100%;
 }
 
 .sc-indexer-column {
@@ -130,8 +134,12 @@
 
 /* Cart css */
 
-.sc-cart-table-container {
+.sc-cart {
     width: 300px;
+    margin-bottom: 25px;
+}
+
+.sc-cart-table-container {
     height: 250px;
     margin-bottom: 10px;
     overflow: auto;

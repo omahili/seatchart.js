@@ -1,39 +1,27 @@
+import Base from 'components/Base';
 import CartFooter from 'components/cart/CartFooter';
 import CartHeader from 'components/cart/CartHeader';
 import CartTable from 'components/cart/CartTable';
 import Store from 'store';
 
-class Cart {
-  private store: Store;
-
+class Cart extends Base<HTMLDivElement> {
   public constructor(store: Store) {
-    this.store = store;
+    const cartTable = new CartTable(store);
 
-    this.render();
-  }
+    const cartTableContainer = document.createElement('div');
+    cartTableContainer.className = 'sc-cart-table-container';
+    cartTableContainer.appendChild(cartTable.element);
 
-  private render(): void {
-    const options = this.store.getOptions();
+    const cartHeader = new CartHeader(store);
+    const cartFooter = new CartFooter(store);
 
-    if (options.cart) {
-      const cartTable = new CartTable(this.store);
+    const cartContainer = document.createElement('div');
+    cartContainer.className = 'sc-cart';
+    cartContainer.appendChild(cartHeader.element);
+    cartContainer.appendChild(cartTableContainer);
+    cartContainer.appendChild(cartFooter.element);
 
-      const cartTableContainer = document.createElement('div');
-      cartTableContainer.className = 'sc-cart-table-container';
-      cartTableContainer.appendChild(cartTable.element);
-
-      const cartHeader = new CartHeader(this.store);
-      const cartFooter = new CartFooter(this.store);
-
-      const cartContainer = document.createElement('div');
-      cartContainer.className = 'sc-component sc-cart';
-      cartContainer.appendChild(cartHeader.element);
-      cartContainer.appendChild(cartTableContainer);
-      cartContainer.appendChild(cartFooter.element);
-
-      const cart = document.getElementById(options.cart.id);
-      cart?.appendChild(cartContainer);
-    }
+    super(cartContainer);
   }
 }
 

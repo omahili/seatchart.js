@@ -1,4 +1,4 @@
-import Base from 'components/base/Base';
+import Base from 'components/Base';
 
 class MapFrontIndicator extends Base<HTMLDivElement> {
   public constructor() {

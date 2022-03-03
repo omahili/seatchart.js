@@ -2,7 +2,6 @@ import { Options } from 'types/options';
 
 const options: Options = {
   map: {
-    id: 'map-container',
     rows: 10,
     columns: 10,
     seatTypes: {

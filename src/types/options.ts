@@ -10,10 +10,6 @@ interface Options {
    */
   map: {
     /**
-     * Container id.
-     */
-    id: string;
-    /**
      * Number of rows.
      */
     rows: number;
@@ -87,7 +83,7 @@ interface Options {
       };
     };
     /**
-     * Front header visibility.
+     * Sets front header visibility.
      */
     frontVisible?: boolean;
   };
@@ -96,18 +92,18 @@ interface Options {
    */
   cart?: {
     /**
-     * Container id.
+     * Cart visibility.
      */
-    id: string;
+    visible?: boolean;
     /**
-     * Current currency.
+     * Displayed currency.
      */
     currency?: string;
   };
   /**
-   * Legend container id.
+   * Legend visibility.
    */
-  legendId?: string;
+  legendVisible?: boolean;
 }
 
 export { Options };

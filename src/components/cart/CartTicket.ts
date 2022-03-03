@@ -1,4 +1,4 @@
-import Base from 'components/base/Base';
+import Base from 'components/Base';
 import { SeatType } from 'types/seat-type';
 
 class CartTicket extends Base<HTMLDivElement> {

@@ -1,4 +1,4 @@
-import Base from 'components/base/Base';
+import Base from 'components/Base';
 import Store from 'store';
 import { DEFAULT_CURRENCY } from 'utils/consts';
 

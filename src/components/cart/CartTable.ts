@@ -1,4 +1,4 @@
-import Base from 'components/base/Base';
+import Base from 'components/Base';
 import CartItem from 'components/cart/CartItem';
 import Store from 'store';
 import { CartChangeEvent } from 'types/events';

@@ -1,4 +1,4 @@
-import Base from 'components/base/Base';
+import Base from 'components/Base';
 
 class DeleteButton extends Base<HTMLButtonElement> {
   public constructor(onclick: (e: MouseEvent) => void) {

@@ -1,4 +1,4 @@
-import Base from 'components/base/Base';
+import Base from 'components/Base';
 import SeatIndexer from 'components/map/SeatIndexer';
 import Spacer from 'components/map/Spacer';
 import Store from 'store';

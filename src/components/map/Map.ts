@@ -3,26 +3,13 @@ import FrontIndicator from 'components/map/FrontIndicator';
 import MapIndexer from 'components/map/MapIndexer';
 import Spacer from 'components/map/Spacer';
 import Store from 'store';
+import Base from 'components/Base';
 
-class Map {
-  private store: Store;
-
+class Map extends Base<HTMLDivElement> {
   public constructor(store: Store) {
-    this.store = store;
-    this.render();
-  }
-
-  private render(): void {
-    const options = this.store.getOptions();
-    const {
-      id,
-      rows,
-      columns,
-      rowSpacers,
-      columnSpacers,
-      indexers,
-      frontVisible,
-    } = options.map;
+    const options = store.getOptions();
+    const { rows, columns, rowSpacers, columnSpacers, indexers, frontVisible } =
+      options.map;
 
     const map = document.createElement('div');
     map.classList.add('sc-seats-container');
@@ -43,7 +30,7 @@ class Map {
         }
 
         const index = { row: i, col: j };
-        const seat = new Seat(index, this.store);
+        const seat = new Seat(index, store);
 
         row.appendChild(seat.element);
       }
@@ -58,25 +45,32 @@ class Map {
       innerContainer.appendChild(frontHeader.element);
     }
 
-    if (!indexers?.columns || indexers.columns.visible) {
-      const columnIndexer = new MapIndexer('column', this.store);
+    if (
+      !indexers?.columns ||
+      indexers.columns.visible === undefined ||
+      indexers.columns.visible
+    ) {
+      const columnIndexer = new MapIndexer('column', store);
       innerContainer.appendChild(columnIndexer.element);
     }
 
     innerContainer.appendChild(map);
 
-    const mainContainer = document.createElement('div');
-    mainContainer.className = 'sc-component sc-map';
+    const mapContainer = document.createElement('div');
+    mapContainer.className = 'sc-map';
 
-    if (!indexers?.rows || indexers.rows.visible) {
-      const rowIndexer = new MapIndexer('row', this.store);
-      mainContainer.appendChild(rowIndexer.element);
+    if (
+      !indexers?.rows ||
+      indexers.rows.visible === undefined ||
+      indexers.rows.visible
+    ) {
+      const rowIndexer = new MapIndexer('row', store);
+      mapContainer.appendChild(rowIndexer.element);
     }
 
-    mainContainer.appendChild(innerContainer);
+    mapContainer.appendChild(innerContainer);
 
-    const mapContainer = document.getElementById(id);
-    mapContainer?.appendChild(mainContainer);
+    super(mapContainer);
   }
 }
 
