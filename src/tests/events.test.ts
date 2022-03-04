@@ -1,4 +1,10 @@
 import Store from 'store';
+import {
+  SeatChangeEvent,
+  CartChangeEvent,
+  CartClearEvent,
+  SubmitEvent,
+} from 'types/events';
 import options from 'tests/options';
 
 describe('Events', () => {
@@ -15,6 +21,10 @@ describe('Events', () => {
     it('should disable seat and emit event', () => {
       store.setSeat({ row: 0, col: 2 }, { state: 'disabled' }, true);
       expect(seatchangeListener).toHaveBeenCalledTimes(1);
+
+      const e: SeatChangeEvent = seatchangeListener.mock.calls[0][0];
+      expect(e.previous.state).toBe('available');
+      expect(e.current.state).toBe('disabled');
     });
 
     it('should select seat and not emit event', () => {
@@ -25,6 +35,10 @@ describe('Events', () => {
     it('should update seat type and emit event', () => {
       store.setSeat({ row: 8, col: 9 }, { type: 'first' }, true);
       expect(seatchangeListener).toHaveBeenCalledTimes(2);
+
+      const e: SeatChangeEvent = seatchangeListener.mock.calls[1][0];
+      expect(e.previous.type).toBe('reduced');
+      expect(e.current.type).toBe('first');
     });
 
     it('should update seat type and not emit event', () => {
@@ -32,26 +46,47 @@ describe('Events', () => {
       expect(seatchangeListener).toHaveBeenCalledTimes(2);
     });
 
+    it('should set seat label and emit event', () => {
+      store.setSeat({ row: 0, col: 2 }, { label: '10' }, true);
+      expect(seatchangeListener).toHaveBeenCalledTimes(3);
+
+      const e: SeatChangeEvent = seatchangeListener.mock.calls[2][0];
+      expect(e.previous.label).toBe('A3');
+      expect(e.current.label).toBe('10');
+    });
+
     it('should clear and emit event', () => {
       store.clearCart(true);
-      expect(seatchangeListener).toHaveBeenCalledTimes(5);
+      expect(seatchangeListener).toHaveBeenCalledTimes(6);
+
+      const e1: SeatChangeEvent = seatchangeListener.mock.calls[3][0];
+      expect(e1.previous.state).toBe('selected');
+      expect(e1.current.state).toBe('available');
+
+      const e2: SeatChangeEvent = seatchangeListener.mock.calls[4][0];
+      expect(e2.previous.state).toBe('selected');
+      expect(e2.current.state).toBe('available');
+
+      const e3: SeatChangeEvent = seatchangeListener.mock.calls[5][0];
+      expect(e3.previous.state).toBe('selected');
+      expect(e3.current.state).toBe('available');
     });
 
     it('should not update state and not emit event', () => {
       store.setSeat({ row: 0, col: 3 }, { state: 'reserved' }, true);
-      expect(seatchangeListener).toHaveBeenCalledTimes(5);
+      expect(seatchangeListener).toHaveBeenCalledTimes(6);
     });
 
     it('should not update type and not emit event', () => {
       store.setSeat({ row: 9, col: 2 }, { type: 'reduced' }, true);
-      expect(seatchangeListener).toHaveBeenCalledTimes(5);
+      expect(seatchangeListener).toHaveBeenCalledTimes(6);
     });
 
     it('should remove event listener', () => {
       store.removeEventListener('seatchange', seatchangeListener);
 
       store.setSeat({ row: 9, col: 9 }, { type: 'reduced' }, true);
-      expect(seatchangeListener).toHaveBeenCalledTimes(5);
+      expect(seatchangeListener).toHaveBeenCalledTimes(6);
     });
   });
 
@@ -75,40 +110,70 @@ describe('Events', () => {
     it('should disable seat and emit event', () => {
       store.setSeat({ row: 7, col: 4 }, { state: 'disabled' }, true);
       expect(seatchangeListener).toHaveBeenCalledTimes(1);
+
+      const e: SeatChangeEvent = seatchangeListener.mock.calls[0][0];
+      expect(e.previous.state).toBe('available');
+      expect(e.current.state).toBe('disabled');
     });
 
     it('should update seat type and emit event', () => {
       store.setSeat({ row: 7, col: 4 }, { type: 'default' }, true);
       expect(seatchangeListener).toHaveBeenCalledTimes(2);
+
+      const e: SeatChangeEvent = seatchangeListener.mock.calls[1][0];
+      expect(e.previous.type).toBe('reduced');
+      expect(e.current.type).toBe('default');
     });
 
-    it('should update seat state and type and emit event', () => {
+    it('should update seat label and emit event', () => {
+      store.setSeat({ row: 7, col: 4 }, { label: 'NEW LABEL' }, true);
+      expect(seatchangeListener).toHaveBeenCalledTimes(3);
+
+      const e: SeatChangeEvent = seatchangeListener.mock.calls[2][0];
+      expect(e.previous.label).toBe('H5');
+      expect(e.current.label).toBe('NEW LABEL');
+    });
+
+    it('should update seat state, type and label and emit event', () => {
       store.setSeat(
         { row: 7, col: 4 },
-        { state: 'available', type: 'first' },
+        { state: 'available', type: 'first', label: 'MY LABEL' },
         true
       );
-      expect(seatchangeListener).toHaveBeenCalledTimes(3);
+      expect(seatchangeListener).toHaveBeenCalledTimes(4);
+
+      const e: SeatChangeEvent = seatchangeListener.mock.calls[3][0];
+      expect(e.previous.state).toBe('disabled');
+      expect(e.current.state).toBe('available');
+      expect(e.previous.type).toBe('default');
+      expect(e.current.type).toBe('first');
+      expect(e.previous.label).toBe('NEW LABEL');
+      expect(e.current.label).toBe('MY LABEL');
     });
 
     it('should not update type and not emit event', () => {
       store.setSeat({ row: 7, col: 4 }, { type: 'first' }, true);
-      expect(seatchangeListener).toHaveBeenCalledTimes(3);
+      expect(seatchangeListener).toHaveBeenCalledTimes(4);
+    });
+
+    it('should update label and not emit event', () => {
+      store.setSeat({ row: 7, col: 4 }, { label: 'NICE LABEL' }, false);
+      expect(seatchangeListener).toHaveBeenCalledTimes(4);
     });
 
     it('should not update state and not emit event', () => {
       store.setSeat({ row: 7, col: 4 }, { state: 'available' }, true);
-      expect(seatchangeListener).toHaveBeenCalledTimes(3);
+      expect(seatchangeListener).toHaveBeenCalledTimes(4);
     });
 
     it('should update type and not emit event', () => {
       store.setSeat({ row: 7, col: 4 }, { type: 'default' }, false);
-      expect(seatchangeListener).toHaveBeenCalledTimes(3);
+      expect(seatchangeListener).toHaveBeenCalledTimes(4);
     });
 
     it('should disable seat and not emit event', () => {
       store.setSeat({ row: 7, col: 4 }, { state: 'disabled' }, false);
-      expect(seatchangeListener).toHaveBeenCalledTimes(3);
+      expect(seatchangeListener).toHaveBeenCalledTimes(4);
     });
 
     it('should remove event listener', () => {
@@ -117,7 +182,7 @@ describe('Events', () => {
       });
 
       store.setSeat({ row: 7, col: 4 }, { state: 'disabled' }, true);
-      expect(seatchangeListener).toHaveBeenCalledTimes(3);
+      expect(seatchangeListener).toHaveBeenCalledTimes(4);
     });
 
     it('should emit multiple listeners', () => {
@@ -155,11 +220,23 @@ describe('Events', () => {
     it('should select seat and emit event', () => {
       store.setSeat({ row: 8, col: 2 }, { state: 'selected' }, true);
       expect(cartchangeListener).toHaveBeenCalledTimes(1);
+
+      const e: CartChangeEvent = cartchangeListener.mock.calls[0][0];
+      expect(e.action).toBe('add');
+      expect(e.seat.index.row).toBe(8);
+      expect(e.seat.index.col).toBe(2);
+      expect(e.seat.state).toBe('selected');
     });
 
     it('should unselect and emit event', () => {
       store.setSeat({ row: 8, col: 2 }, { state: 'available' }, true);
       expect(cartchangeListener).toHaveBeenCalledTimes(2);
+
+      const e: CartChangeEvent = cartchangeListener.mock.calls[1][0];
+      expect(e.action).toBe('remove');
+      expect(e.seat.index.row).toBe(8);
+      expect(e.seat.index.col).toBe(2);
+      expect(e.seat.state).toBe('available');
     });
 
     it('should not update state and not emit event', () => {
@@ -210,27 +287,50 @@ describe('Events', () => {
       store.addEventListener('cartclear', clearListener);
     });
 
-    it('should not emit event', () => {
-      store.clearCart(false);
-      expect(clearListener).toHaveBeenCalledTimes(0);
+    it('should emit event', () => {
+      store.clearCart(true);
+      expect(clearListener).toHaveBeenCalledTimes(1);
+
+      const e: CartClearEvent = clearListener.mock.calls[0][0];
+      expect(e.seats[0].index.row).toBe(0);
+      expect(e.seats[0].index.col).toBe(5);
+      expect(e.seats[0].state).toBe('available');
+
+      expect(e.seats[1].index.row).toBe(6);
+      expect(e.seats[1].index.col).toBe(1);
+      expect(e.seats[1].state).toBe('available');
+
+      expect(e.seats[2].index.row).toBe(8);
+      expect(e.seats[2].index.col).toBe(4);
+      expect(e.seats[2].state).toBe('available');
     });
 
     it('should emit event', () => {
       store.setSeat({ row: 1, col: 1 }, { state: 'selected' }, false);
       store.clearCart(true);
-      expect(clearListener).toHaveBeenCalledTimes(1);
+      expect(clearListener).toHaveBeenCalledTimes(2);
+
+      const e: CartClearEvent = clearListener.mock.calls[1][0];
+      expect(e.seats[0].index.row).toBe(1);
+      expect(e.seats[0].index.col).toBe(1);
+      expect(e.seats[0].state).toBe('available');
+    });
+
+    it('should not emit event', () => {
+      store.clearCart(false);
+      expect(clearListener).toHaveBeenCalledTimes(2);
     });
 
     it('should not emit event', () => {
       store.clearCart(true);
-      expect(clearListener).toHaveBeenCalledTimes(1);
+      expect(clearListener).toHaveBeenCalledTimes(2);
     });
 
     it('should remove event listener', () => {
       store.removeEventListener('cartclear', clearListener);
       store.clearCart(true);
 
-      expect(clearListener).toHaveBeenCalledTimes(1);
+      expect(clearListener).toHaveBeenCalledTimes(2);
     });
 
     it('should emit multiple listeners', () => {
@@ -244,6 +344,7 @@ describe('Events', () => {
 
       store.setSeat({ row: 1, col: 1 }, { state: 'selected' }, false);
       store.clearCart(true);
+
       expect(listenerListener1).toHaveBeenCalledTimes(1);
       expect(listenerListener2).toHaveBeenCalledTimes(1);
       expect(listenerListener3).toHaveBeenCalledTimes(1);
@@ -318,6 +419,21 @@ describe('Events', () => {
     it('should emit submit event', () => {
       store.submit();
       expect(submitListener).toHaveBeenCalledTimes(1);
+
+      const e: SubmitEvent = submitListener.mock.calls[0][0];
+      expect(e.cart[0].index.row).toBe(0);
+      expect(e.cart[0].index.col).toBe(5);
+      expect(e.cart[0].state).toBe('selected');
+
+      expect(e.cart[1].index.row).toBe(6);
+      expect(e.cart[1].index.col).toBe(1);
+      expect(e.cart[1].state).toBe('selected');
+
+      expect(e.cart[2].index.row).toBe(8);
+      expect(e.cart[2].index.col).toBe(4);
+      expect(e.cart[2].state).toBe('selected');
+
+      expect(e.total).toBe(50);
     });
 
     it('should remove event listener', () => {
