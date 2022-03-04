@@ -16,6 +16,7 @@ class Seatchart {
    */
   public readonly options: Options;
 
+  private ui: SeatchartUI;
   private store: Store;
 
   /**
@@ -27,9 +28,7 @@ class Seatchart {
     this.element = element;
     this.options = options;
     this.store = new Store(options);
-
-    new SeatchartUI(element, this.store);
-
+    this.ui = new SeatchartUI(element, this.store);
     this.store.init();
   }
 

@@ -5,6 +5,9 @@ import Legend from 'components/legend/Legend';
 
 class Seatchart {
   public constructor(container: HTMLElement, store: Store) {
+    while (container.firstChild) {
+      container.firstChild.remove();
+    }
     container.classList.add('sc-main-container');
 
     const map = new Map(store);
