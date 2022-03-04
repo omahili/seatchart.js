@@ -5,7 +5,7 @@ describe('Cart', () => {
   describe('Cart total', () => {
     let store: Store;
 
-    beforeAll(() => {
+    beforeEach(() => {
       store = new Store(options);
       store.init();
     });
@@ -22,15 +22,15 @@ describe('Cart', () => {
     });
 
     it('should unselect seat get total', () => {
-      store.setSeat({ row: 0, col: 9 }, { state: 'available' }, false);
+      store.setSeat({ row: 0, col: 5 }, { state: 'available' }, false);
       const total = store.getCartTotal();
-      expect(total).toBe(60);
+      expect(total).toBe(25);
     });
 
     it('should select seat and get total', () => {
       store.setSeat({ row: 2, col: 1 }, { state: 'selected' }, false);
       const total = store.getCartTotal();
-      expect(total).toBe(85);
+      expect(total).toBe(75);
     });
 
     it('should update type, select seat and get total', () => {
@@ -41,7 +41,7 @@ describe('Cart', () => {
       );
       const total = store.getCartTotal();
 
-      expect(total).toBe(95);
+      expect(total).toBe(60);
     });
 
     it('should clear and get total', () => {
@@ -54,7 +54,7 @@ describe('Cart', () => {
   describe('Cart array', () => {
     let store: Store;
 
-    beforeAll(() => {
+    beforeEach(() => {
       store = new Store(options);
       store.init();
     });
@@ -91,7 +91,7 @@ describe('Cart', () => {
       store.setSeat({ row: 0, col: 2 }, { type: 'first' }, false);
       const cart = store.getCart();
 
-      expect(cart.length).toBe(5);
+      expect(cart.length).toBe(3);
     });
 
     it('should update seat type and state and get cart array', () => {
@@ -102,7 +102,7 @@ describe('Cart', () => {
       );
       const cart = store.getCart();
 
-      expect(cart.length).toBe(6);
+      expect(cart.length).toBe(4);
     });
 
     it('should clear and get cart array', () => {

@@ -5,7 +5,7 @@ describe('Seats', () => {
   describe('Get seats', () => {
     let store: Store;
 
-    beforeAll(() => {
+    beforeEach(() => {
       store = new Store(options);
       store.init();
     });
@@ -51,7 +51,7 @@ describe('Seats', () => {
     });
 
     describe('Clear and get seats', () => {
-      beforeAll(() => {
+      beforeEach(() => {
         store.clearCart(true);
       });
 
@@ -75,7 +75,7 @@ describe('Seats', () => {
   describe('Set seats', () => {
     let store: Store;
 
-    beforeAll(() => {
+    beforeEach(() => {
       store = new Store(options);
       store.init();
     });

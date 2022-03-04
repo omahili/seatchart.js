@@ -129,18 +129,19 @@ class Store {
     }
 
     if (newState && seat.state !== newState) {
-      if (newState === 'selected') {
-        this.addToCart(seat.type, seat.index, emit);
-      } else if (seat.state === 'selected') {
-        this.removeFromCart(seat.type, seat.index, emit);
-      }
-
       seat.state = newState;
       hasChanged = true;
+
+      if (seat.state === 'selected') {
+        this.addToCart(seat.index, emit);
+      } else if (previous.state === 'selected') {
+        this.removeFromCart(seat.index, emit);
+      }
     }
 
     if (hasChanged && emit) {
       const listenerKey = this.listenerKey(index);
+
       this.singleSeatChangeEventListeners[listenerKey].forEach((el) =>
         el({ previous, current: seat })
       );
@@ -158,11 +159,32 @@ class Store {
   public clearCart(emit: boolean) {
     const seats: SeatInfo[] = [...this.cart];
 
-    if (emit && seats.length > 0) {
-      this.eventListeners.cartclear.forEach((el) => el({ seats }));
+    this.cart = [];
+    for (const seat of seats) {
+      seat.state = 'available';
     }
 
-    seats.forEach((x) => this.setSeat(x.index, { state: 'available' }, emit));
+    if (emit) {
+      if (seats.length > 0) {
+        this.eventListeners.cartclear.forEach((el) => el({ seats }));
+      }
+
+      for (const seat of seats) {
+        this.eventListeners.cartchange.forEach((el) =>
+          el({ action: 'remove', seat })
+        );
+
+        const previous: SeatInfo = { ...seat, state: 'selected' };
+        const listenerKey = this.listenerKey(seat.index);
+        this.singleSeatChangeEventListeners[listenerKey].forEach((el) =>
+          el({ previous, current: seat })
+        );
+
+        this.eventListeners.seatchange.forEach((el) =>
+          el({ previous, current: seat })
+        );
+      }
+    }
   }
 
   public submit() {
@@ -271,7 +293,7 @@ class Store {
       index.row === otherIndex.row && index.col === otherIndex.col;
   }
 
-  private addToCart(type: string, index: SeatIndex, emit: boolean) {
+  private addToCart(index: SeatIndex, emit: boolean) {
     this.cart.push(this.seats[index.row][index.col]);
 
     if (emit) {
@@ -282,7 +304,7 @@ class Store {
     }
   }
 
-  private removeFromCart(type: string, seatIndex: SeatIndex, emit: boolean) {
+  private removeFromCart(seatIndex: SeatIndex, emit: boolean) {
     const index = this.cart.findIndex(
       (x) => seatIndex.row === x.index.row && seatIndex.col === x.index.col
     );

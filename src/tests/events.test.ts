@@ -4,203 +4,255 @@ import {
   CartChangeEvent,
   CartClearEvent,
   SubmitEvent,
+  Events,
 } from 'types/events';
 import options from 'tests/options';
+
+type AddMockListener<T> = (
+  fn?: ((e: T) => void) | undefined
+) => jest.Mock<void, [e: T]>;
+
+const createAddMockEventListener = <T extends keyof Events>(
+  store: Store,
+  event: T
+) => {
+  return (fn?: (e: Events[T]) => void) => {
+    const mockListener = jest.fn(fn);
+    store.addEventListener(event, mockListener);
+    return mockListener;
+  };
+};
 
 describe('Events', () => {
   describe('seatchange event', () => {
     let store: Store;
-    const seatchangeListener = jest.fn();
+    let addEventListener: AddMockListener<SeatChangeEvent>;
 
-    beforeAll(() => {
+    beforeEach(() => {
       store = new Store(options);
       store.init();
-      store.addEventListener('seatchange', seatchangeListener);
+
+      addEventListener = createAddMockEventListener(store, 'seatchange');
     });
 
     it('should disable seat and emit event', () => {
-      store.setSeat({ row: 0, col: 2 }, { state: 'disabled' }, true);
-      expect(seatchangeListener).toHaveBeenCalledTimes(1);
+      const listener = addEventListener((e) => {
+        expect(e.previous.state).toBe('available');
+        expect(e.current.state).toBe('disabled');
+      });
 
-      const e: SeatChangeEvent = seatchangeListener.mock.calls[0][0];
-      expect(e.previous.state).toBe('available');
-      expect(e.current.state).toBe('disabled');
+      store.setSeat({ row: 0, col: 2 }, { state: 'disabled' }, true);
+
+      expect(listener).toHaveBeenCalledTimes(1);
     });
 
     it('should select seat and not emit event', () => {
+      const listener = addEventListener();
       store.setSeat({ row: 0, col: 2 }, { state: 'available' }, false);
-      expect(seatchangeListener).toHaveBeenCalledTimes(1);
+
+      expect(listener).toHaveBeenCalledTimes(0);
     });
 
     it('should update seat type and emit event', () => {
-      store.setSeat({ row: 8, col: 9 }, { type: 'first' }, true);
-      expect(seatchangeListener).toHaveBeenCalledTimes(2);
+      const listener = addEventListener((e) => {
+        expect(e.previous.type).toBe('reduced');
+        expect(e.current.type).toBe('first');
+      });
 
-      const e: SeatChangeEvent = seatchangeListener.mock.calls[1][0];
-      expect(e.previous.type).toBe('reduced');
-      expect(e.current.type).toBe('first');
+      store.setSeat({ row: 8, col: 9 }, { type: 'first' }, true);
+      expect(listener).toHaveBeenCalledTimes(1);
     });
 
     it('should update seat type and not emit event', () => {
+      const listener = addEventListener();
       store.setSeat({ row: 8, col: 9 }, { type: 'reduced' }, false);
-      expect(seatchangeListener).toHaveBeenCalledTimes(2);
+
+      expect(listener).toHaveBeenCalledTimes(0);
     });
 
     it('should set seat label and emit event', () => {
+      const listener = addEventListener((e) => {
+        expect(e.previous.label).toBe('A3');
+        expect(e.current.label).toBe('10');
+      });
       store.setSeat({ row: 0, col: 2 }, { label: '10' }, true);
-      expect(seatchangeListener).toHaveBeenCalledTimes(3);
+      expect(listener).toHaveBeenCalledTimes(1);
+    });
 
-      const e: SeatChangeEvent = seatchangeListener.mock.calls[2][0];
-      expect(e.previous.label).toBe('A3');
-      expect(e.current.label).toBe('10');
+    it('should whole seat and emit event', () => {
+      const listener = addEventListener((e) => {
+        expect(e.previous).toMatchObject({
+          state: 'available',
+          label: 'C6',
+          type: 'first',
+        });
+
+        expect(e.current).toMatchObject({
+          state: 'disabled',
+          label: 'NEW',
+          type: 'reduced',
+        });
+      });
+      store.setSeat(
+        { row: 2, col: 5 },
+        { label: 'NEW', type: 'reduced', state: 'disabled' },
+        true
+      );
+      expect(listener).toHaveBeenCalledTimes(1);
     });
 
     it('should clear and emit event', () => {
+      const listener = addEventListener();
       store.clearCart(true);
-      expect(seatchangeListener).toHaveBeenCalledTimes(6);
 
-      const e1: SeatChangeEvent = seatchangeListener.mock.calls[3][0];
+      expect(listener).toHaveBeenCalledTimes(3);
+
+      const e1 = listener.mock.calls[0][0];
       expect(e1.previous.state).toBe('selected');
       expect(e1.current.state).toBe('available');
 
-      const e2: SeatChangeEvent = seatchangeListener.mock.calls[4][0];
+      const e2 = listener.mock.calls[1][0];
       expect(e2.previous.state).toBe('selected');
       expect(e2.current.state).toBe('available');
 
-      const e3: SeatChangeEvent = seatchangeListener.mock.calls[5][0];
+      const e3 = listener.mock.calls[2][0];
       expect(e3.previous.state).toBe('selected');
       expect(e3.current.state).toBe('available');
     });
 
     it('should not update state and not emit event', () => {
+      const listener = addEventListener();
       store.setSeat({ row: 0, col: 3 }, { state: 'reserved' }, true);
-      expect(seatchangeListener).toHaveBeenCalledTimes(6);
+      expect(listener).toHaveBeenCalledTimes(0);
     });
 
     it('should not update type and not emit event', () => {
+      const listener = addEventListener();
       store.setSeat({ row: 9, col: 2 }, { type: 'reduced' }, true);
-      expect(seatchangeListener).toHaveBeenCalledTimes(6);
+      expect(listener).toHaveBeenCalledTimes(0);
     });
 
     it('should remove event listener', () => {
-      store.removeEventListener('seatchange', seatchangeListener);
-
+      const listener = addEventListener();
       store.setSeat({ row: 9, col: 9 }, { type: 'reduced' }, true);
-      expect(seatchangeListener).toHaveBeenCalledTimes(6);
+      expect(listener).toHaveBeenCalledTimes(0);
     });
   });
 
   describe('seatchange event with index option', () => {
     let store: Store;
-    const seatchangeListener = jest.fn();
+    let addEventListener: AddMockListener<SeatChangeEvent>;
 
-    beforeAll(() => {
+    beforeEach(() => {
       store = new Store(options);
       store.init();
-      store.addEventListener('seatchange', seatchangeListener, {
-        index: { row: 7, col: 4 },
-      });
+
+      addEventListener = (fn?: (e: SeatChangeEvent) => void) => {
+        const listener = jest.fn(fn);
+        store.addEventListener('seatchange', listener, {
+          index: { row: 7, col: 4 },
+        });
+        return listener;
+      };
     });
 
     it('should set different seat and not emit event', () => {
+      const listener = addEventListener();
       store.setSeat({ row: 7, col: 5 }, { state: 'available' }, true);
-      expect(seatchangeListener).toHaveBeenCalledTimes(0);
+      expect(listener).toHaveBeenCalledTimes(0);
     });
 
     it('should disable seat and emit event', () => {
+      const listener = addEventListener((e) => {
+        expect(e.previous.state).toBe('available');
+        expect(e.current.state).toBe('disabled');
+      });
       store.setSeat({ row: 7, col: 4 }, { state: 'disabled' }, true);
-      expect(seatchangeListener).toHaveBeenCalledTimes(1);
-
-      const e: SeatChangeEvent = seatchangeListener.mock.calls[0][0];
-      expect(e.previous.state).toBe('available');
-      expect(e.current.state).toBe('disabled');
+      expect(listener).toHaveBeenCalledTimes(1);
     });
 
     it('should update seat type and emit event', () => {
+      const listener = addEventListener((e) => {
+        expect(e.previous.type).toBe('reduced');
+        expect(e.current.type).toBe('default');
+      });
       store.setSeat({ row: 7, col: 4 }, { type: 'default' }, true);
-      expect(seatchangeListener).toHaveBeenCalledTimes(2);
-
-      const e: SeatChangeEvent = seatchangeListener.mock.calls[1][0];
-      expect(e.previous.type).toBe('reduced');
-      expect(e.current.type).toBe('default');
+      expect(listener).toHaveBeenCalledTimes(1);
     });
 
     it('should update seat label and emit event', () => {
+      const listener = addEventListener((e) => {
+        expect(e.previous.label).toBe('H5');
+        expect(e.current.label).toBe('NEW LABEL');
+      });
       store.setSeat({ row: 7, col: 4 }, { label: 'NEW LABEL' }, true);
-      expect(seatchangeListener).toHaveBeenCalledTimes(3);
-
-      const e: SeatChangeEvent = seatchangeListener.mock.calls[2][0];
-      expect(e.previous.label).toBe('H5');
-      expect(e.current.label).toBe('NEW LABEL');
+      expect(listener).toHaveBeenCalledTimes(1);
     });
 
     it('should update seat state, type and label and emit event', () => {
+      const listener = addEventListener((e) => {
+        expect(e.previous.state).toBe('available');
+        expect(e.current.state).toBe('disabled');
+        expect(e.previous.type).toBe('reduced');
+        expect(e.current.type).toBe('first');
+        expect(e.previous.label).toBe('H5');
+        expect(e.current.label).toBe('MY LABEL');
+      });
+
       store.setSeat(
         { row: 7, col: 4 },
-        { state: 'available', type: 'first', label: 'MY LABEL' },
+        { state: 'disabled', type: 'first', label: 'MY LABEL' },
         true
       );
-      expect(seatchangeListener).toHaveBeenCalledTimes(4);
-
-      const e: SeatChangeEvent = seatchangeListener.mock.calls[3][0];
-      expect(e.previous.state).toBe('disabled');
-      expect(e.current.state).toBe('available');
-      expect(e.previous.type).toBe('default');
-      expect(e.current.type).toBe('first');
-      expect(e.previous.label).toBe('NEW LABEL');
-      expect(e.current.label).toBe('MY LABEL');
+      expect(listener).toHaveBeenCalledTimes(1);
     });
 
     it('should not update type and not emit event', () => {
-      store.setSeat({ row: 7, col: 4 }, { type: 'first' }, true);
-      expect(seatchangeListener).toHaveBeenCalledTimes(4);
+      const listener = addEventListener();
+      store.setSeat({ row: 7, col: 4 }, { type: 'reduced' }, true);
+      expect(listener).toHaveBeenCalledTimes(0);
     });
 
     it('should update label and not emit event', () => {
+      const listener = addEventListener();
       store.setSeat({ row: 7, col: 4 }, { label: 'NICE LABEL' }, false);
-      expect(seatchangeListener).toHaveBeenCalledTimes(4);
+      expect(listener).toHaveBeenCalledTimes(0);
     });
 
     it('should not update state and not emit event', () => {
+      const listener = addEventListener();
       store.setSeat({ row: 7, col: 4 }, { state: 'available' }, true);
-      expect(seatchangeListener).toHaveBeenCalledTimes(4);
+      expect(listener).toHaveBeenCalledTimes(0);
     });
 
     it('should update type and not emit event', () => {
+      const listener = addEventListener();
       store.setSeat({ row: 7, col: 4 }, { type: 'default' }, false);
-      expect(seatchangeListener).toHaveBeenCalledTimes(4);
+      expect(listener).toHaveBeenCalledTimes(0);
     });
 
     it('should disable seat and not emit event', () => {
+      const listener = addEventListener();
       store.setSeat({ row: 7, col: 4 }, { state: 'disabled' }, false);
-      expect(seatchangeListener).toHaveBeenCalledTimes(4);
+      expect(listener).toHaveBeenCalledTimes(0);
     });
 
     it('should remove event listener', () => {
-      store.removeEventListener('seatchange', seatchangeListener, {
+      const listener = addEventListener();
+      store.removeEventListener('seatchange', listener, {
         index: { row: 7, col: 4 },
       });
 
       store.setSeat({ row: 7, col: 4 }, { state: 'disabled' }, true);
-      expect(seatchangeListener).toHaveBeenCalledTimes(4);
+      expect(listener).toHaveBeenCalledTimes(0);
     });
 
     it('should emit multiple listeners', () => {
-      const listenerListener1 = jest.fn();
-      const listenerListener2 = jest.fn();
-      const listenerListener3 = jest.fn();
+      const listenerListener1 = addEventListener();
+      const listenerListener2 = addEventListener();
+      const listenerListener3 = addEventListener();
 
-      store.addEventListener('seatchange', listenerListener1, {
-        index: { row: 7, col: 4 },
-      });
-      store.addEventListener('seatchange', listenerListener2, {
-        index: { row: 7, col: 4 },
-      });
-      store.addEventListener('seatchange', listenerListener3, {
-        index: { row: 7, col: 4 },
-      });
-
-      store.setSeat({ row: 7, col: 4 }, { state: 'available' }, true);
+      store.setSeat({ row: 7, col: 4 }, { state: 'disabled' }, true);
       expect(listenerListener1).toHaveBeenCalledTimes(1);
       expect(listenerListener2).toHaveBeenCalledTimes(1);
       expect(listenerListener3).toHaveBeenCalledTimes(1);
@@ -209,68 +261,70 @@ describe('Events', () => {
 
   describe('cartchange event', () => {
     let store: Store;
-    const cartchangeListener = jest.fn();
+    let addEventListener: AddMockListener<CartChangeEvent>;
 
-    beforeAll(() => {
+    beforeEach(() => {
       store = new Store(options);
       store.init();
-      store.addEventListener('cartchange', cartchangeListener);
+
+      addEventListener = createAddMockEventListener(store, 'cartchange');
     });
 
     it('should select seat and emit event', () => {
+      const listener = addEventListener((e) => {
+        expect(e.action).toBe('add');
+        expect(e.seat.index.row).toBe(8);
+        expect(e.seat.index.col).toBe(2);
+        expect(e.seat.state).toBe('selected');
+      });
       store.setSeat({ row: 8, col: 2 }, { state: 'selected' }, true);
-      expect(cartchangeListener).toHaveBeenCalledTimes(1);
-
-      const e: CartChangeEvent = cartchangeListener.mock.calls[0][0];
-      expect(e.action).toBe('add');
-      expect(e.seat.index.row).toBe(8);
-      expect(e.seat.index.col).toBe(2);
-      expect(e.seat.state).toBe('selected');
+      expect(listener).toHaveBeenCalledTimes(1);
     });
 
     it('should unselect and emit event', () => {
-      store.setSeat({ row: 8, col: 2 }, { state: 'available' }, true);
-      expect(cartchangeListener).toHaveBeenCalledTimes(2);
-
-      const e: CartChangeEvent = cartchangeListener.mock.calls[1][0];
-      expect(e.action).toBe('remove');
-      expect(e.seat.index.row).toBe(8);
-      expect(e.seat.index.col).toBe(2);
-      expect(e.seat.state).toBe('available');
+      const listener = addEventListener((e) => {
+        expect(e.action).toBe('remove');
+        expect(e.seat.index.row).toBe(0);
+        expect(e.seat.index.col).toBe(5);
+        expect(e.seat.state).toBe('available');
+      });
+      store.setSeat({ row: 0, col: 5 }, { state: 'available' }, true);
+      expect(listener).toHaveBeenCalledTimes(1);
     });
 
     it('should not update state and not emit event', () => {
+      const listener = addEventListener();
       store.setSeat({ row: 8, col: 2 }, { state: 'available' }, true);
-      expect(cartchangeListener).toHaveBeenCalledTimes(2);
+      expect(listener).toHaveBeenCalledTimes(0);
     });
 
     it('should select seat and not emit event', () => {
+      const listener = addEventListener();
       store.setSeat({ row: 8, col: 2 }, { state: 'selected' }, false);
-      expect(cartchangeListener).toHaveBeenCalledTimes(2);
+      expect(listener).toHaveBeenCalledTimes(0);
     });
 
     it('should clear and not emit event', () => {
+      const listener = addEventListener();
       store.clearCart(false);
-      expect(cartchangeListener).toHaveBeenCalledTimes(2);
+      expect(listener).toHaveBeenCalledTimes(0);
     });
 
     it('should remove event listener', () => {
-      store.removeEventListener('cartchange', cartchangeListener);
+      const listener = addEventListener();
+      store.removeEventListener('cartchange', listener);
 
       store.setSeat({ row: 3, col: 8 }, { state: 'selected' }, true);
-      expect(cartchangeListener).toHaveBeenCalledTimes(2);
+      expect(listener).toHaveBeenCalledTimes(0);
     });
 
     it('should emit multiple listeners', () => {
-      const listenerListener1 = jest.fn();
-      const listenerListener2 = jest.fn();
-      const listenerListener3 = jest.fn();
+      const listenerListener1 = addEventListener();
+      const listenerListener2 = addEventListener();
+      const listenerListener3 = addEventListener();
 
-      store.addEventListener('cartchange', listenerListener1);
-      store.addEventListener('cartchange', listenerListener2);
-      store.addEventListener('cartchange', listenerListener3);
+      store.setSeat({ row: 0, col: 5 }, { state: 'available' }, true);
 
-      store.setSeat({ row: 3, col: 8 }, { state: 'available' }, true);
       expect(listenerListener1).toHaveBeenCalledTimes(1);
       expect(listenerListener2).toHaveBeenCalledTimes(1);
       expect(listenerListener3).toHaveBeenCalledTimes(1);
@@ -279,19 +333,21 @@ describe('Events', () => {
 
   describe('clear event', () => {
     let store: Store;
-    const clearListener = jest.fn();
+    let addEventListener: AddMockListener<CartClearEvent>;
 
-    beforeAll(() => {
+    beforeEach(() => {
       store = new Store(options);
       store.init();
-      store.addEventListener('cartclear', clearListener);
+
+      addEventListener = createAddMockEventListener(store, 'cartclear');
     });
 
-    it('should emit event', () => {
+    it('should emit clear event', () => {
+      const listener = addEventListener();
       store.clearCart(true);
-      expect(clearListener).toHaveBeenCalledTimes(1);
+      expect(listener).toHaveBeenCalledTimes(1);
 
-      const e: CartClearEvent = clearListener.mock.calls[0][0];
+      const e: CartClearEvent = listener.mock.calls[0][0];
       expect(e.seats[0].index.row).toBe(0);
       expect(e.seats[0].index.col).toBe(5);
       expect(e.seats[0].state).toBe('available');
@@ -306,41 +362,43 @@ describe('Events', () => {
     });
 
     it('should emit event', () => {
+      store.clearCart(true);
+      const listener = addEventListener((e) => {
+        expect(e.seats[0].index.row).toBe(1);
+        expect(e.seats[0].index.col).toBe(1);
+        expect(e.seats[0].state).toBe('available');
+      });
       store.setSeat({ row: 1, col: 1 }, { state: 'selected' }, false);
       store.clearCart(true);
-      expect(clearListener).toHaveBeenCalledTimes(2);
-
-      const e: CartClearEvent = clearListener.mock.calls[1][0];
-      expect(e.seats[0].index.row).toBe(1);
-      expect(e.seats[0].index.col).toBe(1);
-      expect(e.seats[0].state).toBe('available');
+      expect(listener).toHaveBeenCalledTimes(1);
     });
 
     it('should not emit event', () => {
+      const listener = addEventListener();
       store.clearCart(false);
-      expect(clearListener).toHaveBeenCalledTimes(2);
+      expect(listener).toHaveBeenCalledTimes(0);
     });
 
     it('should not emit event', () => {
       store.clearCart(true);
-      expect(clearListener).toHaveBeenCalledTimes(2);
+
+      const listener = addEventListener();
+      store.clearCart(true);
+      expect(listener).toHaveBeenCalledTimes(0);
     });
 
     it('should remove event listener', () => {
-      store.removeEventListener('cartclear', clearListener);
+      const listener = addEventListener();
+      store.removeEventListener('cartclear', listener);
       store.clearCart(true);
 
-      expect(clearListener).toHaveBeenCalledTimes(2);
+      expect(listener).toHaveBeenCalledTimes(0);
     });
 
     it('should emit multiple listeners', () => {
-      const listenerListener1 = jest.fn();
-      const listenerListener2 = jest.fn();
-      const listenerListener3 = jest.fn();
-
-      store.addEventListener('cartclear', listenerListener1);
-      store.addEventListener('cartclear', listenerListener2);
-      store.addEventListener('cartclear', listenerListener3);
+      const listenerListener1 = addEventListener();
+      const listenerListener2 = addEventListener();
+      const listenerListener3 = addEventListener();
 
       store.setSeat({ row: 1, col: 1 }, { state: 'selected' }, false);
       store.clearCart(true);
@@ -353,20 +411,33 @@ describe('Events', () => {
 
   describe('seatchange, cartchange and clear events combined', () => {
     let store: Store;
-    const seatchangeListener = jest.fn();
-    const cartchangeListener = jest.fn();
-    const cartclearListener = jest.fn();
+    let addCartClearEventListener: AddMockListener<CartClearEvent>;
+    let addCartChangeEventListener: AddMockListener<CartChangeEvent>;
+    let addSeatChangeEventListener: AddMockListener<SeatChangeEvent>;
 
-    beforeAll(() => {
+    beforeEach(() => {
       store = new Store(options);
       store.init();
 
-      store.addEventListener('seatchange', seatchangeListener);
-      store.addEventListener('cartchange', cartchangeListener);
-      store.addEventListener('cartclear', cartclearListener);
+      addCartClearEventListener = createAddMockEventListener(
+        store,
+        'cartclear'
+      );
+      addCartChangeEventListener = createAddMockEventListener(
+        store,
+        'cartchange'
+      );
+      addSeatChangeEventListener = createAddMockEventListener(
+        store,
+        'seatchange'
+      );
     });
 
     it('should clear and emit in order cartclear, cartchange and seatchange events', () => {
+      const cartclearListener = addCartClearEventListener();
+      const cartchangeListener = addCartChangeEventListener();
+      const seatchangeListener = addSeatChangeEventListener();
+
       store.clearCart(true);
       expect(cartclearListener).toHaveBeenCalledTimes(1);
       expect(seatchangeListener).toHaveBeenCalledTimes(3);
@@ -381,22 +452,31 @@ describe('Events', () => {
     });
 
     it('should select seat and emit in order cartchange and seatchange', () => {
-      store.setSeat({ row: 2, col: 2 }, { state: 'selected' }, true);
-      expect(cartclearListener).toHaveBeenCalledTimes(1);
-      expect(seatchangeListener).toHaveBeenCalledTimes(4);
-      expect(cartchangeListener).toHaveBeenCalledTimes(4);
+      const cartclearListener = addCartClearEventListener();
+      const cartchangeListener = addCartChangeEventListener();
+      const seatchangeListener = addSeatChangeEventListener();
 
-      const seatchangeOrder = seatchangeListener.mock.invocationCallOrder[2];
-      const cartchangeOrder = cartchangeListener.mock.invocationCallOrder[2];
+      store.setSeat({ row: 2, col: 2 }, { state: 'selected' }, true);
+      expect(cartclearListener).toHaveBeenCalledTimes(0);
+      expect(seatchangeListener).toHaveBeenCalledTimes(1);
+      expect(cartchangeListener).toHaveBeenCalledTimes(1);
+
+      const seatchangeOrder = seatchangeListener.mock.invocationCallOrder[0];
+      const cartchangeOrder = cartchangeListener.mock.invocationCallOrder[0];
 
       expect(cartchangeOrder).toBeLessThan(seatchangeOrder);
     });
 
     it('should unselect seat and emit in order cartchange and seatchange events', () => {
-      store.setSeat({ row: 2, col: 2 }, { state: 'available' }, true);
-      expect(cartclearListener).toHaveBeenCalledTimes(1);
-      expect(seatchangeListener).toHaveBeenCalledTimes(5);
-      expect(cartchangeListener).toHaveBeenCalledTimes(5);
+      const cartclearListener = addCartClearEventListener();
+      const cartchangeListener = addCartChangeEventListener();
+      const seatchangeListener = addSeatChangeEventListener();
+
+      store.setSeat({ row: 6, col: 1 }, { state: 'available' }, true);
+
+      expect(cartclearListener).toHaveBeenCalledTimes(0);
+      expect(seatchangeListener).toHaveBeenCalledTimes(1);
+      expect(cartchangeListener).toHaveBeenCalledTimes(1);
 
       const seatchangeOrder = seatchangeListener.mock.invocationCallOrder[0];
       const cartchangeOrder = cartchangeListener.mock.invocationCallOrder[0];
@@ -407,20 +487,21 @@ describe('Events', () => {
 
   describe('submit event', () => {
     let store: Store;
-    const submitListener = jest.fn();
+    let addEventListener: AddMockListener<SubmitEvent>;
 
-    beforeAll(() => {
+    beforeEach(() => {
       store = new Store(options);
       store.init();
 
-      store.addEventListener('submit', submitListener);
+      addEventListener = createAddMockEventListener(store, 'submit');
     });
 
     it('should emit submit event', () => {
+      const listener = addEventListener();
       store.submit();
-      expect(submitListener).toHaveBeenCalledTimes(1);
+      expect(listener).toHaveBeenCalledTimes(1);
 
-      const e: SubmitEvent = submitListener.mock.calls[0][0];
+      const e: SubmitEvent = listener.mock.calls[0][0];
       expect(e.cart[0].index.row).toBe(0);
       expect(e.cart[0].index.col).toBe(5);
       expect(e.cart[0].state).toBe('selected');
@@ -437,20 +518,18 @@ describe('Events', () => {
     });
 
     it('should remove event listener', () => {
-      store.removeEventListener('submit', submitListener);
-      expect(submitListener).toHaveBeenCalledTimes(1);
+      const listener = addEventListener();
+      store.removeEventListener('submit', listener);
+      expect(listener).toHaveBeenCalledTimes(0);
     });
 
     it('should emit multiple listeners in order', () => {
-      const listenerListener1 = jest.fn();
-      const listenerListener2 = jest.fn();
-      const listenerListener3 = jest.fn();
-
-      store.addEventListener('submit', listenerListener1);
-      store.addEventListener('submit', listenerListener2);
-      store.addEventListener('submit', listenerListener3);
+      const listenerListener1 = addEventListener();
+      const listenerListener2 = addEventListener();
+      const listenerListener3 = addEventListener();
 
       store.submit();
+
       expect(listenerListener1).toHaveBeenCalledTimes(1);
       expect(listenerListener2).toHaveBeenCalledTimes(1);
       expect(listenerListener3).toHaveBeenCalledTimes(1);
