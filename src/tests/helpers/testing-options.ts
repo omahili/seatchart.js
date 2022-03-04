@@ -1,6 +1,6 @@
 import { Options } from 'types/options';
 
-const options: Options = {
+const testingOptions: Options = {
   map: {
     rows: 10,
     columns: 10,
@@ -41,4 +41,4 @@ const options: Options = {
   },
 };
 
-export default options;
+export default testingOptions;

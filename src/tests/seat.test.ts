@@ -1,12 +1,12 @@
 import Store from 'store';
-import options from 'tests/options';
+import testingOptions from 'tests/helpers/testing-options';
 
 describe('Seats', () => {
   describe('Get seats', () => {
     let store: Store;
 
     beforeEach(() => {
-      store = new Store(options);
+      store = new Store(testingOptions);
       store.init();
     });
 
@@ -50,25 +50,17 @@ describe('Seats', () => {
       expect(seat.state).toBe('selected');
     });
 
-    describe('Clear and get seats', () => {
-      beforeEach(() => {
-        store.clearCart(true);
-      });
+    it('should clear cart and seats be available', () => {
+      store.clearCart(true);
 
-      it('should be available', () => {
-        const seat = store.getSeat({ row: 0, col: 5 });
-        expect(seat.state).toBe('available');
-      });
+      const seat1 = store.getSeat({ row: 0, col: 5 });
+      expect(seat1.state).toBe('available');
 
-      it('should be available', () => {
-        const seat = store.getSeat({ row: 6, col: 1 });
-        expect(seat.state).toBe('available');
-      });
+      const seat2 = store.getSeat({ row: 6, col: 1 });
+      expect(seat2.state).toBe('available');
 
-      it('should be available', () => {
-        const seat = store.getSeat({ row: 8, col: 4 });
-        expect(seat.state).toBe('available');
-      });
+      const seat3 = store.getSeat({ row: 8, col: 4 });
+      expect(seat3.state).toBe('available');
     });
   });
 
@@ -76,7 +68,7 @@ describe('Seats', () => {
     let store: Store;
 
     beforeEach(() => {
-      store = new Store(options);
+      store = new Store(testingOptions);
       store.init();
     });
 
@@ -136,7 +128,7 @@ describe('Seats', () => {
     });
 
     it('should set state, type and label', () => {
-      const index = { row: 7, col: 4 };
+      const index = { row: 5, col: 4 };
       store.setSeat(
         index,
         { state: 'selected', type: 'first', label: 'MY LABEL' },
@@ -144,7 +136,7 @@ describe('Seats', () => {
       );
       const seat = store.getSeat(index);
 
-      expect(seat.index.row).toBe(7);
+      expect(seat.index.row).toBe(5);
       expect(seat.index.col).toBe(4);
       expect(seat.label).toBe('MY LABEL');
       expect(seat.type).toBe('first');
@@ -160,7 +152,7 @@ describe('Seats', () => {
     });
 
     it('should set state to reserved', () => {
-      const index = { row: 8, col: 4 };
+      const index = { row: 9, col: 7 };
       store.setSeat(index, { state: 'reserved' }, false);
       const seat = store.getSeat(index);
 

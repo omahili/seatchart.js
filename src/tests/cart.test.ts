@@ -1,12 +1,12 @@
 import Store from 'store';
-import options from 'tests/options';
+import testingOptions from 'tests/helpers/testing-options';
 
 describe('Cart', () => {
   describe('Cart total', () => {
     let store: Store;
 
     beforeEach(() => {
-      store = new Store(options);
+      store = new Store(testingOptions);
       store.init();
     });
 
@@ -55,7 +55,7 @@ describe('Cart', () => {
     let store: Store;
 
     beforeEach(() => {
-      store = new Store(options);
+      store = new Store(testingOptions);
       store.init();
     });
 
