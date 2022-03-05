@@ -9,7 +9,7 @@
   "scripts": {
     "test": "jest",
     "lint": "eslint ./src --ext .ts,.js && stylelint src/style/seatchart.css",
-    "build": "gulp",
+    "build": "gulp build",
     "watch": "gulp watch",
     "docs:build": "typedoc && cp ./CNAME ./docs/CNAME && cp -r ./examples ./docs/examples",
     "docs:deploy": "gh-pages --dist docs"

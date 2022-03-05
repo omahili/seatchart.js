@@ -10,7 +10,7 @@ const output = {
   format: 'umd',
   name: 'Seatchart',
 };
-const input = 'src/index.ts';
+const input = 'src/seatchart.ts';
 const plugins = [ts()];
 
 gulp.task('watch', function () {
@@ -47,37 +47,28 @@ gulp.task('watch', function () {
   return watcher;
 });
 
-gulp.task('default', async function () {
-  console.log('\n' + '\x1b[32m' + 'Build project...' + '\x1b[0m');
-
-  try {
-    const bundle = await rollup.rollup({
+gulp.task('javascript', async () => {
+  await rollup
+    .rollup({
       input,
       plugins,
-    });
+    })
+    .then((bundle) => bundle.write(output));
 
-    await bundle.write(output);
-
-    gulp
-      .src('dist/index.js')
-      .pipe(uglify())
-      .pipe(rename({ suffix: '.min' }))
-      .pipe(gulp.dest('dist'));
-
-    gulp
-      .src('assets/**/*')
-      .pipe(gulp.dest('dist/assets'));
-
-    gulp
-      .src('src/style/seatchart.css')
-      .pipe(gulp.dest('dist'))
-      .pipe(cleanCSS())
-      .pipe(rename({ suffix: '.min' }))
-      .pipe(gulp.dest('dist'));
-
-    console.log('\x1b[32m' + 'Built successfully!' + '\x1b[0m', '\n');
-  } catch (e) {
-    console.log('\x1b[31m' + 'WARNING! An error occurred...' + '\x1b[0m');
-    console.log(e.message, '\n');
-  }
+  return gulp
+    .src('dist/seatchart.js')
+    .pipe(uglify())
+    .pipe(rename({ suffix: '.min' }))
+    .pipe(gulp.dest('dist'));
 });
+
+gulp.task('style', () => {
+  return gulp
+    .src('src/seatchart.css')
+    .pipe(gulp.dest('dist'))
+    .pipe(cleanCSS())
+    .pipe(rename({ suffix: '.min' }))
+    .pipe(gulp.dest('dist'));
+});
+
+gulp.task('build', gulp.parallel('javascript', 'style'));
