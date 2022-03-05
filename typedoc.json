@@ -1,6 +1,6 @@
 {
     "name": "seatchart.js",
-    "entryPoints": ["./src/index.ts"],
+    "entryPoints": ["./src/seatchart.ts"],
     "out": "docs",
     "excludePrivate": true,
     "excludeInternal": true,

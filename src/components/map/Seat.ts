@@ -1,7 +1,7 @@
 import Base from 'components/Base';
-import { SeatIndex } from 'types/seat-index';
 import Store from 'store';
-import { SeatChangeEvent } from 'index';
+import { SeatIndex } from 'types/seat-index';
+import { SeatChangeEvent } from 'types/events';
 
 class Seat extends Base<HTMLDivElement> {
   private store: Store;

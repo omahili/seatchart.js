@@ -3,8 +3,8 @@ import DeleteButton from 'components/cart/DeleteButton';
 import CartTicket from 'components/cart/CartTicket';
 import Store from 'store';
 import { SeatIndex } from 'types/seat-index';
-import { DEFAULT_CURRENCY } from 'utils/consts';
-import { SeatType } from 'index';
+import { DEFAULT_CURRENCY } from 'consts';
+import { SeatType } from 'types/seat-type';
 
 class CartItem extends Base<HTMLDivElement> {
   public seatIndex: SeatIndex;

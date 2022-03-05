@@ -1,6 +1,6 @@
 import Base from 'components/Base';
 import Store from 'store';
-import { DEFAULT_CURRENCY } from 'utils/consts';
+import { DEFAULT_CURRENCY } from 'consts';
 
 class CartTotal extends Base<HTMLDivElement> {
   private store: Store;

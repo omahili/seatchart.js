@@ -1,7 +1,7 @@
 import Base from 'components/Base';
 import CartTotal from 'components/cart/CartTotal';
 import Store from 'store';
-import { DEFAULT_SUBMIT_LABEL } from 'utils/consts';
+import { DEFAULT_SUBMIT_LABEL } from 'consts';
 
 class CartFooter extends Base<HTMLDivElement> {
   public constructor(store: Store) {

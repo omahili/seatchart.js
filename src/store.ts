@@ -1,5 +1,8 @@
-import { Events, Options, SeatInfo, SeatState, SeatChangeEvent } from 'index';
+import { Events, SeatChangeEvent } from 'types/events';
+import { Options } from 'types/options';
 import { SeatIndex } from 'types/seat-index';
+import { SeatInfo } from 'types/seat-info';
+import { SeatState } from 'types/seat-state';
 
 type SeatchartEventListener<T extends keyof Events> = (e: Events[T]) => void;
 

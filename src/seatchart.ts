@@ -94,7 +94,7 @@ class Seatchart {
   }
 
   /**
-   * Unselected all seats and removes them from the cart.
+   * Unselects all seats and removes them from the cart.
    * @returns The total price.
    */
   public clearCart(): void {
@@ -102,10 +102,10 @@ class Seatchart {
   }
 }
 
-export * from 'types/seat-info';
-export * from 'types/seat-type';
-export * from 'types/seat-state';
-export * from 'types/seat-index';
 export * from 'types/events';
 export * from 'types/options';
+export * from 'types/seat-index';
+export * from 'types/seat-info';
+export * from 'types/seat-state';
+export * from 'types/seat-type';
 export default Seatchart;

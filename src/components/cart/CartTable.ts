@@ -1,8 +1,8 @@
 import Base from 'components/Base';
 import CartItem from 'components/cart/CartItem';
-import { SeatIndex } from 'index';
 import Store from 'store';
 import { CartChangeEvent, SeatChangeEvent } from 'types/events';
+import { SeatIndex } from 'types/seat-index';
 
 class CartTable extends Base<HTMLDivElement> {
   private store: Store;

@@ -1,7 +1,7 @@
 import Base from 'components/Base';
 import LegendItem from 'components/legend/LegendItem';
 import Store from 'store';
-import { DEFAULT_CURRENCY } from 'utils/consts';
+import { DEFAULT_CURRENCY } from 'consts';
 
 class Legend extends Base<HTMLUListElement> {
   public constructor(store: Store) {
