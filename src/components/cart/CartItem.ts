@@ -29,7 +29,7 @@ class CartItem extends Base<HTMLDivElement> {
     this.currency = cart?.currency || DEFAULT_CURRENCY;
 
     this.seatPriceTd = document.createElement('td');
-    this.seatPriceTd.textContent = this.getPriceLabel(typeOptions.price);
+    this.seatPriceTd.textContent = this.formatPrice(typeOptions.price);
 
     this.deleteClick = this.deleteClick.bind(this);
     const deleteBtn = new DeleteButton(this.deleteClick);
@@ -49,13 +49,13 @@ class CartItem extends Base<HTMLDivElement> {
     this.store.setSeat(this.seatIndex, { state: 'available' }, true);
   }
 
-  private getPriceLabel(price: number) {
+  private formatPrice(price: number) {
     return `${this.currency}${price.toFixed(2)}`;
   }
 
   public update(seatLabel: string, seatType: SeatType) {
     this.ticket.update(seatLabel, seatType);
-    this.seatPriceTd.textContent = this.getPriceLabel(seatType.price);
+    this.seatPriceTd.textContent = this.formatPrice(seatType.price);
   }
 }
 export default CartItem;

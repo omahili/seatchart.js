@@ -4,6 +4,7 @@ import { DEFAULT_CURRENCY } from 'consts';
 
 class CartTotal extends Base<HTMLDivElement> {
   private store: Store;
+  private currency: string;
 
   public constructor(store: Store) {
     const total = document.createElement('p');
@@ -12,19 +13,21 @@ class CartTotal extends Base<HTMLDivElement> {
     super(total);
 
     this.store = store;
-    this.eventListener = this.eventListener.bind(this);
 
-    this.store.addEventListener('cartchange', this.eventListener);
-    this.store.addEventListener('cartclear', this.eventListener);
-    this.store.addEventListener('seatchange', this.eventListener);
+    const { cart } = this.store.getOptions();
+    this.currency = cart?.currency || DEFAULT_CURRENCY;
+
+    this.updateTotalText(); // init total text
+    this.updateTotalText = this.updateTotalText.bind(this);
+
+    this.store.addEventListener('cartchange', this.updateTotalText);
+    this.store.addEventListener('cartclear', this.updateTotalText);
+    this.store.addEventListener('seatchange', this.updateTotalText);
   }
 
-  private eventListener() {
-    const { cart } = this.store.getOptions();
-    const currency = cart?.currency || DEFAULT_CURRENCY;
+  private updateTotalText() {
     const total = this.store.getCartTotal();
-
-    this.element.textContent = `Total: ${currency}${total.toFixed(2)}`;
+    this.element.textContent = `Total: ${this.currency}${total.toFixed(2)}`;
   }
 }
 

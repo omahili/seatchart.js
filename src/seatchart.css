@@ -3,6 +3,7 @@
     font-family: Arial, Helvetica, sans-serif;
     font-size: 16px;
     padding: 25px;
+    align-items: flex-start;
 }
 
 .sc-right-container {

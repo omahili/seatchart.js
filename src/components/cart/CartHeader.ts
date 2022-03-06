@@ -24,18 +24,19 @@ class CartHeader extends Base<HTMLDivElement> {
     this.store = store;
     this.title = title;
 
-    this.eventListener = this.eventListener.bind(this);
-    this.store.addEventListener('cartclear', this.eventListener);
-    this.store.addEventListener('cartchange', this.eventListener);
+    this.updateCartTitle(); // init title text
+    this.updateCartTitle = this.updateCartTitle.bind(this);
+    this.store.addEventListener('cartclear', this.updateCartTitle);
+    this.store.addEventListener('cartchange', this.updateCartTitle);
   }
 
   private deleteAllClick() {
     this.store.clearCart(true);
   }
 
-  private eventListener(): void {
-    const items = this.store.countCartItems();
-    this.title.textContent = `Cart (${items})`;
+  private updateCartTitle(): void {
+    const count = this.store.countCartItems();
+    this.title.textContent = `Cart (${count})`;
   }
 }
 
