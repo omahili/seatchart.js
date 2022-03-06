@@ -1,8 +1,8 @@
 {
-  "name": "seatchartjs",
-  "description": "A framework to create beautiful designed seat maps, legends and shopping carts.",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "name": "seatchart",
+  "description": "Create beautiful designed seat maps.",
+  "main": "dist/seatchart.js",
+  "types": "dist/seatchart.d.ts",
   "files": [
     "dist/*"
   ],
@@ -11,7 +11,7 @@
     "lint": "eslint ./src --ext .ts,.js && stylelint src/style/seatchart.css",
     "build": "gulp build",
     "watch": "gulp watch",
-    "docs:build": "typedoc && cp ./CNAME ./docs/CNAME && cp -r ./examples ./docs/examples",
+    "docs:build": "typedoc && cp ./CNAME ./docs/CNAME && cp ./examples/demo.html ./docs/demo.html",
     "docs:deploy": "gh-pages --dist docs"
   },
   "repository": {
@@ -49,6 +49,5 @@
     "typedoc": "^0.22.12",
     "typedoc-plugin-merge-modules": "^3.1.0",
     "typescript": "^4.5.5"
-  },
-  "dependencies": {}
+  }
 }

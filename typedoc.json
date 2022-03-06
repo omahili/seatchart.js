@@ -1,5 +1,5 @@
 {
-    "name": "seatchart.js",
+    "name": "Seatchart",
     "entryPoints": ["./src/seatchart.ts"],
     "out": "docs",
     "excludePrivate": true,
