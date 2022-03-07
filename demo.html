@@ -1,84 +1,79 @@
+<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Demo</title>
-        <meta charset="utf-8">
-        <link rel="stylesheet" href="./seatchart/css/seatchart.css">
+  <head>
+    <title>Demo</title>
+    <meta charset="utf-8" />
 
-        <style>
-            .content {
-                display: flex;
-                flex-direction: row;
-                justify-content: center;
-                margin-top: 40px;
-            }
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/seatchart@0.1.0/dist/seatchart.css" />
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+      }
 
-            .right {
-                display: flex;
-                flex-direction: column;
-                margin-left: 80px;
-            }
+      .economy {
+        color: white;
+        background-color: #43aa8b;
+      }
 
-            #map-container {
-                display: flex;
-                align-items: center;
-            }
+      .first-class {
+        color: white;
+        background-color: #277da1;
+      }
 
-            #legend-container {
-                margin-top: 20px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="content">
-            <div id="map-container"></div>
+      .reduced {
+        color: white;
+        background-color: #f8961e;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container"></div>
 
-            <div class="right">
-                <div id="cart-container"></div>
-                <div id="legend-container"></div>
-            </div>
-        </div>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/seatchart@0.1.0/dist/seatchart.min.js"></script>
+    <script>
+      var options = {
+        map: {
+          rows: 10,
+          columns: 10,
+          seatTypes: {
+            default: {
+              label: 'Economy',
+              cssClass: 'economy',
+              price: 15,
+            },
+            first: {
+              label: 'First Class',
+              cssClass: 'first-class',
+              price: 25,
+              seatRows: [0, 1, 2],
+            },
+            reduced: {
+              label: 'Reduced',
+              cssClass: 'reduced',
+              price: 10,
+              seatRows: [7, 8, 9],
+            },
+          },
+          disabledSeats: [
+            { row: 0, col: 0 },
+            { row: 0, col: 9 },
+          ],
+          reservedSeats: [
+            { row: 0, col: 3 },
+            { row: 0, col: 4 },
+          ],
+          selectedSeats: [{ row: 0, col: 5 }, { row: 0, col: 6 }],
+          rowSpacers: [3, 7],
+          columnSpacers: [5],
+        },
+      };
 
-        <script type="text/javascript" src="./seatchart/js/seatchart.js"></script>
-        <script>
-            var options = {
-                // Reserved and disabled seats are indexed
-                // from left to right by starting from 0.
-                // Given the seatmap as a 2D array and an index [R, C]
-                // the following values can obtained as follow:
-                // I = columns * R + C
-                map: {
-                    id: 'map-container',
-                    rows: 9,
-                    columns: 9,
-                    // e.g. Reserved Seat [Row: 1, Col: 2] = 7 * 1 + 2 = 9
-                    reserved: {
-                        seats: [1, 2, 3, 5, 6, 7, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20, 21],
-                    },
-                    disabled: {
-                        seats: [0, 8],
-                        rows: [4],
-                        columns: [4]
-                    }
-                },
-                types: [
-                    { type: "regular", backgroundColor: "#006c80", price: 10, selected: [23, 24] },
-                    { type: "reduced", backgroundColor: "#287233", price: 7.5, selected: [25, 26] }
-                ],
-                cart: {
-                    id: 'cart-container',
-                    width: 280,
-                    height: 250,
-                    currency: '£',
-                },
-                legend: {
-                    id: 'legend-container',
-                },
-                assets: {
-                    path: "./seatchart/assets",
-                }
-            };
-
-            var sc = new Seatchart(options);
-        </script>
-    </body>
+      var element = document.getElementById('container');
+      var sc = new Seatchart(element, options);
+      sc.addEventListener('submit', function handleSubmit(e) {
+        alert('Total: ' + e.total + '€');
+      });
+    </script>
+  </body>
 </html>
