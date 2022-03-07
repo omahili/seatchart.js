@@ -1,9 +1,5 @@
 import Store from 'store';
-import {
-  SeatChangeEvent,
-  CartChangeEvent,
-  CartClearEvent,
-} from 'types/events';
+import { SeatChangeEvent, CartChangeEvent, CartClearEvent } from 'types/events';
 import testingOptions from 'tests/helpers/testing-options';
 import {
   AddMockListener,

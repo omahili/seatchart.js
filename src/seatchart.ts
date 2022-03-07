@@ -66,9 +66,9 @@ class Seatchart {
   }
 
   /**
-   * Sets seat data.
+   * Sets seat info.
    * @param index - Index of the seat to update.
-   * @param seat - An object containing the seat data.
+   * @param seat - An object containing the new seat info.
    */
   public setSeat(
     index: SeatIndex,

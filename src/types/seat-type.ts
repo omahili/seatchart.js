@@ -2,15 +2,15 @@ import { SeatIndex } from 'types/seat-index';
 
 interface SeatTypeDefault {
   /**
-   * Display label of seat type.
+   * Display label of this type.
    */
   label: string;
   /**
-   * Price of the defined seat type.
+   * Price of the seats.
    */
   price: number;
   /**
-   * Css class of the defined seat type.
+   * Css class applied to the seats of this type.
    */
   cssClass: string;
 }
@@ -20,27 +20,27 @@ interface SeatTypeDefault {
  */
 interface SeatType {
   /**
-   * Display label of the defined seat type.
+   * Display label of this type.
    */
   label: string;
   /**
-   * Price of the defined seat type.
+   * Price of the seats.
    */
   price: number;
   /**
-   * Css class of the defined seat type.
+   * Css class applied to the seats of this type.
    */
   cssClass: string;
   /**
-   * Seats marked as the defined seat type.
+   * Seats marked with this type.
    */
   seats?: SeatIndex[];
   /**
-   * Seat rows marked as the defined seat type.
+   * Rows of the seats marked with this type.
    */
   seatRows?: number[];
   /**
-   * Seat columns marked as the defined seat type.
+   * Columns of the seats marked with this type.
    */
   seatColumns?: number[];
 }

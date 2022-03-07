@@ -36,7 +36,7 @@ interface Options {
      */
     reservedSeats?: SeatIndex[];
     /**
-     * Disabled seats options.
+     * Disabled seats.
      */
     disabledSeats?: SeatIndex[];
     /**

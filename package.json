@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "test": "jest",
-    "lint": "eslint ./src --ext .ts,.js && stylelint src/style/seatchart.css",
+    "lint": "eslint ./src --ext .ts,.js && stylelint src/seatchart.css",
     "build": "gulp build",
     "watch": "gulp watch",
     "docs:build": "typedoc && cp ./CNAME ./docs/CNAME && cp ./examples/demo.html ./docs/demo.html",
