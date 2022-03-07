@@ -1,0 +1,8 @@
+{
+    "name": "Seatchart",
+    "entryPoints": ["./src/seatchart.ts"],
+    "out": "docs",
+    "excludePrivate": true,
+    "excludeInternal": true,
+    "excludeExternals": true
+}

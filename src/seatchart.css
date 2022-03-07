@@ -1,0 +1,270 @@
+.sc-main-container {
+  display: flex;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  padding: 25px;
+  align-items: flex-start;
+}
+
+.sc-right-container {
+  margin-left: 75px;
+}
+
+/* Seat map css */
+
+.sc-map {
+  display: flex;
+  align-items: flex-end;
+}
+
+.sc-map-inner-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.sc-seats-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.sc-seat-row {
+  display: flex;
+}
+
+.sc-seat {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 42px;
+  width: 42px;
+  margin: 4px;
+  box-sizing: border-box;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  user-select: none;
+  transition: opacity 0.1s ease-in-out;
+}
+
+.sc-spacer {
+  height: 43px;
+  width: 43px;
+}
+
+.sc-front {
+  display: flex;
+  justify-content: center;
+  color: #b0b0b0;
+  border-radius: 3px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  background-color: #f5f5f5;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.sc-indexer {
+  display: flex;
+}
+
+.sc-indexer-rows {
+  flex-direction: column;
+}
+
+.sc-indexer-columns {
+  width: 100%;
+}
+
+.sc-seat-indexer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 42px;
+  width: 42px;
+  margin: 4px;
+  background-color: transparent;
+  color: #4b4949;
+}
+
+.sc-seat.sc-seat-available:hover {
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.sc-seat.sc-seat-selected {
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.sc-seat.sc-seat-reserved,
+.sc-seat-reserved {
+  color: white;
+  background-color: #d2d2d2;
+  cursor: not-allowed;
+}
+
+.sc-seat.sc-seat-disabled {
+  color: transparent;
+  background-color: transparent;
+}
+
+/* Seat legend css */
+
+.sc-legend {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sc-legend-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 0;
+}
+
+.sc-legend-description {
+  margin: 0 0 0 10px;
+}
+
+.sc-legend-bullet {
+  width: 22px;
+  height: 22px;
+  border-radius: 5px 5px 0 0;
+}
+
+/* Cart css */
+
+.sc-cart {
+  width: 300px;
+  margin-bottom: 50px;
+}
+
+.sc-cart-table-container {
+  height: 250px;
+  margin-bottom: 15px;
+  overflow: auto;
+  border: 1px solid #bbb;
+  border-radius: 5px;
+}
+
+.sc-cart-table {
+  width: 100%;
+}
+
+.sc-cart-title {
+  font-weight: bold;
+  margin: 0;
+}
+
+.sc-cart-table td {
+  text-align: center;
+  vertical-align: middle;
+  padding: 2px;
+}
+
+.sc-cart-btn {
+  border-radius: 4px;
+  transition: background-color 0.15s ease-in-out;
+  user-select: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  height: 35px;
+}
+
+.sc-cart-btn-icon {
+  height: 3px;
+  width: 12px;
+  border-radius: 5px;
+  background-color: white;
+}
+
+.sc-cart-btn-delete {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e53c4a;
+  height: 22px;
+  width: 22px;
+}
+
+.sc-cart-btn-delete:hover {
+  background-color: #db3240;
+}
+
+.sc-cart-btn-delete:active {
+  background-color: #cc2331;
+}
+
+.sc-cart td .sc-cart-btn-delete {
+  margin: auto;
+}
+
+.sc-cart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 10px 10px;
+}
+
+.sc-cart-footer {
+  display: flex;
+  flex-direction: column;
+}
+
+.sc-cart-total {
+  flex: 1;
+  font-size: 14px;
+  font-weight: bold;
+  margin: 0 10px 15px;
+  padding: 0;
+  text-align: right;
+}
+
+.sc-cart-btn-submit {
+  width: 100%;
+  background-color: #e53c4a;
+  color: white;
+}
+
+.sc-cart-btn-submit:hover {
+  background-color: #db3240;
+}
+
+.sc-cart-btn-submit:active {
+  background-color: #cc2331;
+}
+
+/* Ticket css */
+
+.sc-ticket {
+  display: flex;
+  justify-content: center;
+  font-size: 14px;
+  height: 35px;
+  border: 2px solid black;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+
+.sc-ticket div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sc-ticket .sc-ticket-seat-label {
+  border-right: 1px dashed black;
+  box-sizing: border-box;
+  flex: 1;
+}
+
+.sc-ticket .sc-ticket-seat-type {
+  flex: 2;
+}
+
+.sc-ticket .sc-ticket-stripes {
+  width: 8px;
+  background: repeating-linear-gradient(45deg, black, black 3px, transparent 3px, transparent 6px);
+}
