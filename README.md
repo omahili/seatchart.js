@@ -5,6 +5,23 @@ Create beautiful designed seat maps 💺🗺️
 - [Demo](https://seatchart.js.org/demo.html)
 - [Docs](https://seatchart.js.org)
 
+## Install
+
+You can get seatchart from npm or use a CDN like [jsDelivr](https://www.jsdelivr.com).
+
+### Npm
+
+```
+npm install --save seatchart
+```
+
+### JsDelivr
+
+```
+https://cdn.jsdelivr.net/npm/seatchart@0.1.0/dist/seatchart.min.js
+https://cdn.jsdelivr.net/npm/seatchart@0.1.0/dist/seatchart.min.css
+```
+
 ## Usage
 
 ```html
@@ -13,7 +30,7 @@ Create beautiful designed seat maps 💺🗺️
   <head>
     <title>Seatchart Example</title>
 
-    <link rel="stylesheet" href="path/to/seatchart.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/seatchart@0.1.0/dist/seatchart.min.css">
     <style>
       .economy {
         color: white;
@@ -24,7 +41,7 @@ Create beautiful designed seat maps 💺🗺️
   <body>
     <div id="container"></div>
 
-    <script type="text/javascript" src="path/to/seatchart.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/seatchart@0.1.0/dist/seatchart.min.js"></script>
     <script>
       var element = document.getElementById('container');
       var options = {
@@ -47,12 +64,14 @@ Create beautiful designed seat maps 💺🗺️
 </html>
 ```
 
-## Example with React
+## Usage with React
+
+Create your Seatchart component:
 
 ```javascript
 // Seatchart.tsx
 import React, { forwardRef, useEffect, useRef } from 'react';
-import SeatchartJS, { Options } from 'path/to/seatchart';
+import SeatchartJS, { Options } from 'seatchart';
 
 interface SeatchartProps {
   options: Options;
@@ -89,19 +108,17 @@ const Seatchart = forwardRef<SeatchartJS | undefined, SeatchartProps>(({ options
 });
 
 export default Seatchart;
+```
 
-// App.css
-.economy {
-  color: white;
-  background-color: #43aa8b;
-}
+Import it and use it:
 
+```javascript
 // App.tsx
 import React, { useRef } from 'react';
-import SeatchartJS, { Options } from 'path/to/seatchart';
+import SeatchartJS, { Options } from 'seatchart';
 import Seatchart from './Seatchart';
 
-import 'path/to/seatchart/dist/seatchart.min.css';
+import 'seatchart/dist/seatchart.min.css';
 import './App.css';
 
 const options: Options = {
@@ -139,4 +156,14 @@ const App = () => {
 }
 
 export default App;
+```
+
+And don't forget to style your seats:
+
+```css
+/* App.css */
+.economy {
+  color: white;
+  background-color: #43aa8b;
+}
 ```
