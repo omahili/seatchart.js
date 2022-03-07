@@ -1,5 +1,6 @@
 {
   "name": "seatchart",
+  "version": "0.1.0",
   "description": "Create beautiful designed seat maps.",
   "main": "dist/seatchart.js",
   "types": "dist/seatchart.d.ts",
