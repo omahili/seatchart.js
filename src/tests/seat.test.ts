@@ -10,6 +10,36 @@ describe('Seats', () => {
       store.init();
     });
 
+    it('should throw a RangeError', () => {
+      const getSeat = () => store.getSeat({ row: 10, col: 5 });
+      expect(getSeat).toThrowError(RangeError);
+    });
+
+    it('should throw a RangeError', () => {
+      const getSeat = () => store.getSeat({ row: -1, col: 4 });
+      expect(getSeat).toThrowError(RangeError);
+    });
+
+    it('should throw a RangeError', () => {
+      const getSeat = () => store.getSeat({ row: 4, col: 10 });
+      expect(getSeat).toThrowError(RangeError);
+    });
+
+    it('should throw a RangeError', () => {
+      const getSeat = () => store.getSeat({ row: 3, col: -1 });
+      expect(getSeat).toThrowError(RangeError);
+    });
+
+    it('should not throw errors', () => {
+      const getSeat = () => store.getSeat({ row: 9, col: 0 });
+      expect(getSeat).not.toThrowError();
+    });
+
+    it('should not throw errors', () => {
+      const getSeat = () => store.getSeat({ row: 0, col: 9 });
+      expect(getSeat).not.toThrowError();
+    });
+
     it('should be available', () => {
       const seat = store.getSeat({ row: 0, col: 1 });
 
@@ -72,11 +102,52 @@ describe('Seats', () => {
       store.init();
     });
 
-    it('should throw a TypeError', () => {
-      const getSeat = () =>
-        store.setSeat({ row: 0, col: 10 }, { type: 'default' }, false);
+    it('should throw a RangeError', () => {
+      const setSeat = () =>
+        store.setSeat({ row: -1, col: 4 }, { type: 'default' }, false);
+      expect(setSeat).toThrowError(RangeError);
+    });
 
-      expect(getSeat).toThrowError(TypeError);
+    it('should throw a RangeError', () => {
+      const setSeat = () =>
+        store.setSeat({ row: 10, col: 3 }, { type: 'default' }, false);
+      expect(setSeat).toThrowError(RangeError);
+    });
+
+    it('should throw a RangeError', () => {
+      const setSeat = () =>
+        store.setSeat({ row: 0, col: -1 }, { type: 'default' }, false);
+      expect(setSeat).toThrowError(RangeError);
+    });
+
+    it('should throw a RangeError', () => {
+      const setSeat = () =>
+        store.setSeat({ row: 0, col: 10 }, { type: 'default' }, false);
+      expect(setSeat).toThrowError(RangeError);
+    });
+
+    it('should throw a TypeError', () => {
+      const setSeat = () =>
+        store.setSeat({ row: 0, col: 1 }, { type: 'inexistent' }, false);
+      expect(setSeat).toThrowError(TypeError);
+    });
+
+    it('should not throw errors', () => {
+      const setSeat = () =>
+        store.setSeat({ row: 0, col: 9 }, { type: 'default' }, false);
+      expect(setSeat).not.toThrowError();
+    });
+
+    it('should not throw errors', () => {
+      const setSeat = () =>
+        store.setSeat({ row: 9, col: 0 }, { type: 'reduced' }, false);
+      expect(setSeat).not.toThrowError();
+    });
+
+    it('should throw a TypeError', () => {
+      const setSeat = () =>
+        store.setSeat({ row: 0, col: 9 }, { type: 'another1' }, false);
+      expect(setSeat).toThrowError(TypeError);
     });
 
     it('should set state', () => {

@@ -6,6 +6,8 @@ import { SeatState } from 'types/seat-state';
 
 type SeatchartEventListener<T extends keyof Events> = (e: Events[T]) => void;
 
+type SetSeatParam = { label: string; state: SeatState; type: string };
+
 class Store {
   private readonly options: Options;
   private cart: SeatInfo[] = [];
@@ -110,37 +112,31 @@ class Store {
     return this.options.map.seatTypes[type];
   }
 
-  public setSeat(
-    index: SeatIndex,
-    info: Partial<{ label: string; state: SeatState; type: string }>,
-    emit: boolean
-  ) {
+  public setSeat(index: SeatIndex, info: Partial<SetSeatParam>, emit: boolean) {
+    this.validateIndex(index);
+    this.validateType(info.type);
+
     const { row, col } = index;
-    const { type: newType, state: newState, label: newLabel } = info;
+    const previous = { ...this.seats[row][col] };
+
+    this.seats[row][col] = {
+      ...previous,
+      ...info,
+    };
+
     const seat = this.seats[row][col];
-    let hasChanged = false;
-    const previous = { ...seat };
 
-    if (newLabel && seat.label !== newLabel) {
-      seat.label = newLabel;
-      hasChanged = true;
-    }
-
-    if (newType && seat.type !== newType) {
-      seat.type = newType;
-      hasChanged = true;
-    }
-
-    if (newState && seat.state !== newState) {
-      seat.state = newState;
-      hasChanged = true;
-
+    if (previous.state !== info.state) {
       if (seat.state === 'selected') {
         this.addToCart(seat.index, emit);
       } else if (previous.state === 'selected') {
         this.removeFromCart(seat.index, emit);
       }
     }
+
+    const hasChanged = (Object.keys(info) as (keyof SetSeatParam)[]).some(
+      (x) => info[x] && previous[x] !== info[x]
+    );
 
     if (hasChanged && emit) {
       const listenerKey = this.listenerKey(index);
@@ -156,6 +152,8 @@ class Store {
   }
 
   public getSeat(index: SeatIndex) {
+    this.validateIndex(index);
+
     return this.seats[index.row][index.col];
   }
 
@@ -284,6 +282,23 @@ class Store {
       (this.eventListeners[type] as SeatchartEventListener<T>[]) = (
         this.eventListeners[type] as SeatchartEventListener<T>[]
       ).filter((x) => x !== listener);
+    }
+  }
+
+  private validateIndex(index: SeatIndex) {
+    if (
+      index.row < 0 ||
+      index.col < 0 ||
+      index.row >= this.options.map.rows ||
+      index.col >= this.options.map.columns
+    ) {
+      throw RangeError('Seat index is out of range');
+    }
+  }
+
+  private validateType(type?: string) {
+    if (type !== undefined && !this.options.map.seatTypes[type]) {
+      throw TypeError(`Seat type does not exist`);
     }
   }
 
