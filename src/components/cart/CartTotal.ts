@@ -5,6 +5,8 @@ import { DEFAULT_CURRENCY } from 'consts';
 class CartTotal extends Base<HTMLDivElement> {
   private store: Store;
   private currency: string;
+  private currencyBehind: boolean;
+  private label: string;
 
   public constructor(store: Store) {
     const total = document.createElement('p');
@@ -16,6 +18,8 @@ class CartTotal extends Base<HTMLDivElement> {
 
     const { cart } = this.store.getOptions();
     this.currency = cart?.currency || DEFAULT_CURRENCY;
+    this.currencyBehind = cart?.currencyBehind ?? false;
+    this.label = cart?.totalLabel ?? 'Total';
 
     this.updateTotalText(); // init total text
     this.updateTotalText = this.updateTotalText.bind(this);
@@ -27,7 +31,10 @@ class CartTotal extends Base<HTMLDivElement> {
 
   private updateTotalText() {
     const total = this.store.getCartTotal();
-    this.element.textContent = `Total: ${this.currency}${total.toFixed(2)}`;
+    const totalString = this.currencyBehind
+      ? `${total.toFixed(2)}${this.currency}`
+      : `${this.currency}${total.toFixed(2)}`
+    this.element.textContent = `${this.label}: ${totalString}`;
   }
 }
 

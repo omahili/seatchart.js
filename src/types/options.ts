@@ -81,6 +81,7 @@ interface Options {
      * Sets front header visibility.
      */
     frontVisible?: boolean;
+    frontLabel?: string;
   };
   /**
    * Cart options.
@@ -98,11 +99,17 @@ interface Options {
      * Label displayed on the submit button.
      */
     submitLabel?: string;
+    titleLabel?: string;
+    totalLabel?: string;
+    currencyBehind?: boolean;
+    showTotal?: boolean;
   };
   /**
    * Legend visibility.
    */
   legendVisible?: boolean;
+  reservedLegendLabel?: string;
+  hideLegendPrice?: boolean;
 }
 
 export { Options };

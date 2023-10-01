@@ -36,7 +36,7 @@ class CartHeader extends Base<HTMLDivElement> {
 
   private updateCartTitle(): void {
     const count = this.store.countCartItems();
-    this.title.textContent = `Cart (${count})`;
+    this.title.textContent = `${this.store.getOptions().cart?.titleLabel ?? 'Cart'} (${count})`;
   }
 }
 

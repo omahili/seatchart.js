@@ -13,6 +13,7 @@ class CartItem extends Base<HTMLDivElement> {
   private ticket: CartTicket;
   private seatPriceTd: HTMLTableCellElement;
   private currency: string;
+  private currencyBehind: boolean;
 
   public constructor(index: SeatIndex, store: Store) {
     const cartItem = document.createElement('tr');
@@ -27,6 +28,7 @@ class CartItem extends Base<HTMLDivElement> {
 
     const { cart } = store.getOptions();
     this.currency = cart?.currency || DEFAULT_CURRENCY;
+    this.currencyBehind = cart?.currencyBehind ?? false;
 
     this.seatPriceTd = document.createElement('td');
     this.seatPriceTd.textContent = this.formatPrice(typeOptions.price);
@@ -50,7 +52,9 @@ class CartItem extends Base<HTMLDivElement> {
   }
 
   private formatPrice(price: number) {
-    return `${this.currency}${price.toFixed(2)}`;
+    return this.currencyBehind
+      ? `${price.toFixed(2)}${this.currency}`
+      : `${this.currency}${price.toFixed(2)}`;
   }
 
   public update(seatLabel: string, seatType: SeatType) {

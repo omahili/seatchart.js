@@ -48,7 +48,7 @@ class Map extends Base<HTMLDivElement> {
     const innerContainer = document.createElement('div');
     innerContainer.className = 'sc-map-inner-container';
     if (frontVisible === undefined || frontVisible) {
-      const frontHeader = new FrontIndicator();
+      const frontHeader = new FrontIndicator(options.map.frontLabel ?? 'Front');
       innerContainer.appendChild(frontHeader.element);
     }
 
